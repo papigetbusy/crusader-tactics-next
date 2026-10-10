@@ -25,8 +25,8 @@ type Game struct {
 
 // Refused explains why an action was not allowed.
 type Refused struct {
-	Code   string // short code for the screen: "too-far", "on-cooldown"...
-	Reason string // plain words
+	Code   string `json:"code"`   // short code for the screen: "too-far", "on-cooldown"...
+	Reason string `json:"reason"` // plain words
 }
 
 func (r *Refused) Error() string { return r.Reason }

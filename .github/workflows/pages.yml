@@ -1,7 +1,9 @@
 # The build robot. On every change to main it:
-#   1. runs every test (a failing test stops everything; nothing is published)
-#   2. builds the Go code into WebAssembly for the browser
-#   3. publishes the web/ page to GitHub Pages
+#   1. checks formatting and runs every test (anything red stops everything;
+#      nothing is published and the last good version stays live)
+#   2. turns the test results into the Rule Book, Old-Game Match, House Rules
+#      and Changes pages
+#   3. builds the game into WebAssembly and publishes it all to GitHub Pages
 name: Test, build and publish
 
 on:
@@ -28,12 +30,22 @@ jobs:
           go-version: '1.24.7'
       - name: Code is neatly formatted
         run: test -z "$(gofmt -l .)" || (gofmt -l . && echo "Run gofmt on the files above" && exit 1)
-      - name: Run all tests
-        run: go test -v ./... 2>&1 | tee test-output.txt; test ${PIPESTATUS[0]} -eq 0
-      - name: Build the browser program
+      - name: Run all tests and make the pages
         run: |
           mkdir -p site
-          LABEL="rehearsal-$(date -u +%Y%m%d-%H%M)-${GITHUB_SHA::7}"
+          echo "LABEL=build-$(date -u +%Y%m%d-%H%M)-${GITHUB_SHA::7}" >> "$GITHUB_ENV"
+          set +e
+          OLDGAME_REPORT="$PWD/match.json" go test -json ./... > test.json
+          status=$?
+          set -e
+          go run ./tools/report -tests test.json -match match.json -changes docs/changes-from-old-game.md -build "build-${GITHUB_SHA::7}" -out site
+          if [ $status -ne 0 ]; then
+            echo "Some tests are red (listed above). Nothing is published; the last good version stays live."
+            go test ./... 2>&1 | grep -E "^(---|    |FAIL)" | head -60
+            exit 1
+          fi
+      - name: Build the game for the browser
+        run: |
           GOOS=js GOARCH=wasm go build -trimpath -ldflags "-s -w -X main.build=$LABEL" -o site/app.wasm ./adapters/wasm
           cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" site/
           sed "s/__BUILD__/$LABEL/g" web/index.html > site/index.html

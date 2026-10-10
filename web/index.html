@@ -1,72 +1,195 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Crusader Tactics Go Test</title>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crusader Tactics Practice</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0e0a0a;--panel:#171112;--line:#3a2a22;--text:#eadfca;--dim:#a39682;--gold:#d4a84a;--red:#a52a2a;--green:#5f9f58}
-@media (prefers-color-scheme:light){:root{--bg:#f4ede0;--panel:#fffaf0;--line:#d9c9ab;--text:#2a1f1a;--dim:#6d5f50;--gold:#8a6414;--red:#8f1d1d;--green:#2f6f2c}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 Georgia,"Times New Roman",serif}
-main{max-width:560px;margin:0 auto;padding:22px 16px 48px}
-h1{font-size:24px;margin:0 0 4px;color:var(--gold)}h2{font-size:17px;margin:26px 0 8px;color:var(--gold);border-bottom:1px solid var(--line);padding-bottom:5px}
-.sub{color:var(--dim);margin:0 0 14px;font-size:15px}
-.card{background:var(--panel);border:1px solid var(--line);border-left:6px solid var(--dim);border-radius:6px;padding:12px 14px;margin:12px 0}
-.card.ok{border-left-color:var(--green)}.card.bad{border-left-color:var(--red)}
-.row{display:flex;gap:10px;align-items:flex-start;margin:8px 0}.dot{flex:0 0 24px;height:24px;border-radius:50%;display:grid;place-items:center;color:#fff;font:700 13px/1 system-ui;background:var(--dim)}
-.dot.g{background:var(--green)}.dot.r{background:var(--red)}
-button{font:inherit;font-weight:bold;color:#1a1208;background:var(--gold);border:0;border-radius:6px;padding:12px 16px;margin:6px 8px 6px 0;min-height:46px;cursor:pointer}
-button.alt{background:transparent;color:var(--gold);border:1px solid var(--gold)}button:disabled{opacity:.45}
-.out{font:15px ui-monospace,Menlo,monospace;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:10px 12px;min-height:56px;margin-top:8px;word-break:break-word}
-small,.dim{color:var(--dim)}a{color:var(--gold)}code{font:13px ui-monospace,Menlo,monospace;color:var(--gold)}
-</style></head><body><main>
-<h1>Go Test Page</h1>
-<p class="sub">Rehearsal: built, tested and published by the GitHub robot from the new repo. No game rules yet.</p>
-<div id="status" class="card"><b>Loading Go&hellip;</b></div>
-<h2>Automatic checks</h2><div id="checks"><div class="row"><div class="dot">&hellip;</div><div class="dim">Waiting for Go to start</div></div></div>
-<h2>Try it</h2>
-<p class="sub">Each button asks the Go program to roll five 20-sided dice.</p>
-<button id="b1" disabled>Roll with seed 123</button><button id="b2" class="alt" disabled>Roll with a fresh seed</button>
-<div id="out" class="out dim">Tap a button.</div>
-<p class="sub" style="margin-top:22px">Seed 123 should give the same five numbers every time you tap it. A fresh seed should give new numbers each time.</p>
-<h2>Your game</h2>
-<p class="sub"><a href="https://papigetbusy.github.io/crusader-tactics/">Back to the Crusader Tactics game</a>. It is untouched by this page.</p>
-<p class="sub"><small>Build: <span id="build"></span></small></p>
-</main>
+:root{--bg:#0e0b0b;--panel:#191312;--panel2:#221918;--line:#3a2b26;--ink:#eadfcb;--muted:#a8998a;--gold:#c9a24d;--gold2:#e6c878;--blood:#8b1e2d;--blood2:#c0394b;--ok:#6fa86a}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.4 "EB Garamond",Georgia,serif}
+body{padding:12px 16px 40px;max-width:640px;margin:0 auto}
+header h1{font:700 22px/1.2 Cinzel,serif;color:var(--gold);margin:4px 0 2px;letter-spacing:.5px}
+nav{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:15px;margin:6px 0 12px}
+nav a{color:var(--muted);text-decoration:none;border-bottom:1px solid transparent}
+nav a.on,nav a:hover{color:var(--gold2);border-color:var(--gold)}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+select,button{font:600 15px "EB Garamond",serif;color:var(--ink);background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:7px 11px}
+button{cursor:pointer}
+button.main{background:var(--blood);border-color:var(--blood2);color:#fff}
+button.gold{background:#3a2c14;border-color:var(--gold);color:var(--gold2)}
+button:disabled{opacity:.4;cursor:default}
+#status{font:600 15px Cinzel,serif;color:var(--gold2);margin:6px 0}
+#board{display:grid;width:100%;aspect-ratio:1;border:1px solid var(--line);border-radius:6px;overflow:hidden;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.tile{position:relative;border:.5px solid rgba(0,0,0,.35)}
+.tile.g{background:#2b3324}.tile.r{background:#4a3b2a}.tile.f{background:#1b2a1a}.tile.h{background:#3b3a28}.tile.t{background:#4a3434}
+.tile.T{background:#5c2a2c}.tile.b{background:#4d3d28}.tile.w{background:#14233a}.tile.m{background:#2a2a31}
+.tile.reach::after{content:"";position:absolute;inset:0;background:rgba(201,162,77,.28);box-shadow:inset 0 0 0 1px rgba(230,200,120,.55)}
+.u{position:absolute;inset:6%;border-radius:22%;display:flex;flex-direction:column;align-items:center;justify-content:center;font:700 clamp(8px,2.4vw,13px)/1 Cinzel,serif;z-index:1}
+.u.h{background:#2a2112;border:1.5px solid var(--gold);color:var(--gold2)}
+.u.e{background:#2a1013;border:1.5px solid var(--blood2);color:#f3c5c5}
+.u.done{opacity:.45}
+.u.sel{box-shadow:0 0 0 2px #fff,0 0 10px var(--gold2)}
+.u.tg{box-shadow:0 0 0 2px var(--blood2),0 0 10px var(--blood2);animation:p 1s infinite alternate}
+.u.aim{box-shadow:0 0 0 3px #fff,0 0 14px var(--blood2)}
+@keyframes p{to{box-shadow:0 0 0 2px #ff6b7d,0 0 14px #ff6b7d}}
+.u i{display:block;width:80%;height:3px;background:#000;margin-top:2px;border-radius:2px;overflow:hidden}
+.u i b{display:block;height:100%;background:var(--ok)}
+.u.e i b{background:var(--blood2)}
+.mark{position:absolute;top:-2px;right:1px;font-size:9px;color:var(--gold2)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-top:10px}
+.card h2{font:700 16px Cinzel,serif;margin:0 0 4px;color:var(--gold2)}
+.muted{color:var(--muted);font-size:15px}
+.skills{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.skills button{font-size:14px;padding:6px 9px}
+.skills button.on{border-color:var(--gold);color:var(--gold2);background:#33270f}
+#fc{margin:6px 0;font-size:16px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+#log{max-height:220px;overflow:auto;font-size:15px}
+#log div{padding:2px 0;border-bottom:1px solid #241b19}
+#log .turn{color:var(--gold);font-family:Cinzel,serif;font-size:13px;margin-top:4px}
+#log .bad{color:#f19aa5}#log .good{color:#a6d39f}
+#banner{display:none;text-align:center;font:700 22px Cinzel,serif;padding:12px;border-radius:8px;margin-top:10px}
+#banner.won{display:block;background:#2a2112;color:var(--gold2);border:1px solid var(--gold)}
+#banner.lost{display:block;background:#2a1013;color:#f3c5c5;border:1px solid var(--blood2)}
+#err{display:none;background:#2a1013;border:1px solid var(--blood2);padding:10px;border-radius:8px}
+footer{margin-top:16px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<header><h1>Crusader Tactics</h1>
+<nav><a class="on" href="./">Practice fight</a><a href="rules.html">Rule Book</a><a href="match.html">Old-Game Match</a><a href="house.html">House Rules</a><a href="changes.html">Changes</a></nav></header>
+<div id="err"></div>
+<div class="bar"><select id="pick" aria-label="Choose a fight"></select><button class="gold" id="new">New fight</button></div>
+<div id="status">Loading the referee…</div>
+<div id="board"></div>
+<div id="banner"></div>
+<div class="card" id="panel"><div class="muted">Tap one of your heroes (gold) to begin. Gold tiles show where it can walk; red outlines show who its skill can reach.</div></div>
+<div class="card"><h2>Battle log</h2><div id="log"></div></div>
+<footer>Phase 4 practice fight: the real rules, plain looks. Your art and menus come in Phase 8. Build: __BUILD__</footer>
 <script src="wasm_exec.js?v=__BUILD__"></script>
 <script>
-const BUILD='__BUILD__', $=id=>document.getElementById(id);
-$('build').textContent=BUILD;
-function fail(msg,detail){
-  const s=$('status');s.className='card bad';
-  s.innerHTML='<b>Go did not load.</b><br>'+msg+'<br><small>Details: '+String(detail||'').replace(/</g,'&lt;')+'</small>';
-  $('checks').innerHTML='<div class="row"><div class="dot r">✗</div><div>Go is not running, so the checks could not start.</div></div>';
-}
+const $=id=>document.getElementById(id), J=s=>JSON.parse(s);
+const ICON={fire:'🔥',ice:'❄',elec:'⚡',light:'☀',dark:'☾'};
+let V=null, sel=null, slot=0, aim=null, reach=[], targets=[], names={};
+
+function fail(msg){$('err').style.display='block';$('err').innerHTML=msg;$('status').textContent='The referee did not start.'}
 async function boot(){
-  if(typeof Go==='undefined') throw new Error('MISSING_JS');
-  const go=new Go(), url='app.wasm?v='+BUILD;
-  let inst;
-  try{ inst=await WebAssembly.instantiateStreaming(fetch(url),go.importObject); }
-  catch(e){ const r=await fetch(url); if(!r.ok) throw new Error('MISSING_WASM:'+r.status); inst=await WebAssembly.instantiate(await r.arrayBuffer(),go.importObject); }
-  go.run(inst.instance);
-  for(let i=0;i<100&&typeof goRoll==='undefined';i++) await new Promise(r=>setTimeout(r,20));
-  if(typeof goRoll==='undefined') throw new Error('GO_NO_ANSWER');
+  if(typeof Go==='undefined')return fail('The file <code>wasm_exec.js</code> is missing. The build robot should publish it; check the Actions tab on GitHub.');
+  const go=new Go(), url='app.wasm?v=__BUILD__';
+  let r;
+  try{r=await WebAssembly.instantiateStreaming(fetch(url),go.importObject)}
+  catch(e){const res=await fetch(url);if(!res.ok)return fail('The referee (<code>app.wasm</code>) is missing.');r=await WebAssembly.instantiate(await res.arrayBuffer(),go.importObject)}
+  go.run(r.instance);
+  J(ctPractice()).forEach((n,i)=>{const o=document.createElement('option');o.value=i;o.textContent=n;$('pick').appendChild(o)});
+  newFight();
 }
-const dice=(seed)=>JSON.parse(goRoll(seed,5,20));
-function checks(){
-  const info=JSON.parse(goInfo()), a=dice(123), b=dice(123), c=dice(124), big=JSON.parse(goRoll(4000000000,3,6));
-  const list=[
-    [true,'Go answered',info.go+' on '+info.arch],
-    [JSON.stringify(a)===JSON.stringify(b),'Same seed gives the same dice','seed 123 twice: '+a.join(', ')],
-    [JSON.stringify(a)!==JSON.stringify(c),'A different seed gives different dice','seed 124: '+c.join(', ')],
-    [big.length===3&&big.every(v=>v>=1&&v<=6),'Large seeds work','seed 4,000,000,000: '+big.join(', ')]];
-  $('checks').innerHTML=list.map(([ok,t,d])=>'<div class="row"><div class="dot '+(ok?'g':'r')+'">'+(ok?'✓':'✗')+'</div><div>'+t+'<br><small>'+d+'</small></div></div>').join('');
-  const allOk=list.every(x=>x[0]);
-  $('status').className='card '+(allOk?'ok':'bad');
-  $('status').innerHTML='<b>'+(allOk?'Go is running.':'Go is running, but a check failed.')+'</b><br><small>'+info.go+' &middot; '+info.arch+'</small>';
+function newFight(){
+  const s=crypto.getRandomValues(new Uint32Array(2));
+  V=J(ctNew(+$('pick').value,s[0],s[1]));sel=null;aim=null;reach=[];targets=[];
+  $('log').innerHTML='';$('banner').className='';
+  logLine('turn','Turn 1 · your move');render();
 }
-$('b1').onclick=()=>{$('out').className='out';$('out').textContent='Seed 123: '+dice(123).join(', ')};
-$('b2').onclick=()=>{const s=crypto.getRandomValues(new Uint32Array(1))[0];$('out').className='out';$('out').textContent='Seed '+s+': '+dice(s).join(', ')};
-boot().then(()=>{checks();$('b1').disabled=$('b2').disabled=false}).catch(e=>{
-  const m=String(e&&e.message||e);
-  if(m==='MISSING_JS')fail('The file <code>wasm_exec.js</code> was not found next to this page. It should be published by the build robot (check the Actions tab on GitHub).',m);
-  else if(m.startsWith('MISSING_WASM'))fail('The file <code>app.wasm</code> was not found next to this page. It should be published by the build robot (check the Actions tab on GitHub).',m);
-  else fail('Your browser could not start the Go file. Try reloading the page. If it keeps happening, tell Claude what this message says.',m)});
-</script></body></html>
+$('new').onclick=newFight;$('pick').onchange=newFight;
+
+const unit=id=>V.units.find(u=>u.id===id);
+const at=(x,y)=>V.units.find(u=>u.x===x&&u.y===y);
+function nameOf(u){return u?(u.team===0?u.class:'enemy '+u.class):'someone'}
+function short(c){const w=c.split(' ');return w.length>1?w[0][0]+w[1][0]:c.slice(0,2)}
+function defaultSlot(u){const i=u.skills.findIndex(s=>!s.wait&&!s.support&&!s.heal);return i<0?0:i}
+function refreshAim(){
+  if(sel==null){reach=[];targets=[];return}
+  reach=J(ctReach(sel))||[];targets=J(ctTargets(sel,slot))||[];
+  if(aim!=null&&!targets.includes(aim))aim=null;
+}
+function render(){
+  const b=$('board'),n=V.n;b.style.gridTemplateColumns=`repeat(${n},1fr)`;b.innerHTML='';
+  const rs=new Set(reach.map(t=>t[0]+','+t[1]));
+  for(let y=0;y<n;y++)for(let x=0;x<n;x++){
+    const d=document.createElement('div');d.className='tile '+V.ground[y][x]+(rs.has(x+','+y)?' reach':'');
+    const u=at(x,y);
+    if(u){const e=document.createElement('div');
+      e.className='u '+(u.team===0?'h':'e')+(u.done&&u.team===0?' done':'')+(u.id===sel?' sel':'')+(targets.includes(u.id)?' tg':'')+(u.id===aim?' aim':'');
+      e.innerHTML=`${u.boss?'<span class=mark>♛</span>':u.elite?'<span class=mark>★</span>':''}${short(u.class)}<i><b style="width:${Math.max(0,100*u.hp/u.maxHp)}%"></b></i>`;
+      d.appendChild(e)}
+    d.onclick=()=>tap(x,y);b.appendChild(d)}
+  const side=V.outcome?'':V.side===0?' · your move':' · enemy turn';
+  $('status').textContent=`Turn ${V.turn}${side}`;
+  if(V.outcome){$('banner').className=V.outcome;$('banner').textContent=V.outcome==='won'?'Victory: every enemy is gone':'Defeat: every hero has fallen'}
+  panel();
+}
+function panel(){
+  const p=$('panel'),u=sel!=null?unit(sel):null;
+  if(!u){p.innerHTML=`<div class="muted">Tap one of your heroes (gold) to begin. Tap an enemy to see its numbers.</div>${endBtn()}`;bindEnd();return}
+  const st=Object.entries(u.statuses||{}).map(([k,v])=>`${k} ${v}`).join(', ');
+  let h=`<h2>${u.class}${u.element?' '+ICON[u.element]:''} <span class="muted">level ${u.level}</span></h2>
+  <div class="muted">HP ${u.hp}/${u.maxHp} · Attack ${u.atk} · Defense ${u.def} · Move ${u.mov}${st?' · '+st:''}</div>`;
+  if(u.team===0){
+    h+=`<div class="skills">${u.skills.map((s,i)=>`<button data-i="${i}" class="${i===slot?'on':''}" ${s.wait?'disabled':''} title="${(s.text||'').replace(/"/g,'')}">${s.name}${s.wait?' ('+s.wait+')':''}</button>`).join('')}</div>`;
+    const s=u.skills[slot];
+    h+=`<div class="muted">${s.text||''} Range ${s.minRange}–${s.maxRange}.</div>`;
+    h+=`<div id="fc">${forecast(u)}</div><div class="acts">`;
+    if(aim!=null)h+=`<button class="main" id="go">${s.heal?'Heal':s.support?'Use':'Attack'} ${nameOf(unit(aim))}</button>`;
+    if(!u.done)h+=`<button id="wait">Wait</button>`;
+    h+=`</div>${endBtn()}`;
+  } else h+=`<div class="muted">Skills: ${u.skills.map(s=>s.name).join(', ')}</div>${endBtn()}`;
+  p.innerHTML=h;
+  p.querySelectorAll('.skills button').forEach(bt=>bt.onclick=()=>{slot=+bt.dataset.i;aim=null;refreshAim();render()});
+  if($('go'))$('go').onclick=()=>apply({kind:'attack',unit:sel,skill:slot,target:aim});
+  if($('wait'))$('wait').onclick=()=>apply({kind:'wait',unit:sel});
+  bindEnd();
+}
+function endBtn(){return V.outcome||V.side!==0?'':`<div class="acts"><button class="gold" id="end">End turn</button></div>`}
+function bindEnd(){if($('end'))$('end').onclick=()=>{sel=null;aim=null;apply({kind:'endturn'})}}
+function forecast(u){
+  if(u.done)return '<span class="muted">Finished for this turn.</span>';
+  if(aim==null)return targets.length?'<span class="muted">Tap a target outlined in red.</span>':'<span class="muted">No target in range here. Walk closer (gold tiles) or pick another skill.</span>';
+  const f=J(ctPreview(sel,slot,aim));if(!f)return '';
+  if(f.heal!=null&&u.skills[slot].heal)return `Heals <b>${f.heal}</b> HP`;
+  if(u.skills[slot].support)return 'A buff for nearby allies';
+  const dm=f.low===f.high?f.low:`${f.low}–${f.high}`, m=f.mult>1?` <span style="color:var(--gold2)">weak spot ×${f.mult}</span>`:f.mult<1?` <span class="muted">resisted ×${f.mult}</span>`:'';
+  return `Hit <b>${f.hitChance}%</b> · Damage <b>${dm}</b>${m}`;
+}
+function tap(x,y){
+  if(V.outcome||V.side!==0)return;
+  const u=at(x,y);
+  if(u&&sel!=null&&targets.includes(u.id)){if(aim===u.id)return apply({kind:'attack',unit:sel,skill:slot,target:aim});aim=u.id;render();return}
+  if(u&&u.team===0){if(sel!==u.id){sel=u.id;slot=defaultSlot(u);aim=null}refreshAim();render();return}
+  if(u){sel=u.id;aim=null;reach=[];targets=[];render();return}
+  if(sel!=null&&reach.some(t=>t[0]===x&&t[1]===y))return apply({kind:'move',unit:sel,x,y});
+  sel=null;aim=null;reach=[];targets=[];render();
+}
+function apply(a){
+  V.units.forEach(u=>names[u.id]=nameOf(u));
+  const r=J(ctApply(JSON.stringify(a)));
+  if(r.refused){logLine('bad','No: '+r.refused.reason);render();return}
+  (r.events||[]).forEach(say);
+  if(r.problem)logLine('bad',r.problem);
+  V=r.view;V.units.forEach(u=>names[u.id]=nameOf(u));
+  if(sel!=null&&!unit(sel))sel=null;
+  if(a.kind==='attack')aim=null;
+  refreshAim();render();
+}
+function say(e){
+  const n=id=>names[id]||'someone';
+  switch(e.kind){
+    case 'skill':logLine('',`${n(e.unit)} uses ${e.skill}.`);break;
+    case 'hit':logLine(e.target&&unit(e.target)&&unit(e.target).team===0?'bad':'',`${n(e.target)} takes ${e.amount}${e.crit?' (critical!)':''}${e.mult>1?' (weak spot!)':e.mult<1?' (resisted)':''}.`);break;
+    case 'missed':logLine('',`The attack on ${n(e.target)} misses.`);break;
+    case 'healed':if(e.amount)logLine('good',`${n(e.target)} heals ${e.amount}.`);break;
+    case 'status':Object.entries(e.statuses||{}).forEach(([k,v])=>logLine('',`${n(e.target)}: ${k} for ${v} turn${v>1?'s':''}.`));break;
+    case 'ticked':logLine('',`${n(e.unit)} loses ${e.amount} HP to ${Object.keys(e.statuses||{})[0]||'a status'}.`);break;
+    case 'died':logLine('bad',`${n(e.unit)} falls.`);break;
+    case 'turn-start':logLine('turn',!e.side?`Turn ${e.turn} · your move`:'Enemy turn');break;
+    case 'won':logLine('good','Victory!');break;
+    case 'lost':logLine('bad','Defeat.');break;
+  }
+}
+function logLine(cls,t){const d=document.createElement('div');d.className=cls;d.textContent=t;const L=$('log');L.appendChild(d);L.scrollTop=L.scrollHeight}
+boot().catch(e=>fail('Something went wrong while starting: '+e));
+</script>
+</body>
+</html>

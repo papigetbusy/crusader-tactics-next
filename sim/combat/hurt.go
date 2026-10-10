@@ -128,11 +128,14 @@ func mostHurtAlly(b *state.Battle, team int) *state.Unit {
 // Damage function as a real hit (one math path), at the lowest, middle and
 // highest damage roll.
 type Forecast struct {
-	HitChance       int
-	Low, Mid, High  int
-	Mult            float64
-	CritChance      int
-	CritLow, CritHi int
+	HitChance  int     `json:"hitChance"`
+	Low        int     `json:"low"`
+	Mid        int     `json:"mid"`
+	High       int     `json:"high"`
+	Mult       float64 `json:"mult"`
+	CritChance int     `json:"critChance,omitempty"`
+	CritLow    int     `json:"critLow,omitempty"`
+	CritHi     int     `json:"critHigh,omitempty"`
 }
 
 // Preview forecasts an attack without changing anything.

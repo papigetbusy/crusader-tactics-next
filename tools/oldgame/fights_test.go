@@ -1,7 +1,9 @@
 package oldgame
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 	"slices"
 	"sort"
 	"testing"
@@ -180,6 +182,16 @@ func TestOldGameFights(t *testing.T) {
 	var steps, matched, perfect, levelUps, reinforced, enemyTurns, rolls int
 	var bad problems
 	usable := 0
+	type fightResult struct {
+		Fight   int      `json:"fight"`
+		Floor   int      `json:"floor"`
+		Party   []string `json:"party"`
+		Enemies []string `json:"enemies"`
+		Steps   int      `json:"steps"`
+		Matched int      `json:"matched"`
+		First   string   `json:"firstDifference,omitempty"`
+	}
+	var results []fightResult
 	for fi := range fights {
 		f := &fights[fi]
 		if !f.Usable() {
@@ -190,6 +202,14 @@ func TestOldGameFights(t *testing.T) {
 		resync(c, f, g, f.Init.Snap)
 		clean := true
 		prev := f.Init.Snap
+		fr := fightResult{Fight: fi + 1, Floor: f.Cfg.Floor, Steps: len(f.Steps)}
+		for _, u := range f.Init.Snap.Units {
+			if u.Team == state.Heroes {
+				fr.Party = append(fr.Party, fmt.Sprintf("%s %d", u.Class, u.Lv))
+			} else {
+				fr.Enemies = append(fr.Enemies, u.Class)
+			}
+		}
 		for si := range f.Steps {
 			step := f.Steps[si]
 			steps++
@@ -240,16 +260,25 @@ func TestOldGameFights(t *testing.T) {
 			if problem != "" {
 				if clean {
 					bad.add("fight %d step %d (%s): %s", fi+1, si+1, step.Kind, problem)
+					fr.First = fmt.Sprintf("step %d (%s): %s", si+1, step.Kind, problem)
 				}
 				clean = false
 				resync(c, f, g, step.Snap)
 			} else {
 				matched++
+				fr.Matched++
 			}
 			prev = step.Snap
 		}
 		if clean {
 			perfect++
+		}
+		results = append(results, fr)
+	}
+	if out := os.Getenv("OLDGAME_REPORT"); out != "" {
+		b, _ := json.MarshalIndent(results, "", " ")
+		if err := os.WriteFile(out, b, 0o644); err != nil {
+			t.Fatal(err)
 		}
 	}
 	t.Logf("%d of %d fights replayed perfectly; %d of %d steps matched; %d monster skill uses decided by Go; %d dice used; %d level-ups and %d reinforcements taken from the recording",
