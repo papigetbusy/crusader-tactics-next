@@ -1,0 +1,7 @@
+{
+ "fire": "ice",
+ "ice": "elec",
+ "elec": "fire",
+ "light": "dark",
+ "dark": "light"
+}

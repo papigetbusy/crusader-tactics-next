@@ -1,0 +1,52 @@
+{
+ "Warrior": [
+  "Berserker",
+  "Paladin",
+  "Duelist"
+ ],
+ "Tank": [
+  "Juggernaut",
+  "Guardian",
+  "Warlord"
+ ],
+ "Mage": [
+  "Pyromancer",
+  "Cryomancer",
+  "Stormcaller"
+ ],
+ "Healer": [
+  "Saint",
+  "Oracle",
+  "Plague Doctor"
+ ],
+ "Ranger": [
+  "Sniper",
+  "Trapper",
+  "Tempest Archer"
+ ],
+ "Assassin": [
+  "Phantom",
+  "Viper",
+  "Blade Dancer"
+ ],
+ "Gunslinger": [
+  "Outlaw",
+  "Bounty Hunter",
+  "Trickshot"
+ ],
+ "Witch": [
+  "Necromancer",
+  "Blood Witch",
+  "Hex Queen"
+ ],
+ "Dragon Knight": [
+  "Inferno Rider",
+  "Frost Wyrm",
+  "Storm Dragoon"
+ ],
+ "Knight": [
+  "Templar",
+  "Black Knight",
+  "Storm Rider"
+ ]
+}

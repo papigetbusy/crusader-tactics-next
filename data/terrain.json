@@ -1,0 +1,14 @@
+{
+  "_about": "Terrain types. moveCost is in half-steps: Plains costs 2, so a unit with Move 4 can cross 4 plains tiles (budget 8). damageTaken multiplies damage taken by a unit standing there (0.85 = 15% less). heal is the share of max HP healed each turn. From the old game's TINFO table.",
+  "terrain": [
+    {"letter": "g", "name": "Plains",   "moveCost": 2,  "damageTaken": 1},
+    {"letter": "r", "name": "Road",     "moveCost": 1,  "damageTaken": 1},
+    {"letter": "f", "name": "Forest",   "moveCost": 4,  "damageTaken": 0.85},
+    {"letter": "h", "name": "Hill",     "moveCost": 3,  "damageTaken": 0.9},
+    {"letter": "t", "name": "Fort",     "moveCost": 2,  "damageTaken": 0.75, "heal": 0.1},
+    {"letter": "T", "name": "Throne",   "moveCost": 2,  "damageTaken": 0.75, "heal": 0.1},
+    {"letter": "b", "name": "Bridge",   "moveCost": 2,  "damageTaken": 1},
+    {"letter": "w", "name": "Water",    "moveCost": 99, "damageTaken": 1},
+    {"letter": "m", "name": "Mountain", "moveCost": 99, "damageTaken": 1}
+  ]
+}

@@ -1,0 +1,82 @@
+{
+ "Warrior": {
+  "n": "Double Strike",
+  "cd": 3,
+  "d": "Your next skill (not ultimates) hits twice.",
+  "f": {
+   "$fn": "u=>{u.st.dbl=2}"
+  }
+ },
+ "Tank": {
+  "n": "Iron Maiden",
+  "cd": 4,
+  "d": "Your next attack adds your full DEF to its damage, and you gain +25% DEF for 3 turns.",
+  "f": {
+   "$fn": "u=>{u.st.imh=2;u.st.ironm=3}"
+  }
+ },
+ "Mage": {
+  "n": "Inner Element",
+  "cd": 3,
+  "d": "Your next attack deals +30% damage, can't miss, and always applies its element's status (fire burns, ice roots, thunder shocks, light weakens, dark poisons).",
+  "f": {
+   "$fn": "u=>{u.st.inner=2}"
+  }
+ },
+ "Healer": {
+  "n": "Enlightenment",
+  "cd": 4,
+  "d": "For 2 turns: healing +30%, and every heal reaches your whole party at once.",
+  "f": {
+   "$fn": "u=>{u.st.enl=2}"
+  }
+ },
+ "Ranger": {
+  "n": "Hunter's Eye",
+  "cd": 3,
+  "d": "This turn: +3 range, and your next skill (not ultimates) hits up to 3 enemies in range with +30% damage.",
+  "f": {
+   "$fn": "u=>{u.st.heye=1}"
+  }
+ },
+ "Assassin": {
+  "n": "Bloodlust",
+  "cd": 5,
+  "d": "For 3 turns: cloaked (enemies can't target you, and attacking doesn't break it), +3 move and +50% crit chance.",
+  "f": {
+   "$fn": "u=>{u.st.blood=3}"
+  }
+ },
+ "Gunslinger": {
+  "n": "Quick Draw",
+  "cd": 3,
+  "d": "This turn, fire two different skills, one from each gun, at the same target or two different targets.",
+  "f": {
+   "$fn": "u=>{u.st.qd=1}"
+  }
+ },
+ "Dragon Knight": {
+  "n": "Beast Mode",
+  "cd": 5,
+  "d": "For 3 turns: +7 move, attacks add 25% of their damage as fire, and 35% chance to burn (damage each turn for 3 turns).",
+  "f": {
+   "$fn": "u=>{u.st.beast=3}"
+  }
+ },
+ "Witch": {
+  "n": "Poison Ivy",
+  "cd": 4,
+  "d": "For 2 turns: every hit makes the target Immobile for 2 turns and applies Ivy (−30% ATK and DEF for 2 turns), stacking with other debuffs.",
+  "f": {
+   "$fn": "u=>{u.st.ivyA=2}"
+  }
+ },
+ "Knight": {
+  "n": "Vow of Honor",
+  "cd": 5,
+  "d": "For 3 turns: +30% attack and +5 move.",
+  "f": {
+   "$fn": "u=>{u.st.vow=3}"
+  }
+ }
+}

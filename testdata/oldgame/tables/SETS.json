@@ -1,0 +1,63 @@
+{
+ "H": {
+  "n": "Aegis of Dawn (heavy set)",
+  "b2": [
+   [
+    "dr",
+    8
+   ]
+  ],
+  "b3": [
+   [
+    "thorns",
+    25
+   ],
+   [
+    "hpPct",
+    15
+   ]
+  ]
+ },
+ "M": {
+  "n": "Stormweave (medium set)",
+  "b2": [
+   [
+    "addElec",
+    10
+   ]
+  ],
+  "b3": [
+   [
+    "crit",
+    10
+   ],
+   [
+    "double",
+    10
+   ]
+  ]
+ },
+ "L": {
+  "n": "Nightbloom (light set)",
+  "b2": [
+   [
+    "poisonCh",
+    15
+   ]
+  ],
+  "b3": [
+   [
+    "evade",
+    8
+   ],
+   [
+    "regen",
+    3
+   ],
+   [
+    "dark",
+    20
+   ]
+  ]
+ }
+}

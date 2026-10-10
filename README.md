@@ -10,6 +10,11 @@ The clean rebuild of Crusader Tactics. The rules live in Go (the **referee**), t
 | Folder | What it is |
 |---|---|
 | `docs/` | The design lock and the skeleton design (the map of this project) |
+| `data/` | Every game number, as files you can edit |
+| `sim/` | The referee: all game rules (no screen, no clock, no internet) |
+| `testdata/oldgame/` | The answer key: the old game's tables and 200 recorded fights |
+| `tools/oldgame/` | Checks Go against the recorded fights |
+| `tools/guard/` | House rules: keeps the code clean |
 | `rehearsal/` | Rehearsal only: a tiny dice roller proving Go runs in the browser. Removed when real game code arrives. |
 | `adapters/wasm/` | The bridge the browser page calls |
 | `web/` | The page itself |
@@ -17,4 +22,6 @@ The clean rebuild of Crusader Tactics. The rules live in Go (the **referee**), t
 
 ## Status
 
-Rehearsal: proving the new route (Claude pushes, the robot tests, builds and publishes). Next: Phase 4, the core fight.
+- Rehearsal: done (Claude pushes, the robot tests, builds and publishes).
+- Phase 4a, foundation and movement: done. Every one of the 6,624 moves recorded in the old game is a legal move in Go.
+- Next: 4b, attack math.

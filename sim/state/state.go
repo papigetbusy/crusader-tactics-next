@@ -1,0 +1,71 @@
+// Package state defines the shape of a battle: the map and the units on it.
+// Rules receive a *Battle instead of reading hidden globals.
+package state
+
+// Team numbers, as in the old game.
+const (
+	Heroes  = 0
+	Enemies = 1
+)
+
+// Unit is anything standing on the board.
+type Unit struct {
+	ID     int            // stable for the whole battle, including summons
+	Team   int            // Heroes or Enemies
+	Class  string         // "Knight", "Bat Lord"...
+	X, Y   int            // position
+	HP     int            // current hit points
+	MaxHP  int            // maximum hit points
+	Atk    int            // attack
+	Def    int            // defense
+	Mov    int            // move points
+	Level  int            // level
+	Status map[string]int // status name -> turns left ("snare": 2)
+
+	Moved bool // has moved this turn
+	Acted bool // has used its action this turn
+	Done  bool // finished for this turn
+}
+
+// Battle is everything the referee knows about one fight.
+type Battle struct {
+	N       int      // the map is N x N tiles
+	Ground  []string // one row of terrain letters per y ("ggfr..."); may be short
+	Heights [][]int  // -2 mountain, -1 water, 0 flat, 1 hill
+	Units   []*Unit  // in turn order; dead units are removed
+	Turn    int
+}
+
+// UnitAt returns the unit standing on (x, y), or nil.
+func (b *Battle) UnitAt(x, y int) *Unit {
+	for _, u := range b.Units {
+		if u.X == x && u.Y == y {
+			return u
+		}
+	}
+	return nil
+}
+
+// Unit returns the unit with this ID, or nil.
+func (b *Battle) Unit(id int) *Unit {
+	for _, u := range b.Units {
+		if u.ID == id {
+			return u
+		}
+	}
+	return nil
+}
+
+// Remove takes a unit off the board (it died).
+func (b *Battle) Remove(id int) {
+	out := b.Units[:0]
+	for _, u := range b.Units {
+		if u.ID != id {
+			out = append(out, u)
+		}
+	}
+	b.Units = out
+}
+
+// Inside reports whether (x, y) is on the map.
+func (b *Battle) Inside(x, y int) bool { return x >= 0 && y >= 0 && x < b.N && y < b.N }

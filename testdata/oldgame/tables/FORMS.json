@@ -1,0 +1,52 @@
+{
+ "Warrior": [
+  "Warrior",
+  "Vanguard",
+  "Champion"
+ ],
+ "Tank": [
+  "Tank",
+  "Ironclad",
+  "Bastion"
+ ],
+ "Mage": [
+  "Mage",
+  "Sorcerer",
+  "Archmage"
+ ],
+ "Healer": [
+  "Healer",
+  "Cleric",
+  "High Priest"
+ ],
+ "Ranger": [
+  "Ranger",
+  "Hunter",
+  "Sharpshooter"
+ ],
+ "Assassin": [
+  "Assassin",
+  "Shadow",
+  "Nightblade"
+ ],
+ "Gunslinger": [
+  "Gunslinger",
+  "Desperado",
+  "Gunmaster"
+ ],
+ "Dragon Knight": [
+  "Dragon Knight",
+  "Wyvern Knight",
+  "Dragoon"
+ ],
+ "Witch": [
+  "Witch",
+  "Hexer",
+  "Coven Mistress"
+ ],
+ "Knight": [
+  "Knight",
+  "Cavalier",
+  "Knight Commander"
+ ]
+}

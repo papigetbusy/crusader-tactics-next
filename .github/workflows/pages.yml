@@ -26,8 +26,10 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: '1.24.7'
+      - name: Code is neatly formatted
+        run: test -z "$(gofmt -l .)" || (gofmt -l . && echo "Run gofmt on the files above" && exit 1)
       - name: Run all tests
-        run: go test ./...
+        run: go test -v ./... 2>&1 | tee test-output.txt; test ${PIPESTATUS[0]} -eq 0
       - name: Build the browser program
         run: |
           mkdir -p site

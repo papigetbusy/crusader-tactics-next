@@ -1,0 +1,304 @@
+{
+ "Berserker": {
+  "c": "Warrior",
+  "el": "fire",
+  "buf": {
+   "atk": 1.3,
+   "def": 0.8
+  },
+  "bt": "+30% ATK, −20% DEF",
+  "p": "Bloodlust: +40% damage while below half HP. Kills heal you 15%.",
+  "ult": "Blood Rage"
+ },
+ "Paladin": {
+  "c": "Warrior",
+  "el": "light",
+  "buf": {
+   "hp": 1.25,
+   "defA": 3
+  },
+  "bt": "+25% HP, +3 DEF",
+  "p": "Aegis: allies next to you take 20% less damage. Your hits heal you for 20%.",
+  "ult": "Holy Judgment"
+ },
+ "Duelist": {
+  "c": "Warrior",
+  "el": "elec",
+  "buf": {
+   "mov": 2
+  },
+  "bt": "+2 Move",
+  "p": "Riposte: when hit in melee, you strike back for 60%.",
+  "ult": "Thousand Cuts"
+ },
+ "Juggernaut": {
+  "c": "Tank",
+  "el": "dark",
+  "buf": {
+   "hp": 1.4
+  },
+  "bt": "+40% HP",
+  "p": "Unstoppable: immune to stun, snare and armor break.",
+  "ult": "Earthshatter"
+ },
+ "Guardian": {
+  "c": "Tank",
+  "el": "ice",
+  "buf": {
+   "defA": 4
+  },
+  "bt": "+4 DEF",
+  "p": "Bodyguard: you take hits aimed at adjacent allies, with 30% less damage.",
+  "ult": "Bulwark"
+ },
+ "Warlord": {
+  "c": "Tank",
+  "el": "fire",
+  "buf": {
+   "atk": 1.15
+  },
+  "bt": "+15% ATK",
+  "p": "Battle Aura: allies within 2 tiles (and you) deal 15% more damage.",
+  "ult": "War Cry"
+ },
+ "Pyromancer": {
+  "c": "Mage",
+  "el": "fire",
+  "buf": {
+   "atk": 1.1
+  },
+  "bt": "+10% ATK",
+  "p": "Fire skills deal 40% more damage and burn (bleed 2).",
+  "ult": "Inferno"
+ },
+ "Cryomancer": {
+  "c": "Mage",
+  "el": "ice",
+  "buf": {
+   "rng": 1
+  },
+  "bt": "+1 attack range",
+  "p": "Ice skills always snare. Snared enemies take 25% more damage from you.",
+  "ult": "Absolute Zero"
+ },
+ "Stormcaller": {
+  "c": "Mage",
+  "el": "elec",
+  "buf": {
+   "mov": 1,
+   "hp": 0.85
+  },
+  "bt": "+1 Move, −15% HP",
+  "p": "Every attack arcs to one more enemy nearby for 50%.",
+  "ult": "Thunderstorm"
+ },
+ "Saint": {
+  "c": "Healer",
+  "el": "light",
+  "buf": {
+   "heal": 1.4
+  },
+  "bt": "+40% healing",
+  "p": "Overheal: healing beyond max HP becomes a shield.",
+  "ult": "Sanctuary"
+ },
+ "Oracle": {
+  "c": "Healer",
+  "el": "elec",
+  "buf": {
+   "mov": 1
+  },
+  "bt": "+1 Move",
+  "p": "Foresight: healed allies get Haste (+2 Move). Divine Grace no longer roots you.",
+  "ult": "Time Warp"
+ },
+ "Plague Doctor": {
+  "c": "Healer",
+  "el": "dark",
+  "buf": {
+   "atk": 1.3
+  },
+  "bt": "+30% ATK",
+  "p": "Contagion: your attacks cause bleed and heal your most hurt ally for 50% of the damage.",
+  "ult": "Pandemic"
+ },
+ "Sniper": {
+  "c": "Ranger",
+  "el": "ice",
+  "buf": {
+   "rng": 2
+  },
+  "bt": "+2 attack range",
+  "p": "Steady Aim: +35% damage if you haven't moved this turn. Ignores 30% DEF.",
+  "ult": "Deadeye"
+ },
+ "Trapper": {
+  "c": "Ranger",
+  "el": "dark",
+  "buf": {},
+  "bt": "Snares last 2 turns",
+  "p": "Hunter's Mark: snared or stunned enemies take 30% more damage from you.",
+  "ult": "Snare Field"
+ },
+ "Tempest Archer": {
+  "c": "Ranger",
+  "el": "elec",
+  "buf": {
+   "mov": 2
+  },
+  "bt": "+2 Move",
+  "p": "Hit and Run: you can still move after attacking if you haven't moved yet.",
+  "ult": "Gale Volley"
+ },
+ "Phantom": {
+  "c": "Assassin",
+  "el": "dark",
+  "buf": {
+   "mov": 1
+  },
+  "bt": "+1 Move",
+  "p": "Evasion: 30% chance to dodge any attack.",
+  "ult": "Phantom Rush"
+ },
+ "Viper": {
+  "c": "Assassin",
+  "el": "elec",
+  "buf": {
+   "atk": 1.15
+  },
+  "bt": "+15% ATK",
+  "p": "Toxin: every hit causes bleed 3. Bleeding enemies take 30% more damage from you.",
+  "ult": "Venom Storm"
+ },
+ "Blade Dancer": {
+  "c": "Assassin",
+  "el": "fire",
+  "buf": {
+   "mov": 2
+  },
+  "bt": "+2 Move",
+  "p": "Dance of Blades: once per turn, a kill lets you act again.",
+  "ult": "Crimson Waltz"
+ },
+ "Outlaw": {
+  "c": "Gunslinger",
+  "el": "fire",
+  "buf": {
+   "atk": 1.1
+  },
+  "bt": "+10% ATK",
+  "p": "Fan the Hammer: single-shot skills fire twice at 60% damage.",
+  "ult": "Six Shooter"
+ },
+ "Bounty Hunter": {
+  "c": "Gunslinger",
+  "el": "dark",
+  "buf": {
+   "rng": 1
+  },
+  "bt": "+1 range",
+  "p": "Bounty: +50% damage to elites and bosses. Kills give double gold.",
+  "ult": "Dead or Alive"
+ },
+ "Trickshot": {
+  "c": "Gunslinger",
+  "el": "elec",
+  "buf": {
+   "mov": 1
+  },
+  "bt": "+1 Move",
+  "p": "Ricochet Master: every shot bounces to one more nearby enemy for 60%.",
+  "ult": "Ricochet Storm"
+ },
+ "Necromancer": {
+  "c": "Witch",
+  "el": "dark",
+  "buf": {
+   "hp": 1.1
+  },
+  "bt": "+10% HP",
+  "p": "Soul Harvest: each new kind of normal monster you kill can become a Raise skill on one of your 4 skill buttons. A raised monster spawns once per floor; if it moves or attacks you can't, and vice versa.",
+  "ult": "Soul Nova"
+ },
+ "Blood Witch": {
+  "c": "Witch",
+  "el": "fire",
+  "buf": {
+   "atk": 1.2
+  },
+  "bt": "+20% ATK",
+  "p": "Blood Magic: spells cost 5% HP but deal 40% more and heal you for 20% of the damage.",
+  "ult": "Blood Moon"
+ },
+ "Inferno Rider": {
+  "c": "Dragon Knight",
+  "el": "fire",
+  "buf": {
+   "atk": 1.1
+  },
+  "bt": "+10% ATK",
+  "p": "Fire skills deal 40% more damage and burn (bleed 2).",
+  "ult": "Hellfire Dive"
+ },
+ "Frost Wyrm": {
+  "c": "Dragon Knight",
+  "el": "ice",
+  "buf": {
+   "hp": 1.2
+  },
+  "bt": "+20% HP",
+  "p": "Frost Breath: every attack snares. Immune to snare.",
+  "ult": "Glacial Breath"
+ },
+ "Storm Dragoon": {
+  "c": "Dragon Knight",
+  "el": "elec",
+  "buf": {
+   "mov": 2
+  },
+  "bt": "+2 Move",
+  "p": "Sky Dive has no cooldown.",
+  "ult": "Thunder Lance"
+ },
+ "Hex Queen": {
+  "c": "Witch",
+  "el": "ice",
+  "buf": {
+   "rng": 1
+  },
+  "bt": "+1 range",
+  "p": "Queen of Curses: your debuffs last 1 turn longer, and every enemy with a debuff takes 25% more damage from your whole party.",
+  "ult": "Grand Hex"
+ },
+ "Templar": {
+  "c": "Knight",
+  "el": "light",
+  "buf": {
+   "defA": 2,
+   "hp": 1.15
+  },
+  "bt": "+15% HP, +2 DEF",
+  "p": "Holy Charge: after charging 3+ tiles, your hit heals allies next to the target for 15% of their max HP.",
+  "ult": "Crusade"
+ },
+ "Black Knight": {
+  "c": "Knight",
+  "el": "dark",
+  "buf": {
+   "atk": 1.15
+  },
+  "bt": "+15% ATK",
+  "p": "Dread: single-target attacks deal 40% more. Your kills terrify (stun) adjacent enemies.",
+  "ult": "Doom Lance"
+ },
+ "Storm Rider": {
+  "c": "Knight",
+  "el": "elec",
+  "buf": {
+   "mov": 2
+  },
+  "bt": "+2 Move",
+  "p": "Thunder Gallop: charge bonus is doubled (+24% per tile, max +120%).",
+  "ult": "Lightning Charge"
+ }
+}

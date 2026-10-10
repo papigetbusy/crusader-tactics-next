@@ -1,0 +1,324 @@
+{
+ "bleed": {
+  "d": 1,
+  "h": "#ff4d4d",
+  "l": {
+   "$fn": "u=>`🩸−${Math.max(3,Math.round(u.max*.06))}/t`"
+  }
+ },
+ "poison": {
+  "d": 1,
+  "h": "#6fe04a",
+  "l": {
+   "$fn": "u=>`☠−${Math.max(3,Math.round(u.max*.07))}/t`"
+  }
+ },
+ "stun": {
+  "d": 1,
+  "h": "#ffe45c",
+  "l": {
+   "$fn": "()=>'💫STUN'"
+  }
+ },
+ "shock": {
+  "d": 1,
+  "h": "#ffe45c",
+  "l": {
+   "$fn": "()=>'⚡SHOCK'"
+  }
+ },
+ "snare": {
+  "d": 1,
+  "h": "#7fd1ff",
+  "l": {
+   "$fn": "()=>'ROOTED'"
+  }
+ },
+ "lock": {
+  "d": 1,
+  "h": "#c9ced8",
+  "l": {
+   "$fn": "()=>'IMMOBILE'"
+  }
+ },
+ "brk": {
+  "d": 1,
+  "h": "#ff7a5a",
+  "l": {
+   "$fn": "()=>'−30% DEF'"
+  }
+ },
+ "weak": {
+  "d": 1,
+  "h": "#c79bff",
+  "l": {
+   "$fn": "()=>'−30% DMG'"
+  }
+ },
+ "grd": {
+  "d": 0,
+  "h": "#7fc4ff",
+  "l": {
+   "$fn": "()=>'−40% DMG TAKEN'"
+  }
+ },
+ "rally": {
+  "d": 0,
+  "h": "#7fc4ff",
+  "l": {
+   "$fn": "()=>'+25% DMG'"
+  }
+ },
+ "haste": {
+  "d": 0,
+  "h": "#7fc4ff",
+  "l": {
+   "$fn": "()=>'+2 MOV'"
+  }
+ },
+ "prism": {
+  "d": 0,
+  "h": "#ff9bd8",
+  "l": {
+   "$fn": "()=>'ALL HITS ×1.5'"
+  }
+ },
+ "regen": {
+  "d": 0,
+  "h": "#6ee7a0",
+  "l": {
+   "$fn": "u=>`+${Math.round(u.max*.12)} HP/t`"
+  }
+ },
+ "dbl": {
+  "d": 0,
+  "h": "#7fc4ff",
+  "l": {
+   "$fn": "()=>'NEXT HIT ×2'"
+  }
+ },
+ "imh": {
+  "d": 0,
+  "h": "#7fc4ff",
+  "l": {
+   "$fn": "()=>'+DEF NEXT HIT'"
+  }
+ },
+ "ironm": {
+  "d": 0,
+  "h": "#7fc4ff",
+  "l": {
+   "$fn": "()=>'+25% DEF'"
+  }
+ },
+ "inner": {
+  "d": 0,
+  "h": "#c79bff",
+  "l": {
+   "$fn": "()=>'+30% · SURE HIT'"
+  }
+ },
+ "enl": {
+  "d": 0,
+  "h": "#6ee7a0",
+  "l": {
+   "$fn": "()=>'+30% HEAL ALL'"
+  }
+ },
+ "heye": {
+  "d": 0,
+  "h": "#7fc4ff",
+  "l": {
+   "$fn": "()=>'+3 RNG · MULTI'"
+  }
+ },
+ "blood": {
+  "d": 0,
+  "h": "#ff4d6a",
+  "l": {
+   "$fn": "()=>'CLOAK +3MOV 50%CRIT'"
+  }
+ },
+ "cloak": {
+  "d": 0,
+  "h": "#9a9aaa",
+  "l": {
+   "$fn": "()=>'CLOAKED'"
+  }
+ },
+ "qd": {
+  "d": 0,
+  "h": "#ffe45c",
+  "l": {
+   "$fn": "()=>'QUICK DRAW'"
+  }
+ },
+ "beast": {
+  "d": 0,
+  "h": "#ff7a2e",
+  "l": {
+   "$fn": "()=>'+7 MOV +FIRE'"
+  }
+ },
+ "ivyA": {
+  "d": 0,
+  "h": "#6fe04a",
+  "l": {
+   "$fn": "()=>'POISON IVY'"
+  }
+ },
+ "vow": {
+  "d": 0,
+  "h": "#ffd84a",
+  "l": {
+   "$fn": "()=>'+30% ATK +5 MOV'"
+  }
+ },
+ "burn": {
+  "d": 1,
+  "h": "#ff7a2e",
+  "l": {
+   "$fn": "u=>`🔥−${Math.max(3,Math.round(u.max*.06))}/t`"
+  }
+ },
+ "ivy": {
+  "d": 1,
+  "h": "#6fe04a",
+  "l": {
+   "$fn": "()=>'−30% ATK/DEF'"
+  }
+ },
+ "flurry": {
+  "d": 0,
+  "h": "#7fc4ff",
+  "l": {
+   "$fn": "()=>'RIPOSTE ×2'"
+  }
+ },
+ "frenzy": {
+  "d": 0,
+  "h": "#ff4d4d",
+  "l": {
+   "$fn": "()=>'+50% DMG · LEECH'"
+  }
+ },
+ "taunt": {
+  "d": 0,
+  "h": "#ffd84a",
+  "l": {
+   "$fn": "()=>'TAUNT · −30% DMG'"
+  }
+ },
+ "unb": {
+  "d": 0,
+  "h": "#9a9aaa",
+  "l": {
+   "$fn": "()=>'UNBROKEN'"
+  }
+ },
+ "bulwark": {
+  "d": 0,
+  "h": "#bfeaff",
+  "l": {
+   "$fn": "()=>'FROST BULWARK'"
+  }
+ },
+ "fstorm": {
+  "d": 0,
+  "h": "#ff7a2e",
+  "l": {
+   "$fn": "()=>'+20% FIRE'"
+  }
+ },
+ "frozen": {
+  "d": 1,
+  "h": "#bfeaff",
+  "l": {
+   "$fn": "()=>'❄ FROZEN'"
+  }
+ },
+ "choir": {
+  "d": 0,
+  "h": "#fff6c8",
+  "l": {
+   "$fn": "()=>'DIVINE CHOIR'"
+  }
+ },
+ "pbloom": {
+  "d": 0,
+  "h": "#6fe04a",
+  "l": {
+   "$fn": "()=>'PLAGUE BLOOM'"
+  }
+ },
+ "deadeye": {
+  "d": 0,
+  "h": "#7fd1ff",
+  "l": {
+   "$fn": "()=>'DEADEYE'"
+  }
+ },
+ "dmark": {
+  "d": 1,
+  "h": "#ff4d6a",
+  "l": {
+   "$fn": "()=>'MARKED +50%'"
+  }
+ },
+ "scales": {
+  "d": 0,
+  "h": "#bfeaff",
+  "l": {
+   "$fn": "()=>'GLACIAL SCALES'"
+  }
+ },
+ "sky": {
+  "d": 0,
+  "h": "#ffe45c",
+  "l": {
+   "$fn": "()=>'IN THE SKY'"
+  }
+ },
+ "gbloom": {
+  "d": 0,
+  "h": "#9ae6b4",
+  "l": {
+   "$fn": "()=>'GRAVE BLOOM'"
+  }
+ },
+ "vamp": {
+  "d": 0,
+  "h": "#ff2a3a",
+  "l": {
+   "$fn": "()=>'BLOOD PACT'"
+  }
+ },
+ "svow": {
+  "d": 0,
+  "h": "#fff6c8",
+  "l": {
+   "$fn": "()=>'SACRED VOW'"
+  }
+ },
+ "ruin": {
+  "d": 0,
+  "h": "#5a1f1f",
+  "l": {
+   "$fn": "()=>'OATH OF RUIN'"
+  }
+ },
+ "clone": {
+  "d": 0,
+  "h": "#9a9aaa",
+  "l": {
+   "$fn": "()=>'CLONE'"
+  }
+ },
+ "tmark": {
+  "d": 1,
+  "h": "#9ae6b4",
+  "l": {
+   "$fn": "()=>'TRAPPED +30%'"
+  }
+ }
+}

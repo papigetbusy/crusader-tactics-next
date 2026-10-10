@@ -1,0 +1,12 @@
+{
+ "Warrior": "Sword fighter",
+ "Tank": "Heavy armor, stuns",
+ "Mage": "Elemental magic",
+ "Healer": "Heals, buffs, light attacks",
+ "Ranger": "Long-range bow",
+ "Assassin": "Fast dagger killer",
+ "Gunslinger": "Pistols, multi-shots",
+ "Witch": "Poison and curses",
+ "Knight": "Mounted charger, huge move",
+ "Dragon Knight": "Flying dragon rider"
+}

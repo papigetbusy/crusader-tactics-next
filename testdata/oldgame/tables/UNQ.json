@@ -1,0 +1,365 @@
+{
+ "Dawnbreaker": {
+  "sl": "w",
+  "wt": "sword",
+  "af": [
+   [
+    "light",
+    30
+   ],
+   [
+    "addFire",
+    15
+   ],
+   [
+    "crit",
+    10
+   ],
+   [
+    "stunCh",
+    10
+   ]
+  ],
+  "fl": "Forged at the first sunrise; it burns what it cuts."
+ },
+ "Voidreaver": {
+  "sl": "w",
+  "wt": "axe",
+  "af": [
+   [
+    "dark",
+    30
+   ],
+   [
+    "leech",
+    12
+   ],
+   [
+    "double",
+    15
+   ],
+   [
+    "bossDmg",
+    30
+   ]
+  ],
+  "fl": "Each swing drinks from the dark between stars."
+ },
+ "Heavensfall": {
+  "sl": "w",
+  "wt": "lance",
+  "af": [
+   [
+    "dmg",
+    25
+   ],
+   [
+    "hit",
+    15
+   ],
+   [
+    "stunCh",
+    12
+   ],
+   [
+    "defPct",
+    15
+   ]
+  ],
+  "fl": "Said to have pinned a falling star."
+ },
+ "Gale Piercer": {
+  "sl": "w",
+  "wt": "bow",
+  "af": [
+   [
+    "elec",
+    30
+   ],
+   [
+    "addElec",
+    20
+   ],
+   [
+    "crit",
+    15
+   ],
+   [
+    "movA",
+    1
+   ]
+  ],
+  "fl": "Its string hums with the storm."
+ },
+ "Staff of Eternity": {
+  "sl": "w",
+  "wt": "staff",
+  "af": [
+   [
+    "healPct",
+    40
+   ],
+   [
+    "regen",
+    6
+   ],
+   [
+    "cdr",
+    1
+   ],
+   [
+    "light",
+    20
+   ]
+  ],
+  "fl": "Time bends gently around its bearer."
+ },
+ "Thunderhowl": {
+  "sl": "w",
+  "wt": "gun",
+  "af": [
+   [
+    "addElec",
+    25
+   ],
+   [
+    "double",
+    20
+   ],
+   [
+    "crit",
+    12
+   ],
+   [
+    "elec",
+    20
+   ]
+  ],
+  "fl": "Every shot arrives with its own thunderclap."
+ },
+ "Emberheart Scepter": {
+  "sl": "w",
+  "wt": "wand",
+  "af": [
+   [
+    "fire",
+    40
+   ],
+   [
+    "addFire",
+    20
+   ],
+   [
+    "critDmg",
+    50
+   ],
+   [
+    "cdr",
+    1
+   ]
+  ],
+  "fl": "A dragon's heart still beats in the gem."
+ },
+ "Nightfang": {
+  "sl": "w",
+  "wt": "dagger",
+  "af": [
+   [
+    "poisonCh",
+    30
+   ],
+   [
+    "bleedCh",
+    30
+   ],
+   [
+    "crit",
+    20
+   ],
+   [
+    "double",
+    15
+   ]
+  ],
+  "fl": "It bites twice, and the second bite is poison."
+ },
+ "Dawnguard Helm": {
+  "sl": "h",
+  "at": "H",
+  "set": "H",
+  "af": [
+   [
+    "hpPct",
+    15
+   ],
+   [
+    "defPct",
+    20
+   ]
+  ]
+ },
+ "Aegis of Dawn": {
+  "sl": "a",
+  "at": "H",
+  "set": "H",
+  "af": [
+   [
+    "defPct",
+    30
+   ],
+   [
+    "dr",
+    10
+   ]
+  ]
+ },
+ "Dawnstride Greaves": {
+  "sl": "b",
+  "at": "H",
+  "set": "H",
+  "af": [
+   [
+    "defPct",
+    15
+   ],
+   [
+    "thorns",
+    20
+   ]
+  ]
+ },
+ "Stormweave Coif": {
+  "sl": "h",
+  "at": "M",
+  "set": "M",
+  "af": [
+   [
+    "crit",
+    8
+   ],
+   [
+    "elec",
+    15
+   ]
+  ]
+ },
+ "Stormweave Mail": {
+  "sl": "a",
+  "at": "M",
+  "set": "M",
+  "af": [
+   [
+    "hpPct",
+    12
+   ],
+   [
+    "dr",
+    6
+   ],
+   [
+    "elec",
+    15
+   ]
+  ]
+ },
+ "Stormweave Treads": {
+  "sl": "b",
+  "at": "M",
+  "set": "M",
+  "af": [
+   [
+    "evade",
+    6
+   ],
+   [
+    "movA",
+    1
+   ]
+  ]
+ },
+ "Nightbloom Hood": {
+  "sl": "h",
+  "at": "L",
+  "set": "L",
+  "af": [
+   [
+    "evade",
+    8
+   ],
+   [
+    "dark",
+    15
+   ]
+  ]
+ },
+ "Nightbloom Robe": {
+  "sl": "a",
+  "at": "L",
+  "set": "L",
+  "af": [
+   [
+    "hpPct",
+    10
+   ],
+   [
+    "regen",
+    3
+   ],
+   [
+    "evade",
+    6
+   ]
+  ]
+ },
+ "Nightbloom Slippers": {
+  "sl": "b",
+  "at": "L",
+  "set": "L",
+  "af": [
+   [
+    "evade",
+    6
+   ],
+   [
+    "movA",
+    1
+   ]
+  ]
+ },
+ "Heart of the Stair": {
+  "sl": "c",
+  "af": [
+   [
+    "hpPct",
+    20
+   ],
+   [
+    "regen",
+    4
+   ],
+   [
+    "dmg",
+    10
+   ]
+  ],
+  "fl": "Pulses once for every floor you climb."
+ },
+ "Phoenix Feather": {
+  "sl": "c",
+  "af": [
+   [
+    "leech",
+    8
+   ],
+   [
+    "healPct",
+    25
+   ],
+   [
+    "regen",
+    4
+   ]
+  ],
+  "fl": "Warm to the touch, even in the crypts."
+ }
+}

@@ -1,0 +1,1474 @@
+{
+ "Slash": {
+  "n": "Slash",
+  "min": 1,
+  "max": 1,
+  "pw": 1,
+  "cls": "Warrior",
+  "t": "n",
+  "lv": 1,
+  "d": "A quick sword cut."
+ },
+ "Rend": {
+  "n": "Rend",
+  "min": 1,
+  "max": 1,
+  "pw": 0.8,
+  "fx": {
+   "bleed": 3
+  },
+  "cls": "Warrior",
+  "t": "n",
+  "lv": 1,
+  "d": "A cut that makes the target bleed for 3 turns."
+ },
+ "Whirlwind": {
+  "n": "Whirlwind",
+  "min": 1,
+  "max": 1,
+  "pw": 0.9,
+  "aoe": 1,
+  "cd": 2,
+  "cls": "Warrior",
+  "t": "n",
+  "lv": 4,
+  "d": "Spin attack: hits the target and every enemy next to it."
+ },
+ "Crescent Wave": {
+  "n": "Crescent Wave",
+  "min": 2,
+  "max": 3,
+  "pw": 1.3,
+  "cd": 2,
+  "cls": "Warrior",
+  "t": "n",
+  "lv": 8,
+  "d": "Throws a blade of energy 2–3 tiles away."
+ },
+ "Power Strike": {
+  "n": "Power Strike",
+  "min": 1,
+  "max": 1,
+  "pw": 1.6,
+  "cd": 3,
+  "cls": "Warrior",
+  "t": "u",
+  "lv": 1,
+  "d": "A heavy two-handed blow."
+ },
+ "Execution": {
+  "n": "Execution",
+  "min": 1,
+  "max": 1,
+  "pw": 2.2,
+  "cd": 4,
+  "exec": 1,
+  "cls": "Warrior",
+  "t": "u",
+  "lv": 12,
+  "d": "Finishing blow: +50% damage on enemies under 40% HP."
+ },
+ "Dragon Slash": {
+  "n": "Dragon Slash",
+  "min": 1,
+  "max": 1,
+  "pw": 3,
+  "cd": 5,
+  "fx": {
+   "bleed": 4
+  },
+  "el": "fire",
+  "phys": 1,
+  "cls": "Warrior",
+  "t": "u",
+  "lv": 20,
+  "d": "A blazing fire slash that leaves a 4-turn burn."
+ },
+ "Bash": {
+  "n": "Bash",
+  "min": 1,
+  "max": 1,
+  "pw": 1.1,
+  "cls": "Tank",
+  "t": "n",
+  "lv": 1,
+  "d": "A solid shield-and-axe hit."
+ },
+ "Shield Bash": {
+  "n": "Shield Bash",
+  "min": 1,
+  "max": 1,
+  "pw": 0.9,
+  "fx": {
+   "stun": 1
+  },
+  "cd": 3,
+  "cls": "Tank",
+  "t": "n",
+  "lv": 1,
+  "d": "Stuns the target for 1 turn."
+ },
+ "Ground Pound": {
+  "n": "Ground Pound",
+  "min": 1,
+  "max": 1,
+  "pw": 0.8,
+  "aoe": 1,
+  "fx": {
+   "snare": 1
+  },
+  "cd": 2,
+  "cls": "Tank",
+  "t": "n",
+  "lv": 4,
+  "d": "Hits the target and its neighbors and snares them."
+ },
+ "Ironhide": {
+  "n": "Ironhide",
+  "min": 0,
+  "max": 0,
+  "pw": 0,
+  "sup": 1,
+  "buff": {
+   "grd": 2
+  },
+  "aoe": 0,
+  "cd": 4,
+  "cls": "Tank",
+  "t": "n",
+  "lv": 8,
+  "d": "Brace: take 40% less damage until your next turn ends."
+ },
+ "Crushing Blow": {
+  "n": "Crushing Blow",
+  "min": 1,
+  "max": 1,
+  "pw": 1.8,
+  "fx": {
+   "brk": 2
+  },
+  "cd": 3,
+  "cls": "Tank",
+  "t": "u",
+  "lv": 1,
+  "d": "Smashes armor: the target loses 30% DEF for 2 turns."
+ },
+ "Fortress Slam": {
+  "n": "Fortress Slam",
+  "min": 1,
+  "max": 1,
+  "pw": 1.2,
+  "aoe": 2,
+  "fx": {
+   "stun": 1
+  },
+  "cd": 4,
+  "cls": "Tank",
+  "t": "u",
+  "lv": 14,
+  "d": "Shockwave that stuns everything within 2 tiles of the target."
+ },
+ "Titan's Wrath": {
+  "n": "Titan's Wrath",
+  "min": 1,
+  "max": 1,
+  "pw": 2.6,
+  "aoe": 1,
+  "fx": {
+   "stun": 1
+  },
+  "cd": 5,
+  "cls": "Tank",
+  "t": "u",
+  "lv": 20,
+  "d": "Golden smash that stuns the target and its neighbors."
+ },
+ "Fireball": {
+  "n": "Fireball",
+  "min": 2,
+  "max": 6,
+  "pw": 1.2,
+  "el": "fire",
+  "cls": "Mage",
+  "t": "n",
+  "lv": 1,
+  "d": "Fire magic. Ignores half of armor."
+ },
+ "Thunder": {
+  "n": "Thunder",
+  "min": 2,
+  "max": 6,
+  "pw": 1.2,
+  "el": "elec",
+  "cls": "Mage",
+  "t": "n",
+  "lv": 1,
+  "d": "Thunder magic. Ignores half of armor."
+ },
+ "Frost Bolt": {
+  "n": "Frost Bolt",
+  "min": 2,
+  "max": 6,
+  "pw": 1,
+  "el": "ice",
+  "fx": {
+   "snare": 1
+  },
+  "cls": "Mage",
+  "t": "n",
+  "lv": 1,
+  "d": "Ice magic that snares for 1 turn."
+ },
+ "Ice Lance": {
+  "n": "Ice Lance",
+  "min": 2,
+  "max": 6,
+  "pw": 1.3,
+  "el": "ice",
+  "cls": "Mage",
+  "t": "n",
+  "lv": 3,
+  "d": "A long-range spear of ice."
+ },
+ "Chain Lightning": {
+  "n": "Chain Lightning",
+  "min": 2,
+  "max": 6,
+  "pw": 0.9,
+  "el": "elec",
+  "aoe": 1,
+  "cd": 2,
+  "cls": "Mage",
+  "t": "n",
+  "lv": 6,
+  "d": "Lightning jumps to every enemy next to the target."
+ },
+ "Blizzard": {
+  "n": "Blizzard",
+  "min": 2,
+  "max": 6,
+  "pw": 1.1,
+  "el": "ice",
+  "aoe": 1,
+  "fx": {
+   "snare": 1
+  },
+  "cd": 3,
+  "cls": "Mage",
+  "t": "n",
+  "lv": 10,
+  "d": "Snowstorm on an area that snares everything hit."
+ },
+ "Meteor": {
+  "n": "Meteor",
+  "min": 2,
+  "max": 6,
+  "pw": 1.5,
+  "el": "fire",
+  "aoe": 1,
+  "cd": 4,
+  "cls": "Mage",
+  "t": "u",
+  "lv": 1,
+  "d": "Calls a flaming rock down on an area."
+ },
+ "Arcane Nova": {
+  "n": "Arcane Nova",
+  "min": 2,
+  "max": 6,
+  "pw": 2,
+  "mag": 1,
+  "aoe": 2,
+  "cd": 4,
+  "cls": "Mage",
+  "t": "u",
+  "lv": 20,
+  "d": "Pure arcane blast hitting everything within 2 tiles."
+ },
+ "Mend Self": {
+  "n": "Mend Self",
+  "min": 0,
+  "max": 0,
+  "pw": 0.8,
+  "heal": 1,
+  "cls": "Healer",
+  "t": "n",
+  "lv": 1,
+  "d": "Heals yourself."
+ },
+ "Heal Ally": {
+  "n": "Heal Ally",
+  "min": 1,
+  "max": 3,
+  "pw": 1.2,
+  "heal": 1,
+  "cls": "Healer",
+  "t": "n",
+  "lv": 1,
+  "d": "Heals one ally up to 3 tiles away."
+ },
+ "Cleanse": {
+  "n": "Cleanse",
+  "min": 0,
+  "max": 3,
+  "pw": 0,
+  "heal": 1,
+  "cleanse": 1,
+  "cls": "Healer",
+  "t": "n",
+  "lv": 6,
+  "d": "Removes bleed, snare, stun and armor break."
+ },
+ "Radiant Burst": {
+  "n": "Radiant Burst",
+  "min": 2,
+  "max": 6,
+  "pw": 1,
+  "el": "light",
+  "cls": "Healer",
+  "t": "n",
+  "lv": 3,
+  "d": "Holy light damage. Strong against dark enemies."
+ },
+ "Blessing": {
+  "n": "Blessing",
+  "min": 0,
+  "max": 0,
+  "pw": 0,
+  "sup": 1,
+  "buff": {
+   "rally": 2
+  },
+  "aoe": 4,
+  "cd": 3,
+  "cls": "Healer",
+  "t": "n",
+  "lv": 4,
+  "d": "You and allies within 4 tiles deal 25% more damage for 2 turns."
+ },
+ "Holy Siphon": {
+  "n": "Holy Siphon",
+  "min": 2,
+  "max": 6,
+  "pw": 0.9,
+  "el": "light",
+  "siphon": 1,
+  "cd": 2,
+  "cls": "Healer",
+  "t": "n",
+  "lv": 8,
+  "d": "Light damage, then heals your most hurt ally for 100% of the damage dealt."
+ },
+ "Prism Aura": {
+  "n": "Prism Aura",
+  "min": 0,
+  "max": 0,
+  "pw": 0,
+  "sup": 1,
+  "buff": {
+   "prism": 2
+  },
+  "aoe": 4,
+  "cd": 5,
+  "cls": "Healer",
+  "t": "n",
+  "lv": 12,
+  "d": "You and allies within 4 tiles ignore enemy typing: every hit lands with advantage (×1.5) for 2 turns."
+ },
+ "Sacred Flame": {
+  "n": "Sacred Flame",
+  "min": 2,
+  "max": 6,
+  "pw": 1.1,
+  "el": "light",
+  "aoe": 1,
+  "cd": 2,
+  "cls": "Healer",
+  "t": "n",
+  "lv": 14,
+  "d": "Holy fire on the target and enemies next to it."
+ },
+ "Renewal": {
+  "n": "Renewal",
+  "min": 0,
+  "max": 0,
+  "pw": 0,
+  "sup": 1,
+  "buff": {
+   "regen": 3
+  },
+  "aoe": 4,
+  "cd": 4,
+  "cls": "Healer",
+  "t": "n",
+  "lv": 18,
+  "d": "You and allies within 4 tiles regenerate 12% HP at the start of each turn for 3 turns."
+ },
+ "Mass Heal": {
+  "n": "Mass Heal",
+  "min": 1,
+  "max": 4,
+  "pw": 1,
+  "heal": 1,
+  "aoe": 2,
+  "cd": 3,
+  "cls": "Healer",
+  "t": "n",
+  "lv": 10,
+  "d": "Heals the target and every ally within 2 tiles of it."
+ },
+ "Divine Grace": {
+  "n": "Divine Grace",
+  "min": 0,
+  "max": 99,
+  "pw": 3,
+  "heal": 1,
+  "lock": 1,
+  "cls": "Healer",
+  "t": "u",
+  "lv": 1,
+  "d": "Huge heal anywhere on the map, but you cannot move for 2 turns."
+ },
+ "Resurrection": {
+  "n": "Resurrection",
+  "min": 0,
+  "max": 0,
+  "pw": 0,
+  "rev": 1,
+  "cd": 99,
+  "cls": "Healer",
+  "t": "u",
+  "lv": 16,
+  "d": "Revives the most recently fallen ally next to you at 40% HP. Once per battle."
+ },
+ "Shot": {
+  "n": "Shot",
+  "min": 2,
+  "max": 6,
+  "pw": 1,
+  "cls": "Ranger",
+  "t": "n",
+  "lv": 1,
+  "d": "A standard arrow. Cannot hit adjacent enemies."
+ },
+ "Snaring Shot": {
+  "n": "Snaring Shot",
+  "min": 2,
+  "max": 6,
+  "pw": 0.6,
+  "fx": {
+   "snare": 1
+  },
+  "cls": "Ranger",
+  "t": "n",
+  "lv": 1,
+  "d": "Snares the target for 1 turn."
+ },
+ "Multishot": {
+  "n": "Multishot",
+  "min": 2,
+  "max": 6,
+  "pw": 0.7,
+  "aoe": 1,
+  "cls": "Ranger",
+  "t": "n",
+  "lv": 3,
+  "d": "Three arrows: hits the target and enemies next to it."
+ },
+ "Poison Arrow": {
+  "n": "Poison Arrow",
+  "min": 2,
+  "max": 6,
+  "pw": 0.8,
+  "fx": {
+   "bleed": 4
+  },
+  "cls": "Ranger",
+  "t": "n",
+  "lv": 6,
+  "d": "Poisons the target for 4 turns."
+ },
+ "Pinning Shot": {
+  "n": "Pinning Shot",
+  "min": 2,
+  "max": 6,
+  "pw": 0.7,
+  "fx": {
+   "stun": 1
+  },
+  "cd": 3,
+  "cls": "Ranger",
+  "t": "n",
+  "lv": 10,
+  "d": "Pins the target in place: stun 1 turn."
+ },
+ "Piercing Shot": {
+  "n": "Piercing Shot",
+  "min": 2,
+  "max": 6,
+  "pw": 1.4,
+  "line": 2,
+  "cd": 2,
+  "cls": "Ranger",
+  "t": "n",
+  "lv": 14,
+  "d": "Passes through and hits the next 2 tiles behind the target."
+ },
+ "Power Shot": {
+  "n": "Power Shot",
+  "min": 2,
+  "max": 6,
+  "pw": 1.6,
+  "cd": 3,
+  "cls": "Ranger",
+  "t": "u",
+  "lv": 1,
+  "d": "A fully drawn heavy arrow."
+ },
+ "Rain of Arrows": {
+  "n": "Rain of Arrows",
+  "min": 2,
+  "max": 6,
+  "pw": 1.2,
+  "aoe": 2,
+  "cd": 4,
+  "cls": "Ranger",
+  "t": "u",
+  "lv": 20,
+  "d": "Arrows rain on everything within 2 tiles of the target."
+ },
+ "Blood Rage": {
+  "n": "Blood Rage",
+  "min": 1,
+  "max": 1,
+  "pw": 2.6,
+  "drain": 0.3,
+  "fx": {
+   "bleed": 3
+  },
+  "cd": 4,
+  "cls": "Warrior",
+  "t": "u",
+  "lv": 30,
+  "d": "A frenzied blow that heals you for 30% of the damage.",
+  "spec": "Berserker"
+ },
+ "Holy Judgment": {
+  "n": "Holy Judgment",
+  "min": 1,
+  "max": 2,
+  "pw": 2.2,
+  "el": "light",
+  "phys": 1,
+  "splash": 0.2,
+  "cd": 4,
+  "cls": "Warrior",
+  "t": "u",
+  "lv": 30,
+  "d": "Holy strike. Heals adjacent allies 20% of their max HP.",
+  "spec": "Paladin"
+ },
+ "Thousand Cuts": {
+  "n": "Thousand Cuts",
+  "min": 1,
+  "max": 1,
+  "pw": 0.6,
+  "hits": 5,
+  "cd": 4,
+  "cls": "Warrior",
+  "t": "u",
+  "lv": 30,
+  "d": "Five lightning-fast slashes.",
+  "spec": "Duelist"
+ },
+ "Earthshatter": {
+  "n": "Earthshatter",
+  "min": 1,
+  "max": 1,
+  "pw": 1.8,
+  "aoe": 2,
+  "fx": {
+   "stun": 1
+  },
+  "cd": 5,
+  "cls": "Tank",
+  "t": "u",
+  "lv": 30,
+  "d": "Splits the ground: stuns everything within 2 tiles.",
+  "spec": "Juggernaut"
+ },
+ "Bulwark": {
+  "n": "Bulwark",
+  "min": 0,
+  "max": 0,
+  "pw": 0,
+  "sup": 1,
+  "buff": {
+   "grd": 2
+  },
+  "aoe": 3,
+  "cd": 5,
+  "cls": "Tank",
+  "t": "u",
+  "lv": 30,
+  "d": "You and allies within 3 tiles take 40% less damage.",
+  "spec": "Guardian"
+ },
+ "War Cry": {
+  "n": "War Cry",
+  "min": 0,
+  "max": 0,
+  "pw": 0,
+  "sup": 1,
+  "buff": {
+   "rally": 2
+  },
+  "aoe": 4,
+  "cd": 5,
+  "cls": "Tank",
+  "t": "u",
+  "lv": 30,
+  "d": "You and allies within 4 tiles deal 25% more damage.",
+  "spec": "Warlord"
+ },
+ "Inferno": {
+  "n": "Inferno",
+  "min": 2,
+  "max": 6,
+  "pw": 2.2,
+  "el": "fire",
+  "aoe": 2,
+  "fx": {
+   "bleed": 2
+  },
+  "cd": 5,
+  "cls": "Mage",
+  "t": "u",
+  "lv": 30,
+  "d": "A sea of fire over a wide area.",
+  "spec": "Pyromancer"
+ },
+ "Absolute Zero": {
+  "n": "Absolute Zero",
+  "min": 2,
+  "max": 6,
+  "pw": 1.8,
+  "el": "ice",
+  "aoe": 2,
+  "fx": {
+   "stun": 1
+  },
+  "cd": 5,
+  "cls": "Mage",
+  "t": "u",
+  "lv": 30,
+  "d": "Freezes a wide area solid: stun 1 turn.",
+  "spec": "Cryomancer"
+ },
+ "Thunderstorm": {
+  "n": "Thunderstorm",
+  "min": 2,
+  "max": 6,
+  "pw": 1.4,
+  "el": "elec",
+  "multi": 4,
+  "cd": 4,
+  "cls": "Mage",
+  "t": "u",
+  "lv": 30,
+  "d": "Lightning strikes up to 4 enemies in range.",
+  "spec": "Stormcaller"
+ },
+ "Sanctuary": {
+  "n": "Sanctuary",
+  "min": 0,
+  "max": 0,
+  "pw": 1.5,
+  "heal": 1,
+  "all": 1,
+  "cd": 5,
+  "cls": "Healer",
+  "t": "u",
+  "lv": 30,
+  "d": "Heals every ally on the map.",
+  "spec": "Saint"
+ },
+ "Time Warp": {
+  "n": "Time Warp",
+  "min": 0,
+  "max": 0,
+  "pw": 0,
+  "sup": 1,
+  "buff": {
+   "haste": 2
+  },
+  "aoe": 4,
+  "reset": 1,
+  "cd": 6,
+  "cls": "Healer",
+  "t": "u",
+  "lv": 30,
+  "d": "Allies within 4 tiles get Haste and their cooldowns reset.",
+  "spec": "Oracle"
+ },
+ "Pandemic": {
+  "n": "Pandemic",
+  "min": 2,
+  "max": 6,
+  "pw": 1,
+  "el": "dark",
+  "aoe": 2,
+  "fx": {
+   "bleed": 4
+  },
+  "cd": 4,
+  "cls": "Healer",
+  "t": "u",
+  "lv": 30,
+  "d": "A plague cloud: dark damage and bleed 4 in a wide area.",
+  "spec": "Plague Doctor"
+ },
+ "Deadeye": {
+  "n": "Deadeye",
+  "min": 2,
+  "max": 12,
+  "pw": 3.2,
+  "idef": 1,
+  "cd": 4,
+  "cls": "Ranger",
+  "t": "u",
+  "lv": 30,
+  "d": "A perfect shot from up to 12 tiles. Ignores all DEF.",
+  "spec": "Sniper"
+ },
+ "Snare Field": {
+  "n": "Snare Field",
+  "min": 2,
+  "max": 6,
+  "pw": 0.8,
+  "aoe": 2,
+  "fx": {
+   "snare": 2
+  },
+  "cd": 4,
+  "cls": "Ranger",
+  "t": "u",
+  "lv": 30,
+  "d": "Traps everything within 2 tiles of the target.",
+  "spec": "Trapper"
+ },
+ "Gale Volley": {
+  "n": "Gale Volley",
+  "min": 2,
+  "max": 6,
+  "pw": 1,
+  "el": "elec",
+  "phys": 1,
+  "multi": 3,
+  "cd": 3,
+  "cls": "Ranger",
+  "t": "u",
+  "lv": 30,
+  "d": "Storm arrows hit up to 3 enemies in range.",
+  "spec": "Tempest Archer"
+ },
+ "Stab": {
+  "n": "Stab",
+  "min": 1,
+  "max": 1,
+  "pw": 1,
+  "cls": "Assassin",
+  "t": "n",
+  "lv": 1,
+  "d": "A quick dagger strike."
+ },
+ "Venom Edge": {
+  "n": "Venom Edge",
+  "min": 1,
+  "max": 1,
+  "pw": 0.8,
+  "fx": {
+   "bleed": 3
+  },
+  "cls": "Assassin",
+  "t": "n",
+  "lv": 1,
+  "d": "Poisoned blade: bleed 3 turns."
+ },
+ "Ambush": {
+  "n": "Ambush",
+  "min": 1,
+  "max": 1,
+  "pw": 1.2,
+  "cd": 2,
+  "amb": 1,
+  "cls": "Assassin",
+  "t": "n",
+  "lv": 4,
+  "d": "+50% damage against enemies at full HP."
+ },
+ "Fan of Knives": {
+  "n": "Fan of Knives",
+  "min": 1,
+  "max": 2,
+  "pw": 0.8,
+  "aoe": 1,
+  "cd": 2,
+  "cls": "Assassin",
+  "t": "n",
+  "lv": 8,
+  "d": "Knives hit the target and every enemy next to it."
+ },
+ "Smoke Bomb": {
+  "n": "Smoke Bomb",
+  "min": 0,
+  "max": 0,
+  "pw": 0,
+  "sup": 1,
+  "buff": {
+   "grd": 2,
+   "haste": 2
+  },
+  "aoe": 0,
+  "cd": 4,
+  "cls": "Assassin",
+  "t": "n",
+  "lv": 14,
+  "d": "Vanish in smoke: 40% less damage taken and +2 Move for 2 turns."
+ },
+ "Assassinate": {
+  "n": "Assassinate",
+  "min": 1,
+  "max": 1,
+  "pw": 1.8,
+  "exec": 1,
+  "cd": 3,
+  "cls": "Assassin",
+  "t": "u",
+  "lv": 1,
+  "d": "A killing strike: +50% damage on enemies under 40% HP."
+ },
+ "Death Blossom": {
+  "n": "Death Blossom",
+  "min": 1,
+  "max": 1,
+  "pw": 0.6,
+  "hits": 4,
+  "aoe": 1,
+  "cd": 4,
+  "cls": "Assassin",
+  "t": "u",
+  "lv": 20,
+  "d": "Four spinning slashes that also hit enemies next to the target."
+ },
+ "Quick Shot": {
+  "n": "Quick Shot",
+  "min": 2,
+  "max": 6,
+  "pw": 1,
+  "cls": "Gunslinger",
+  "t": "n",
+  "lv": 1,
+  "d": "A fast pistol shot. Cannot hit adjacent enemies."
+ },
+ "Double Tap": {
+  "n": "Double Tap",
+  "min": 2,
+  "max": 6,
+  "pw": 0.6,
+  "hits": 2,
+  "cls": "Gunslinger",
+  "t": "n",
+  "lv": 1,
+  "d": "Two quick shots at one target."
+ },
+ "Ricochet": {
+  "n": "Ricochet",
+  "min": 2,
+  "max": 6,
+  "pw": 0.8,
+  "multi": 2,
+  "cd": 2,
+  "cls": "Gunslinger",
+  "t": "n",
+  "lv": 4,
+  "d": "The bullet bounces to a second enemy in range."
+ },
+ "Flash Bang": {
+  "n": "Flash Bang",
+  "min": 2,
+  "max": 6,
+  "pw": 0.4,
+  "fx": {
+   "stun": 1
+  },
+  "cd": 3,
+  "cls": "Gunslinger",
+  "t": "n",
+  "lv": 8,
+  "d": "Stuns the target for 1 turn."
+ },
+ "Scatter Shot": {
+  "n": "Scatter Shot",
+  "min": 1,
+  "max": 3,
+  "pw": 0.9,
+  "aoe": 1,
+  "cd": 2,
+  "cls": "Gunslinger",
+  "t": "n",
+  "lv": 12,
+  "d": "Shotgun blast on the target and enemies next to it. Works up close."
+ },
+ "Hollow Point": {
+  "n": "Hollow Point",
+  "min": 2,
+  "max": 6,
+  "pw": 1.7,
+  "fx": {
+   "brk": 2
+  },
+  "cd": 3,
+  "cls": "Gunslinger",
+  "t": "u",
+  "lv": 1,
+  "d": "Heavy round that breaks armor (−30% DEF) for 2 turns."
+ },
+ "Bullet Hell": {
+  "n": "Bullet Hell",
+  "min": 2,
+  "max": 6,
+  "pw": 0.5,
+  "multi": 6,
+  "cd": 4,
+  "cls": "Gunslinger",
+  "t": "u",
+  "lv": 20,
+  "d": "Unload on up to 6 enemies in range."
+ },
+ "Spear Thrust": {
+  "n": "Spear Thrust",
+  "min": 1,
+  "max": 1,
+  "pw": 1,
+  "cls": "Dragon Knight",
+  "t": "n",
+  "lv": 1,
+  "d": "A spear thrust from dragonback."
+ },
+ "Dragon Claw": {
+  "n": "Dragon Claw",
+  "min": 1,
+  "max": 1,
+  "pw": 1.1,
+  "fx": {
+   "bleed": 2
+  },
+  "cls": "Dragon Knight",
+  "t": "n",
+  "lv": 1,
+  "d": "The dragon rakes the target: bleed 2."
+ },
+ "Dragonfire": {
+  "n": "Dragonfire",
+  "min": 1,
+  "max": 3,
+  "pw": 0.9,
+  "el": "fire",
+  "aoe": 1,
+  "cd": 2,
+  "cls": "Dragon Knight",
+  "t": "n",
+  "lv": 4,
+  "d": "The dragon breathes fire on an area."
+ },
+ "Wing Gust": {
+  "n": "Wing Gust",
+  "min": 1,
+  "max": 2,
+  "pw": 0.7,
+  "aoe": 1,
+  "fx": {
+   "snare": 1
+  },
+  "cd": 2,
+  "cls": "Dragon Knight",
+  "t": "n",
+  "lv": 8,
+  "d": "A blast of wind that snares the target and its neighbors."
+ },
+ "Sky Dive": {
+  "n": "Sky Dive",
+  "min": 2,
+  "max": 4,
+  "pw": 1.5,
+  "cd": 3,
+  "cls": "Dragon Knight",
+  "t": "n",
+  "lv": 12,
+  "d": "Dive from the sky onto a target 2–4 tiles away."
+ },
+ "Impale": {
+  "n": "Impale",
+  "min": 1,
+  "max": 2,
+  "pw": 1.6,
+  "line": 1,
+  "cd": 3,
+  "cls": "Dragon Knight",
+  "t": "u",
+  "lv": 1,
+  "d": "A lance thrust that pierces 1 tile behind the target."
+ },
+ "Dragon's Fury": {
+  "n": "Dragon's Fury",
+  "min": 1,
+  "max": 4,
+  "pw": 2,
+  "el": "fire",
+  "aoe": 2,
+  "cd": 5,
+  "cls": "Dragon Knight",
+  "t": "u",
+  "lv": 20,
+  "d": "A firestorm on everything within 2 tiles of the target."
+ },
+ "Phantom Rush": {
+  "n": "Phantom Rush",
+  "min": 1,
+  "max": 3,
+  "pw": 0.9,
+  "multi": 4,
+  "cd": 4,
+  "cls": "Assassin",
+  "t": "u",
+  "lv": 30,
+  "d": "Blink between up to 4 enemies in range, striking each.",
+  "spec": "Phantom"
+ },
+ "Venom Storm": {
+  "n": "Venom Storm",
+  "min": 1,
+  "max": 3,
+  "pw": 0.9,
+  "aoe": 2,
+  "fx": {
+   "bleed": 5
+  },
+  "cd": 4,
+  "cls": "Assassin",
+  "t": "u",
+  "lv": 30,
+  "d": "A toxic cloud: bleed 5 on everything within 2 tiles.",
+  "spec": "Viper"
+ },
+ "Crimson Waltz": {
+  "n": "Crimson Waltz",
+  "min": 1,
+  "max": 1,
+  "pw": 0.55,
+  "hits": 5,
+  "cd": 4,
+  "cls": "Assassin",
+  "t": "u",
+  "lv": 30,
+  "d": "Five dancing slashes on one target.",
+  "spec": "Blade Dancer"
+ },
+ "Six Shooter": {
+  "n": "Six Shooter",
+  "min": 2,
+  "max": 6,
+  "pw": 0.45,
+  "hits": 6,
+  "cd": 4,
+  "cls": "Gunslinger",
+  "t": "u",
+  "lv": 30,
+  "d": "Empties the cylinder into one target.",
+  "spec": "Outlaw"
+ },
+ "Dead or Alive": {
+  "n": "Dead or Alive",
+  "min": 2,
+  "max": 6,
+  "pw": 2.6,
+  "exec": 1,
+  "cd": 4,
+  "cls": "Gunslinger",
+  "t": "u",
+  "lv": 30,
+  "d": "A bounty shot: +50% on enemies under 40% HP.",
+  "spec": "Bounty Hunter"
+ },
+ "Ricochet Storm": {
+  "n": "Ricochet Storm",
+  "min": 2,
+  "max": 6,
+  "pw": 0.9,
+  "multi": 5,
+  "cd": 4,
+  "cls": "Gunslinger",
+  "t": "u",
+  "lv": 30,
+  "d": "Bullets bounce between up to 5 enemies.",
+  "spec": "Trickshot"
+ },
+ "Soul Nova": {
+  "n": "Soul Nova",
+  "min": 2,
+  "max": 6,
+  "pw": 1.3,
+  "el": "dark",
+  "aoe": 2,
+  "drain": 0.2,
+  "cd": 4,
+  "cls": "Witch",
+  "t": "u",
+  "lv": 30,
+  "d": "An explosion of souls that heals you for 20% of the damage.",
+  "spec": "Necromancer"
+ },
+ "Blood Moon": {
+  "n": "Blood Moon",
+  "min": 2,
+  "max": 6,
+  "pw": 2,
+  "el": "dark",
+  "aoe": 2,
+  "hpc": 0.2,
+  "cd": 4,
+  "cls": "Witch",
+  "t": "u",
+  "lv": 30,
+  "d": "Costs 20% HP: a crimson blast within 2 tiles.",
+  "spec": "Blood Witch"
+ },
+ "Hellfire Dive": {
+  "n": "Hellfire Dive",
+  "min": 2,
+  "max": 5,
+  "pw": 2.2,
+  "el": "fire",
+  "aoe": 2,
+  "cd": 5,
+  "cls": "Dragon Knight",
+  "t": "u",
+  "lv": 30,
+  "d": "A flaming dive bomb on an area.",
+  "spec": "Inferno Rider"
+ },
+ "Glacial Breath": {
+  "n": "Glacial Breath",
+  "min": 1,
+  "max": 4,
+  "pw": 1.6,
+  "el": "ice",
+  "aoe": 2,
+  "fx": {
+   "stun": 1
+  },
+  "cd": 5,
+  "cls": "Dragon Knight",
+  "t": "u",
+  "lv": 30,
+  "d": "Freezing breath that stuns.",
+  "spec": "Frost Wyrm"
+ },
+ "Thunder Lance": {
+  "n": "Thunder Lance",
+  "min": 1,
+  "max": 6,
+  "pw": 2,
+  "el": "elec",
+  "phys": 1,
+  "line": 3,
+  "cd": 4,
+  "cls": "Dragon Knight",
+  "t": "u",
+  "lv": 30,
+  "d": "A lightning lance that pierces 3 tiles behind the target.",
+  "spec": "Storm Dragoon"
+ },
+ "Toxic Bolt": {
+  "n": "Toxic Bolt",
+  "min": 2,
+  "max": 6,
+  "pw": 1,
+  "el": "dark",
+  "fx": {
+   "poison": 2
+  },
+  "cls": "Witch",
+  "t": "n",
+  "lv": 1,
+  "d": "Dark magic that poisons for 2 turns."
+ },
+ "Hex": {
+  "n": "Hex",
+  "min": 2,
+  "max": 6,
+  "pw": 0.4,
+  "fx": {
+   "weak": 2,
+   "brk": 2
+  },
+  "cd": 2,
+  "mag": 1,
+  "cls": "Witch",
+  "t": "n",
+  "lv": 1,
+  "d": "Weakens the target: it deals 30% less damage and loses 30% DEF for 2 turns."
+ },
+ "Miasma": {
+  "n": "Miasma",
+  "min": 2,
+  "max": 6,
+  "pw": 0.7,
+  "aoe": 1,
+  "fx": {
+   "poison": 3
+  },
+  "cd": 2,
+  "mag": 1,
+  "cls": "Witch",
+  "t": "n",
+  "lv": 4,
+  "d": "A poison cloud on the target and enemies next to it."
+ },
+ "Curse of Frailty": {
+  "n": "Curse of Frailty",
+  "min": 2,
+  "max": 6,
+  "pw": 0.3,
+  "fx": {
+   "brk": 3,
+   "weak": 3
+  },
+  "cd": 3,
+  "mag": 1,
+  "cls": "Witch",
+  "t": "n",
+  "lv": 8,
+  "d": "A long curse: −30% DEF and −30% damage for 3 turns."
+ },
+ "Plague Swarm": {
+  "n": "Plague Swarm",
+  "min": 2,
+  "max": 6,
+  "pw": 0.9,
+  "multi": 3,
+  "fx": {
+   "poison": 2
+  },
+  "el": "dark",
+  "cd": 3,
+  "cls": "Witch",
+  "t": "n",
+  "lv": 12,
+  "d": "Poison insects attack up to 3 enemies in range."
+ },
+ "Witch's Brew": {
+  "n": "Witch's Brew",
+  "min": 2,
+  "max": 6,
+  "pw": 1.4,
+  "aoe": 1,
+  "fx": {
+   "poison": 3,
+   "weak": 2
+  },
+  "el": "dark",
+  "cd": 4,
+  "cls": "Witch",
+  "t": "u",
+  "lv": 1,
+  "d": "A boiling brew: poison and weakness on an area."
+ },
+ "Hex Storm": {
+  "n": "Hex Storm",
+  "min": 2,
+  "max": 6,
+  "pw": 1.5,
+  "aoe": 2,
+  "fx": {
+   "poison": 4,
+   "brk": 2
+  },
+  "el": "dark",
+  "cd": 5,
+  "cls": "Witch",
+  "t": "u",
+  "lv": 20,
+  "d": "A storm of curses within 2 tiles: poison 4 and armor break."
+ },
+ "Lance Strike": {
+  "n": "Lance Strike",
+  "min": 1,
+  "max": 1,
+  "pw": 1.1,
+  "cls": "Knight",
+  "t": "n",
+  "lv": 1,
+  "d": "A heavy mounted lance hit."
+ },
+ "Charge": {
+  "n": "Charge",
+  "min": 1,
+  "max": 1,
+  "pw": 1,
+  "chg": 1,
+  "cls": "Knight",
+  "t": "n",
+  "lv": 1,
+  "d": "+12% damage for every tile you moved this turn (max +60%)."
+ },
+ "Lance Break": {
+  "n": "Lance Break",
+  "min": 1,
+  "max": 1,
+  "pw": 1.3,
+  "fx": {
+   "brk": 2
+  },
+  "cd": 2,
+  "cls": "Knight",
+  "t": "n",
+  "lv": 4,
+  "d": "Breaks armor: −30% DEF for 2 turns."
+ },
+ "Running Thrust": {
+  "n": "Running Thrust",
+  "min": 1,
+  "max": 2,
+  "pw": 1.5,
+  "chg": 1,
+  "cd": 2,
+  "cls": "Knight",
+  "t": "n",
+  "lv": 8,
+  "d": "A charging thrust from up to 2 tiles away. Gains charge damage."
+ },
+ "Valor": {
+  "n": "Valor",
+  "min": 0,
+  "max": 0,
+  "pw": 0,
+  "sup": 1,
+  "buff": {
+   "rally": 2,
+   "grd": 2
+  },
+  "aoe": 0,
+  "cd": 4,
+  "cls": "Knight",
+  "t": "n",
+  "lv": 12,
+  "d": "Steel yourself: +25% damage and 40% less damage taken for 2 turns."
+ },
+ "Grand Charge": {
+  "n": "Grand Charge",
+  "min": 1,
+  "max": 1,
+  "pw": 1.8,
+  "chg": 1,
+  "cd": 3,
+  "cls": "Knight",
+  "t": "u",
+  "lv": 1,
+  "d": "An all-out charge. Gains charge damage."
+ },
+ "Cavalry Breaker": {
+  "n": "Cavalry Breaker",
+  "min": 1,
+  "max": 1,
+  "pw": 2.6,
+  "chg": 1,
+  "cd": 5,
+  "cls": "Knight",
+  "t": "u",
+  "lv": 20,
+  "d": "A devastating single-target charge."
+ },
+ "Grand Hex": {
+  "n": "Grand Hex",
+  "min": 2,
+  "max": 6,
+  "pw": 0.8,
+  "aoe": 2,
+  "fx": {
+   "weak": 3,
+   "brk": 3,
+   "snare": 1
+  },
+  "cd": 5,
+  "mag": 1,
+  "cls": "Witch",
+  "t": "u",
+  "lv": 30,
+  "d": "Curses everything within 2 tiles: weak, armor break and snare.",
+  "spec": "Hex Queen"
+ },
+ "Crusade": {
+  "n": "Crusade",
+  "min": 1,
+  "max": 1,
+  "pw": 2.2,
+  "chg": 1,
+  "splash": 0.2,
+  "el": "light",
+  "phys": 1,
+  "cd": 4,
+  "cls": "Knight",
+  "t": "u",
+  "lv": 30,
+  "d": "A holy charge that heals allies next to you 20%.",
+  "spec": "Templar"
+ },
+ "Doom Lance": {
+  "n": "Doom Lance",
+  "min": 1,
+  "max": 2,
+  "pw": 3,
+  "cd": 5,
+  "cls": "Knight",
+  "t": "u",
+  "lv": 30,
+  "d": "A crushing single-target lance from up to 2 tiles.",
+  "spec": "Black Knight"
+ },
+ "Lightning Charge": {
+  "n": "Lightning Charge",
+  "min": 1,
+  "max": 1,
+  "pw": 2,
+  "chg": 1,
+  "el": "elec",
+  "phys": 1,
+  "cd": 4,
+  "cls": "Knight",
+  "t": "u",
+  "lv": 30,
+  "d": "A lightning-fast charge. Gains charge damage.",
+  "spec": "Storm Rider"
+ },
+ "Cloak": {
+  "n": "Cloak",
+  "min": 0,
+  "max": 0,
+  "pw": 0,
+  "sup": 1,
+  "buff": {},
+  "aoe": 0,
+  "cloak": 1,
+  "d": "Turn invisible: enemies can't target you for 2 enemy turns. Attacking breaks the cloak. After it ends, Cloak recharges for 2 turns."
+ },
+ "Strike": {
+  "n": "Strike",
+  "min": 1,
+  "max": 1,
+  "pw": 1,
+  "strike": 1,
+  "d": "A basic attack with your selected weapon set. Melee weapons hit 1 tile, bows and guns 2–6, staffs and wands 2–6 as magic."
+ }
+}

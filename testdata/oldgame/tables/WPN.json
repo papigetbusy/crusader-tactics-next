@@ -1,0 +1,226 @@
+[
+ [
+  "Rusty Blade",
+  "sword",
+  0,
+  "#9a8f84",
+  "#6b4423"
+ ],
+ [
+  "Hunting Bow",
+  "bow",
+  0,
+  "#8a5a2b",
+  "#cdbb8e"
+ ],
+ [
+  "Oak Staff",
+  "staff",
+  0,
+  "#8a5a2b",
+  "#7bd88f"
+ ],
+ [
+  "Iron Axe",
+  "axe",
+  0,
+  "#aeb4c2",
+  "#6b4423"
+ ],
+ [
+  "Iron Lance",
+  "lance",
+  0,
+  "#aeb4c2",
+  "#8a5a2b"
+ ],
+ [
+  "Steel Sword",
+  "sword",
+  1,
+  "#d6dcea",
+  "#4a7bd0"
+ ],
+ [
+  "Yew Bow",
+  "bow",
+  1,
+  "#6b8a3a",
+  "#e8e0b0"
+ ],
+ [
+  "Battle Axe",
+  "axe",
+  1,
+  "#8d97ad",
+  "#c9a24d"
+ ],
+ [
+  "Ash Staff",
+  "staff",
+  1,
+  "#b9b0a0",
+  "#6fb7ff"
+ ],
+ [
+  "Steel Lance",
+  "lance",
+  1,
+  "#d6dcea",
+  "#4a7bd0"
+ ],
+ [
+  "Mythril Blade",
+  "sword",
+  2,
+  "#7fe3f0",
+  "#e8fbff"
+ ],
+ [
+  "Elven Longbow",
+  "bow",
+  2,
+  "#3fa85c",
+  "#e8ffe0"
+ ],
+ [
+  "Frostbite Axe",
+  "axe",
+  2,
+  "#8fd8ff",
+  "#e8f6ff"
+ ],
+ [
+  "Emberwood Staff",
+  "staff",
+  2,
+  "#a3522b",
+  "#ff7a3a"
+ ],
+ [
+  "Silver Lance",
+  "lance",
+  2,
+  "#eef1f8",
+  "#9fd8ff"
+ ],
+ [
+  "Dawnbreaker",
+  "sword",
+  3,
+  "#fff2b0",
+  "#f2b84b"
+ ],
+ [
+  "Voidreaver",
+  "axe",
+  3,
+  "#8a5fd0",
+  "#2a1245"
+ ],
+ [
+  "Heavensfall",
+  "lance",
+  3,
+  "#fff6c8",
+  "#f2b84b"
+ ],
+ [
+  "Gale Piercer",
+  "bow",
+  3,
+  "#7ff0c0",
+  "#ffffff"
+ ],
+ [
+  "Staff of Eternity",
+  "staff",
+  3,
+  "#d9b8ff",
+  "#ff6ad5"
+ ],
+ [
+  "Flintlock",
+  "gun",
+  0,
+  "#8a8f99",
+  "#6b4423"
+ ],
+ [
+  "Revolver",
+  "gun",
+  1,
+  "#c9ced8",
+  "#4a7bd0"
+ ],
+ [
+  "Silver Six",
+  "gun",
+  2,
+  "#eef1f8",
+  "#9fd8ff"
+ ],
+ [
+  "Thunderhowl",
+  "gun",
+  3,
+  "#ffe45c",
+  "#7fe3f0"
+ ],
+ [
+  "Twig Wand",
+  "wand",
+  0,
+  "#8a5a2b",
+  "#9ae6b4"
+ ],
+ [
+  "Crystal Wand",
+  "wand",
+  1,
+  "#cfd6e6",
+  "#7fd1ff"
+ ],
+ [
+  "Runic Wand",
+  "wand",
+  2,
+  "#5a3a8a",
+  "#c79bff"
+ ],
+ [
+  "Emberheart Scepter",
+  "wand",
+  3,
+  "#a02010",
+  "#ffb12e"
+ ],
+ [
+  "Rusty Knife",
+  "dagger",
+  0,
+  "#9a8f84",
+  "#6b4423"
+ ],
+ [
+  "Steel Dagger",
+  "dagger",
+  1,
+  "#d6dcea",
+  "#4a7bd0"
+ ],
+ [
+  "Shadow Kris",
+  "dagger",
+  2,
+  "#6a5a8a",
+  "#c79bff"
+ ],
+ [
+  "Nightfang",
+  "dagger",
+  3,
+  "#2b2238",
+  "#6fe04a"
+ ]
+]
