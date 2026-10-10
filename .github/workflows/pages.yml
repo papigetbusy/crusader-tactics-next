@@ -1,0 +1,52 @@
+# The build robot. On every change to main it:
+#   1. runs every test (a failing test stops everything; nothing is published)
+#   2. builds the Go code into WebAssembly for the browser
+#   3. publishes the web/ page to GitHub Pages
+name: Test, build and publish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.7'
+      - name: Run all tests
+        run: go test ./...
+      - name: Build the browser program
+        run: |
+          mkdir -p site
+          LABEL="rehearsal-$(date -u +%Y%m%d-%H%M)-${GITHUB_SHA::7}"
+          GOOS=js GOARCH=wasm go build -trimpath -ldflags "-s -w -X main.build=$LABEL" -o site/app.wasm ./adapters/wasm
+          cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" site/
+          sed "s/__BUILD__/$LABEL/g" web/index.html > site/index.html
+          ls -l site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

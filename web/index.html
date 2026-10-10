@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crusader Tactics Go Test</title>
+<style>
+:root{--bg:#0e0a0a;--panel:#171112;--line:#3a2a22;--text:#eadfca;--dim:#a39682;--gold:#d4a84a;--red:#a52a2a;--green:#5f9f58}
+@media (prefers-color-scheme:light){:root{--bg:#f4ede0;--panel:#fffaf0;--line:#d9c9ab;--text:#2a1f1a;--dim:#6d5f50;--gold:#8a6414;--red:#8f1d1d;--green:#2f6f2c}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 Georgia,"Times New Roman",serif}
+main{max-width:560px;margin:0 auto;padding:22px 16px 48px}
+h1{font-size:24px;margin:0 0 4px;color:var(--gold)}h2{font-size:17px;margin:26px 0 8px;color:var(--gold);border-bottom:1px solid var(--line);padding-bottom:5px}
+.sub{color:var(--dim);margin:0 0 14px;font-size:15px}
+.card{background:var(--panel);border:1px solid var(--line);border-left:6px solid var(--dim);border-radius:6px;padding:12px 14px;margin:12px 0}
+.card.ok{border-left-color:var(--green)}.card.bad{border-left-color:var(--red)}
+.row{display:flex;gap:10px;align-items:flex-start;margin:8px 0}.dot{flex:0 0 24px;height:24px;border-radius:50%;display:grid;place-items:center;color:#fff;font:700 13px/1 system-ui;background:var(--dim)}
+.dot.g{background:var(--green)}.dot.r{background:var(--red)}
+button{font:inherit;font-weight:bold;color:#1a1208;background:var(--gold);border:0;border-radius:6px;padding:12px 16px;margin:6px 8px 6px 0;min-height:46px;cursor:pointer}
+button.alt{background:transparent;color:var(--gold);border:1px solid var(--gold)}button:disabled{opacity:.45}
+.out{font:15px ui-monospace,Menlo,monospace;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:10px 12px;min-height:56px;margin-top:8px;word-break:break-word}
+small,.dim{color:var(--dim)}a{color:var(--gold)}code{font:13px ui-monospace,Menlo,monospace;color:var(--gold)}
+</style></head><body><main>
+<h1>Go Test Page</h1>
+<p class="sub">Rehearsal: built, tested and published by the GitHub robot from the new repo. No game rules yet.</p>
+<div id="status" class="card"><b>Loading Go&hellip;</b></div>
+<h2>Automatic checks</h2><div id="checks"><div class="row"><div class="dot">&hellip;</div><div class="dim">Waiting for Go to start</div></div></div>
+<h2>Try it</h2>
+<p class="sub">Each button asks the Go program to roll five 20-sided dice.</p>
+<button id="b1" disabled>Roll with seed 123</button><button id="b2" class="alt" disabled>Roll with a fresh seed</button>
+<div id="out" class="out dim">Tap a button.</div>
+<p class="sub" style="margin-top:22px">Seed 123 should give the same five numbers every time you tap it. A fresh seed should give new numbers each time.</p>
+<h2>Your game</h2>
+<p class="sub"><a href="https://papigetbusy.github.io/crusader-tactics/">Back to the Crusader Tactics game</a>. It is untouched by this page.</p>
+<p class="sub"><small>Build: <span id="build"></span></small></p>
+</main>
+<script src="wasm_exec.js?v=__BUILD__"></script>
+<script>
+const BUILD='__BUILD__', $=id=>document.getElementById(id);
+$('build').textContent=BUILD;
+function fail(msg,detail){
+  const s=$('status');s.className='card bad';
+  s.innerHTML='<b>Go did not load.</b><br>'+msg+'<br><small>Details: '+String(detail||'').replace(/</g,'&lt;')+'</small>';
+  $('checks').innerHTML='<div class="row"><div class="dot r">✗</div><div>Go is not running, so the checks could not start.</div></div>';
+}
+async function boot(){
+  if(typeof Go==='undefined') throw new Error('MISSING_JS');
+  const go=new Go(), url='app.wasm?v='+BUILD;
+  let inst;
+  try{ inst=await WebAssembly.instantiateStreaming(fetch(url),go.importObject); }
+  catch(e){ const r=await fetch(url); if(!r.ok) throw new Error('MISSING_WASM:'+r.status); inst=await WebAssembly.instantiate(await r.arrayBuffer(),go.importObject); }
+  go.run(inst.instance);
+  for(let i=0;i<100&&typeof goRoll==='undefined';i++) await new Promise(r=>setTimeout(r,20));
+  if(typeof goRoll==='undefined') throw new Error('GO_NO_ANSWER');
+}
+const dice=(seed)=>JSON.parse(goRoll(seed,5,20));
+function checks(){
+  const info=JSON.parse(goInfo()), a=dice(123), b=dice(123), c=dice(124), big=JSON.parse(goRoll(4000000000,3,6));
+  const list=[
+    [true,'Go answered',info.go+' on '+info.arch],
+    [JSON.stringify(a)===JSON.stringify(b),'Same seed gives the same dice','seed 123 twice: '+a.join(', ')],
+    [JSON.stringify(a)!==JSON.stringify(c),'A different seed gives different dice','seed 124: '+c.join(', ')],
+    [big.length===3&&big.every(v=>v>=1&&v<=6),'Large seeds work','seed 4,000,000,000: '+big.join(', ')]];
+  $('checks').innerHTML=list.map(([ok,t,d])=>'<div class="row"><div class="dot '+(ok?'g':'r')+'">'+(ok?'✓':'✗')+'</div><div>'+t+'<br><small>'+d+'</small></div></div>').join('');
+  const allOk=list.every(x=>x[0]);
+  $('status').className='card '+(allOk?'ok':'bad');
+  $('status').innerHTML='<b>'+(allOk?'Go is running.':'Go is running, but a check failed.')+'</b><br><small>'+info.go+' &middot; '+info.arch+'</small>';
+}
+$('b1').onclick=()=>{$('out').className='out';$('out').textContent='Seed 123: '+dice(123).join(', ')};
+$('b2').onclick=()=>{const s=crypto.getRandomValues(new Uint32Array(1))[0];$('out').className='out';$('out').textContent='Seed '+s+': '+dice(s).join(', ')};
+boot().then(()=>{checks();$('b1').disabled=$('b2').disabled=false}).catch(e=>{
+  const m=String(e&&e.message||e);
+  if(m==='MISSING_JS')fail('The file <code>wasm_exec.js</code> was not found next to this page. It should be published by the build robot (check the Actions tab on GitHub).',m);
+  else if(m.startsWith('MISSING_WASM'))fail('The file <code>app.wasm</code> was not found next to this page. It should be published by the build robot (check the Actions tab on GitHub).',m);
+  else fail('Your browser could not start the Go file. Try reloading the page. If it keeps happening, tell Claude what this message says.',m)});
+</script></body></html>
