@@ -37,6 +37,7 @@ Paste this at the top of every big prompt. Decisions confirmed by the owner on 2
 11. **Team select and deployment (rules in Phase 7, screen in Phase 8), like Fire Emblem's preparation screen:** 5 hero slots, plus one at floors 25, 50 and 75 (up to 8). Before each map you pick heroes from your whole roster and must fill every slot; only the heroes who fight earn XP. Heroes go on blue starting tiles you choose, with more blue tiles than heroes. If you don't choose, the game brings your highest-level heroes. Design aim: a strategy-heavy game where skill and game knowledge are always rewarded.
 12. **Any fallen hero can be revived,** however they died (poison and bleeding included). In the game since 2026-10-10.
 13. **An unarmed hero counts as their class's usual weapon** in the weapon triangle (for example Warrior sword, Tank axe, Knight lance), both when attacking and when being attacked. (Phase 6)
+14. **New art (Phase 8):** the owner is drawing new character sprites with movement and new attack animations, and will hand over all the assets. Claude wires them in and makes every hue effect and animation effect (glows, tints such as the enraged boss's red, hit flashes, skill effects, timing), with the camera waiting for each animation to finish. The art never decides a rule: it only plays the events the referee sends.
 
 ## Existing rules to preserve
 - Floors stay the same within a run; revisiting a cleared floor gives less gold and the same XP.
