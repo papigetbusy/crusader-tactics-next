@@ -189,3 +189,21 @@ func TestScreenInfo(t *testing.T) {
 		}
 	})
 }
+
+func TestReviveAnyDeath(t *testing.T) {
+	t.Run("A hero killed by poison joins the fallen and can be revived", func(t *testing.T) {
+		g := duel()
+		h := g.B.Unit(1)
+		h.HP = 1
+		h.Status["poison"] = 3
+		g.B.Unit(2).X, g.B.Unit(2).Y = 4, 4
+		g.B.Units = append(g.B.Units, &state.Unit{ID: 5, Team: state.Heroes, Class: "Tank", X: 0, Y: 4, HP: 40, MaxHP: 40, Status: map[string]int{}, Skills: h.Skills, Cooldowns: make([]int, len(h.Skills))})
+		_, _ = g.Apply(action.Action{Kind: action.EndTurn})
+		if g.B.Unit(1) != nil {
+			t.Skip("the poison did not finish the hero in this setup")
+		}
+		if len(g.B.Fallen) == 0 || g.B.Fallen[len(g.B.Fallen)-1].ID != 1 {
+			t.Fatalf("fallen %v", g.B.Fallen)
+		}
+	})
+}

@@ -35,6 +35,14 @@ var Changes = []Change{
 	},
 }
 
+func init() {
+	Changes = append(Changes, Change{
+		Date:  "2026-10-10",
+		What:  "A fallen hero can be revived however they died. Before, heroes killed by poison or bleeding could not be revived.",
+		Apply: func(c *Content) { c.Combat.ReviveAnyDeath = true },
+	})
+}
+
 // ApplyChanges turns the old game's data into today's data.
 func ApplyChanges(c *Content) {
 	for _, ch := range Changes {

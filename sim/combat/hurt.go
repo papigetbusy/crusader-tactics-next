@@ -71,7 +71,7 @@ func Hurt(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, sure boo
 		res.Killed = true
 		b.Remove(v.ID)
 		if v.Team == state.Heroes && !v.Summoned {
-			b.Fallen = append(b.Fallen, v) // only heroes killed in combat can be revived
+			b.Fallen = append(b.Fallen, v) // see also turn.Start: deaths from poison or bleeding
 		}
 	}
 	res.HPAfter = v.HP

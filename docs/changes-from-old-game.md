@@ -7,13 +7,12 @@ Every place where the new game intentionally behaves differently from the old on
 - Every fight gets a new battle seed, and loading a save rolls a new one, so reloading never replays the same dice. (Agreed.)
 - Shuffles are fair: when a multi-target skill picks its extra targets, every enemy in range has an equal chance. The old game used a shortcut that favoured some picks and could differ between browsers. (Approved 2026-10-09.)
 - Monsters use the same version of a skill as heroes. In the old game six differed: monster Fireball, Thunder and Frost Bolt reached 1–3 tiles instead of 2–6, and monster Shot, Snaring Shot and Power Shot reached 7 tiles instead of 6. One version for everyone now (approved 2026-10-10). Their look will differ, not their rules.
+- A fallen hero can be revived however they died. In the old game, heroes killed by poison or bleeding could not be revived. (Approved 2026-10-10.)
 - Formulas that were written in several places in the old code (XP needed, potion healing, monster level, "is this skill usable?") exist exactly once. This changes no numbers.
 
 ## Decided, arriving with later phases
+- Choose your team for each map: 5 hero slots, picked before each battle from all your heroes, then placed on blue starting tiles (Fire Emblem-style team select). (Requested 2026-10-10; Phase 7, screen in Phase 8.)
 - Traps trigger along the path a unit walks, decided by the rules, not by animation frames. (Agreed fix; traps arrive in Phase 6.)
-
-## Candidates to put to the owner
-- In the old game, a hero killed by poison or bleeding cannot be revived (only heroes killed by a hit join the fallen list). The new game copies this for now.
 
 ## Not changed yet (conscious design calls for later)
 - Shop floors count as cleared without a fight.

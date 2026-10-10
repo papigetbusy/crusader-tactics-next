@@ -34,6 +34,8 @@ Paste this at the top of every big prompt. Decisions confirmed by the owner on 2
 8. **The weapon triangle (sword, lance, axe) shows in every forecast,** both when heroes attack and when monsters attack heroes.
 9. **Enemy AI gets smarter as you climb** (Phase 9): it learns to go after healers and heroes weak to its attacks.
 10. **Look and feel notes for Phase 8:** an enraged boss glows red; the camera waits for an attack animation to finish before jumping to the next hero; the battle goal shows once at the start and then lives in the pause menu; the skill-switching bonus is explained once in tips.
+11. **Any fallen hero can be revived,** however they died (poison and bleeding included).
+12. **Team select before each map:** 5 hero slots. Before a battle you pick which 5 heroes to bring, then place them on blue starting tiles, like Fire Emblem's preparation screen, so each map makes you choose who to bring. Rules in Phase 7 (the run and floors), screen in Phase 8.
 
 ## Existing rules to preserve
 - Floors stay the same within a run; revisiting a cleared floor gives less gold and the same XP.

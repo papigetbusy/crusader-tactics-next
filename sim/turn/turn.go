@@ -65,6 +65,9 @@ func Start(c *content.Content, b *state.Battle, side int, emit action.Emit) {
 	for _, u := range slices.Clone(b.Units) {
 		if u.HP <= 0 {
 			b.Remove(u.ID)
+			if c.Combat.ReviveAnyDeath && u.Team == state.Heroes && !u.Summoned {
+				b.Fallen = append(b.Fallen, u)
+			}
 			emit(action.Event{Kind: action.Died, Unit: u.ID})
 		}
 	}
