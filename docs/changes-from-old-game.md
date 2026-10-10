@@ -12,6 +12,8 @@ Every place where the new game intentionally behaves differently from the old on
 
 ## Decided, arriving with later phases
 - Choose your team for each map: 5 hero slots, picked before each battle from all your heroes, then placed on blue starting tiles (Fire Emblem-style team select). (Requested 2026-10-10; Phase 7, screen in Phase 8.)
+- Any fallen hero can be revived, however they died. In the old game a hero killed by poison or bleeding could never be revived. (Approved 2026-10-10; arrives next session.)
+- Team select and deployment: start with 5 hero slots (+1 every 25 levels, up to 8), choose who to bring from your whole roster before each map, and place them on blue starting tiles. The old game took the whole party into every fight. (Approved 2026-10-10; arrives in Phase 7.)
 - Traps trigger along the path a unit walks, decided by the rules, not by animation frames. (Agreed fix; traps arrive in Phase 6.)
 
 ## Not changed yet (conscious design calls for later)
