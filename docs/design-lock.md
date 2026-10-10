@@ -29,7 +29,7 @@ Paste this at the top of every big prompt. Decisions confirmed by the owner on 2
 
 ## Confirmed decisions (2026-10-10)
 5. **The old game is a proof of concept, not law.** Every idea and mechanic carries over; matching it exactly is how we prove an idea came across correctly. Improvements are welcome, but each one is explained to the owner and signed off (or turned down) before it goes in, and then listed in `changes-from-old-game.md`.
-6. **Mid-battle saves resume exactly where you left off** (same board, health, statuses and turn). How this sits with decision 2 (fresh dice on load) is confirmed with the owner in Phase 7.
+6. **Mid-battle saves resume exactly where you left off** (same board, health, statuses and turn); only future dice are fresh (decision 2). Exact resume of old-game mid-battle saves is attempted in Phase 7.
 7. **Monsters use the same skills as heroes,** the same version of each skill; only their animations differ (monster animations come in a later phase). The old game had a few monster-only versions; this is listed as a change.
 8. **The weapon triangle (sword, lance, axe) shows in every forecast,** both when heroes attack and when monsters attack heroes.
 9. **Enemy AI gets smarter as you climb** (Phase 9): it learns to go after healers and heroes weak to its attacks.
