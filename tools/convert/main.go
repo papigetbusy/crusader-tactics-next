@@ -20,19 +20,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	// Keep the old table order: it decides which skills a hero starts with.
 	var skills []content.Skill
-	for _, s := range c.Skills {
-		skills = append(skills, s)
+	for _, name := range c.SkillOrder {
+		skills = append(skills, c.Skills[name])
 	}
-	sort.Slice(skills, func(i, j int) bool {
-		if skills[i].Class != skills[j].Class {
-			return skills[i].Class < skills[j].Class
-		}
-		if skills[i].Level != skills[j].Level {
-			return skills[i].Level < skills[j].Level
-		}
-		return skills[i].Name < skills[j].Name
-	})
 	var classes []content.Class
 	for _, k := range c.Classes {
 		classes = append(classes, k)
@@ -49,6 +41,8 @@ func main() {
 		"_about": "The element wheel: each element beats the one named after it.",
 		"beats":  c.Beats})
 	write("data/rules/combat.json", c.Combat)
+	write("data/rules/turns.json", c.Turns)
+	write("data/rules/ai.json", c.AI)
 }
 
 func write(path string, v any) {

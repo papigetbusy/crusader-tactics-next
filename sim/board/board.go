@@ -3,6 +3,7 @@
 package board
 
 import (
+	"github.com/papigetbusy/crusader-tactics-next/sim/action"
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
 )
@@ -54,9 +55,46 @@ func CanMove(u *state.Unit) bool {
 	return !u.Moved && u.Status["snare"] <= 0 && u.Status["lock"] <= 0 && u.Status["shock"] <= 0
 }
 
-// Budget is how far a unit may walk this turn, in half-steps.
-// (Abilities that add move, such as Haste or Vow of Honor, arrive in Phase 6.)
-func Budget(u *state.Unit) int { return 2 * u.Mov }
+// Budget is how far a unit may walk this turn, in half-steps: its move,
+// plus 2 while hasted. (Abilities that add move, such as Vow of Honor,
+// arrive in Phase 6.)
+func Budget(u *state.Unit) int {
+	mov := u.Mov
+	if u.Status["haste"] > 0 {
+		mov += 2
+	}
+	return 2 * mov
+}
+
+// MoveUnit walks a unit to (x, y) and reports the route. It counts the tiles
+// walked this turn (charge skills use it). It does not check the move is
+// allowed; callers do that first. Walking zero tiles does nothing.
+func MoveUnit(c *content.Content, b *state.Battle, u *state.Unit, x, y int, emit action.Emit) {
+	n := abs(u.X-x) + abs(u.Y-y)
+	if n == 0 {
+		return
+	}
+	path := Path(c, b, u, x, y)
+	if len(path) < 2 {
+		path = []Tile{{u.X, u.Y}, {x, y}}
+	}
+	u.TilesMoved += max(n, len(path)-1)
+	u.X, u.Y = x, y
+	if emit != nil {
+		ev := action.Event{Kind: action.Moved, Unit: u.ID}
+		for _, t := range path {
+			ev.Path = append(ev.Path, [2]int{t.X, t.Y})
+		}
+		emit(ev)
+	}
+}
+
+func abs(v int) int {
+	if v < 0 {
+		return -v
+	}
+	return v
+}
 
 // enemyBlocks is the old rule: you can pass through allies but not enemies.
 func enemyBlocks(b *state.Battle, u *state.Unit) func(x, y int) bool {

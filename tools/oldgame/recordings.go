@@ -51,6 +51,7 @@ type Event struct {
 	From []int    `json:"from"`
 	To   []int    `json:"to"`
 	S    string   `json:"s"` // act/hit: skill name
+	V    int      `json:"v"` // act: target unit
 	A    *HitUnit `json:"a"` // hit: attacker just before the hit
 	B    *HitUnit `json:"b"` // hit: target just before the hit
 	G0   int      `json:"g0"`
@@ -112,6 +113,12 @@ type SnapUnit struct {
 	Acted int            `json:"ac"`
 	Done  int            `json:"dn"`
 	St    map[string]int `json:"st"`
+	Elem  string         `json:"e"`
+	Boss  int            `json:"bo"`
+	Elite int            `json:"el"`
+	Cd    []*int         `json:"cd"` // one per skill slot; null = never used
+	Def2  int            `json:"df"`
+	Sh    int            `json:"sh"`
 }
 
 // Load reads the recorded fights file.

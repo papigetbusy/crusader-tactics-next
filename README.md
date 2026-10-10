@@ -15,6 +15,7 @@ The clean rebuild of Crusader Tactics. The rules live in Go (the **referee**), t
 | `testdata/oldgame/` | The answer key: the old game's tables and 200 recorded fights |
 | `tools/oldgame/` | Checks Go against the recorded fights |
 | `tools/guard/` | House rules: keeps the code clean |
+| `tools/convert/` | One-time converter that made the data files from the old tables |
 | `rehearsal/` | Rehearsal only: a tiny dice roller proving Go runs in the browser. Removed when real game code arrives. |
 | `adapters/wasm/` | The bridge the browser page calls |
 | `web/` | The page itself |
@@ -25,4 +26,5 @@ The clean rebuild of Crusader Tactics. The rules live in Go (the **referee**), t
 - Rehearsal: done (Claude pushes, the robot tests, builds and publishes).
 - Phase 4a, foundation and movement: done. Every one of the 6,624 moves recorded in the old game is a legal move in Go.
 - Phase 4b, attack math: done. All 2,508 hits and misses recorded in the old game give the same result in Go (same damage, same weak-spot multiplier, same HP after, same dice), using the exact dice the old game rolled.
-- Next: 4c, turns and enemy AI.
+- Phase 4c, turns and enemy AI: done. All 197 recorded fights replay in Go from the first turn, 9,217 of 9,217 steps identical to the old game, with Go making all 1,746 enemy decisions itself. Taken from the recordings for now: where reinforcements appear (floors, Phase 7), level-ups (XP, Phase 6), and loot rolls (Phase 6).
+- Next: 4d, a plain fight to play from the link, plus the Rule Book and Old-Game Match pages.

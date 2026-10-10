@@ -51,3 +51,13 @@ func (p *PCG) next() uint32 {
 func (p *PCG) Roll(string) float64 {
 	return float64(p.next()) / 4294967296.0
 }
+
+// Shuffle puts a list in a fair random order (the standard Fisher-Yates
+// method). It replaces the old game's biased sort-based shuffles; this
+// difference was approved by the owner on 2026-10-09.
+func Shuffle[T any](d Dice, label string, xs []T) {
+	for i := len(xs) - 1; i > 0; i-- {
+		j := IntN(d, label, i+1)
+		xs[i], xs[j] = xs[j], xs[i]
+	}
+}

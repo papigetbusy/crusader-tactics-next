@@ -1,6 +1,7 @@
 package content
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/fs"
@@ -65,9 +66,15 @@ func oldSkillsAndClasses(tables fs.FS, c *Content) error {
 		}
 	}
 	c.Skills = map[string]Skill{}
-	for _, m := range sk {
-		s := oldSkill(m)
+	b, _ := fs.ReadFile(tables, "SK.json")
+	order, err := objectKeys(b)
+	if err != nil {
+		return err
+	}
+	for _, name := range order {
+		s := oldSkill(sk[name])
 		c.Skills[s.Name] = s
+		c.SkillOrder = append(c.SkillOrder, s.Name)
 	}
 	c.Classes = map[string]Class{}
 	for name, o := range cl {
@@ -89,6 +96,8 @@ func oldSkillsAndClasses(tables fs.FS, c *Content) error {
 		c.Classes[name] = k
 	}
 	c.Combat = oldCombat
+	c.Turns = oldTurns
+	c.AI = oldAI
 	return nil
 }
 
@@ -105,4 +114,25 @@ var oldCombat = Combat{
 	RallyAttack: 1.25, WeakAttack: 0.7, BrokenDefense: 0.7, GuardDamage: 0.6, PrismAtLeast: 1.5,
 	WeaponBeats:     map[string]string{"axe": "sword", "sword": "lance", "lance": "axe"}, // WB, line 316
 	TriangleWeapons: []string{"sword", "axe", "lance"},                                   // TRI, line 440
+}
+
+// objectKeys lists a JSON object's keys in the order they are written.
+func objectKeys(b []byte) ([]string, error) {
+	d := json.NewDecoder(bytes.NewReader(b))
+	if _, err := d.Token(); err != nil {
+		return nil, err
+	}
+	var keys []string
+	for d.More() {
+		t, err := d.Token()
+		if err != nil {
+			return nil, err
+		}
+		keys = append(keys, t.(string))
+		var skip json.RawMessage
+		if err := d.Decode(&skip); err != nil {
+			return nil, err
+		}
+	}
+	return keys, nil
 }

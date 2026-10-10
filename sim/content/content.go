@@ -28,10 +28,13 @@ type Content struct {
 	Mounted           map[string]bool // classes slowed by forest
 	MountedForestCost int
 
-	Skills  map[string]Skill  // hero skills by name
-	Classes map[string]Class  // hero classes and monster types by name
-	Beats   map[string]string // element wheel: fire beats ice...
-	Combat  Combat
+	Skills     map[string]Skill  // hero skills by name
+	SkillOrder []string          // hero skills in the old game's table order (it decides starting skills)
+	Classes    map[string]Class  // hero classes and monster types by name
+	Beats      map[string]string // element wheel: fire beats ice...
+	Combat     Combat
+	Turns      Turns
+	AI         AI
 }
 
 // Default loads the live data files built into the program.
@@ -78,8 +81,10 @@ func Load(fsys fs.FS) (*Content, error) {
 		Beats map[string]string `json:"beats"`
 	}
 	var combat Combat
+	var turns Turns
+	var ai AI
 	for name, v := range map[string]any{"skills.json": &skills, "classes.json": &classes,
-		"elements.json": &elements, "rules/combat.json": &combat} {
+		"elements.json": &elements, "rules/combat.json": &combat, "rules/turns.json": &turns, "rules/ai.json": &ai} {
 		if err := readJSON(fsys, name, v); err != nil {
 			return nil, err
 		}
@@ -95,9 +100,12 @@ func Load(fsys fs.FS) (*Content, error) {
 		Classes:           map[string]Class{},
 		Beats:             elements.Beats,
 		Combat:            combat,
+		Turns:             turns,
+		AI:                ai,
 	}
 	for _, sk := range skills.Skills {
 		c.Skills[sk.Name] = sk
+		c.SkillOrder = append(c.SkillOrder, sk.Name)
 	}
 	for _, cl := range classes.Classes {
 		c.Classes[cl.Name] = cl

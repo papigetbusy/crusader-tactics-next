@@ -1,0 +1,6 @@
+{
+  "healWhenAllyBelow": 0.75,
+  "specialSkillChance": 0.45,
+  "tooClosePenalty": 30,
+  "spreadWeight": 0.01
+}

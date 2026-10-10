@@ -2,6 +2,8 @@
 // Rules receive a *Battle instead of reading hidden globals.
 package state
 
+import "github.com/papigetbusy/crusader-tactics-next/sim/content"
+
 // Team numbers, as in the old game.
 const (
 	Heroes  = 0
@@ -35,10 +37,20 @@ type Unit struct {
 	LastSkill  string         // heroes: the skill used last
 	Summoned   bool           // summons and companions do not learn or level
 
+	Skills    []content.Skill // the skill bar, in order
+	Cooldowns []int           // turns until each skill is ready again (0 = ready)
+
 	Moved bool // has moved this turn
 	Acted bool // has used its action this turn
 	Done  bool // finished for this turn
 }
+
+// Outcomes of a battle.
+const (
+	Ongoing = ""
+	Won     = "won"
+	Lost    = "lost"
+)
 
 // Battle is everything the referee knows about one fight.
 type Battle struct {
@@ -47,6 +59,9 @@ type Battle struct {
 	Heights [][]int  // -2 mountain, -1 water, 0 flat, 1 hill
 	Units   []*Unit  // in turn order; dead units are removed
 	Turn    int
+	Side    int    // whose turn it is: Heroes or Enemies
+	Outcome string // Ongoing, Won or Lost
+	NextID  int    // the ID the next new unit gets
 }
 
 // UnitAt returns the unit standing on (x, y), or nil.
