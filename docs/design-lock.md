@@ -34,8 +34,9 @@ Paste this at the top of every big prompt. Decisions confirmed by the owner on 2
 8. **The weapon triangle (sword, lance, axe) shows in every forecast,** both when heroes attack and when monsters attack heroes.
 9. **Enemy AI gets smarter as you climb** (Phase 9): it learns to go after healers and heroes weak to its attacks.
 10. **Look and feel notes for Phase 8:** an enraged boss glows red; the camera waits for an attack animation to finish before jumping to the next hero; the battle goal shows once at the start and then lives in the pause menu; the skill-switching bonus is explained once in tips.
-11. **Team select and deployment (rules in Phase 7, screen in Phase 8), like Fire Emblem's preparation screen:** 5 hero slots, plus one at floors 25, 50 and 75 (up to 8). Before each map you pick heroes from your whole roster and must fill every slot; only the heroes who fight earn XP. Heroes go on blue starting tiles you choose, with more blue tiles than heroes. Design aim: a strategy-heavy game where skill and game knowledge are always rewarded.
+11. **Team select and deployment (rules in Phase 7, screen in Phase 8), like Fire Emblem's preparation screen:** 5 hero slots, plus one at floors 25, 50 and 75 (up to 8). Before each map you pick heroes from your whole roster and must fill every slot; only the heroes who fight earn XP. Heroes go on blue starting tiles you choose, with more blue tiles than heroes. If you don't choose, the game brings your highest-level heroes. Design aim: a strategy-heavy game where skill and game knowledge are always rewarded.
 12. **Any fallen hero can be revived,** however they died (poison and bleeding included). In the game since 2026-10-10.
+13. **An unarmed hero counts as their class's usual weapon** in the weapon triangle (for example Warrior sword, Tank axe, Knight lance), both when attacking and when being attacked. (Phase 6)
 
 ## Existing rules to preserve
 - Floors stay the same within a run; revisiting a cleared floor gives less gold and the same XP.
