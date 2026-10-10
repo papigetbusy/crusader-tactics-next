@@ -1,0 +1,10 @@
+{
+  "_about": "The element wheel: each element beats the one named after it.",
+  "beats": {
+    "dark": "light",
+    "elec": "fire",
+    "fire": "ice",
+    "ice": "elec",
+    "light": "dark"
+  }
+}

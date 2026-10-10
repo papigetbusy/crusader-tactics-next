@@ -24,4 +24,5 @@ The clean rebuild of Crusader Tactics. The rules live in Go (the **referee**), t
 
 - Rehearsal: done (Claude pushes, the robot tests, builds and publishes).
 - Phase 4a, foundation and movement: done. Every one of the 6,624 moves recorded in the old game is a legal move in Go.
-- Next: 4b, attack math.
+- Phase 4b, attack math: done. All 2,508 hits and misses recorded in the old game give the same result in Go (same damage, same weak-spot multiplier, same HP after, same dice), using the exact dice the old game rolled.
+- Next: 4c, turns and enemy AI.

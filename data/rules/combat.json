@@ -1,0 +1,51 @@
+{
+  "damageRollLow": 0.9,
+  "damageRollSpread": 0.2,
+  "minDamage": 1,
+  "hitMagic": 95,
+  "hitRanged": 85,
+  "hitMelee": 90,
+  "hitHeroBonus": 5,
+  "hitBossBonus": 10,
+  "hitEliteBonus": 5,
+  "hitTriangle": 15,
+  "hitMin": 5,
+  "hitMax": 100,
+  "strong": 1.5,
+  "weak": 0.75,
+  "bossEnrageBelow": 0.5,
+  "bossEnrage": 1.3,
+  "skillLevelBonus": 0.05,
+  "skillLevelUses": [
+    0,
+    8,
+    16,
+    24,
+    32
+  ],
+  "executeBelow": 0.4,
+  "execute": 1.5,
+  "ambush": 1.5,
+  "chargePerTile": 0.12,
+  "chargeMax": 0.6,
+  "magicDefense": 0.5,
+  "defendDamage": 0.5,
+  "drainDefault": 0.6,
+  "elecShockTurns": 1,
+  "critDamage": 1.5,
+  "rallyAttack": 1.25,
+  "weakAttack": 0.7,
+  "brokenDefense": 0.7,
+  "guardDamage": 0.6,
+  "prismAtLeast": 1.5,
+  "weaponBeats": {
+    "axe": "sword",
+    "lance": "axe",
+    "sword": "lance"
+  },
+  "triangleWeapons": [
+    "sword",
+    "axe",
+    "lance"
+  ]
+}

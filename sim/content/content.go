@@ -27,6 +27,11 @@ type Content struct {
 	FlyingCost        int             // what every tile costs a flier
 	Mounted           map[string]bool // classes slowed by forest
 	MountedForestCost int
+
+	Skills  map[string]Skill  // hero skills by name
+	Classes map[string]Class  // hero classes and monster types by name
+	Beats   map[string]string // element wheel: fire beats ice...
+	Combat  Combat
 }
 
 // Default loads the live data files built into the program.
@@ -63,6 +68,22 @@ func Load(fsys fs.FS) (*Content, error) {
 	if err := readJSON(fsys, "rules/movement.json", &mf); err != nil {
 		return nil, err
 	}
+	var skills struct {
+		Skills []Skill `json:"skills"`
+	}
+	var classes struct {
+		Classes []Class `json:"classes"`
+	}
+	var elements struct {
+		Beats map[string]string `json:"beats"`
+	}
+	var combat Combat
+	for name, v := range map[string]any{"skills.json": &skills, "classes.json": &classes,
+		"elements.json": &elements, "rules/combat.json": &combat} {
+		if err := readJSON(fsys, name, v); err != nil {
+			return nil, err
+		}
+	}
 	c := &Content{
 		Terrain:           map[byte]Terrain{},
 		Blocked:           set(letters(mf.BlockedLetters)...),
@@ -70,6 +91,16 @@ func Load(fsys fs.FS) (*Content, error) {
 		FlyingCost:        mf.FlyingCost,
 		Mounted:           set(mf.MountedClasses...),
 		MountedForestCost: mf.MountedForestCost,
+		Skills:            map[string]Skill{},
+		Classes:           map[string]Class{},
+		Beats:             elements.Beats,
+		Combat:            combat,
+	}
+	for _, sk := range skills.Skills {
+		c.Skills[sk.Name] = sk
+	}
+	for _, cl := range classes.Classes {
+		c.Classes[cl.Name] = cl
 	}
 	for _, t := range tf.Terrain {
 		c.Terrain[t.Letter[0]] = t
@@ -96,7 +127,59 @@ func (c *Content) Check() error {
 	if c.FlyingCost <= 0 || c.MountedForestCost <= 0 {
 		return fmt.Errorf("rules/movement.json: flyingCost and mountedForestCost must be above 0")
 	}
+	for name, sk := range c.Skills {
+		if err := sk.check(); err != nil {
+			return fmt.Errorf("skills.json, skill %q: %w", name, err)
+		}
+	}
+	for name, cl := range c.Classes {
+		for _, sk := range cl.Skills {
+			if err := sk.check(); err != nil {
+				return fmt.Errorf("classes.json, %s skill %q: %w", name, sk.Name, err)
+			}
+		}
+	}
+	if c.Combat.HitMin < 0 || c.Combat.HitMax > 100 || c.Combat.HitMin > c.Combat.HitMax {
+		return fmt.Errorf("rules/combat.json: hit chance limits must be within 0-100")
+	}
+	if len(c.Combat.SkillLevelUses) == 0 {
+		return fmt.Errorf("rules/combat.json: skillLevelUses needs at least one entry")
+	}
 	return nil
+}
+
+func (s Skill) check() error {
+	if s.Name == "" {
+		return fmt.Errorf("has no name")
+	}
+	if s.Power < 0 || s.MinRange < 0 || s.MaxRange < s.MinRange || s.Cooldown < 0 {
+		return fmt.Errorf("power, range or cooldown is impossible (range %d-%d)", s.MinRange, s.MaxRange)
+	}
+	return nil
+}
+
+// SkillFor finds the skill a unit uses by name. Heroes use the hero skill
+// list. Monsters use their type's own skills first (a monster's Fireball can
+// differ from a hero's), then skills unlocked by level. classBase reports a
+// skill from the type's own list: the old game treats those specially for
+// elements (index.html line 1704).
+func (c *Content) SkillFor(team int, class, name string) (s Skill, classBase bool, ok bool) {
+	if team != 0 {
+		if cl, found := c.Classes[class]; found {
+			for _, sk := range cl.Skills {
+				if sk.Name == name {
+					return sk, true, true
+				}
+			}
+			for _, ls := range cl.LevelSkills {
+				if ls.Skill.Name == name {
+					return ls.Skill, false, true
+				}
+			}
+		}
+	}
+	s, ok = c.Skills[name]
+	return s, false, ok
 }
 
 func readJSON(fsys fs.FS, name string, v any) error {

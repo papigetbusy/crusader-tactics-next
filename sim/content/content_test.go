@@ -21,7 +21,7 @@ func TestData(t *testing.T) {
 
 	// This is the seed of the "Changes from the old game" page: when a number is
 	// changed on purpose, this test is updated to list the change.
-	t.Run("The live movement and terrain data still match the old game", func(t *testing.T) {
+	t.Run("The live data files still match the old game's tables", func(t *testing.T) {
 		live := MustDefault()
 		old, err := FromOld(os.DirFS("../../testdata/oldgame/tables"))
 		if err != nil {

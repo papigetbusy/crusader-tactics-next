@@ -1,0 +1,818 @@
+{
+  "_about": "Hero classes and monster types: base numbers and the skills monsters of each type use. Monster skills can differ from the hero skill of the same name. From the old game's CL and MSK tables.",
+  "classes": [
+    {
+      "name": "Abyss Serpent",
+      "hp": 110,
+      "atk": 15,
+      "def": 7,
+      "mov": 4,
+      "color": "#3a5a4a",
+      "skills": [
+        {
+          "name": "Constrict",
+          "power": 1.2,
+          "minRange": 1,
+          "maxRange": 1,
+          "cooldown": 2,
+          "effects": {
+            "stun": 1
+          }
+        },
+        {
+          "name": "Venom Wave",
+          "power": 0.9,
+          "minRange": 1,
+          "maxRange": 3,
+          "cooldown": 2,
+          "effects": {
+            "bleed": 4
+          },
+          "area": 1
+        },
+        {
+          "name": "Tidal Crush",
+          "power": 1.4,
+          "minRange": 1,
+          "maxRange": 4,
+          "cooldown": 3,
+          "magic": true,
+          "area": 1
+        }
+      ]
+    },
+    {
+      "name": "Assassin",
+      "weapon": "sword",
+      "hp": 20,
+      "atk": 10,
+      "def": 2,
+      "mov": 5,
+      "color": "#5a4a70",
+      "skills": null
+    },
+    {
+      "name": "Bat Lord",
+      "hp": 90,
+      "atk": 14,
+      "def": 6,
+      "mov": 5,
+      "color": "#6a1f3a",
+      "skills": [
+        {
+          "name": "Wing Slash",
+          "power": 1.1,
+          "minRange": 1,
+          "maxRange": 1
+        },
+        {
+          "name": "Blood Drain",
+          "power": 1,
+          "minRange": 1,
+          "maxRange": 1,
+          "drain": 1
+        },
+        {
+          "name": "Dive Strike",
+          "power": 1.5,
+          "minRange": 2,
+          "maxRange": 4,
+          "cooldown": 3
+        }
+      ]
+    },
+    {
+      "name": "Bone Gargoyle",
+      "hp": 44,
+      "atk": 12,
+      "def": 5,
+      "mov": 5,
+      "color": "#6a5a3a",
+      "skills": [
+        {
+          "name": "Dive Claw",
+          "power": 1.3,
+          "minRange": 1,
+          "maxRange": 2
+        },
+        {
+          "name": "Bone Storm",
+          "power": 0.8,
+          "minRange": 1,
+          "maxRange": 1,
+          "cooldown": 2,
+          "area": 1
+        }
+      ]
+    },
+    {
+      "name": "Dark Knight",
+      "weapon": "lance",
+      "hp": 52,
+      "atk": 11,
+      "def": 9,
+      "mov": 3,
+      "color": "#555",
+      "skills": [
+        {
+          "name": "Heavy Slash",
+          "power": 1.2,
+          "minRange": 1,
+          "maxRange": 1
+        },
+        {
+          "name": "Shield Crush",
+          "power": 0.8,
+          "minRange": 1,
+          "maxRange": 1,
+          "cooldown": 3,
+          "effects": {
+            "stun": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "Demon Lord",
+      "hp": 120,
+      "atk": 17,
+      "def": 8,
+      "mov": 4,
+      "color": "#5a1a1a",
+      "skills": [
+        {
+          "name": "Infernal Claw",
+          "power": 1.3,
+          "minRange": 1,
+          "maxRange": 1
+        },
+        {
+          "name": "Hellfire",
+          "power": 1,
+          "minRange": 1,
+          "maxRange": 4,
+          "cooldown": 3,
+          "magic": true,
+          "area": 2
+        },
+        {
+          "name": "Dark Pact",
+          "power": 0,
+          "minRange": 0,
+          "maxRange": 0,
+          "cooldown": 4,
+          "area": 3,
+          "support": true,
+          "buffs": {
+            "rally": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dragon Knight",
+      "weapon": "lance",
+      "hp": 34,
+      "atk": 11,
+      "def": 6,
+      "mov": 5,
+      "color": "#8a2a2a",
+      "skills": null
+    },
+    {
+      "name": "Dread Brute",
+      "weapon": "axe",
+      "hp": 58,
+      "atk": 12,
+      "def": 8,
+      "mov": 3,
+      "color": "#5a3a6a",
+      "skills": [
+        {
+          "name": "Flail Smash",
+          "power": 1.3,
+          "minRange": 1,
+          "maxRange": 1
+        },
+        {
+          "name": "Shackle",
+          "power": 0.8,
+          "minRange": 1,
+          "maxRange": 2,
+          "cooldown": 2,
+          "effects": {
+            "snare": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "Elder Dragon",
+      "hp": 120,
+      "atk": 16,
+      "def": 8,
+      "mov": 4,
+      "color": "#8a2a2a",
+      "skills": [
+        {
+          "name": "Claw Swipe",
+          "power": 1.1,
+          "minRange": 1,
+          "maxRange": 1
+        },
+        {
+          "name": "Flame Breath",
+          "power": 1,
+          "minRange": 1,
+          "maxRange": 3,
+          "cooldown": 2,
+          "area": 1
+        },
+        {
+          "name": "Tail Slam",
+          "power": 1.4,
+          "minRange": 1,
+          "maxRange": 1,
+          "cooldown": 3,
+          "effects": {
+            "stun": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "Frost Titan",
+      "hp": 66,
+      "atk": 12,
+      "def": 9,
+      "mov": 3,
+      "color": "#7fb8ff",
+      "skills": [
+        {
+          "name": "Glacier Fist",
+          "power": 1.4,
+          "minRange": 1,
+          "maxRange": 1,
+          "effects": {
+            "snare": 1
+          }
+        },
+        {
+          "name": "Frost Nova",
+          "power": 1,
+          "minRange": 1,
+          "maxRange": 2,
+          "cooldown": 3,
+          "magic": true,
+          "effects": {
+            "stun": 1
+          },
+          "area": 1
+        }
+      ]
+    },
+    {
+      "name": "Golden Drake",
+      "hp": 42,
+      "atk": 12,
+      "def": 4,
+      "mov": 5,
+      "color": "#d9a441",
+      "skills": [
+        {
+          "name": "Claw",
+          "power": 1,
+          "minRange": 1,
+          "maxRange": 1
+        },
+        {
+          "name": "Fire Breath",
+          "power": 1.2,
+          "minRange": 1,
+          "maxRange": 3,
+          "cooldown": 2
+        }
+      ]
+    },
+    {
+      "name": "Grave Lord",
+      "hp": 85,
+      "atk": 15,
+      "def": 5,
+      "mov": 3,
+      "color": "#4a2a6a",
+      "skills": [
+        {
+          "name": "Death Bolt",
+          "power": 1.2,
+          "minRange": 1,
+          "maxRange": 4,
+          "magic": true
+        },
+        {
+          "name": "Soul Rend",
+          "power": 1,
+          "minRange": 1,
+          "maxRange": 3,
+          "magic": true,
+          "drain": 0.5
+        },
+        {
+          "name": "Grave Nova",
+          "power": 1,
+          "minRange": 1,
+          "maxRange": 4,
+          "cooldown": 3,
+          "magic": true,
+          "area": 2
+        }
+      ]
+    },
+    {
+      "name": "Gunslinger",
+      "hp": 22,
+      "atk": 10,
+      "def": 2,
+      "mov": 4,
+      "color": "#8a6a4a",
+      "skills": null
+    },
+    {
+      "name": "Healer",
+      "hp": 18,
+      "atk": 5,
+      "def": 2,
+      "mov": 3,
+      "color": "#f2f0d0",
+      "skills": [
+        {
+          "name": "Mend Self",
+          "power": 0.8,
+          "minRange": 0,
+          "maxRange": 0,
+          "heal": true
+        },
+        {
+          "name": "Heal Ally",
+          "power": 1.2,
+          "minRange": 1,
+          "maxRange": 3,
+          "heal": true
+        },
+        {
+          "name": "Divine Grace",
+          "power": 3,
+          "minRange": 0,
+          "maxRange": 99,
+          "heal": true,
+          "lockSelf": true
+        }
+      ],
+      "levelSkills": [
+        {
+          "level": 1,
+          "skill": {
+            "name": "Spore Bolt",
+            "power": 0.9,
+            "minRange": 1,
+            "maxRange": 3,
+            "visual": "spit"
+          }
+        },
+        {
+          "level": 10,
+          "skill": {
+            "name": "Mass Mend",
+            "power": 1,
+            "minRange": 1,
+            "maxRange": 4,
+            "cooldown": 3,
+            "area": 2,
+            "heal": true
+          }
+        },
+        {
+          "level": 20,
+          "skill": {
+            "name": "Toxic Spores",
+            "power": 1,
+            "minRange": 1,
+            "maxRange": 3,
+            "cooldown": 3,
+            "effects": {
+              "bleed": 4
+            },
+            "visual": "spit"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Knight",
+      "weapon": "lance",
+      "hp": 32,
+      "atk": 12,
+      "def": 7,
+      "mov": 7,
+      "color": "#9aa7c7",
+      "skills": null
+    },
+    {
+      "name": "Lich King",
+      "hp": 80,
+      "atk": 15,
+      "def": 5,
+      "mov": 3,
+      "color": "#6a3a9a",
+      "skills": [
+        {
+          "name": "Soul Bolt",
+          "power": 1.2,
+          "minRange": 1,
+          "maxRange": 4
+        },
+        {
+          "name": "Withering Curse",
+          "power": 0.6,
+          "minRange": 1,
+          "maxRange": 4,
+          "cooldown": 2,
+          "effects": {
+            "bleed": 4,
+            "snare": 1
+          }
+        },
+        {
+          "name": "Shadow Nova",
+          "power": 0.9,
+          "minRange": 1,
+          "maxRange": 4,
+          "cooldown": 3,
+          "area": 1
+        }
+      ]
+    },
+    {
+      "name": "Mage",
+      "hp": 18,
+      "atk": 10,
+      "def": 1,
+      "mov": 3,
+      "color": "#e0627a",
+      "skills": [
+        {
+          "name": "Fireball",
+          "power": 1.2,
+          "minRange": 1,
+          "maxRange": 3,
+          "element": "fire"
+        },
+        {
+          "name": "Thunder",
+          "power": 1.2,
+          "minRange": 1,
+          "maxRange": 3,
+          "element": "elec"
+        },
+        {
+          "name": "Frost Bolt",
+          "power": 1,
+          "minRange": 1,
+          "maxRange": 3,
+          "element": "ice",
+          "effects": {
+            "snare": 1
+          }
+        }
+      ],
+      "levelSkills": [
+        {
+          "level": 10,
+          "skill": {
+            "name": "Greater Spell",
+            "power": 1.5,
+            "minRange": 2,
+            "maxRange": 5,
+            "cooldown": 3,
+            "element": "user",
+            "area": 1,
+            "visual": "meteor"
+          }
+        },
+        {
+          "level": 22,
+          "skill": {
+            "name": "Cataclysm",
+            "power": 2,
+            "minRange": 1,
+            "maxRange": 5,
+            "cooldown": 4,
+            "element": "user",
+            "area": 2,
+            "visual": "nova"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orc Brute",
+      "weapon": "axe",
+      "hp": 62,
+      "atk": 12,
+      "def": 6,
+      "mov": 3,
+      "color": "#6a8a4a",
+      "skills": [
+        {
+          "name": "Smash",
+          "power": 1.4,
+          "minRange": 1,
+          "maxRange": 1
+        },
+        {
+          "name": "Ground Slam",
+          "power": 0.8,
+          "minRange": 1,
+          "maxRange": 1,
+          "cooldown": 3,
+          "effects": {
+            "stun": 1
+          },
+          "area": 1
+        }
+      ]
+    },
+    {
+      "name": "Orc Chieftain",
+      "weapon": "axe",
+      "hp": 54,
+      "atk": 13,
+      "def": 6,
+      "mov": 4,
+      "color": "#5a8a3a",
+      "skills": [
+        {
+          "name": "Club Smash",
+          "power": 1.4,
+          "minRange": 1,
+          "maxRange": 1
+        },
+        {
+          "name": "War Stomp",
+          "power": 0.9,
+          "minRange": 1,
+          "maxRange": 1,
+          "cooldown": 3,
+          "effects": {
+            "stun": 1
+          },
+          "area": 1
+        }
+      ]
+    },
+    {
+      "name": "Plague Reaper",
+      "hp": 40,
+      "atk": 13,
+      "def": 4,
+      "mov": 4,
+      "color": "#3a5a2a",
+      "skills": [
+        {
+          "name": "Grave Bolt",
+          "power": 1.2,
+          "minRange": 1,
+          "maxRange": 4,
+          "magic": true
+        },
+        {
+          "name": "Plague Mist",
+          "power": 0.7,
+          "minRange": 1,
+          "maxRange": 3,
+          "cooldown": 2,
+          "magic": true,
+          "effects": {
+            "bleed": 3
+          },
+          "area": 1
+        }
+      ]
+    },
+    {
+      "name": "Ranger",
+      "hp": 20,
+      "atk": 9,
+      "def": 2,
+      "mov": 4,
+      "color": "#6fb7a8",
+      "skills": [
+        {
+          "name": "Shot",
+          "power": 1,
+          "minRange": 2,
+          "maxRange": 7
+        },
+        {
+          "name": "Snaring Shot",
+          "power": 0.6,
+          "minRange": 2,
+          "maxRange": 7,
+          "effects": {
+            "snare": 1
+          }
+        },
+        {
+          "name": "Power Shot",
+          "power": 1.6,
+          "minRange": 2,
+          "maxRange": 7,
+          "cooldown": 3
+        }
+      ],
+      "levelSkills": [
+        {
+          "level": 8,
+          "skill": {
+            "name": "Venom Spit",
+            "power": 0.9,
+            "minRange": 2,
+            "maxRange": 5,
+            "cooldown": 2,
+            "effects": {
+              "bleed": 3
+            }
+          }
+        },
+        {
+          "level": 20,
+          "skill": {
+            "name": "Barrage",
+            "power": 1.2,
+            "minRange": 3,
+            "maxRange": 7,
+            "cooldown": 4,
+            "area": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "Shadow Assassin",
+      "weapon": "sword",
+      "hp": 34,
+      "atk": 13,
+      "def": 3,
+      "mov": 6,
+      "color": "#444",
+      "skills": [
+        {
+          "name": "Backstab",
+          "power": 1.3,
+          "minRange": 1,
+          "maxRange": 1
+        },
+        {
+          "name": "Poison Blade",
+          "power": 0.7,
+          "minRange": 1,
+          "maxRange": 1,
+          "effects": {
+            "bleed": 3
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tank",
+      "weapon": "axe",
+      "hp": 36,
+      "atk": 9,
+      "def": 8,
+      "mov": 3,
+      "color": "#8d99b8",
+      "skills": [
+        {
+          "name": "Bash",
+          "power": 1.1,
+          "minRange": 1,
+          "maxRange": 1
+        },
+        {
+          "name": "Shield Bash",
+          "power": 0.9,
+          "minRange": 1,
+          "maxRange": 1,
+          "cooldown": 3,
+          "effects": {
+            "stun": 1
+          }
+        }
+      ],
+      "levelSkills": [
+        {
+          "level": 8,
+          "skill": {
+            "name": "Shell Slam",
+            "power": 1.5,
+            "minRange": 1,
+            "maxRange": 1,
+            "cooldown": 3,
+            "effects": {
+              "stun": 1
+            }
+          }
+        },
+        {
+          "level": 20,
+          "skill": {
+            "name": "Stone Quake",
+            "power": 1.2,
+            "minRange": 1,
+            "maxRange": 1,
+            "cooldown": 3,
+            "area": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "Warrior",
+      "weapon": "sword",
+      "hp": 26,
+      "atk": 8,
+      "def": 4,
+      "mov": 4,
+      "color": "#d9a441",
+      "skills": [
+        {
+          "name": "Slash",
+          "power": 1,
+          "minRange": 1,
+          "maxRange": 1
+        },
+        {
+          "name": "Rend",
+          "power": 0.8,
+          "minRange": 1,
+          "maxRange": 1,
+          "effects": {
+            "bleed": 3
+          }
+        },
+        {
+          "name": "Power Strike",
+          "power": 1.6,
+          "minRange": 1,
+          "maxRange": 1,
+          "cooldown": 3
+        }
+      ],
+      "levelSkills": [
+        {
+          "level": 8,
+          "skill": {
+            "name": "Savage Claw",
+            "power": 1.2,
+            "minRange": 1,
+            "maxRange": 1,
+            "cooldown": 2,
+            "effects": {
+              "bleed": 3
+            }
+          }
+        },
+        {
+          "level": 20,
+          "skill": {
+            "name": "Rampage",
+            "power": 1.5,
+            "minRange": 1,
+            "maxRange": 1,
+            "cooldown": 3,
+            "area": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "Witch",
+      "hp": 18,
+      "atk": 10,
+      "def": 1,
+      "mov": 4,
+      "color": "#6a3a9a",
+      "skills": null
+    },
+    {
+      "name": "Witch Knight",
+      "weapon": "lance",
+      "hp": 28,
+      "atk": 9,
+      "def": 5,
+      "mov": 6,
+      "color": "#6a3a9a",
+      "skills": null
+    }
+  ]
+}

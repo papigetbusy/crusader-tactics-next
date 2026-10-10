@@ -45,14 +45,48 @@ type Step struct {
 
 // Event is one thing the old game reported happening.
 type Event struct {
-	K    string `json:"k"`
-	ID   int    `json:"id"`
-	From []int  `json:"from"`
-	To   []int  `json:"to"`
-	B    *struct {
-		ID int `json:"id"`
-	} `json:"b"`
-	BHP *int `json:"bhp"`
+	K    string   `json:"k"`
+	ID   int      `json:"id"`
+	Side int      `json:"side"` // startPhase/endPhase: whose turn
+	From []int    `json:"from"`
+	To   []int    `json:"to"`
+	S    string   `json:"s"` // act/hit: skill name
+	A    *HitUnit `json:"a"` // hit: attacker just before the hit
+	B    *HitUnit `json:"b"` // hit: target just before the hit
+	G0   int      `json:"g0"`
+	G1   int      `json:"g1"` // hit: dice used are Step.Dice[G0:G1]
+	R    *struct {
+		Dm   int     `json:"dm"`
+		M    float64 `json:"m"`
+		Miss int     `json:"miss"`
+	} `json:"r"`
+	BHP *int `json:"bhp"` // hit: target HP right after
+}
+
+// HitUnit is a unit as recorded at the moment of a hit.
+type HitUnit struct {
+	ID      int            `json:"id"`
+	Team    int            `json:"t"`
+	Class   string         `json:"n"`
+	X       int            `json:"x"`
+	Y       int            `json:"y"`
+	HP      int            `json:"hp"`
+	MaxHP   int            `json:"mx"`
+	Atk     int            `json:"atk"`
+	Def     int            `json:"def"`
+	Mov     int            `json:"mov"`
+	Lv      int            `json:"lv"`
+	Shield  int            `json:"sh"`
+	Element *string        `json:"el"`
+	Weapon  *string        `json:"w"`
+	RB      int            `json:"rb"`
+	Spec    *string        `json:"sp"`
+	Defend  any            `json:"df"`
+	Boss    any            `json:"bo"`
+	Elite   any            `json:"elt"`
+	St      map[string]int `json:"st"`
+	Af      map[string]any `json:"af"`
+	Ter     string         `json:"ter"`
 }
 
 // Snap is the state of every unit after a step.

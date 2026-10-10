@@ -22,6 +22,19 @@ type Unit struct {
 	Level  int            // level
 	Status map[string]int // status name -> turns left ("snare": 2)
 
+	Weapon     string // sword, axe, lance... ("" for heroes without a triangle weapon)
+	Element    string // fire, ice, elec, light, dark, or ""
+	Boss       bool
+	Elite      bool
+	Defending  bool           // chose Defend this turn: takes half damage
+	TilesMoved int            // tiles walked this turn (charge skills)
+	RangeBonus int            // extra range (ascensions)
+	Shield     int            // absorbs damage before HP
+	CritChance int            // % (comes from gear; 0 without gear)
+	SkillUses  map[string]int // heroes: uses per skill (skills level up with use)
+	LastSkill  string         // heroes: the skill used last
+	Summoned   bool           // summons and companions do not learn or level
+
 	Moved bool // has moved this turn
 	Acted bool // has used its action this turn
 	Done  bool // finished for this turn

@@ -35,5 +35,74 @@ func FromOld(tables fs.FS) (*Content, error) {
 	for l, t := range tinfo {
 		c.Terrain[l[0]] = Terrain{Letter: l, Name: t.N, MoveCost: t.C, DamageTaken: t.R, Heal: t.Heal}
 	}
+	if err := oldSkillsAndClasses(tables, c); err != nil {
+		return nil, err
+	}
 	return c, c.Check()
+}
+
+// oldSkillsAndClasses reads SK, CL, MSK and EB, and sets the combat numbers
+// that were constants in the old code.
+func oldSkillsAndClasses(tables fs.FS, c *Content) error {
+	var sk map[string]map[string]any
+	var cl map[string]struct {
+		W   string           `json:"w"`
+		HP  int              `json:"hp"`
+		Atk int              `json:"atk"`
+		Def int              `json:"def"`
+		Mov int              `json:"mov"`
+		Col string           `json:"col"`
+		Sk  []map[string]any `json:"sk"`
+	}
+	var msk map[string][][2]json.RawMessage
+	for name, v := range map[string]any{"SK.json": &sk, "CL.json": &cl, "MSK.json": &msk, "EB.json": &c.Beats} {
+		b, err := fs.ReadFile(tables, name)
+		if err != nil {
+			return fmt.Errorf("old table %s is missing: %w", name, err)
+		}
+		if err := json.Unmarshal(b, v); err != nil {
+			return fmt.Errorf("old table %s: %w", name, err)
+		}
+	}
+	c.Skills = map[string]Skill{}
+	for _, m := range sk {
+		s := oldSkill(m)
+		c.Skills[s.Name] = s
+	}
+	c.Classes = map[string]Class{}
+	for name, o := range cl {
+		k := Class{Name: name, Weapon: o.W, HP: o.HP, Atk: o.Atk, Def: o.Def, Mov: o.Mov, Color: o.Col}
+		for _, m := range o.Sk {
+			k.Skills = append(k.Skills, oldSkill(m))
+		}
+		for _, pair := range msk[name] {
+			var lv int
+			var m map[string]any
+			if err := json.Unmarshal(pair[0], &lv); err != nil {
+				return err
+			}
+			if err := json.Unmarshal(pair[1], &m); err != nil {
+				return err
+			}
+			k.LevelSkills = append(k.LevelSkills, LevelSkill{Level: lv, Skill: oldSkill(m)})
+		}
+		c.Classes[name] = k
+	}
+	c.Combat = oldCombat
+	return nil
+}
+
+// oldCombat are the hit and damage numbers written into the old code.
+var oldCombat = Combat{
+	DamageRollLow: 0.9, DamageRollSpread: 0.2, MinDamage: 1, // hurt, line 1690; dcalc, line 450
+	HitMagic: 95, HitRanged: 85, HitMelee: 90, // hitCh, line 1060
+	HitHeroBonus: 5, HitBossBonus: 10, HitEliteBonus: 5, HitTriangle: 15, HitMin: 5, HitMax: 100,
+	Strong: 1.5, Weak: 0.75, // mult, line 778
+	BossEnrageBelow: 0.5, BossEnrage: 1.3, // dcalc, line 446
+	SkillLevelBonus: 0.05, SkillLevelUses: []int{0, 8, 16, 24, 32}, // SKB, SKT, line 434
+	ExecuteBelow: 0.4, Execute: 1.5, Ambush: 1.5, ChargePerTile: 0.12, ChargeMax: 0.6, // dcalc, line 448
+	MagicDefense: 0.5, DefendDamage: 0.5, DrainDefault: 0.6, ElecShockTurns: 1, CritDamage: 1.5,
+	RallyAttack: 1.25, WeakAttack: 0.7, BrokenDefense: 0.7, GuardDamage: 0.6, PrismAtLeast: 1.5,
+	WeaponBeats:     map[string]string{"axe": "sword", "sword": "lance", "lance": "axe"}, // WB, line 316
+	TriangleWeapons: []string{"sword", "axe", "lance"},                                   // TRI, line 440
 }
