@@ -43,6 +43,17 @@ type Unit struct {
 	Moved bool // has moved this turn
 	Acted bool // has used its action this turn
 	Done  bool // finished for this turn
+
+	CloakUsed bool // Cloak was used; its 2-turn cooldown starts when the cloak ends
+
+	Potions int   // potions left this floor (heroes)
+	Undo    *Tile // where the unit stood before its move this turn, while Undo is still allowed
+}
+
+// Tile is a board position.
+type Tile struct {
+	X int `json:"x"`
+	Y int `json:"y"`
 }
 
 // Outcomes of a battle.
@@ -59,9 +70,11 @@ type Battle struct {
 	Heights [][]int  // -2 mountain, -1 water, 0 flat, 1 hill
 	Units   []*Unit  // in turn order; dead units are removed
 	Turn    int
-	Side    int    // whose turn it is: Heroes or Enemies
-	Outcome string // Ongoing, Won or Lost
-	NextID  int    // the ID the next new unit gets
+	Side    int     // whose turn it is: Heroes or Enemies
+	Outcome string  // Ongoing, Won or Lost
+	NextID  int     // the ID the next new unit gets
+	Throne  *Tile   // seize-the-throne floors: a hero standing here wins the fight
+	Fallen  []*Unit // heroes who died in combat this floor, last one first to be revived
 }
 
 // UnitAt returns the unit standing on (x, y), or nil.

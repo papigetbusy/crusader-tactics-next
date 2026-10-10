@@ -87,6 +87,12 @@ func Multiplier(c *content.Content, by, target *state.Unit, element string) floa
 	return m
 }
 
+// Enraged reports a boss below half health, which hits harder (old dcalc,
+// line 446).
+func Enraged(c *content.Content, u *state.Unit) bool {
+	return u.Boss && float64(u.HP) < float64(u.MaxHP)*c.Combat.BossEnrageBelow
+}
+
 // Damage is the damage of one hit for a given damage roll (old dcalc).
 // roll is the damage spread, from 0.9 to 1.1. It returns the damage and the
 // triangle/element multiplier.
@@ -96,7 +102,7 @@ func Damage(c *content.Content, b *state.Battle, a Attack, roll float64) (int, f
 	m := Multiplier(c, u, v, attackElement(a))
 	atk := float64(u.Atk) * s.Power
 	def := float64(v.Def)
-	if u.Boss && float64(u.HP) < float64(u.MaxHP)*k.BossEnrageBelow {
+	if Enraged(c, u) {
 		atk *= k.BossEnrage
 	}
 	if isHero(u) {

@@ -12,7 +12,7 @@ import (
 const Blocked = 1_000_000_000
 
 // Tile is a board position.
-type Tile struct{ X, Y int }
+type Tile = state.Tile
 
 // GroundAt returns the terrain letter at (x, y). Where the map has no letter,
 // the old game used the height: below 0 is water, otherwise plains.
@@ -76,7 +76,7 @@ func MoveUnit(c *content.Content, b *state.Battle, u *state.Unit, x, y int, emit
 	}
 	path := Path(c, b, u, x, y)
 	if len(path) < 2 {
-		path = []Tile{{u.X, u.Y}, {x, y}}
+		path = []Tile{{X: u.X, Y: u.Y}, {X: x, Y: y}}
 	}
 	u.TilesMoved += max(n, len(path)-1)
 	u.X, u.Y = x, y
@@ -108,7 +108,7 @@ func enemyBlocks(b *state.Battle, u *state.Unit) func(x, y int) bool {
 // order (row by row). It includes the tile the unit stands on.
 func Reach(c *content.Content, b *state.Battle, u *state.Unit) []Tile {
 	cost := func(x, y int) int { return StepCost(c, b, u, x, y) }
-	r := search(b, []Tile{{u.X, u.Y}}, cost, Budget(u), enemyBlocks(b, u))
+	r := search(b, []Tile{{X: u.X, Y: u.Y}}, cost, Budget(u), enemyBlocks(b, u))
 	var out []Tile
 	for k, d := range r.dist {
 		if d >= Blocked {
@@ -116,7 +116,7 @@ func Reach(c *content.Content, b *state.Battle, u *state.Unit) []Tile {
 		}
 		x, y := k%b.N, k/b.N
 		if o := b.UnitAt(x, y); o == nil || o == u {
-			out = append(out, Tile{x, y})
+			out = append(out, Tile{X: x, Y: y})
 		}
 	}
 	return out
@@ -137,14 +137,14 @@ func CanReach(c *content.Content, b *state.Battle, u *state.Unit, x, y int) bool
 // game broke them, because traps and auto-walk depend on the route taken.
 func Path(c *content.Content, b *state.Battle, u *state.Unit, x, y int) []Tile {
 	cost := func(a, bb int) int { return StepCost(c, b, u, a, bb) }
-	r := search(b, []Tile{{u.X, u.Y}}, cost, 10_000_000, enemyBlocks(b, u))
+	r := search(b, []Tile{{X: u.X, Y: u.Y}}, cost, 10_000_000, enemyBlocks(b, u))
 	k := y*b.N + x
 	if r.dist[k] >= Blocked {
 		return nil
 	}
 	var out []Tile
 	for k >= 0 {
-		out = append([]Tile{{k % b.N, k / b.N}}, out...)
+		out = append([]Tile{{X: k % b.N, Y: k / b.N}}, out...)
 		k = r.parent[k]
 	}
 	return out

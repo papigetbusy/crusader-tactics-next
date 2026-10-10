@@ -18,7 +18,12 @@ type Setup struct {
 	Ground  []string    `json:"ground"`
 	Heights [][]int     `json:"heights"`
 	Units   []UnitSetup `json:"units"`
+	Throne  *state.Tile `json:"throne,omitempty"` // seize-the-throne floors only
 }
+
+// startingPotions is what every new hero carries (old recruit and new run,
+// index.html lines 715 and 1960: bag {potion:3}).
+const startingPotions = 3
 
 // UnitSetup is one unit at the start of a fight.
 type UnitSetup struct {
@@ -51,6 +56,7 @@ func NewFight(c *content.Content, s Setup, battleSeed uint64) *Game {
 			Boss: us.Boss, Elite: us.Elite, Status: map[string]int{}}
 		if u.Team == state.Heroes {
 			u.Skills = c.HeroSkills(u.Class, u.Level)
+			u.Potions = startingPotions
 		} else {
 			u.Skills = c.MonsterSkills(u.Class, u.Level, u.Boss || u.Elite)
 			u.Weapon = c.Classes[u.Class].Weapon
@@ -59,6 +65,7 @@ func NewFight(c *content.Content, s Setup, battleSeed uint64) *Game {
 		b.Units = append(b.Units, u)
 	}
 	b.NextID = len(s.Units) + 1
+	b.Throne = s.Throne
 	turn.Check(b, func(e action.Event) {})
 	return &Game{C: c, B: b, Dice: rng.New(battleSeed, streamCombat)}
 }

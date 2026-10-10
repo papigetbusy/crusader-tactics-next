@@ -111,6 +111,7 @@ var oldCombat = Combat{
 	SkillLevelBonus: 0.05, SkillLevelUses: []int{0, 8, 16, 24, 32}, // SKB, SKT, line 434
 	ExecuteBelow: 0.4, Execute: 1.5, Ambush: 1.5, ChargePerTile: 0.12, ChargeMax: 0.6, // dcalc, line 448
 	MagicDefense: 0.5, DefendDamage: 0.5, DrainDefault: 0.6, ElecShockTurns: 1, CritDamage: 1.5,
+	PotionBase: 10, PotionPerLevel: 3, ReviveShare: 0.4, // pot, line 1806; act, line 1715
 	RallyAttack: 1.25, WeakAttack: 0.7, BrokenDefense: 0.7, GuardDamage: 0.6, PrismAtLeast: 1.5,
 	WeaponBeats:     map[string]string{"axe": "sword", "sword": "lance", "lance": "axe"}, // WB, line 316
 	TriangleWeapons: []string{"sword", "axe", "lance"},                                   // TRI, line 440

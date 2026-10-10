@@ -56,6 +56,9 @@ type Combat struct {
 	DrainDefault   float64 `json:"drainDefault"`   // what an old drain value of 1 means
 	ElecShockTurns int     `json:"elecShockTurns"` // lightning always shocks for this long
 	CritDamage     float64 `json:"critDamage"`     // a critical hit does this many times the damage
+	PotionBase     int     `json:"potionBase"`     // a potion heals this much...
+	PotionPerLevel int     `json:"potionPerLevel"` // ...plus this much per level
+	ReviveShare    float64 `json:"reviveShare"`    // a revived hero comes back with this share of max HP
 
 	// Statuses that change damage.
 	RallyAttack   float64 `json:"rallyAttack"`   // rally: attacker hits this much harder

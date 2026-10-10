@@ -2,7 +2,7 @@
 // owner reads: Rule Book, Old-Game Match, House Rules and Changes.
 //
 //	go test -json ./... > test.json
-//	go run ./tools/report -tests test.json -match match.json -changes docs/changes-from-old-game.md -out site
+//	go run ./tools/report -tests test.json -match match -changes docs/changes-from-old-game.md -out site
 package main
 
 import (
@@ -44,7 +44,7 @@ var sections = []struct{ pkg, title, about string }{
 
 func main() {
 	tests := flag.String("tests", "test.json", "go test -json output")
-	match := flag.String("match", "", "per-fight results from the old-game replay")
+	match := flag.String("match", "", "folder with the per-fight results (match-<set>.json) from the old-game replay")
 	changes := flag.String("changes", "docs/changes-from-old-game.md", "the list of intentional differences")
 	build := flag.String("build", "dev", "build label")
 	out := flag.String("out", "site", "folder to write the pages to")

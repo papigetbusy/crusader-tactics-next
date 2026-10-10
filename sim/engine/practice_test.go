@@ -12,7 +12,7 @@ import (
 
 // TestPracticeFights plays every practice fight to the end with real dice:
 // each hero walks toward the nearest enemy and hits whatever is in range.
-func TestPracticeFights(t *testing.T) {
+func practiceSetups(t *testing.T) []Setup {
 	var p struct {
 		Practice []Setup `json:"practice"`
 	}
@@ -20,6 +20,11 @@ func TestPracticeFights(t *testing.T) {
 	if err != nil || json.Unmarshal(raw, &p) != nil || len(p.Practice) == 0 {
 		t.Fatal("practice.json is missing or empty")
 	}
+	return p.Practice
+}
+
+func TestPracticeFights(t *testing.T) {
+	p := struct{ Practice []Setup }{practiceSetups(t)}
 	c := content.MustDefault()
 	t.Run("Every practice fight can be played to the end without a hitch", func(t *testing.T) {
 		for i, s := range p.Practice {
@@ -81,11 +86,4 @@ func tryAttack(t *testing.T, g *Game, u *state.Unit) bool {
 		}
 	}
 	return false
-}
-
-func abs(v int) int {
-	if v < 0 {
-		return -v
-	}
-	return v
 }

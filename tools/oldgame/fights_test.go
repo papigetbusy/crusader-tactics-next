@@ -31,6 +31,9 @@ func goUnit(c *content.Content, su SnapUnit) *state.Unit {
 		u.Skills = c.MonsterSkills(u.Class, u.Level, u.Boss || u.Elite)
 		u.Weapon = c.Classes[u.Class].Weapon
 	}
+	if su.Pot != nil {
+		u.Potions = *su.Pot
+	}
 	u.Cooldowns = make([]int, len(u.Skills))
 	for i, cd := range su.Cd {
 		if cd != nil && i < len(u.Cooldowns) {
@@ -54,9 +57,23 @@ func resync(c *content.Content, f *Fight, g *engine.Game, s Snap) {
 	for _, su := range s.Units {
 		u := goUnit(c, su)
 		if o := old[su.ID]; o != nil {
-			u.TilesMoved, u.SkillUses, u.LastSkill = o.TilesMoved, o.SkillUses, o.LastSkill
+			u.TilesMoved, u.SkillUses, u.LastSkill, u.Undo = o.TilesMoved, o.SkillUses, o.LastSkill, o.Undo
 		}
 		b.Units = append(b.Units, u)
+	}
+	if len(s.Seized) == 2 {
+		b.Throne = &state.Tile{X: s.Seized[0], Y: s.Seized[1]}
+	}
+	if g.B != nil {
+		fallen := map[int]*state.Unit{}
+		for _, u := range g.B.Fallen {
+			fallen[u.ID] = u
+		}
+		for _, id := range s.Fallen {
+			if u := fallen[id]; u != nil {
+				b.Fallen = append(b.Fallen, u)
+			}
+		}
 	}
 	g.B = b
 }
@@ -68,7 +85,13 @@ func actionsFor(step Step, b *state.Battle) []action.Action {
 		return []action.Action{{Kind: action.Wait, Unit: step.ID}}
 	case "endturn":
 		return []action.Action{{Kind: action.EndTurn}}
-	case "move", "attack":
+	case "defend":
+		return []action.Action{{Kind: action.Defend, Unit: step.ID}}
+	case "potion":
+		return []action.Action{{Kind: action.Potion, Unit: step.ID}}
+	case "undo":
+		return []action.Action{{Kind: action.Undo, Unit: step.ID}}
+	case "move", "attack", "skill":
 		var out []action.Action
 		for _, e := range step.Ev {
 			if e.K == "mv" && e.ID == step.ID {
@@ -146,8 +169,20 @@ func differences(g *engine.Game, s Snap) []string {
 				out = append(out, fmt.Sprintf("%s %d skill %s cooldown: Go %d, old game %d", su.Class, su.ID, u.Skills[i].Name, u.Cooldowns[i], want))
 			}
 		}
+		if su.Pot != nil && u.Potions != *su.Pot {
+			out = append(out, fmt.Sprintf("%s %d potions: Go %d, old game %d", su.Class, su.ID, u.Potions, *su.Pot))
+		}
 		if u.Done != (su.Done != 0) {
 			out = append(out, fmt.Sprintf("%s %d finished-for-the-turn: Go %v, old game %v", su.Class, su.ID, u.Done, su.Done != 0))
+		}
+	}
+	if s.Fallen != nil {
+		var ids []int
+		for _, u := range g.B.Fallen {
+			ids = append(ids, u.ID)
+		}
+		if fmt.Sprint(ids) != fmt.Sprint(s.Fallen) && !(len(ids) == 0 && len(s.Fallen) == 0) {
+			out = append(out, fmt.Sprintf("fallen heroes: Go %v, old game %v", ids, s.Fallen))
 		}
 	}
 	for _, u := range g.B.Units {
@@ -173,13 +208,21 @@ func statusText(m map[string]int) string {
 // The player's inputs are given to Go as actions; everything else (enemy
 // decisions, damage, statuses, turn effects) is worked out by Go with the old
 // game's dice, and compared with the old game after every step.
-func TestOldGameFights(t *testing.T) {
-	fights, err := Load(recordings)
+func TestOldGameFights(t *testing.T) { replayAll(t, recordings, "core") }
+
+// TestOldGameCombat replays the Phase 5 recordings: menu skills, heals and
+// buffs, Defend, Potion, Undo, revives and seize-the-throne floors.
+func TestOldGameCombat(t *testing.T) { replayAll(t, combatRecordings, "combat") }
+
+const combatRecordings = "../../testdata/oldgame/recordings/combat5-recordings.json.gz"
+
+func replayAll(t *testing.T, file, set string) {
+	fights, err := Load(file)
 	if err != nil {
 		t.Fatal(err)
 	}
 	c := oldContent(t)
-	var steps, matched, perfect, levelUps, reinforced, enemyTurns, rolls int
+	var steps, matched, perfect, levelUps, reinforced, enemyTurns, rolls, ended int
 	var bad problems
 	usable := 0
 	type fightResult struct {
@@ -215,7 +258,8 @@ func TestOldGameFights(t *testing.T) {
 			steps++
 			feed := newSiteFeed(f, &step)
 			g.Dice = feed
-			if step.Kind == "endturn" {
+			restart := restarted(prev, step.Snap)
+			if step.Kind == "endturn" && !restart {
 				reinforced += arrivals(c, g, prev, step)
 			}
 			var problem string
@@ -249,6 +293,24 @@ func TestOldGameFights(t *testing.T) {
 					levelUps++
 				}
 			}
+			if restart {
+				// The old game ended the battle in this step and started the floor
+				// again (a defeat re-runs the floor). Go must agree the battle ended.
+				if problem == "" && g.B.Outcome == state.Ongoing {
+					problem = "the old game's battle ended here, but in Go it goes on"
+				}
+				if problem == "" {
+					matched++
+					fr.Matched++
+					ended++
+				} else if clean {
+					bad.add("fight %d step %d (%s): %s", fi+1, si+1, step.Kind, problem)
+					fr.First = fmt.Sprintf("step %d (%s): %s", si+1, step.Kind, problem)
+					clean = false
+				}
+				fr.Steps = si + 1
+				break
+			}
 			if problem == "" {
 				if d := differences(g, step.Snap); len(d) > 0 {
 					problem = d[0]
@@ -275,15 +337,33 @@ func TestOldGameFights(t *testing.T) {
 		}
 		results = append(results, fr)
 	}
-	if out := os.Getenv("OLDGAME_REPORT"); out != "" {
+	if dir := os.Getenv("OLDGAME_REPORT"); dir != "" {
 		b, _ := json.MarshalIndent(results, "", " ")
-		if err := os.WriteFile(out, b, 0o644); err != nil {
+		if err := os.WriteFile(dir+"/match-"+set+".json", b, 0o644); err != nil {
 			t.Fatal(err)
 		}
 	}
-	t.Logf("%d of %d fights replayed perfectly; %d of %d steps matched; %d monster skill uses decided by Go; %d dice used; %d level-ups and %d reinforcements taken from the recording",
-		perfect, usable, matched, steps, enemyTurns, rolls, levelUps, reinforced)
+	t.Logf("%d of %d fights replayed perfectly; %d of %d steps matched; %d monster skill uses decided by Go; %d dice used; %d battles ended with the same result in Go; %d level-ups and %d reinforcements taken from the recording",
+		perfect, usable, matched, steps, enemyTurns, rolls, ended, levelUps, reinforced)
 	for _, p := range bad {
 		t.Error(p)
 	}
+}
+
+// restarted reports a recorded step after which the old game started a new
+// battle: heroes appear that were not there before.
+func restarted(prev, now Snap) bool {
+	had := map[int]bool{}
+	for _, u := range prev.Units {
+		had[u.ID] = true
+	}
+	for _, id := range prev.Fallen { // a revived hero is not a new battle
+		had[id] = true
+	}
+	for _, u := range now.Units {
+		if u.Team == state.Heroes && !had[u.ID] {
+			return true
+		}
+	}
+	return false
 }

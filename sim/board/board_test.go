@@ -110,7 +110,7 @@ func TestMovement(t *testing.T) {
 	t.Run("A walking route starts where the unit stands and ends at the goal", func(t *testing.T) {
 		c, b, u := strip("g...", "Warrior", 3)
 		p := Path(c, b, u, 3, 0)
-		if len(p) != 4 || p[0] != (Tile{0, 0}) || p[3] != (Tile{3, 0}) {
+		if len(p) != 4 || p[0] != (Tile{X: 0, Y: 0}) || p[3] != (Tile{X: 3, Y: 0}) {
 			t.Fatalf("route %v", p)
 		}
 	})

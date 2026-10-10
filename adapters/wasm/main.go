@@ -108,5 +108,22 @@ func main() {
 		}
 		return text(f)
 	}))
+	// ctPreviewFrom(unit, slot, target, x, y) -> forecast after walking to x,y
+	g.Set("ctPreviewFrom", fn(func(a []js.Value) any {
+		f, ok := game.PreviewFrom(a[0].Int(), a[1].Int(), a[2].Int(), a[3].Int(), a[4].Int())
+		if !ok {
+			return "null"
+		}
+		return text(f)
+	}))
+	// ctPlan(unit, target) -> {slot, walk} or null: which skill a tap on
+	// that unit uses, and where to walk first if needed.
+	g.Set("ctPlan", fn(func(a []js.Value) any {
+		p, ok := game.AttackPlan(a[0].Int(), a[1].Int())
+		if !ok {
+			return "null"
+		}
+		return text(p)
+	}))
 	select {} // keep running so the page can keep asking
 }

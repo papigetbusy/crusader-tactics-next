@@ -23,12 +23,14 @@ const RollShuffle = "shuffle"
 // ascension passives, class-ability statuses, XP, gold and loot.
 func UseSkill(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Unit, slot int, v *state.Unit, emit action.Emit) error {
 	s := u.Skills[slot]
-	if s.Summon != nil || s.Revive {
-		return fmt.Errorf("%s: summons and revives arrive in a later phase", s.Name)
+	if s.Summon != nil {
+		return fmt.Errorf("%s: summons arrive with the Necromancer in Phase 6", s.Name)
 	}
 	_, classBase, _ := c.SkillFor(u.Team, u.Class, s.Name)
 	emit(action.Event{Kind: action.SkillUsed, Unit: u.ID, Target: v.ID, Skill: s.Name})
 	switch {
+	case s.Revive:
+		revive(c, b, u, emit)
 	case s.Support:
 		support(b, u, s, emit)
 	case s.Heal:
@@ -38,6 +40,41 @@ func UseSkill(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Unit,
 	}
 	finishSkill(c, u, slot, s)
 	return nil
+}
+
+// reviveSpots are checked in this order around the healer (old act, line 1715).
+var reviveSpots = [8][2]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {-1, -1}, {1, -1}, {-1, 1}}
+
+// revive brings back the hero who fell most recently, next to the healer,
+// with 40% of max HP, no statuses, finished for this turn. With no free
+// spot, nobody comes back.
+func revive(c *content.Content, b *state.Battle, u *state.Unit, emit action.Emit) {
+	if len(b.Fallen) == 0 {
+		return
+	}
+	f := b.Fallen[len(b.Fallen)-1]
+	for _, d := range reviveSpots {
+		x, y := u.X+d[0], u.Y+d[1]
+		if !b.Inside(x, y) || heightAt(b, x, y) < 0 || b.UnitAt(x, y) != nil {
+			continue
+		}
+		b.Fallen = b.Fallen[:len(b.Fallen)-1]
+		f.X, f.Y = x, y
+		f.HP = int(Round(float64(f.MaxHP) * c.Combat.ReviveShare))
+		f.Status = map[string]int{}
+		f.Done = true
+		b.Units = append(b.Units, f)
+		emit(action.Event{Kind: action.Revived, Unit: u.ID, Target: f.ID, Amount: f.HP})
+		return
+	}
+}
+
+// heightAt is the map height (below 0 is water or mountain).
+func heightAt(b *state.Battle, x, y int) int {
+	if y < len(b.Heights) && x < len(b.Heights[y]) {
+		return b.Heights[y][x]
+	}
+	return 0
 }
 
 func support(b *state.Battle, u *state.Unit, s content.Skill, emit action.Emit) {
@@ -94,6 +131,10 @@ func healSkill(c *content.Content, b *state.Battle, u *state.Unit, s content.Ski
 
 func attack(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit action.Emit) {
 	u, s, v := a.By, a.Skill, a.Target
+	if u.Status["cloak"] > 0 { // attacking breaks the cloak
+		u.Status["cloak"] = 0
+		CloakCooldown(u)
+	}
 	targets := []*state.Unit{v}
 	if s.ExtraTargets > 0 {
 		var pool []*state.Unit
@@ -102,8 +143,18 @@ func attack(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit a
 				pool = append(pool, z)
 			}
 		}
-		rng.Shuffle(dice, RollShuffle, pool)
-		targets = append(targets, pool[:min(len(pool), s.ExtraTargets-1)]...)
+		if p, ok := dice.(rng.Picker); ok {
+			ids := make([]int, len(pool))
+			for i, z := range pool {
+				ids[i] = z.ID
+			}
+			for _, id := range p.PickExtra(ids, s.ExtraTargets-1) {
+				targets = append(targets, b.Unit(id))
+			}
+		} else {
+			rng.Shuffle(dice, RollShuffle, pool)
+			targets = append(targets, pool[:min(len(pool), s.ExtraTargets-1)]...)
+		}
 	}
 	hits := max(1, s.Hits)
 	for _, z := range targets {
@@ -115,23 +166,13 @@ func attack(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit a
 		}
 	}
 	if s.Area > 0 {
-		var near []*state.Unit
-		for _, z := range b.Units {
-			if z.Team != u.Team && !slices.Contains(targets, z) && Distance(z, v) <= s.Area {
-				near = append(near, z)
-			}
-		}
-		for _, z := range near {
+		for _, z := range areaOf(b, u, s, v, targets) {
 			strike(c, b, dice, Attack{By: u, Skill: s, ClassBase: a.ClassBase, Target: z}, emit)
 		}
 	}
 	if s.Line > 0 {
-		dx, dy := 0, sign(v.Y-u.Y)
-		if abs(v.X-u.X) >= abs(v.Y-u.Y) {
-			dx, dy = sign(v.X-u.X), 0
-		}
-		for i := 1; i <= s.Line; i++ {
-			if z := b.UnitAt(v.X+dx*i, v.Y+dy*i); z != nil && z.Team != u.Team {
+		for _, t := range lineOf(u, s, v) {
+			if z := b.UnitAt(t[0], t[1]); z != nil && z.Team != u.Team {
 				strike(c, b, dice, Attack{By: u, Skill: s, ClassBase: a.ClassBase, Target: z}, emit)
 			}
 		}
@@ -143,6 +184,47 @@ func attack(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit a
 			}
 		}
 	}
+}
+
+// areaOf are the other enemies caught in an area skill's blast around v.
+func areaOf(b *state.Battle, u *state.Unit, s content.Skill, v *state.Unit, targets []*state.Unit) []*state.Unit {
+	var near []*state.Unit
+	for _, z := range b.Units {
+		if z.Team != u.Team && !slices.Contains(targets, z) && Distance(z, v) <= s.Area {
+			near = append(near, z)
+		}
+	}
+	return near
+}
+
+// lineOf are the tiles a piercing skill continues through behind v.
+func lineOf(u *state.Unit, s content.Skill, v *state.Unit) [][2]int {
+	dx, dy := 0, sign(v.Y-u.Y)
+	if abs(v.X-u.X) >= abs(v.Y-u.Y) {
+		dx, dy = sign(v.X-u.X), 0
+	}
+	var out [][2]int
+	for i := 1; i <= s.Line; i++ {
+		out = append(out, [2]int{v.X + dx*i, v.Y + dy*i})
+	}
+	return out
+}
+
+// AlsoHit lists the other units an area or piercing skill aimed at v would
+// hit as well, for the forecast (random extra targets are not known ahead).
+func AlsoHit(b *state.Battle, u *state.Unit, s content.Skill, v *state.Unit) []int {
+	var out []int
+	if s.Area > 0 {
+		for _, z := range areaOf(b, u, s, v, []*state.Unit{v}) {
+			out = append(out, z.ID)
+		}
+	}
+	for _, t := range lineOf(u, s, v) {
+		if z := b.UnitAt(t[0], t[1]); z != nil && z.Team != u.Team {
+			out = append(out, z.ID)
+		}
+	}
+	return out
 }
 
 // strike is one Hurt plus the events that describe it.
@@ -179,6 +261,7 @@ func finishSkill(c *content.Content, u *state.Unit, slot int, s content.Skill) {
 	}
 	if s.Cloak {
 		u.Status["cloak"] = 3
+		u.CloakUsed = true
 	}
 	if s.LockSelf {
 		u.Status["lock"] = 3
@@ -190,6 +273,18 @@ func finishSkill(c *content.Content, u *state.Unit, slot int, s content.Skill) {
 	if s.Cloak {
 		u.Cooldowns[slot] = 99
 	}
+}
+
+// CloakCooldown starts the Cloak skill's 2-turn cooldown once the cloak is
+// over (old cloakCd, index.html line 1094).
+func CloakCooldown(u *state.Unit) {
+	for i, s := range u.Skills {
+		if s.Cloak {
+			u.Cooldowns[i] = 2
+			break
+		}
+	}
+	u.CloakUsed = false
 }
 
 func sign(v int) int {

@@ -347,25 +347,37 @@
       "skills": [
         {
           "name": "Mend Self",
+          "class": "Healer",
+          "kind": "n",
+          "level": 1,
           "power": 0.8,
           "minRange": 0,
           "maxRange": 0,
-          "heal": true
+          "heal": true,
+          "text": "Heals yourself."
         },
         {
           "name": "Heal Ally",
+          "class": "Healer",
+          "kind": "n",
+          "level": 1,
           "power": 1.2,
           "minRange": 1,
           "maxRange": 3,
-          "heal": true
+          "heal": true,
+          "text": "Heals one ally up to 3 tiles away."
         },
         {
           "name": "Divine Grace",
+          "class": "Healer",
+          "kind": "u",
+          "level": 1,
           "power": 3,
           "minRange": 0,
           "maxRange": 99,
           "heal": true,
-          "lockSelf": true
+          "lockSelf": true,
+          "text": "Huge heal anywhere on the map, but you cannot move for 2 turns."
         }
       ],
       "levelSkills": [
@@ -462,27 +474,39 @@
       "skills": [
         {
           "name": "Fireball",
+          "class": "Mage",
+          "kind": "n",
+          "level": 1,
           "power": 1.2,
-          "minRange": 1,
-          "maxRange": 3,
-          "element": "fire"
+          "minRange": 2,
+          "maxRange": 6,
+          "element": "fire",
+          "text": "Fire magic. Ignores half of armor."
         },
         {
           "name": "Thunder",
+          "class": "Mage",
+          "kind": "n",
+          "level": 1,
           "power": 1.2,
-          "minRange": 1,
-          "maxRange": 3,
-          "element": "elec"
+          "minRange": 2,
+          "maxRange": 6,
+          "element": "elec",
+          "text": "Thunder magic. Ignores half of armor."
         },
         {
           "name": "Frost Bolt",
+          "class": "Mage",
+          "kind": "n",
+          "level": 1,
           "power": 1,
-          "minRange": 1,
-          "maxRange": 3,
+          "minRange": 2,
+          "maxRange": 6,
           "element": "ice",
           "effects": {
             "snare": 1
-          }
+          },
+          "text": "Ice magic that snares for 1 turn."
         }
       ],
       "levelSkills": [
@@ -609,25 +633,37 @@
       "skills": [
         {
           "name": "Shot",
+          "class": "Ranger",
+          "kind": "n",
+          "level": 1,
           "power": 1,
           "minRange": 2,
-          "maxRange": 7
+          "maxRange": 6,
+          "text": "A standard arrow. Cannot hit adjacent enemies."
         },
         {
           "name": "Snaring Shot",
+          "class": "Ranger",
+          "kind": "n",
+          "level": 1,
           "power": 0.6,
           "minRange": 2,
-          "maxRange": 7,
+          "maxRange": 6,
           "effects": {
             "snare": 1
-          }
+          },
+          "text": "Snares the target for 1 turn."
         },
         {
           "name": "Power Shot",
+          "class": "Ranger",
+          "kind": "u",
+          "level": 1,
           "power": 1.6,
           "minRange": 2,
-          "maxRange": 7,
-          "cooldown": 3
+          "maxRange": 6,
+          "cooldown": 3,
+          "text": "A fully drawn heavy arrow."
         }
       ],
       "levelSkills": [
@@ -694,19 +730,27 @@
       "skills": [
         {
           "name": "Bash",
+          "class": "Tank",
+          "kind": "n",
+          "level": 1,
           "power": 1.1,
           "minRange": 1,
-          "maxRange": 1
+          "maxRange": 1,
+          "text": "A solid shield-and-axe hit."
         },
         {
           "name": "Shield Bash",
+          "class": "Tank",
+          "kind": "n",
+          "level": 1,
           "power": 0.9,
           "minRange": 1,
           "maxRange": 1,
           "cooldown": 3,
           "effects": {
             "stun": 1
-          }
+          },
+          "text": "Stuns the target for 1 turn."
         }
       ],
       "levelSkills": [
@@ -747,25 +791,37 @@
       "skills": [
         {
           "name": "Slash",
+          "class": "Warrior",
+          "kind": "n",
+          "level": 1,
           "power": 1,
           "minRange": 1,
-          "maxRange": 1
+          "maxRange": 1,
+          "text": "A quick sword cut."
         },
         {
           "name": "Rend",
+          "class": "Warrior",
+          "kind": "n",
+          "level": 1,
           "power": 0.8,
           "minRange": 1,
           "maxRange": 1,
           "effects": {
             "bleed": 3
-          }
+          },
+          "text": "A cut that makes the target bleed for 3 turns."
         },
         {
           "name": "Power Strike",
+          "class": "Warrior",
+          "kind": "u",
+          "level": 1,
           "power": 1.6,
           "minRange": 1,
           "maxRange": 1,
-          "cooldown": 3
+          "cooldown": 3,
+          "text": "A heavy two-handed blow."
         }
       ],
       "levelSkills": [

@@ -48,7 +48,10 @@ func Targets(c *content.Content, b *state.Battle, u *state.Unit, s content.Skill
 		}
 		return out
 	case s.Revive:
-		return nil // the fallen list arrives with revives in Phase 5
+		if len(b.Fallen) > 0 {
+			return []*state.Unit{u}
+		}
+		return nil
 	case s.Heal && s.AllAllies:
 		for _, v := range b.Units {
 			if v.Team == u.Team && v.HP < v.MaxHP {

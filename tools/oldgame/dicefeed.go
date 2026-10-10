@@ -22,7 +22,8 @@ var whereRolled = map[string]string{
 // notPortedYet are old-game rolls for rules that arrive later (loot, chests,
 // where reinforcements appear). The feed steps over them.
 var notPortedYet = []string{"drop:", "bandRoll:", "lootPick:", "lootFor:", "genItem:", "rollAffixes:",
-	"anon:1203", "file:1203", "openChest:", "reinforce:"}
+	"anon:1203", "file:1203", "openChest:", "reinforce:",
+	"file:1721", "act:1721"} // the old multi-target shuffle, replaced by the approved fair shuffle
 
 func skippable(site string) bool {
 	for _, p := range notPortedYet {
@@ -37,6 +38,8 @@ func skippable(site string) bool {
 // old game's next roll of the same kind; rolls for rules not ported yet are
 // stepped over. Anything else is a mismatch, reported in plain words.
 type siteFeed struct {
+	step    *Step
+	picks   int // multi-target picks served so far
 	vals    []uint32
 	sites   []string
 	pos     int
@@ -45,7 +48,7 @@ type siteFeed struct {
 }
 
 func newSiteFeed(f *Fight, s *Step) *siteFeed {
-	sf := &siteFeed{vals: s.Dice.G}
+	sf := &siteFeed{vals: s.Dice.G, step: s}
 	for _, i := range s.Dice.S {
 		sf.sites = append(sf.sites, f.Sites[i])
 	}
@@ -83,4 +86,41 @@ func (sf *siteFeed) leftover() string {
 		sf.skipped++
 	}
 	return ""
+}
+
+// PickExtra serves the extra targets the old game picked for the n-th
+// multi-target skill use in this step: the units it hit after the main
+// target, in the order it hit them.
+func (sf *siteFeed) PickExtra(pool []int, n int) []int {
+	inPool := map[int]bool{}
+	for _, id := range pool {
+		inPool[id] = true
+	}
+	acts := 0
+	for i, e := range sf.step.Ev {
+		if e.K != "act" {
+			continue
+		}
+		var hit []int
+		seen := map[int]bool{e.V: true}
+		for _, h := range sf.step.Ev[i+1:] {
+			if h.K == "act" {
+				break
+			}
+			if h.K == "hit" && h.B != nil && !seen[h.B.ID] && inPool[h.B.ID] {
+				seen[h.B.ID] = true
+				hit = append(hit, h.B.ID)
+			}
+		}
+		if len(hit) == 0 {
+			continue
+		}
+		if acts == sf.picks {
+			sf.picks++
+			return hit[:min(n, len(hit))]
+		}
+		acts++
+	}
+	sf.picks++
+	return nil
 }

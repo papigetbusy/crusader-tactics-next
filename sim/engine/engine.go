@@ -46,8 +46,30 @@ func (g *Game) Apply(a action.Action) ([]action.Event, error) {
 	switch a.Kind {
 	case action.Move:
 		u := b.Unit(a.Unit)
+		from := state.Tile{X: u.X, Y: u.Y}
 		board.MoveUnit(g.C, b, u, a.X, a.Y, emit)
-		u.Moved = true
+		u.Moved, u.Undo = true, &from
+		if u.Acted { // a hero that already acted (Hit and Run) is finished after moving
+			u.Done, u.Undo = true, nil
+		}
+		seizeThrone(b, u, emit)
+	case action.Defend:
+		u := b.Unit(a.Unit)
+		u.Defending, u.Done = true, true
+		emit(action.Event{Kind: action.Defended, Unit: u.ID})
+	case action.Potion:
+		u := b.Unit(a.Unit)
+		n := min(u.MaxHP-u.HP, g.C.Combat.PotionBase+g.C.Combat.PotionPerLevel*u.Level)
+		u.HP += n
+		u.Potions--
+		u.Done = true
+		emit(action.Event{Kind: action.Drank, Unit: u.ID, Amount: n})
+	case action.Undo:
+		u := b.Unit(a.Unit)
+		to := *u.Undo
+		u.Undo = nil
+		board.MoveUnit(g.C, b, u, to.X, to.Y, func(e action.Event) { e.Kind = action.Undone; emit(e) })
+		u.Moved, u.TilesMoved = false, 0
 	case action.Attack:
 		u := b.Unit(a.Unit)
 		if err := combat.UseSkill(g.C, b, g.Dice, u, a.Skill, b.Unit(a.Target), emit); err != nil {
@@ -63,6 +85,21 @@ func (g *Game) Apply(a action.Action) ([]action.Event, error) {
 		}
 	}
 	return events, nil
+}
+
+// seizeThrone is the seize-the-throne win: a hero who reaches the throne
+// makes every enemy flee (old click handler, index.html line 1761).
+func seizeThrone(b *state.Battle, u *state.Unit, emit action.Emit) {
+	if b.Throne == nil || u.X != b.Throne.X || u.Y != b.Throne.Y || u.Summoned {
+		return
+	}
+	emit(action.Event{Kind: action.Seized, Unit: u.ID})
+	for _, e := range append([]*state.Unit(nil), b.Units...) {
+		if e.Team != state.Heroes {
+			b.Remove(e.ID)
+		}
+	}
+	turn.Check(b, emit)
 }
 
 // check is every "is this allowed?" rule in one place.
@@ -107,7 +144,21 @@ func (g *Game) check(a action.Action) error {
 		if !ok {
 			return no("bad-target", "%s cannot reach that target.", u.Skills[a.Skill].Name)
 		}
-	case action.Wait:
+	case action.Wait, action.Defend:
+	case action.Potion:
+		if u.Potions <= 0 {
+			return no("no-potions", "%s has no potions left.", u.Class)
+		}
+		if u.HP >= u.MaxHP {
+			return no("full-hp", "%s is already at full health.", u.Class)
+		}
+	case action.Undo:
+		if u.Undo == nil {
+			return no("nothing-to-undo", "%s has no move to undo.", u.Class)
+		}
+		if o := b.UnitAt(u.Undo.X, u.Undo.Y); o != nil && o != u {
+			return no("tile-taken", "Your old tile is occupied now.")
+		}
 	default:
 		return no("unknown", "Unknown action %q.", a.Kind)
 	}

@@ -11,6 +11,9 @@ const (
 	Move    Kind = "move"    // Unit walks to X, Y
 	Attack  Kind = "attack"  // Unit uses skill slot Skill on Target (any skill: damage, heal, buff)
 	Wait    Kind = "wait"    // Unit ends its turn
+	Defend  Kind = "defend"  // Unit braces: half damage until its next turn; ends its turn
+	Potion  Kind = "potion"  // Unit drinks a potion; ends its turn
+	Undo    Kind = "undo"    // Unit steps back to where it stood before moving this turn
 	EndTurn Kind = "endturn" // the player's side is done; the enemies act
 )
 
@@ -53,6 +56,11 @@ const (
 	Finished  = "finished"   // Unit is done for this turn
 	TurnEnd   = "turn-end"   // Side's turn ended
 	TurnStart = "turn-start" // Side's turn started (Turn is the turn number)
+	Defended  = "defended"   // Unit is defending until its next turn
+	Drank     = "potion"     // Unit drank a potion and healed Amount
+	Undone    = "undone"     // Unit stepped back along Path
+	Revived   = "revived"    // Target came back to life with Amount HP
+	Seized    = "seized"     // Unit seized the throne: the enemies flee
 	Won       = "won"        // every enemy is gone
 	Lost      = "lost"       // every hero is gone
 )

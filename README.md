@@ -14,7 +14,7 @@ The clean rebuild of Crusader Tactics. The rules live in Go (the **referee**), t
 | `docs/` | The design lock and the skeleton design (the map of this project) |
 | `data/` | Every game number, as files you can edit |
 | `sim/` | The referee: all game rules (no screen, no clock, no internet) |
-| `testdata/oldgame/` | The answer key: the old game's tables and 200 recorded fights |
+| `testdata/oldgame/` | The answer key: the old game's tables and 380 recorded fights |
 | `tools/oldgame/` | Checks Go against the recorded fights |
 | `tools/guard/` | House rules: keeps the code clean |
 | `tools/convert/` | One-time converter that made the data files from the old tables |
@@ -31,4 +31,6 @@ The clean rebuild of Crusader Tactics. The rules live in Go (the **referee**), t
 - Phase 4b, attack math: done. All 2,508 hits and misses recorded in the old game give the same result in Go (same damage, same weak-spot multiplier, same HP after, same dice), using the exact dice the old game rolled.
 - Phase 4c, turns and enemy AI: done. All 197 recorded fights replay in Go from the first turn, 9,217 of 9,217 steps identical to the old game, with Go making all 1,746 enemy decisions itself. Taken from the recordings for now: where reinforcements appear (floors, Phase 7), level-ups (XP, Phase 6), and loot rolls (Phase 6).
 - Phase 4d: done. A practice fight you can play from the link (six real starting setups from the old game, floors 1 to 20), plus the Rule Book, Old-Game Match, House Rules and Changes pages, rebuilt by the robot after every change.
-- **Phase 4 is complete.** Next: Phase 5, full combat (the rest of the skills, statuses and the forecast in every case).
+- **Phase 4 is complete.**
+- Phase 5a, full-combat recordings: done. 180 more old-game fights recorded with every menu skill, Defend, Potion, Undo, revives and seize-the-throne floors; all 178 usable ones replay in Go with 13,555 of 13,555 steps identical (including 22 revives, 5 throne wins, 512 defends, 515 undos and 86 potions).
+- Phase 5b–5d: Defend, Potion, Undo and tap-to-attack (the hero walks closer if needed, with a forecast first) on the practice page; forecasts for heals, revives and area attacks; enraged bosses glow red.

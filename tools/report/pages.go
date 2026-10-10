@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -111,16 +112,23 @@ type fightRow struct {
 	First   string   `json:"firstDifference"`
 }
 
-func matchPage(results []*result, matchFile, build string) string {
+// matchSets are the recorded fight sets, in the order the page shows them.
+var matchSets = []struct{ file, title string }{
+	{"core", "Fight by fight: moving and fighting"},
+	{"combat", "Fight by fight: full combat"},
+}
+
+func matchPage(results []*result, matchDir, build string) string {
 	var body strings.Builder
-	body.WriteString(`<p class="lead">The old game (v0.26.1) is the answer key. 200 of its fights were recorded with every dice roll. Go replays them with the same rolls and must end up in exactly the same place after every step.</p>`)
+	body.WriteString(`<p class="lead">The old game (v0.26.1) is the answer key. Hundreds of its fights were recorded with every dice roll. Go replays them with the same rolls and must end up in exactly the same place after every step.</p>`)
 	names := map[string]string{
 		"TestOldGameFights":    "Whole fights, replayed from the first turn",
+		"TestOldGameCombat":    "Full-combat fights: defend, potions, undo, revives and the throne",
 		"TestOldGameMoves":     "Every move is legal in Go",
 		"TestOldGameHits":      "Every hit and miss gives the same result",
 		"TestOldGameSkillBars": "Every skill used is on the right skill bar",
 	}
-	for _, key := range []string{"TestOldGameFights", "TestOldGameMoves", "TestOldGameHits", "TestOldGameSkillBars"} {
+	for _, key := range []string{"TestOldGameFights", "TestOldGameCombat", "TestOldGameMoves", "TestOldGameHits", "TestOldGameSkillBars"} {
 		for _, r := range results {
 			if r.Pkg != "tools/oldgame" || r.Name != key {
 				continue
@@ -132,25 +140,8 @@ func matchPage(results []*result, matchFile, build string) string {
 			body.WriteString(`</div>`)
 		}
 	}
-	var rows []fightRow
-	if b, err := os.ReadFile(matchFile); err == nil {
-		_ = json.Unmarshal(b, &rows)
-	}
-	if len(rows) > 0 {
-		body.WriteString(`<h2>Fight by fight</h2><table><tr><th></th><th>Fight</th><th>Floor</th><th>Your party</th><th>Steps matched</th></tr>`)
-		for _, r := range rows {
-			m := `<span class="ok">✓</span>`
-			if r.First != "" {
-				m = `<span class="no">✗</span>`
-			}
-			extra := ""
-			if r.First != "" {
-				extra = `<br><span class="no">First difference: ` + esc(r.First) + `</span>`
-			}
-			fmt.Fprintf(&body, `<tr><td>%s</td><td>%d</td><td>%d</td><td>%s<br><span class="small">vs %s</span>%s</td><td>%d of %d</td></tr>`,
-				m, r.Fight, r.Floor, esc(strings.Join(r.Party, ", ")), esc(strings.Join(r.Enemies, ", ")), extra, r.Matched, r.Steps)
-		}
-		body.WriteString(`</table><p class="small">Three of the 200 recorded fights are left out: the old game itself crashed in them (the line-2067 auto-walk bug).</p>`)
+	for _, set := range matchSets {
+		body.WriteString(fightTable(filepath.Join(matchDir, "match-"+set.file+".json"), set.title))
 	}
 	return page("Old-Game Match", "match.html", build, body.String())
 }
@@ -189,4 +180,29 @@ func changesPage(path, build string) string {
 		body.WriteString(`</ul>`)
 	}
 	return page("Changes from the old game", "changes.html", build, body.String())
+}
+
+func fightTable(path, title string) string {
+	var rows []fightRow
+	if b, err := os.ReadFile(path); err == nil {
+		_ = json.Unmarshal(b, &rows)
+	}
+	if len(rows) == 0 {
+		return ""
+	}
+	var body strings.Builder
+	fmt.Fprintf(&body, `<h2>%s</h2><table><tr><th></th><th>Fight</th><th>Floor</th><th>Your party</th><th>Steps matched</th></tr>`, esc(title))
+	for _, r := range rows {
+		m := `<span class="ok">✓</span>`
+		extra := ""
+		if r.First != "" {
+			m = `<span class="no">✗</span>`
+			extra = `<br><span class="no">First difference: ` + esc(r.First) + `</span>`
+		}
+		fmt.Fprintf(&body, `<tr><td>%s</td><td>%d</td><td>%d</td><td>%s<br><span class="small">vs %s</span>%s</td><td>%d of %d</td></tr>`,
+			m, r.Fight, r.Floor, esc(strings.Join(r.Party, ", ")), esc(strings.Join(r.Enemies, ", ")), extra, r.Matched, r.Steps)
+	}
+	body.WriteString(`</table>`)
+	body.WriteString(`<p class="small">Fights where the old game itself crashed (its line-2067 auto-walk bug) are left out.</p>`)
+	return body.String()
 }

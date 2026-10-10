@@ -1,5 +1,5 @@
 // Command convert writes the live data files from the old game's saved tables.
-// It was used once to create data/skills.json, classes.json, elements.json and
+// It was used to create data/skills.json, classes.json, elements.json and
 // rules/combat.json. After that, data/ is edited by hand; the old tables stay
 // as the answer key.
 //
@@ -20,6 +20,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	content.ApplyChanges(c) // the live data includes every approved change
 	// Keep the old table order: it decides which skills a hero starts with.
 	var skills []content.Skill
 	for _, name := range c.SkillOrder {

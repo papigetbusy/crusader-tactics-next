@@ -35,6 +35,11 @@ button:disabled{opacity:.4;cursor:default}
 .u.sel{box-shadow:0 0 0 2px #fff,0 0 10px var(--gold2)}
 .u.tg{box-shadow:0 0 0 2px var(--blood2),0 0 10px var(--blood2);animation:p 1s infinite alternate}
 .u.aim{box-shadow:0 0 0 3px #fff,0 0 14px var(--blood2)}
+.u.rage{animation:rage 1.2s infinite alternate}
+@keyframes rage{from{box-shadow:0 0 4px #c0394b}to{box-shadow:0 0 16px 3px #ff2a3d;background:#3d0c12}}
+.u.walk{box-shadow:0 0 0 3px var(--gold2),0 0 14px var(--blood2)}
+.tile.walkto::before{content:"";position:absolute;inset:18%;border:2px dashed var(--gold2);border-radius:50%;z-index:2}
+.throne{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:clamp(10px,3vw,18px);color:var(--gold2);opacity:.85}
 @keyframes p{to{box-shadow:0 0 0 2px #ff6b7d,0 0 14px #ff6b7d}}
 .u i{display:block;width:80%;height:3px;background:#000;margin-top:2px;border-radius:2px;overflow:hidden}
 .u i b{display:block;height:100%;background:var(--ok)}
@@ -69,12 +74,12 @@ footer{margin-top:16px;color:var(--muted);font-size:13px}
 <div id="banner"></div>
 <div class="card" id="panel"><div class="muted">Tap one of your heroes (gold) to begin. Gold tiles show where it can walk; red outlines show who its skill can reach.</div></div>
 <div class="card"><h2>Battle log</h2><div id="log"></div></div>
-<footer>Phase 4 practice fight: the real rules, plain looks. Your art and menus come in Phase 8. Build: __BUILD__</footer>
+<footer>Phase 5 practice fight: the real rules, plain looks. Tap a monster to attack it (the hero walks closer if needed); tap again to confirm. Your art and menus come in Phase 8. Build: __BUILD__</footer>
 <script src="wasm_exec.js?v=__BUILD__"></script>
 <script>
 const $=id=>document.getElementById(id), J=s=>JSON.parse(s);
 const ICON={fire:'🔥',ice:'❄',elec:'⚡',light:'☀',dark:'☾'};
-let V=null, sel=null, slot=0, aim=null, reach=[], targets=[], names={};
+let V=null, sel=null, slot=0, aim=null, walk=null, reach=[], targets=[], names={};
 
 function fail(msg){$('err').style.display='block';$('err').innerHTML=msg;$('status').textContent='The referee did not start.'}
 async function boot(){
@@ -89,7 +94,7 @@ async function boot(){
 }
 function newFight(){
   const s=crypto.getRandomValues(new Uint32Array(2));
-  V=J(ctNew(+$('pick').value,s[0],s[1]));sel=null;aim=null;reach=[];targets=[];
+  V=J(ctNew(+$('pick').value,s[0],s[1]));sel=null;aim=null;walk=null;reach=[];targets=[];
   $('log').innerHTML='';$('banner').className='';
   logLine('turn','Turn 1 · your move');render();
 }
@@ -103,21 +108,23 @@ function defaultSlot(u){const i=u.skills.findIndex(s=>!s.wait&&!s.support&&!s.he
 function refreshAim(){
   if(sel==null){reach=[];targets=[];return}
   reach=J(ctReach(sel))||[];targets=J(ctTargets(sel,slot))||[];
-  if(aim!=null&&!targets.includes(aim))aim=null;
+  if(aim!=null&&!targets.includes(aim)&&!walk)aim=null;
 }
 function render(){
   const b=$('board'),n=V.n;b.style.gridTemplateColumns=`repeat(${n},1fr)`;b.innerHTML='';
   const rs=new Set(reach.map(t=>t[0]+','+t[1]));
   for(let y=0;y<n;y++)for(let x=0;x<n;x++){
-    const d=document.createElement('div');d.className='tile '+V.ground[y][x]+(rs.has(x+','+y)?' reach':'');
+    const d=document.createElement('div');d.className='tile '+V.ground[y][x]+(rs.has(x+','+y)?' reach':'')+(walk&&walk.x===x&&walk.y===y?' walkto':'');
+    if(V.throne&&V.throne.x===x&&V.throne.y===y)d.innerHTML='<span class=throne>♔</span>';
     const u=at(x,y);
     if(u){const e=document.createElement('div');
-      e.className='u '+(u.team===0?'h':'e')+(u.done&&u.team===0?' done':'')+(u.id===sel?' sel':'')+(targets.includes(u.id)?' tg':'')+(u.id===aim?' aim':'');
+      e.className='u '+(u.team===0?'h':'e')+(u.done&&u.team===0?' done':'')+(u.id===sel?' sel':'')+(targets.includes(u.id)?' tg':'')+(u.id===aim?(walk?' walk':' aim'):'')+(u.enraged?' rage':'');
       e.innerHTML=`${u.boss?'<span class=mark>♛</span>':u.elite?'<span class=mark>★</span>':''}${short(u.class)}<i><b style="width:${Math.max(0,100*u.hp/u.maxHp)}%"></b></i>`;
       d.appendChild(e)}
     d.onclick=()=>tap(x,y);b.appendChild(d)}
   const side=V.outcome?'':V.side===0?' · your move':' · enemy turn';
   $('status').textContent=`Turn ${V.turn}${side}`;
+  if(V.fallen&&V.fallen.length&&!V.outcome)$('status').textContent+=` · fallen: ${V.fallen.join(', ')}`;
   if(V.outcome){$('banner').className=V.outcome;$('banner').textContent=V.outcome==='won'?'Victory: every enemy is gone':'Defeat: every hero has fallen'}
   panel();
 }
@@ -126,19 +133,27 @@ function panel(){
   if(!u){p.innerHTML=`<div class="muted">Tap one of your heroes (gold) to begin. Tap an enemy to see its numbers.</div>${endBtn()}`;bindEnd();return}
   const st=Object.entries(u.statuses||{}).map(([k,v])=>`${k} ${v}`).join(', ');
   let h=`<h2>${u.class}${u.element?' '+ICON[u.element]:''} <span class="muted">level ${u.level}</span></h2>
-  <div class="muted">HP ${u.hp}/${u.maxHp} · Attack ${u.atk} · Defense ${u.def} · Move ${u.mov}${st?' · '+st:''}</div>`;
+  <div class="muted">HP ${u.hp}/${u.maxHp} · Attack ${u.atk} · Defense ${u.def} · Move ${u.mov}${u.team===0?' · Potions '+u.potions:''}${st?' · '+st:''}${u.enraged?' · <span style="color:var(--blood2)">Enraged: hits 30% harder</span>':''}</div>`;
   if(u.team===0){
     h+=`<div class="skills">${u.skills.map((s,i)=>`<button data-i="${i}" class="${i===slot?'on':''}" ${s.wait?'disabled':''} title="${(s.text||'').replace(/"/g,'')}">${s.name}${s.wait?' ('+s.wait+')':''}</button>`).join('')}</div>`;
     const s=u.skills[slot];
     h+=`<div class="muted">${s.text||''} Range ${s.minRange}–${s.maxRange}.</div>`;
     h+=`<div id="fc">${forecast(u)}</div><div class="acts">`;
-    if(aim!=null)h+=`<button class="main" id="go">${s.heal?'Heal':s.support?'Use':'Attack'} ${nameOf(unit(aim))}</button>`;
-    if(!u.done)h+=`<button id="wait">Wait</button>`;
+    if(aim!=null)h+=`<button class="main" id="go">${walk?'Walk and ':''}${s.revive?'Revive':s.heal?'Heal':s.support?'Use':'Attack'} ${s.revive?'':nameOf(unit(aim))}</button>`;
+    if(!u.done){
+      h+=`<button id="def">Defend</button>`;
+      h+=`<button id="pot" ${u.potions&&u.hp<u.maxHp?'':'disabled'}>Potion (${u.potions})</button>`;
+      if(u.canUndo)h+=`<button id="undo">Undo move</button>`;
+      h+=`<button id="wait">Wait</button>`;
+    }
     h+=`</div>${endBtn()}`;
   } else h+=`<div class="muted">Skills: ${u.skills.map(s=>s.name).join(', ')}</div>${endBtn()}`;
   p.innerHTML=h;
-  p.querySelectorAll('.skills button').forEach(bt=>bt.onclick=()=>{slot=+bt.dataset.i;aim=null;refreshAim();render()});
-  if($('go'))$('go').onclick=()=>apply({kind:'attack',unit:sel,skill:slot,target:aim});
+  p.querySelectorAll('.skills button').forEach(bt=>bt.onclick=()=>{slot=+bt.dataset.i;aim=null;walk=null;refreshAim();render()});
+  if($('go'))$('go').onclick=strikeAim;
+  if($('def'))$('def').onclick=()=>apply({kind:'defend',unit:sel});
+  if($('pot'))$('pot').onclick=()=>apply({kind:'potion',unit:sel});
+  if($('undo'))$('undo').onclick=()=>apply({kind:'undo',unit:sel});
   if($('wait'))$('wait').onclick=()=>apply({kind:'wait',unit:sel});
   bindEnd();
 }
@@ -147,17 +162,32 @@ function bindEnd(){if($('end'))$('end').onclick=()=>{sel=null;aim=null;apply({ki
 function forecast(u){
   if(u.done)return '<span class="muted">Finished for this turn.</span>';
   if(aim==null)return targets.length?'<span class="muted">Tap a target outlined in red.</span>':'<span class="muted">No target in range here. Walk closer (gold tiles) or pick another skill.</span>';
-  const f=J(ctPreview(sel,slot,aim));if(!f)return '';
+  const f=J(walk?ctPreviewFrom(sel,slot,aim,walk.x,walk.y):ctPreview(sel,slot,aim));if(!f)return '';
+  const pre=walk?'<span class="muted">Walks to the dashed tile, then:</span><br>':'';
+  if(u.skills[slot].revive)return `Brings back <b>${f.revives}</b> with <b>${f.heal}</b> HP`;
   if(f.heal!=null&&u.skills[slot].heal)return `Heals <b>${f.heal}</b> HP`;
   if(u.skills[slot].support)return 'A buff for nearby allies';
   const dm=f.low===f.high?f.low:`${f.low}–${f.high}`, m=f.mult>1?` <span style="color:var(--gold2)">weak spot ×${f.mult}</span>`:f.mult<1?` <span class="muted">resisted ×${f.mult}</span>`:'';
-  return `Hit <b>${f.hitChance}%</b> · Damage <b>${dm}</b>${m}`;
+  const also=f.also&&f.also.length?`<br><span class="muted">Also hits: ${f.also.map(i=>nameOf(unit(i))).join(', ')}</span>`:'';
+  return `${pre}${u.skills[slot].name}: Hit <b>${f.hitChance}%</b> · Damage <b>${dm}</b>${m}${also}`;
+}
+function strikeAim(){
+  const a={kind:'attack',unit:sel,skill:slot,target:aim};
+  if(walk){const w=walk;walk=null;if(!apply({kind:'move',unit:sel,x:w.x,y:w.y}))return}
+  apply(a);
 }
 function tap(x,y){
   if(V.outcome||V.side!==0)return;
   const u=at(x,y);
-  if(u&&sel!=null&&targets.includes(u.id)){if(aim===u.id)return apply({kind:'attack',unit:sel,skill:slot,target:aim});aim=u.id;render();return}
-  if(u&&u.team===0){if(sel!==u.id){sel=u.id;slot=defaultSlot(u);aim=null}refreshAim();render();return}
+  if(u&&sel!=null&&targets.includes(u.id)&&!walk){if(aim===u.id)return strikeAim();aim=u.id;render();return}
+  if(u&&sel!=null&&aim===u.id&&walk)return strikeAim();
+  if(u&&u.team!==0&&sel!=null&&!unit(sel).done){
+    // Tap-to-attack: the referee picks the skill and, if needed, where to walk.
+    const p=J(ctPlan(sel,u.id));
+    if(p){slot=p.slot;aim=u.id;walk=p.walk||null;targets=J(ctTargets(sel,slot))||[];render();return}
+  }
+  walk=null;
+  if(u&&u.team===0){walk=null;if(sel!==u.id){sel=u.id;slot=defaultSlot(u);aim=null}refreshAim();render();return}
   if(u){sel=u.id;aim=null;reach=[];targets=[];render();return}
   if(sel!=null&&reach.some(t=>t[0]===x&&t[1]===y))return apply({kind:'move',unit:sel,x,y});
   sel=null;aim=null;reach=[];targets=[];render();
@@ -165,13 +195,13 @@ function tap(x,y){
 function apply(a){
   V.units.forEach(u=>names[u.id]=nameOf(u));
   const r=J(ctApply(JSON.stringify(a)));
-  if(r.refused){logLine('bad','No: '+r.refused.reason);render();return}
+  if(r.refused){logLine('bad','No: '+r.refused.reason);render();return false}
   (r.events||[]).forEach(say);
   if(r.problem)logLine('bad',r.problem);
   V=r.view;V.units.forEach(u=>names[u.id]=nameOf(u));
   if(sel!=null&&!unit(sel))sel=null;
   if(a.kind==='attack')aim=null;
-  refreshAim();render();
+  refreshAim();render();return true
 }
 function say(e){
   const n=id=>names[id]||'someone';
@@ -184,6 +214,11 @@ function say(e){
     case 'ticked':logLine('',`${n(e.unit)} loses ${e.amount} HP to ${Object.keys(e.statuses||{})[0]||'a status'}.`);break;
     case 'died':logLine('bad',`${n(e.unit)} falls.`);break;
     case 'turn-start':logLine('turn',!e.side?`Turn ${e.turn} · your move`:'Enemy turn');break;
+    case 'defended':logLine('',`${n(e.unit)} takes a defensive stance.`);break;
+    case 'potion':logLine('good',`${n(e.unit)} drinks a potion: +${e.amount} HP.`);break;
+    case 'undone':logLine('',`${n(e.unit)} steps back.`);break;
+    case 'revived':logLine('good',`${n(e.target)} is brought back with ${e.amount} HP!`);break;
+    case 'seized':logLine('good',`${n(e.unit)} seizes the throne! The enemies flee.`);break;
     case 'won':logLine('good','Victory!');break;
     case 'lost':logLine('bad','Defeat.');break;
   }

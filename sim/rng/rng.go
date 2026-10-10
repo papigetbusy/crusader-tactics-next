@@ -52,6 +52,14 @@ func (p *PCG) Roll(string) float64 {
 	return float64(p.next()) / 4294967296.0
 }
 
+// Picker lets the old-game check replay the extra targets the old game picked
+// for multi-target skills (the fair shuffle intentionally differs, so the
+// check feeds the old picks to test everything else). Real dice never
+// implement it, so real play always uses the fair shuffle.
+type Picker interface {
+	PickExtra(pool []int, n int) []int
+}
+
 // Shuffle puts a list in a fair random order (the standard Fisher-Yates
 // method). It replaces the old game's biased sort-based shuffles; this
 // difference was approved by the owner on 2026-10-09.

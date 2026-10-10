@@ -47,7 +47,7 @@ func Start(c *content.Content, b *state.Battle, side int, emit action.Emit) {
 			}
 		}
 		dot(u, "burn")
-		u.Defending, u.Done, u.Moved, u.Acted, u.TilesMoved = false, false, false, false, 0
+		u.Defending, u.Done, u.Moved, u.Acted, u.TilesMoved, u.Undo = false, false, false, false, 0, nil
 		dot(u, "bleed")
 		dot(u, "poison")
 		if tr, ok := c.Terrain[board.GroundAt(b, u.X, u.Y)]; ok && tr.Heal > 0 && u.HP > 0 && u.HP < u.MaxHP {
@@ -78,6 +78,9 @@ func End(c *content.Content, b *state.Battle, side int, emit action.Emit) {
 			if u.Status[q] > 0 {
 				u.Status[q]--
 			}
+		}
+		if u.CloakUsed && u.Status["cloak"] <= 0 {
+			combat.CloakCooldown(u)
 		}
 	}
 	emit(action.Event{Kind: action.TurnEnd, Side: side})

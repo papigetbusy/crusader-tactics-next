@@ -27,6 +27,14 @@ Paste this at the top of every big prompt. Decisions confirmed by the owner on 2
 3. **Old saves:** existing saves keep working, through a loader that reads today's save format.
 4. **Fair shuffle:** the old game's four live random-comparator shuffles (enemy start slots, item combining, affix picks, multi-target extra targets) are replaced by one fair shuffle on the sim's seeded random. Listed as an intentional difference from the old game.
 
+## Confirmed decisions (2026-10-10)
+5. **The old game is a proof of concept, not law.** Every idea and mechanic carries over; matching it exactly is how we prove an idea came across correctly. Improvements are welcome, but each one is explained to the owner and signed off (or turned down) before it goes in, and then listed in `changes-from-old-game.md`.
+6. **Mid-battle saves resume exactly where you left off** (same board, health, statuses and turn). How this sits with decision 2 (fresh dice on load) is confirmed with the owner in Phase 7.
+7. **Monsters use the same skills as heroes,** the same version of each skill; only their animations differ (monster animations come in a later phase). The old game had a few monster-only versions; this is listed as a change.
+8. **The weapon triangle (sword, lance, axe) shows in every forecast,** both when heroes attack and when monsters attack heroes.
+9. **Enemy AI gets smarter as you climb** (Phase 9): it learns to go after healers and heroes weak to its attacks.
+10. **Look and feel notes for Phase 8:** an enraged boss glows red; the camera waits for an attack animation to finish before jumping to the next hero; the battle goal shows once at the start and then lives in the pause menu; the skill-switching bonus is explained once in tips.
+
 ## Existing rules to preserve
 - Floors stay the same within a run; revisiting a cleared floor gives less gold and the same XP.
 - Level cap tied to the monster level of the best floor reached.

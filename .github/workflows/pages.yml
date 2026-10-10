@@ -35,10 +35,10 @@ jobs:
           mkdir -p site
           echo "LABEL=build-$(date -u +%Y%m%d-%H%M)-${GITHUB_SHA::7}" >> "$GITHUB_ENV"
           set +e
-          OLDGAME_REPORT="$PWD/match.json" go test -json ./... > test.json
+          mkdir -p match && OLDGAME_REPORT="$PWD/match" go test -json ./... > test.json
           status=$?
           set -e
-          go run ./tools/report -tests test.json -match match.json -changes docs/changes-from-old-game.md -build "build-${GITHUB_SHA::7}" -out site
+          go run ./tools/report -tests test.json -match match -changes docs/changes-from-old-game.md -build "build-${GITHUB_SHA::7}" -out site
           if [ $status -ne 0 ]; then
             echo "Some tests are red (listed above). Nothing is published; the last good version stays live."
             go test ./... 2>&1 | grep -E "^(---|    |FAIL)" | head -60

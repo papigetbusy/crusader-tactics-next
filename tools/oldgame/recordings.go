@@ -92,8 +92,10 @@ type HitUnit struct {
 
 // Snap is the state of every unit after a step.
 type Snap struct {
-	Turn  int        `json:"turn"`
-	Units []SnapUnit `json:"u"`
+	Turn   int        `json:"turn"`
+	Units  []SnapUnit `json:"u"`
+	Fallen []int      `json:"fallen"` // heroes who can be revived, oldest first (Phase 5 recordings)
+	Seized []int      `json:"seized"` // the throne tile on seize-the-throne floors (Phase 5 recordings)
 }
 
 // SnapUnit is one unit in a Snap.
@@ -119,6 +121,7 @@ type SnapUnit struct {
 	Cd    []*int         `json:"cd"` // one per skill slot; null = never used
 	Def2  int            `json:"df"`
 	Sh    int            `json:"sh"`
+	Pot   *int           `json:"pot"` // potions left (heroes; Phase 5 recordings only)
 }
 
 // Load reads the recorded fights file.
