@@ -22,6 +22,7 @@ Every feature of the old game (v0.26.1), and where it lands in the rebuild. Noth
 - ✅ Loot drops, chests (wood, silver, gold), gold, loot that targets gear your party can use
 - ✅ Companion spirits (rare blue-glowing monsters that bond with the hero who defeats them; the blue glow comes with the new sprites in Phase 8)
 - ✅ **Unequip** (take an item off into the bag; the old gear sheet allowed it by tapping a slot)
+- ✅ Skill library: choose which learned skills each hero brings (before the battle starts; between floors in Phase 7)
 - ✅ The purple (epic) tier, new (approved 2026-10-11): 8 weapons, 9 armor pieces, 3 charms, 14 purple bonuses
 
 ## 2. The run (Phase 7)

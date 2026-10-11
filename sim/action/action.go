@@ -21,6 +21,10 @@ const (
 	Drop    Kind = "drop"    // throws bag item Item away for good
 	Unequip Kind = "unequip" // Unit takes off the item in Slot, into the bag
 	UseSet  Kind = "set"     // Unit takes weapon set Set (1-3) in hand; it does not use up the turn
+	// Bring puts learned skill Choice on Unit's skill bar before the battle
+	// starts: a normal skill in bar slot Slot ("1"-"4"; empty = a free slot),
+	// an ultimate in the ultimate slot.
+	Bring Kind = "bring"
 )
 
 // Action is one request.
@@ -80,6 +84,7 @@ const (
 	GearOff       = "unequipped" // Unit took item Skill off into the bag
 	Bonded        = "bonded"     // Unit bonded with a companion spirit of kind Skill
 	GearDropped   = "dropped"    // item Skill was thrown away
+	SkillBrought  = "brought"    // Unit put Skill on its bar
 	SetSwitched   = "set"        // Unit took weapon set Amount (1-3) in hand
 	Evolved       = "evolved"    // Unit evolved into the form named Skill (at levels 5 and 20)
 	Guarded       = "guarded"    // Unit (a Guardian) takes the hit aimed at Target

@@ -98,7 +98,7 @@ footer{margin-top:16px;color:var(--muted);font-size:13px}
 <script>
 const $=id=>document.getElementById(id), J=s=>JSON.parse(s);
 const ICON={fire:'🔥',ice:'❄',elec:'⚡',light:'☀',dark:'☾'};
-let V=null, sel=null, slot=0, aim=null, walk=null, reach=[], targets=[], names={}, abil=null, sk=null, gearOpen=false;
+let V=null, sel=null, slot=0, aim=null, walk=null, reach=[], targets=[], names={}, abil=null, sk=null, gearOpen=false, skOpen=false;
 // Skills aimed in more than one tap: what each tap picks, in order.
 const STEPS={tile:['tile'],line:['tile'],rollThenFoe:['tile','unit'],foeThenTile:['unit','tile'],twoFoes:['unit','unit']};
 const STEP_TEXT={tile:'Tap a highlighted tile.',unit:'Tap a highlighted unit.'};
@@ -194,12 +194,15 @@ function panel(){
       h+=`<button id="wait">Wait</button>`;
     }
     if(u.gear)h+=`<button id="gearb">${gearOpen?'Hide gear':'Gear'}</button>`;
-    h+=`</div>${gearOpen&&u.gear?gearSheet(u):''}${endBtn()}`;
+    if(V.preparing&&u.library&&u.library.length)h+=`<button id="skb">${skOpen?'Hide skills':'Skills'}</button>`;
+    h+=`</div>${skOpen&&V.preparing?skillSheet(u):''}${gearOpen&&u.gear?gearSheet(u):''}${endBtn()}`;
   } else h+=`<div class="muted">Skills: ${u.skills.map(s=>s.name).join(', ')}</div>${endBtn()}`;
   p.innerHTML=h;
   p.querySelectorAll('.skills button').forEach(bt=>bt.onclick=()=>chooseSkill(+bt.dataset.i));
   if($('skx'))$('skx').onclick=()=>{sk=null;refreshAim();render()};
   if($('gearb'))$('gearb').onclick=()=>{gearOpen=!gearOpen;render()};
+  if($('skb'))$('skb').onclick=()=>{skOpen=!skOpen;render()};
+  p.querySelectorAll('[data-bring]').forEach(b=>b.onclick=()=>apply({kind:'bring',unit:sel,choice:b.dataset.bring,slot:b.dataset.slot||''}));
   p.querySelectorAll('[data-set]').forEach(b=>b.onclick=()=>apply({kind:'set',unit:sel,set:+b.dataset.set}));
   p.querySelectorAll('[data-equip]').forEach(b=>b.onclick=()=>apply({kind:'equip',unit:sel,item:+b.dataset.equip,slot:b.dataset.slot||''}));
   p.querySelectorAll('[data-off]').forEach(b=>b.onclick=()=>apply({kind:'unequip',unit:sel,slot:b.dataset.off}));
@@ -212,6 +215,18 @@ function panel(){
   if($('undo'))$('undo').onclick=()=>apply({kind:'undo',unit:sel});
   if($('wait'))$('wait').onclick=()=>apply({kind:'wait',unit:sel});
   bindEnd();
+}
+// skillSheet: before the battle starts, choose which learned skills to bring.
+function skillSheet(u){
+  const bar=u.skills.filter(s=>s.name!=='Strike'&&!s.ultimate),ult=u.skills.find(s=>s.ultimate);
+  let h=`<div class="sheet"><h3>Skills you bring</h3><div class="muted">Change them before anyone moves; once the battle starts they are fixed.</div>`;
+  h+=bar.map((s,i)=>itemRow({name:`${i+1}. ${s.name}`,color:'#e8e2d0',kind:'skill',text:s.text})).join('');
+  if(ult)h+=itemRow({name:`★ ${ult.name}`,color:'#f2b84b',kind:'ultimate',text:ult.text});
+  h+=`<h3>Learned, left behind</h3>`;
+  h+=u.library.map(s=>{const b=s.ultimate?`<button class="gold" data-bring="${s.name}">Make ultimate</button>`:
+    bar.length<4?`<button class="gold" data-bring="${s.name}">Bring</button>`:bar.map((x,i)=>`<button class="gold" data-bring="${s.name}" data-slot="${i+1}">For ${x.name}</button>`).join('');
+    return itemRow({name:(s.ultimate?'★ ':'')+s.name,color:s.ultimate?'#f2b84b':'#e8e2d0',kind:s.ultimate?'ultimate':'skill',text:s.text},b)}).join('');
+  return h+'</div>';
 }
 const SLOTN={w:'Set 1',w2:'Set 2',w3:'Set 3',h:'Helm',a:'Armor',b:'Boots',c:'Charm'};
 function itemRow(it,btns){return `<div class="item"><div><b style="color:${it.color}">${it.name}</b> <span class="muted">(${it.kind})</span><small>${it.text||'no bonuses'}</small>${it.lore?`<small><i>${it.lore}</i></small>`:''}</div>${btns?`<div class="btns">${btns}</div>`:''}</div>`}
@@ -350,6 +365,7 @@ function say(e){
     case 'equipped':logLine('good',`${n(e.unit)} puts on ${e.skill}.`);break;
     case 'dropped':logLine('',`${e.skill} is thrown away.`);break;
     case 'set':logLine('',`${n(e.unit)} takes weapon set ${e.amount} in hand.`);break;
+    case 'brought':logLine('',`${n(e.unit)} will bring ${e.skill}.`);break;
     case 'learned':logLine('good',`${n(e.unit)} learns ${e.skill}.`);break;
     case 'won':logLine('good','Victory!');break;
     case 'lost':logLine('bad','Defeat.');break;

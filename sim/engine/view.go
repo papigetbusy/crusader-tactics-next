@@ -11,22 +11,23 @@ import (
 // View is the board as the screen sees it: a read-only copy, so the screen
 // can never change a rule by accident.
 type View struct {
-	N        int           `json:"n"`
-	Ground   []string      `json:"ground"`
-	Turn     int           `json:"turn"`
-	Side     int           `json:"side"`
-	Outcome  string        `json:"outcome"`
-	Units    []UnitView    `json:"units"`
-	Throne   *state.Tile   `json:"throne,omitempty"`
-	LevelCap int           `json:"levelCap,omitempty"`
-	Decision *DecisionView `json:"decision,omitempty"` // the first waiting choice
-	Fields   []state.Field `json:"fields,omitempty"`
-	Kegs     []state.Keg   `json:"kegs,omitempty"`   // Powder Kegs waiting to blow up
-	Traps    int           `json:"traps,omitempty"`  // how many hidden traps (where is a secret only to monsters)
-	Fallen   []string      `json:"fallen,omitempty"` // classes of fallen heroes, last to fall at the end
-	Bag      []ItemView    `json:"bag,omitempty"`    // items carried but not worn
-	Gold     int           `json:"gold"`
-	Chests   []state.Chest `json:"chests,omitempty"`
+	N         int           `json:"n"`
+	Ground    []string      `json:"ground"`
+	Turn      int           `json:"turn"`
+	Side      int           `json:"side"`
+	Outcome   string        `json:"outcome"`
+	Units     []UnitView    `json:"units"`
+	Throne    *state.Tile   `json:"throne,omitempty"`
+	LevelCap  int           `json:"levelCap,omitempty"`
+	Decision  *DecisionView `json:"decision,omitempty"` // the first waiting choice
+	Fields    []state.Field `json:"fields,omitempty"`
+	Kegs      []state.Keg   `json:"kegs,omitempty"`   // Powder Kegs waiting to blow up
+	Traps     int           `json:"traps,omitempty"`  // how many hidden traps (where is a secret only to monsters)
+	Fallen    []string      `json:"fallen,omitempty"` // classes of fallen heroes, last to fall at the end
+	Bag       []ItemView    `json:"bag,omitempty"`    // items carried but not worn
+	Gold      int           `json:"gold"`
+	Chests    []state.Chest `json:"chests,omitempty"`
+	Preparing bool          `json:"preparing,omitempty"` // before the battle starts: skills can still be changed
 }
 
 // UnitView is one unit as the screen sees it.
@@ -60,9 +61,17 @@ type UnitView struct {
 	Done      bool           `json:"done"`
 	CanMove   bool           `json:"canMove"`
 	Skills    []SkillView    `json:"skills"`
-	Gear      *GearView      `json:"gear,omitempty"` // heroes: what they wear
-	Bond      *state.Bond    `json:"bond,omitempty"` // heroes: their companion spirit
-	Kind      string         `json:"kind,omitempty"` // monsters: what kind (Goblin, Slime...)
+	Gear      *GearView      `json:"gear,omitempty"`    // heroes: what they wear
+	Bond      *state.Bond    `json:"bond,omitempty"`    // heroes: their companion spirit
+	Kind      string         `json:"kind,omitempty"`    // monsters: what kind (Goblin, Slime...)
+	Library   []LibraryView  `json:"library,omitempty"` // heroes: learned skills not on the bar
+}
+
+// LibraryView is a learned skill a hero could bring instead.
+type LibraryView struct {
+	Name     string `json:"name"`
+	Text     string `json:"text,omitempty"`
+	Ultimate bool   `json:"ultimate,omitempty"`
 }
 
 // AbilityView is a hero's class ability as the screen shows it.
@@ -105,7 +114,8 @@ type SkillView struct {
 	Support  bool    `json:"support,omitempty"`
 	Aim      string  `json:"aim,omitempty"`  // how it is aimed (content.Aim...); "" = tap a unit
 	Free     bool    `json:"free,omitempty"` // does not use up the turn
-	Wait     int     `json:"wait"`           // turns until ready (0 = ready)
+	Ultimate bool    `json:"ultimate,omitempty"`
+	Wait     int     `json:"wait"` // turns until ready (0 = ready)
 }
 
 // View returns the current board.
@@ -117,7 +127,7 @@ func (g *Game) View() View {
 	}
 	v.Fields, v.Kegs, v.Traps = b.Fields, b.Kegs, len(b.Traps)
 	v.Decision = g.decisionView()
-	v.Bag, v.Gold, v.Chests = g.bagView(), b.Gold, b.Chests
+	v.Bag, v.Gold, v.Chests, v.Preparing = g.bagView(), b.Gold, b.Chests, g.Preparing()
 	for y := 0; y < b.N; y++ {
 		row := make([]byte, b.N)
 		for x := range row {
@@ -135,7 +145,7 @@ func (g *Game) View() View {
 			if u.Ascension != "" {
 				uv.Form = u.Ascension
 			}
-			uv.Gear, uv.Bond = g.gearView(u), u.Bond
+			uv.Gear, uv.Bond, uv.Library = g.gearView(u), u.Bond, g.library(u)
 			if ab, ok := combat.AbilityOf(g.C, u); ok {
 				wait := u.AbilityCooldown
 				if ab.Free {
@@ -152,7 +162,7 @@ func (g *Game) View() View {
 		}
 		for i, s := range u.Skills {
 			uv.Skills = append(uv.Skills, SkillView{Name: s.Name, Text: s.Text, MinRange: s.MinRange, MaxRange: s.MaxRange,
-				Power: s.Power, Element: s.Element, Area: s.Area, Heal: s.Heal, Revive: s.Revive, Support: s.Support, Aim: s.Aim, Free: s.Free, Wait: u.Cooldowns[i]})
+				Power: s.Power, Element: s.Element, Area: s.Area, Heal: s.Heal, Revive: s.Revive, Support: s.Support, Aim: s.Aim, Free: s.Free, Wait: u.Cooldowns[i], Ultimate: s.Kind == "u"})
 		}
 		v.Units = append(v.Units, uv)
 	}

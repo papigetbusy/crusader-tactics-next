@@ -106,6 +106,8 @@ func (g *Game) Apply(a action.Action) ([]action.Event, error) {
 		g.equip(a, emit)
 	case action.Unequip:
 		g.unequip(a, emit)
+	case action.Bring:
+		g.bring(a, emit)
 	case action.UseSet:
 		stats.UseSet(g.C, b.Unit(a.Unit), a.Set-1)
 		emit(action.Event{Kind: action.SetSwitched, Unit: a.Unit, Amount: a.Set})
@@ -159,6 +161,9 @@ func (g *Game) check(a action.Action) error {
 	}
 	if a.Kind == action.Equip || a.Kind == action.Drop || a.Kind == action.Unequip {
 		return g.checkGear(a)
+	}
+	if a.Kind == action.Bring {
+		return g.checkBring(a)
 	}
 	if a.Kind == action.UseSet {
 		return g.checkSet(a)
