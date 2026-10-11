@@ -94,7 +94,7 @@ Already fixed with your sign-off: forecast now matches real damage; traps work a
 Signed off by the owner on 2026-10-11 (nothing built yet; each lands in the step named):
 1. ✅ approved, **6d:** the battle ends the moment it is won (the old game let heroes keep acting until the next floor loaded).
 2. ✅ approved, **6d:** an undo that can't happen (a shadow clone stands on the old tile) says why instead of silently doing nothing.
-3. ✅ approved, **6d design, tuned after Phase 7:** legendaries only start to drop once you reach Lv 30. A new **purple tier (epic)** sits between rare (blue) and legendary (gold): weapons, armor and charms with their own bonuses (prefixes), built for the middle levels. Claude designs the purple items and bonuses and sends them for approval (like the skill list) before anything goes in; their numbers are then tuned with the autoplayer.
+3. ✅ approved, **6d design, tuned after Phase 7:** legendaries only start to drop once any one hero reaches Lv 30, and only ones that hero can use. A new **purple tier (epic)** sits between rare (blue) and legendary (gold): weapons, armor and charms with their own bonuses (prefixes), built for the middle levels. Claude designs the purple items and bonuses and sends them for approval (like the skill list) before anything goes in; their numbers are then tuned with the autoplayer.
 4. ✅ settled by point 3: legendary weapons needing rank S fits, since legendaries now arrive at Lv 30, when heroes reach rank S.
 5. ✅ approved, **Phase 7:** a design call on what a defeat costs and whether shop floors need a fight.
 6. ✅ approved, **Phase 9:** smarter monsters as floors rise.
