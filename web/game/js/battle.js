@@ -5,6 +5,7 @@ import * as referee from './referee.js';
 import { tileAt, unitAt, closeUp, focusOn } from './camera.js';
 import { feet } from './board.js';
 import * as team from './team.js';
+import * as shop from './shop.js';
 import * as playback from './playback.js';
 import { autosave } from './sysmenu.js';
 
@@ -91,7 +92,7 @@ export function after() {
   decision();
   summary();
   if (p === 'prepare') screen.log(`Floor ${v.climb.floor}: look at the map, tap Team to choose heroes, tap a hero then a blue tile to place them, then Start battle.`);
-  if (p === 'shop') send({ kind: 'continue' }, 'The shop is not on this screen yet: on to the floor.');
+  if (p === 'shop' && $('shopWin').hidden) shop.open();
   const readyHeroes = st().units.filter(ready);
   $('endTurn').classList.toggle('pulse', p === 'battle' && !readyHeroes.length);
   // the danger zone: every tile a monster could walk to next turn

@@ -12,6 +12,7 @@ import * as battle from './battle.js';
 import * as playback from './playback.js';
 import * as sysmenu from './sysmenu.js';
 import * as gear from './gear.js';
+import * as shop from './shop.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -116,6 +117,7 @@ export async function boot(build) {
   };
   battle.wire({ st, show, kick, log });
   gear.wire({ st, show, kick, log, after: battle.after });
+  shop.wire({ st, show, kick, log, after: battle.after });
   sysmenu.wire({ st, show, kick, log, after: battle.after, gear: () => gear.open(), endTurn: battle.endTurn, nextHero });
   requestAnimationFrame(loop);
 }

@@ -20,7 +20,8 @@ type ClimbView struct {
 	Heroes  []HeroRow    `json:"heroes"`
 	Floors  []FloorRow   `json:"floors"`
 	Shop    []PricedItem `json:"shop,omitempty"`
-	Bag     []PricedItem `json:"bag,omitempty"` // in the shop: what selling pays
+	Bag     []PricedItem `json:"bag,omitempty"`   // in the shop: what selling pays
+	Pairs   [][2]int     `json:"pairs,omitempty"` // in the shop: bag items that can be combined, two by two
 	Summary *Summary     `json:"summary,omitempty"`
 }
 
@@ -111,6 +112,7 @@ func (g *Game) climbView() *ClimbView {
 		for _, it := range r.Bag {
 			v.Bag = append(v.Bag, PricedItem{g.itemView(it.Slot, it), items.SellPrice(g.C, it)})
 		}
+		v.Pairs = r.Pairs(g.C)
 	}
 	return v
 }

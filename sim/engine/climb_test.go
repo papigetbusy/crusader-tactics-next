@@ -252,4 +252,16 @@ func TestClimb(t *testing.T) {
 			t.Fatal("the Warrior is finished before the battle started")
 		}
 	})
+
+	t.Run("The shop lists which bag items can be combined, two copies at a time", func(t *testing.T) {
+		g := climbGame()
+		r := g.climb.run
+		g.climb.phase = PhaseShop
+		sw := content.Item{Name: "Steel Sword", Slot: "w", Rarity: 1, WeaponType: "sword", Atk: 4}
+		ax := content.Item{Name: "Iron Axe", Slot: "w", Rarity: 0, WeaponType: "axe", Atk: 3}
+		r.Bag = []content.Item{sw, ax, sw, sw}
+		if p := g.View().Climb.Pairs; len(p) != 1 || p[0] != [2]int{0, 2} {
+			t.Fatalf("pairs %v", p)
+		}
+	})
 }

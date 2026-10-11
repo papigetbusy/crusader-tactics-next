@@ -172,9 +172,10 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
 .fl span { display: block; }
 .fl i { font: 700 10px system-ui, sans-serif; font-style: normal; padding: 1px 6px; border-radius: 8px; margin: 3px 4px 0 0; display: inline-block; background: #2a1014; border: 1px solid #6a4a1a; }
 .t-ok { color: #8ff0b0; } .t-b { color: #ff9a8a; } .t-ch { color: #f2c14e; } .t-c { color: #8fc8ff; } .t-top { color: #fff; } .t-s { color: #d8ccb0; } .t-e { color: #ffb36a; }
-.sheet .tabs { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
-.sheet .tabs button { background: rgba(40,10,14,.65); border: 1px solid rgba(201,162,74,.45); color: #efe3c8; font: 600 13px 'EB Garamond', Georgia, serif; padding: 6px 10px; border-radius: 4px; }
-.sheet .tabs button.on { background: linear-gradient(#6a1a22, #3a0c12); border-color: #d9c27a; color: #ffe6a8; }
+.gold img { width: 20px; height: 20px; vertical-align: -4px; }
+.box .tabs, .sheet .tabs { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+.box .tabs button, .sheet .tabs button { background: rgba(40,10,14,.65); border: 1px solid rgba(201,162,74,.45); color: #efe3c8; font: 600 13px 'EB Garamond', Georgia, serif; padding: 6px 10px; border-radius: 4px; }
+.box .tabs button.on, .sheet .tabs button.on { background: linear-gradient(#6a1a22, #3a0c12); border-color: #d9c27a; color: #ffe6a8; }
 .sheet .who { display: flex; gap: 10px; align-items: center; }
 .sheet .who img { height: 64px; image-rendering: pixelated; }
 .sheet .weap { color: #ffd45a; }

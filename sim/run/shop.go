@@ -87,19 +87,10 @@ func (r *Run) Sell(c *content.Content, i int) error {
 // Combine turns two copies of the same item and rarity in the bag into one
 // item a rarity higher. A legendary waits for a Lv 30 hero.
 func (r *Run) Combine(c *content.Content, i, j int) (content.Item, error) {
-	if i == j || i < 0 || j < 0 || i >= len(r.Bag) || j >= len(r.Bag) {
-		return content.Item{}, errors.New("Pick two items from the bag.")
+	if err := r.canCombine(c, i, j); err != nil {
+		return content.Item{}, err
 	}
 	a, b := r.Bag[i], r.Bag[j]
-	if a.Name != b.Name || a.Rarity != b.Rarity {
-		return content.Item{}, errors.New("Combining needs two copies of the same item and rarity.")
-	}
-	if a.Rarity >= c.Gear.Legendary() {
-		return content.Item{}, errors.New("Legendaries can't be combined.")
-	}
-	if items.Allowed(c, r.shopBattle(r.Floor), a.Rarity+1) != a.Rarity+1 {
-		return content.Item{}, errors.New("A legendary needs a hero at Lv 30 first.")
-	}
 	r.Combined++
 	it := items.Combine(c, r.Floor, r.dice(streamCombine, r.Combined), a, b)
 	hi, lo := max(i, j), min(i, j)
@@ -107,4 +98,38 @@ func (r *Run) Combine(c *content.Content, i, j int) (content.Item, error) {
 	r.Bag = slices.Delete(r.Bag, lo, lo+1)
 	r.Bag = append(r.Bag, it)
 	return it, nil
+}
+
+// canCombine is "may bag items i and j be combined?".
+func (r *Run) canCombine(c *content.Content, i, j int) error {
+	if i == j || i < 0 || j < 0 || i >= len(r.Bag) || j >= len(r.Bag) {
+		return errors.New("Pick two items from the bag.")
+	}
+	a, b := r.Bag[i], r.Bag[j]
+	if a.Name != b.Name || a.Rarity != b.Rarity {
+		return errors.New("Combining needs two copies of the same item and rarity.")
+	}
+	if a.Rarity >= c.Gear.Legendary() {
+		return errors.New("Legendaries can't be combined.")
+	}
+	if items.Allowed(c, r.shopBattle(r.Floor), a.Rarity+1) != a.Rarity+1 {
+		return errors.New("A legendary needs a hero at Lv 30 first.")
+	}
+	return nil
+}
+
+// Pairs lists the bag items that can be combined now, two by two: the first
+// two copies of each item (the shop's Combine tab).
+func (r *Run) Pairs(c *content.Content) [][2]int {
+	var out [][2]int
+	used := map[int]bool{}
+	for i := range r.Bag {
+		for j := i + 1; j < len(r.Bag) && !used[i]; j++ {
+			if !used[j] && r.canCombine(c, i, j) == nil {
+				out = append(out, [2]int{i, j})
+				used[i], used[j] = true, true
+			}
+		}
+	}
+	return out
 }
