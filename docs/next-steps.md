@@ -68,6 +68,13 @@ The owner's order: first iron out every flaw and match the original game as clos
 - a small server that runs the referee, with room codes. GitHub Pages can't run a server, so this needs a small host such as Fly.io or Render.
 - a "play online" option on the screen, sending the same actions through `referee.js`
 
+Versus rules (owner, 2026-10-11):
+- Each player picks 8 heroes. All are set to Lv 30, and the player picks each hero's ascension.
+- Everyone wears a full purple gear set, so every match is even.
+- Chess.com-style clocks: a time limit per turn, plus an overall time for each player.
+- A match lasts about 5 minutes at most.
+- Still to settle with the owner: the seconds per turn and per player, the map (fixed or random, and how big), which purple set each class gets, and what happens when a clock runs out.
+
 Estimate: about 3 sessions once the game matches the original.
 
 ### 7. After the full build (owner's reminders)
