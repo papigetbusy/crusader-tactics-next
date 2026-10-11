@@ -32,8 +32,9 @@ Every feature of the old game (v0.26.1), and where it lands in the rebuild. Noth
 - 🔜 Persistent floors: going back gives the same map, monsters, opened chests and shop stock; replaying a cleared floor gives half gold and full XP; boss legendary memory
 - 🔜 Floor travel list (cleared floors, chests left, boss loot)
 - 🔜 Shop: buy, sell, **combine** two items (mixes and amplifies their bonuses)
-- 🔜 Recruit a new hero every 25 floors (up to 8); a free legendary gift every 100 floors
-- 🔜 Team select and deployment on blue tiles (approved 2026-10-10)
+- 🛠 Recruiting is replaced (owner, 2026-10-11): all 10 heroes are yours from the start; every 25 floors (25, 50, 75) you get one more hero slot instead, from 5 up to 8
+- 🔜 A free legendary gift every 100 floors
+- 🔜 Team select and deployment (approved 2026-10-10): look at the map, pick heroes for every slot, place them on blue starting tiles (more tiles than heroes); only heroes who fight earn XP; if you don't choose, your highest-level heroes go
 - ➕ **Change ascension once per floor** from the gear sheet (the old "re-spec" and "Choose Ascension" buttons)
 - 🔜 Floor-clear summary (XP, level-ups, loot, gold)
 - 🔜 Saves: 3 save slots, autosave at the start of every turn, resume mid-battle, save export and import (copy, download, paste or file), existing saves keep loading

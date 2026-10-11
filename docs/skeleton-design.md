@@ -139,7 +139,8 @@ Notes, each with its reason:
 | **Sell** | bag item | shop open | `ItemSold`, `GoldChanged` |
 | **Combine** | two matching items | shop open; two copies | `ItemsCombined` (rolls dice), `GoldChanged` if a cost applies |
 | **LeaveShop** | none | shop open | `ShopClosed`; the floor-70 "shop first, then boss" flow lives here |
-| **Recruit** | which offered hero | a recruit decision is waiting | `HeroRecruited`, `DecisionResolved` |
+| **ChooseTeam** | heroes for every slot (from all 10) | before the map starts; exactly as many heroes as slots | `TeamChosen` |
+| **PlaceHero** | hero, starting tile | a free blue starting tile; swappable until the battle starts | `HeroPlaced` |
 | **ChooseAscension** | hero, ascension | level 30 reached | `AscensionChosen`, `StatsChanged` |
 | **Respec** | hero, ascension | once per floor | `AscensionChosen` |
 | **LearnSkill** | hero, skill, slot to replace | a learn decision is waiting | `SkillLearned` or `SkillReplaced` |
@@ -213,7 +214,7 @@ Found in the audit, to move into `data/rules/` files with plain names:
 - the damage spread (90% to 110%), skill power growth per level, enemy AI choices (heal under 75%, special skill 45% of the time)
 - floor rhythm: boss every 10, elite every 5 and 50, shop every 7, seize-the-throne and reinforcement floors and their turns
 - map size and enemy count formulas, the monster-level formula, the gold halving on cleared floors
-- recruit every 25 best floors, legendary gift every 100, hero cap 8, evolution at levels 5, 20 and 30, potions refilling to 3
+- all 10 heroes from the start (no recruiting, owner 2026-10-11), hero slots 5 then +1 at floors 25, 50 and 75 (up to 8), legendary gift every 100, evolution at levels 5, 20 and 30, potions refilling to 3
 
 **Why:** this is what "numbers live in data, not buried in code" means in practice, and it also removes the audit's copies of the same number.
 
