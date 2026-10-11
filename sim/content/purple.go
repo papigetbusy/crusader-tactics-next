@@ -97,3 +97,17 @@ func init() {
 		Apply: addPurple,
 	})
 }
+
+func init() {
+	Changes = append(Changes, Change{
+		Date: "2026-10-11",
+		What: "Shops no longer take a floor number: every 7 floors the shop comes up between floors, then that floor is " +
+			"fought. Before, floors 7, 14, 21... were shop floors with no fight.",
+		Apply: func(c *Content) { c.Floors.ShopEvery = 0 },
+	}, Change{
+		Date: "2026-10-10",
+		What: "Heroes start on blue starting tiles the player picks: every open tile of the bottom 2 rows. " +
+			"Before, the heroes stood in fixed spots spread along the bottom row.",
+		Apply: func(c *Content) { c.Floors.StartRows = 2 },
+	})
+}

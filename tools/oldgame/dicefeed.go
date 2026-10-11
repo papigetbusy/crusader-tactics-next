@@ -7,6 +7,7 @@ import (
 
 	"github.com/papigetbusy/crusader-tactics-next/sim/ai"
 	"github.com/papigetbusy/crusader-tactics-next/sim/combat"
+	"github.com/papigetbusy/crusader-tactics-next/sim/floor"
 	"github.com/papigetbusy/crusader-tactics-next/sim/items"
 )
 
@@ -29,13 +30,14 @@ var whereRolled = map[string]string{
 	items.RollItem:          "genItem:",
 	items.RollBonus:         "rollAffixes:",
 	items.RollChest:         "openChest:",
+	floor.RollTile:          "reinforce:",
+	floor.RollKind:          "reinforce:",
 }
 
 // notPortedYet are old-game rolls for rules that arrive later (loot, chests,
 // where reinforcements appear). The feed steps over them.
 var notPortedYet = []string{
 	"anon:1203", "file:1203", // the old biased sort of an item's bonuses; the picks are served by PickAffixes
-	"reinforce:",
 	"file:1721", "act:1721"} // the old multi-target shuffle, replaced by the approved fair shuffle
 
 func (sf *siteFeed) skippable(site string) bool {

@@ -130,11 +130,12 @@ func matchPage(results []*result, matchDir, build string) string {
 		"TestOldGameHeroes":    "High-level fights: every class ability, all 30 ascensions, level-up choices",
 		"TestOldGameGear":      "Geared fights: weapons, armor, sets, legendaries, weapon sets and equipping mid-battle",
 		"TestOldGameLoot":      "Loot fights: drops, chests, gold, bounties, companion spirits and taking gear off",
+		"TestOldGameFloors":    "Floors: 1,500 floors of the old game built again in Go from the same run seed and team",
 		"TestOldGameMoves":     "Every move is legal in Go",
 		"TestOldGameHits":      "Every hit and miss gives the same result",
 		"TestOldGameSkillBars": "Every skill used is on the right skill bar",
 	}
-	for _, key := range []string{"TestOldGameFights", "TestOldGameCombat", "TestOldGameHeroes", "TestOldGameMoves", "TestOldGameHits", "TestOldGameSkillBars"} {
+	for _, key := range []string{"TestOldGameFights", "TestOldGameCombat", "TestOldGameHeroes", "TestOldGameGear", "TestOldGameLoot", "TestOldGameFloors", "TestOldGameMoves", "TestOldGameHits", "TestOldGameSkillBars"} {
 		for _, r := range results {
 			if r.Pkg != "tools/oldgame" || r.Name != key {
 				continue

@@ -27,8 +27,9 @@ Every feature of the old game (v0.26.1), and where it lands in the rebuild. Noth
 
 ## 2. The run (Phase 7)
 
-- 🔜 Endless floors; maps grow from 14x14 to 32x32; 7 biomes; rivers, bridges, mountain passes, forts, roads, forests, hills
-- 🔜 Monster count and level by floor (the v0.22.1 tuning), elites every 5 floors, bosses every 10, shops every 7, throne floors, reinforcement floors, max 1 enemy healer
+- ✅ 7a: endless floors; maps grow from 14x14 to 32x32; 7 biomes; rivers, bridges, mountain passes, forts, roads, forests, hills (1,500 old floors rebuilt exactly)
+- ✅ 7a: monster count and level by floor (the v0.22.1 tuning), elites every 5 floors, bosses every 10, throne floors, reinforcement floors (now worked out by Go in every old fight), max 1 enemy healer, chests and companion spirits placed by the floor
+- ✅ 7a: blue starting tiles on every floor (every open tile of the bottom 2 rows); placing heroes on them comes with team select (7c)
 - 🔜 Persistent floors: going back gives the same map, monsters, opened chests and shop stock; replaying a cleared floor gives half gold and full XP; boss legendary memory
 - 🔜 Floor travel list (cleared floors, chests left, boss loot)
 - 🔜 Shop: buy, sell, **combine** two items (mixes and amplifies their bonuses)

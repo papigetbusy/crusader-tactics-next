@@ -213,9 +213,6 @@ func replayAll(t *testing.T, file, set string) {
 			g.Dice = feed
 			g.B.NextID = seen + 1 // units Go creates get the IDs the recorder gave them
 			restart := restarted(prev, step.Snap)
-			if step.Kind == "endturn" && !restart {
-				reinforced += arrivals(c, g, prev, step)
-			}
 			if prev.Inv != nil {
 				g.B.Bag = bagOf(prev) // loot is ported in 6d
 			}
@@ -254,6 +251,9 @@ func replayAll(t *testing.T, file, set string) {
 					for _, e := range evs {
 						if e.Kind == action.LevelUp {
 							levelUps++
+						}
+						if e.Kind == action.Reinforced {
+							reinforced += e.Amount
 						}
 						if e.Kind == action.SkillUsed && g.B.Unit(e.Unit) != nil && g.B.Unit(e.Unit).Team == state.Enemies {
 							enemyTurns++
@@ -346,7 +346,7 @@ func replayAll(t *testing.T, file, set string) {
 			t.Fatal(err)
 		}
 	}
-	t.Logf("%d of %d fights replayed perfectly; %d of %d steps matched; %d monster skill uses decided by Go; %d dice used; %d battles ended with the same result in Go; %d level-ups worked out by Go; %d reinforcements and %d Grave Bloom skeletons taken from the recording",
+	t.Logf("%d of %d fights replayed perfectly; %d of %d steps matched; %d monster skill uses decided by Go; %d dice used; %d battles ended with the same result in Go; %d level-ups worked out by Go; %d reinforcements brought in by Go; %d Grave Bloom skeletons taken from the recording",
 		perfect, usable, matched, steps, enemyTurns, rolls, ended, levelUps, reinforced, raised)
 	for _, p := range bad {
 		t.Error(p)

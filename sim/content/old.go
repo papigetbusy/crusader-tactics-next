@@ -52,6 +52,9 @@ func FromOld(tables fs.FS) (*Content, error) {
 	if c.Gear, err = oldGear(tables); err != nil {
 		return nil, err
 	}
+	if c.Floors, err = oldFloors(tables); err != nil {
+		return nil, err
+	}
 	return c, c.Check()
 }
 

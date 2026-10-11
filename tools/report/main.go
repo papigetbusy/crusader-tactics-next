@@ -38,6 +38,7 @@ var sections = []struct{ pkg, title, about string }{
 	{"sim/combat", "Hitting and damage", "Hit chance, damage, statuses from hits."},
 	{"sim/stats", "Levels, skills, ascensions and gear", "How heroes earn experience, level up, evolve, learn skills and ascend, and what their gear does to their numbers."},
 	{"sim/items", "Loot and gold", "What monsters, chests and bounties drop, how new items are made, and gold from kills."},
+	{"sim/floor", "Floors", "How each floor of the climb is built: the map, its monsters and their level, bosses, elites, thrones, reinforcements, chests and the blue starting tiles."},
 	{"sim/turn", "Turns", "What happens when a turn starts and ends."},
 	{"sim/ai", "Enemy decisions", "How monsters choose what to do."},
 	{"sim/rng", "Dice", "The dice every roll comes from."},

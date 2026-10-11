@@ -11,6 +11,7 @@ import (
 	"github.com/papigetbusy/crusader-tactics-next/sim/board"
 	"github.com/papigetbusy/crusader-tactics-next/sim/combat"
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
+	"github.com/papigetbusy/crusader-tactics-next/sim/floor"
 	"github.com/papigetbusy/crusader-tactics-next/sim/rng"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
 )
@@ -192,6 +193,7 @@ func EndTurn(c *content.Content, b *state.Battle, dice rng.Dice, emit action.Emi
 			return nil
 		}
 	}
+	floor.Reinforce(c, b, dice, emit)
 	Start(c, b, dice, state.Enemies, emit)
 	for _, e := range members(b, state.Enemies) {
 		if b.Unit(e.ID) == nil || e.Done {

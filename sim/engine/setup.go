@@ -23,6 +23,10 @@ type Setup struct {
 	Throne  *state.Tile    `json:"throne,omitempty"` // seize-the-throne floors only
 	Bag     []content.Item `json:"bag,omitempty"`    // items carried but not worn
 	Chests  []state.Chest  `json:"chests,omitempty"` // unopened chests on the map
+	// Built floors (Phase 7): its biome, reinforcement floor, blue starting tiles.
+	Biome     string       `json:"biome,omitempty"`
+	Reinforce bool         `json:"reinforce,omitempty"`
+	Starts    []state.Tile `json:"starts,omitempty"`
 }
 
 // startingPotions is what every new hero carries (old recruit and new run,
@@ -52,6 +56,8 @@ type UnitSetup struct {
 	// Bond is a hero's companion spirit (a monster kind and element); it
 	// starts the fight beside the hero.
 	Bond *state.Bond `json:"bond,omitempty"`
+	Kind string      `json:"kind,omitempty"` // monsters: which kind
+	Ally bool        `json:"ally,omitempty"` // a companion spirit to bond with
 }
 
 // Combat dice come from their own stream of the battle seed, so later
@@ -66,7 +72,7 @@ func NewFight(c *content.Content, s Setup, battleSeed uint64) *Game {
 	for i, us := range s.Units {
 		u := &state.Unit{ID: i + 1, Team: us.Team, Class: us.Class, Level: us.Level, X: us.X, Y: us.Y,
 			HP: us.HP, MaxHP: us.HP, Atk: us.Atk, Def: us.Def, Mov: us.Mov, Element: us.Element,
-			Boss: us.Boss, Elite: us.Elite, Status: map[string]int{}}
+			Boss: us.Boss, Elite: us.Elite, Kind: us.Kind, Ally: us.Ally, Status: map[string]int{}}
 		if u.Team == state.Heroes {
 			u.Learned, u.Equipped, u.Ultimate = c.StartingBuild(u.Class, u.Level)
 			if len(us.Equipped) > 0 {
@@ -75,7 +81,7 @@ func NewFight(c *content.Content, s Setup, battleSeed uint64) *Game {
 			u.Skills = c.Bar(u.Class, u.Equipped, u.Ultimate)
 			u.Potions = startingPotions
 			u.Gear, u.BaseAtk = us.Gear, u.Atk
-			if len(us.Gear) > 0 {
+			if us.Gear != nil { // worked out from class, level and gear (even with no gear)
 				n, base := stats.Geared(c, u.Class, u.Level, "", us.Gear)
 				u.HP, u.MaxHP, u.Atk, u.Def, u.Mov, u.BaseAtk = n.MaxHP, n.MaxHP, n.Atk, n.Def, n.Mov, base
 			}
@@ -94,7 +100,7 @@ func NewFight(c *content.Content, s Setup, battleSeed uint64) *Game {
 			b.Party = append(b.Party, u.ID)
 		}
 	}
-	b.Floor = s.Floor
+	b.Floor, b.Reinforce, b.Biome, b.Starts = s.Floor, s.Reinforce, s.Biome, s.Starts
 	for _, id := range b.Party {
 		combat.SpawnCompanion(c, b, b.Unit(id))
 	}

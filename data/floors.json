@@ -1,0 +1,160 @@
+{
+  "_about": "How floors are built: size, monsters and their level, bosses, elites, thrones, reinforcements, chests and biomes. From the old game's TUNE, BOSS, ELT, BIOMES, EB and AFW tables and its floor code.",
+  "mapStart": 14,
+  "mapEvery": 4,
+  "mapMax": 32,
+  "monstersStart": 4,
+  "monstersEvery": 4,
+  "monstersMax": 16,
+  "partyBase": 5,
+  "perExtraHero": 1,
+  "levelPerFloor": 0.7,
+  "lateFrom": 30,
+  "latePerFloor": 0.4,
+  "levelPerPower": 0.63,
+  "gearPerLevel": 2.5,
+  "gearFloorShare": 40,
+  "perExtraFoe": 1.5,
+  "gearWeights": {
+    "addElec": 0.3,
+    "addFire": 0.3,
+    "bleedCh": 0.1,
+    "bossDmg": 0.1,
+    "cdr": 6,
+    "crit": 0.4,
+    "critDmg": 0.1,
+    "dark": 0.2,
+    "defPct": 0.2,
+    "dmg": 0.35,
+    "double": 0.4,
+    "dr": 0.5,
+    "elec": 0.2,
+    "evade": 0.4,
+    "fire": 0.2,
+    "healPct": 0.1,
+    "hpPct": 0.25,
+    "ice": 0.2,
+    "leech": 0.2,
+    "light": 0.2,
+    "movA": 3,
+    "phys": 0.3,
+    "poisonCh": 0.1,
+    "regen": 0.8,
+    "stunCh": 0.4,
+    "thorns": 0.1
+  },
+  "monsterGrowth": 1.25,
+  "monsterGrowthLv": 0.004,
+  "monsterGrowthCap": 0.8,
+  "bossEvery": 10,
+  "eliteEvery": 5,
+  "eliteBossFloors": 50,
+  "shopEvery": 0,
+  "throneEvery": 3,
+  "throneAt": 2,
+  "reinforceEvery": 4,
+  "reinforceAt": 3,
+  "reinforceTurns": [
+    3,
+    5
+  ],
+  "reinforceMax": 2,
+  "maxHealers": 1,
+  "enemyRows": 3,
+  "allyChance": 0.06,
+  "chests": [
+    {
+      "kind": "wood",
+      "chance": 0.4
+    },
+    {
+      "kind": "silver",
+      "chance": 0.18
+    },
+    {
+      "kind": "gold",
+      "chance": 0.06
+    }
+  ],
+  "startRows": 2,
+  "bosses": [
+    {
+      "name": "Bat Lord",
+      "element": "ice"
+    },
+    {
+      "name": "Lich King",
+      "element": "elec"
+    },
+    {
+      "name": "Elder Dragon",
+      "element": "fire"
+    },
+    {
+      "name": "Grave Lord",
+      "element": "dark"
+    },
+    {
+      "name": "Abyss Serpent",
+      "element": "ice"
+    },
+    {
+      "name": "Demon Lord",
+      "element": "fire"
+    }
+  ],
+  "elites": [
+    {
+      "name": "Dark Knight",
+      "element": "dark"
+    },
+    {
+      "name": "Golden Drake",
+      "element": "fire"
+    },
+    {
+      "name": "Shadow Assassin",
+      "element": "dark"
+    },
+    {
+      "name": "Orc Brute",
+      "element": "ice"
+    },
+    {
+      "name": "Dread Brute",
+      "element": "dark"
+    },
+    {
+      "name": "Orc Chieftain",
+      "element": "fire"
+    },
+    {
+      "name": "Plague Reaper",
+      "element": "dark"
+    },
+    {
+      "name": "Bone Gargoyle",
+      "element": "elec"
+    },
+    {
+      "name": "Frost Titan",
+      "element": "ice"
+    }
+  ],
+  "biomes": [
+    "Grasslands",
+    "Forest",
+    "Swamp",
+    "Desert",
+    "Tundra",
+    "Volcanic",
+    "Crypt"
+  ],
+  "elements": [
+    "fire",
+    "ice",
+    "elec",
+    "light",
+    "dark"
+  ]
+}

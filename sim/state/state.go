@@ -184,6 +184,9 @@ type Battle struct {
 
 	// Loot and the run's numbers this fight needs (the run sets them from Phase 7).
 	Floor         int     // which floor: loot gets stronger deeper down
+	Reinforce     bool    // a reinforcement floor: monsters arrive on set turns
+	Biome         string  // the floor's look (Grasslands, Crypt...)
+	Starts        []Tile  // blue starting tiles (team placement, Phase 7)
 	Gold          int     // gold carried
 	Party         []int   // the heroes' IDs in party order, alive or fallen (loot goes to the least geared)
 	Chests        []Chest // unopened chests on the map

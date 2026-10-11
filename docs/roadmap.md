@@ -17,7 +17,8 @@ Related docs: `feature-checklist.md` (every old-game feature and the phase it la
 - **Phase 3: done (2026-10-09/10).** Skeleton design approved, including the fair shuffle. New repo `crusader-tactics-next`; Claude pushes; the build robot builds and publishes.
 - **Phase 4: done (2026-10-10).** Core fight in Go, checked against every recording.
 - **Phase 5: done (2026-10-10).** Full combat, checked against 180 new recordings.
-- **Phase 6: done (2026-10-11).** 6a, 6b, 6c and 6d all green (6d: loot d5aad27, purple tier 5d3b8d4, skill changes once per floor). **Next: Phase 7, the run.**
+- **Phase 6: done (2026-10-11).** 6a, 6b, 6c and 6d all green (6d: loot d5aad27, purple tier 5d3b8d4, skill changes once per floor).
+- **Phase 7: in progress.** 7a floors done (2026-10-11): 1,500 old floors rebuilt exactly; reinforcements by Go in every old fight; blue starting tiles; "Climb: floor" on the practice page. **Next: 7b between floors (shop, floor list, gifts, ascension change).**
 
 ## Phase 6 (heroes and gear), done
 - **6a Levels and XP:** XP, level-ups and stat growth; evolutions at Lv 5 and 20; level cap tied to the best floor; only heroes who fought earn XP. All 24 recorded level-ups worked out by Go.

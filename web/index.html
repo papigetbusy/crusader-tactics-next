@@ -25,6 +25,8 @@ button:disabled{opacity:.4;cursor:default}
 #status{font:600 15px Cinzel,serif;color:var(--gold2);margin:6px 0}
 #board{display:grid;width:100%;aspect-ratio:1;border:1px solid var(--line);border-radius:6px;overflow:hidden;touch-action:manipulation;user-select:none;-webkit-user-select:none}
 .tile{position:relative;border:.5px solid rgba(0,0,0,.35)}
+.tile.start{box-shadow:inset 0 0 0 2px #4a8cff;background-image:linear-gradient(rgba(74,140,255,.28),rgba(74,140,255,.28))}
+.u.ally{box-shadow:0 0 6px 2px #6ab8ff}
 .tile.g{background:#2b3324}.tile.r{background:#4a3b2a}.tile.f{background:#1b2a1a}.tile.h{background:#3b3a28}.tile.t{background:#4a3434}
 .tile.T{background:#5c2a2c}.tile.b{background:#4d3d28}.tile.w{background:#14233a}.tile.m{background:#2a2a31}
 .tile.reach::after{content:"";position:absolute;inset:0;background:rgba(201,162,77,.28);box-shadow:inset 0 0 0 1px rgba(230,200,120,.55)}
@@ -87,13 +89,14 @@ footer{margin-top:16px;color:var(--muted);font-size:13px}
 <nav><a class="on" href="./">Practice fight</a><a href="rules.html">Rule Book</a><a href="match.html">Old-Game Match</a><a href="house.html">House Rules</a><a href="changes.html">Changes</a></nav></header>
 <div id="err"></div>
 <div class="bar"><select id="pick" aria-label="Choose a fight"></select><button class="gold" id="new">New fight</button></div>
+<div class="bar"><label for="fl">Climb: floor</label><input type="number" id="fl" min="1" max="300" value="1" inputmode="numeric" style="width:5em"><button class="gold" id="build">Build floor</button></div>
 <div id="status">Loading the referee…</div>
-<div id="board"></div>
+<div id="wrap" style="overflow:auto"><div id="board"></div></div>
 <div id="banner"></div>
 <div class="card" id="panel"><div class="muted">Tap one of your heroes (gold) to begin. Gold tiles show where it can walk; red outlines show who its skill can reach.</div></div>
 <div class="card"><h2>Battle log</h2><div id="log"></div></div>
 <div id="choice"><div class="box" id="choicebox"></div></div>
-<footer>Phase 6 practice fight: the real rules, plain looks. Tap a monster to attack it (the hero walks closer if needed); tap again to confirm. Your art and menus come in Phase 8. Build: __BUILD__</footer>
+<footer>Phase 7 practice fight: the real rules, plain looks. Tap a monster to attack it (the hero walks closer if needed); tap again to confirm. Your art and menus come in Phase 8. Build: __BUILD__</footer>
 <script src="wasm_exec.js?v=__BUILD__"></script>
 <script>
 const $=id=>document.getElementById(id), J=s=>JSON.parse(s);
@@ -121,6 +124,15 @@ function newFight(){
   logLine('turn','Turn 1 · your move');render();
 }
 $('new').onclick=newFight;$('pick').onchange=newFight;
+// Build floor: a real floor from the floor builder, on a fresh run each time.
+function buildFloor(){
+  const s=crypto.getRandomValues(new Uint32Array(3)),r=J(ctFloor(+$('fl').value||1,s[2],s[0],s[1]));
+  V=r.view;sel=null;aim=null;walk=null;reach=[];targets=[];
+  $('log').innerHTML='';$('banner').className='';
+  logLine('turn',r.name);logLine('','Blue tiles are where heroes will choose to start (team select comes next). A blue-glowing monster is a companion spirit.');
+  logLine('turn','Turn 1 · your move');render();
+}
+$('build').onclick=buildFloor;
 
 const unit=id=>V.units.find(u=>u.id===id);
 const at=(x,y)=>V.units.find(u=>u.x===x&&u.y===y);
@@ -146,10 +158,11 @@ function refreshAim(){
   if(aim!=null&&!targets.includes(aim)&&!walk)aim=null;
 }
 function render(){
-  const b=$('board'),n=V.n;b.style.gridTemplateColumns=`repeat(${n},1fr)`;b.innerHTML='';
+  const b=$('board'),n=V.n;b.style.gridTemplateColumns=`repeat(${n},1fr)`;b.innerHTML='';b.style.width=n>16?`${n*26}px`:'100%';
+  const st=new Set(V.turn===1&&V.side===0?(V.starts||[]).map(t=>t.x+','+t.y):[]);
   const rs=new Set(reach.map(t=>t[0]+','+t[1]));
   for(let y=0;y<n;y++)for(let x=0;x<n;x++){
-    const d=document.createElement('div');d.className='tile '+V.ground[y][x]+(rs.has(x+','+y)?' reach':'')+(walk&&walk.x===x&&walk.y===y?' walkto':'');
+    const d=document.createElement('div');d.className='tile '+V.ground[y][x]+(rs.has(x+','+y)?' reach':'')+(walk&&walk.x===x&&walk.y===y?' walkto':'')+(st.has(x+','+y)?' start':'');
     if(V.throne&&V.throne.x===x&&V.throne.y===y)d.innerHTML='<span class=throne>♔</span>';
     if(abil&&abil.tiles&&abil.tiles.some(t=>t[0]===x&&t[1]===y))d.classList.add(abil.picked.some(t=>t[0]===x&&t[1]===y)?'picked':'aim');
     if(sk&&sk.a.tiles.some(t=>t[0]===x&&t[1]===y))d.classList.add('picked');
@@ -159,7 +172,7 @@ function render(){
     {const ch=(V.chests||[]).find(c=>c.x===x&&c.y===y);if(ch)d.innerHTML+=`<span class=keg title="${ch.kind} chest">${ch.kind==='gold'?'🟨':ch.kind==='silver'?'⬜':'🟫'}</span>`}
     const u=at(x,y);
     if(u){const e=document.createElement('div');
-      e.className='u '+(u.team===0?'h':'e')+(u.done&&u.team===0?' done':'')+(u.id===sel?' sel':'')+(targets.includes(u.id)?' tg':'')+(u.id===aim?(walk?' walk':' aim'):'')+(u.enraged?' rage':'')+(u.decoy?' decoy':'')+(u.companion||u.pet?' comp':'');
+      e.className='u '+(u.team===0?'h':'e')+(u.done&&u.team===0?' done':'')+(u.id===sel?' sel':'')+(targets.includes(u.id)?' tg':'')+(u.id===aim?(walk?' walk':' aim'):'')+(u.enraged?' rage':'')+(u.decoy?' decoy':'')+(u.companion||u.pet?' comp':'')+(u.ally?' ally':'');
       e.innerHTML=`${u.boss?'<span class=mark>♛</span>':u.elite?'<span class=mark>★</span>':''}${short(u.class)}<i><b style="width:${Math.max(0,100*u.hp/u.maxHp)}%"></b></i>`;
       d.appendChild(e)}
     d.onclick=()=>tap(x,y);b.appendChild(d)}
@@ -167,6 +180,7 @@ function render(){
   $('status').textContent=`Turn ${V.turn}${side}`;
   if(V.fallen&&V.fallen.length&&!V.outcome)$('status').textContent+=` · fallen: ${V.fallen.join(', ')}`;
   $('status').textContent+=` · ${V.gold||0} gold`;
+  if(V.biome)$('status').textContent+=` · floor ${V.floor}, ${V.biome}${V.reinforce?' · reinforcements on turns 3 and 5':''}`;
   showChoice();
   if(V.outcome){$('banner').className=V.outcome;$('banner').textContent=V.outcome==='won'?'Victory: every enemy is gone':'Defeat: every hero has fallen'}
   panel();
@@ -367,6 +381,7 @@ function say(e){
     case 'equipped':logLine('good',`${n(e.unit)} puts on ${e.skill}.`);break;
     case 'dropped':logLine('',`${e.skill} is thrown away.`);break;
     case 'set':logLine('',`${n(e.unit)} takes weapon set ${e.amount} in hand.`);break;
+    case 'reinforced':logLine('bad',`${e.amount} enemy reinforcements arrive!`);break;
     case 'brought':logLine('',`${n(e.unit)} changes skills for this floor.`);break;
     case 'learned':logLine('good',`${n(e.unit)} learns ${e.skill}.`);break;
     case 'won':logLine('good','Victory!');break;

@@ -2,6 +2,7 @@ package oldgame
 
 import (
 	"encoding/json"
+	"github.com/papigetbusy/crusader-tactics-next/sim/floor"
 	"reflect"
 	"slices"
 	"strings"
@@ -165,6 +166,7 @@ func resync(c *content.Content, f *Fight, g *engine.Game, s Snap, party []int) {
 	}
 	b.Bag = bagOf(s)
 	b.Floor, b.Gold, b.Party = f.Cfg.Floor, s.Gold, party
+	_, _, _, b.Reinforce = floor.Is(c, f.Cfg.Floor)
 	b.BossLegendary, b.Replayed = s.Bl != 0, s.Cleared != 0
 	b.Chests = nil
 	for _, ch := range s.ChestsAt {
@@ -294,35 +296,6 @@ func decision(c *content.Content, g *engine.Game, step Step, party []int) (actio
 		}
 	}
 	return a, true
-}
-
-// arrivals adds reinforcements before the enemy phase. Where they appear is a
-// floor rule ported later, so the recording says where.
-func arrivals(c *content.Content, g *engine.Game, prev Snap, step Step) int {
-	had := map[int]bool{}
-	for _, u := range prev.Units {
-		had[u.ID] = true
-	}
-	n := 0
-	for _, su := range step.Snap.Units {
-		if had[su.ID] || g.B.Unit(su.ID) != nil || su.Team != state.Enemies {
-			continue
-		}
-		u := goUnit(c, su)
-		u.HP, u.Status, u.Done, u.Moved = su.MaxHP, map[string]int{}, false, false
-		for i := range u.Cooldowns {
-			u.Cooldowns[i] = 0
-		}
-		for _, e := range step.Ev {
-			if e.K == "mv" && e.ID == su.ID {
-				u.X, u.Y = e.From[0], e.From[1]
-				break
-			}
-		}
-		g.B.Units = append(g.B.Units, u)
-		n++
-	}
-	return n
 }
 
 // leftAfter says whether taking bag item i out leaves the bag the recording

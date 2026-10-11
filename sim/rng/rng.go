@@ -76,3 +76,29 @@ func Shuffle[T any](d Dice, label string, xs []T) {
 		xs[i], xs[j] = xs[j], xs[i]
 	}
 }
+
+// Stream is the old game's seeded random for building floors (srng, a
+// mulberry32 generator, index.html line 4012). The same run seed and floor
+// always give the same floor.
+type Stream struct{ a uint32 }
+
+// NewStream starts a stream at a seed.
+func NewStream(seed uint32) *Stream { return &Stream{a: seed} }
+
+// Next is the next number from 0 up to (not including) 1.
+func (s *Stream) Next() float64 {
+	s.a += 0x6D2B79F5
+	a := s.a
+	t := (a ^ a>>15) * (1 | a)
+	t = (t + (t^t>>7)*(61|t)) ^ t
+	return float64(t^t>>14) / 4294967296
+}
+
+// Roll lets a stream stand in for dice.
+func (s *Stream) Roll(string) float64 { return s.Next() }
+
+// N is a whole number from 0 to n-1 (old rnd).
+func (s *Stream) N(n int) int { return int(s.Next() * float64(n)) }
+
+// FloorSeed is a floor's seed in a run (old floorSeed, line 4014).
+func FloorSeed(run uint32, floor int) uint32 { return run ^ uint32(floor+7)*2654435761 }

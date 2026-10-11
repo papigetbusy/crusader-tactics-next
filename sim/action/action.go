@@ -85,6 +85,7 @@ const (
 	Bonded        = "bonded"     // Unit bonded with a companion spirit of kind Skill
 	GearDropped   = "dropped"    // item Skill was thrown away
 	SkillBrought  = "brought"    // Unit changed its skills (once per floor)
+	Reinforced    = "reinforced" // Amount monsters arrived (reinforcement floors)
 	SetSwitched   = "set"        // Unit took weapon set Amount (1-3) in hand
 	Evolved       = "evolved"    // Unit evolved into the form named Skill (at levels 5 and 20)
 	Guarded       = "guarded"    // Unit (a Guardian) takes the hit aimed at Target

@@ -73,6 +73,13 @@ func main() {
 		game = engine.NewFight(rules, practice[i], seed)
 		return text(game.View())
 	}))
+	// ctFloor(floor, runSeed, seedHigh, seedLow) -> view: a built floor of a run
+	g.Set("ctFloor", fn(func(a []js.Value) any {
+		seed := uint64(uint32(a[2].Float()))<<32 | uint64(uint32(a[3].Float()))
+		s := engine.FloorSetup(rules, uint32(a[1].Float()), max(1, a[0].Int()))
+		game = engine.NewFight(rules, s, seed)
+		return text(map[string]any{"name": s.Name, "view": game.View()})
+	}))
 	// ctApply(actionJSON) -> {events, view} or {refused}
 	g.Set("ctApply", fn(func(a []js.Value) any {
 		var act action.Action
