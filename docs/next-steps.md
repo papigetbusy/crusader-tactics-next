@@ -26,7 +26,11 @@ Written 2026-10-11 for the owner and Grok. The full plan is in `roadmap.md`, and
 - First-time tips (off by default, each shown once)
 - The level-cap notice
 
-### 2. Update the Codex (next session, first thing)
+### 2. Fix the attack animations, then update the Codex (next session, first thing)
+- **The attack animations are wrong (owner, 2026-10-11).** The new screen uses a simplified effect list (`web/game/js/playback.js`).
+  - The old Codex lists every skill's animation. Cross-check every skill, monster attack and class ability against it, and fix the screen to match.
+  - The old game's own effect recipes ("FX v2: 70 sprite animations, recolored + stacked, unique per skill", old index.html around line 1331-1480: RCP, FX2M, SKFX) are the reference for layers, colors and timing.
+
 - The Codex is the old game's reference page (v0.21/0.22). Upload the old Codex to this repository as-is, so nothing is lost.
 - Make a checklist comparing every entry in it with the new game: in the code, in the roadmap, changed, or missing.
 - Write the new Codex from the game's data files, so it always matches the code. It should cover:
