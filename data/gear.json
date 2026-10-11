@@ -28,6 +28,7 @@
     0,
     1,
     3,
+    4,
     5
   ],
   "rankSteps": {
@@ -282,6 +283,11 @@
       "color": "#5da8ff"
     },
     {
+      "name": "epic",
+      "power": 6,
+      "color": "#b46cf0"
+    },
+    {
       "name": "legendary",
       "power": 10,
       "color": "#f2b84b"
@@ -366,27 +372,27 @@
     {
       "name": "Dawnbreaker",
       "type": "sword",
-      "rarity": 3
+      "rarity": 4
     },
     {
       "name": "Voidreaver",
       "type": "axe",
-      "rarity": 3
+      "rarity": 4
     },
     {
       "name": "Heavensfall",
       "type": "lance",
-      "rarity": 3
+      "rarity": 4
     },
     {
       "name": "Gale Piercer",
       "type": "bow",
-      "rarity": 3
+      "rarity": 4
     },
     {
       "name": "Staff of Eternity",
       "type": "staff",
-      "rarity": 3
+      "rarity": 4
     },
     {
       "name": "Flintlock",
@@ -406,7 +412,7 @@
     {
       "name": "Thunderhowl",
       "type": "gun",
-      "rarity": 3
+      "rarity": 4
     },
     {
       "name": "Twig Wand",
@@ -426,7 +432,7 @@
     {
       "name": "Emberheart Scepter",
       "type": "wand",
-      "rarity": 3
+      "rarity": 4
     },
     {
       "name": "Rusty Knife",
@@ -446,6 +452,46 @@
     {
       "name": "Nightfang",
       "type": "dagger",
+      "rarity": 4
+    },
+    {
+      "name": "Gravewarden Blade",
+      "type": "sword",
+      "rarity": 3
+    },
+    {
+      "name": "Bloodmoon Cleaver",
+      "type": "axe",
+      "rarity": 3
+    },
+    {
+      "name": "Wyrmspine Pike",
+      "type": "lance",
+      "rarity": 3
+    },
+    {
+      "name": "Duskwind Recurve",
+      "type": "bow",
+      "rarity": 3
+    },
+    {
+      "name": "Ashen Repeater",
+      "type": "gun",
+      "rarity": 3
+    },
+    {
+      "name": "Candlewood Crozier",
+      "type": "staff",
+      "rarity": 3
+    },
+    {
+      "name": "Starfall Rod",
+      "type": "wand",
+      "rarity": 3
+    },
+    {
+      "name": "Widow's Kiss",
+      "type": "dagger",
       "rarity": 3
     }
   ],
@@ -453,43 +499,52 @@
     "H": {
       "a": [
         "Plate Armor",
-        "Full Plate"
+        "Full Plate",
+        "Cathedral Plate"
       ],
       "b": [
         "Iron Greaves",
-        "Plate Sabatons"
+        "Plate Sabatons",
+        "Rampart Sabatons"
       ],
       "h": [
         "Iron Helm",
-        "Steel Helm"
+        "Steel Helm",
+        "Vigil Greathelm"
       ]
     },
     "L": {
       "a": [
         "Cloth Tunic",
-        "Leather Vest"
+        "Leather Vest",
+        "Shadowweave Jerkin"
       ],
       "b": [
         "Worn Boots",
-        "Leather Boots"
+        "Leather Boots",
+        "Moonstep Boots"
       ],
       "h": [
         "Cloth Hood",
-        "Leather Cap"
+        "Leather Cap",
+        "Silk Cowl"
       ]
     },
     "M": {
       "a": [
         "Chain Mail",
-        "Scale Mail"
+        "Scale Mail",
+        "Brigandine"
       ],
       "b": [
         "Chain Boots",
-        "Scale Greaves"
+        "Scale Greaves",
+        "Pathfinder Greaves"
       ],
       "h": [
         "Chain Coif",
-        "Scale Helm"
+        "Scale Helm",
+        "Wolfsteel Coif"
       ]
     }
   },
@@ -497,6 +552,11 @@
     "Bone Charm",
     "Lucky Coin",
     "Wolf Fang"
+  ],
+  "epicCharms": [
+    "Saint's Reliquary",
+    "Blood Ruby",
+    "Hourglass of Ash"
   ],
   "affixes": [
     {
@@ -514,6 +574,10 @@
         [
           10,
           16
+        ],
+        [
+          13,
+          20
         ],
         [
           16,
@@ -539,6 +603,10 @@
           22
         ],
         [
+          18,
+          28
+        ],
+        [
           22,
           35
         ]
@@ -560,6 +628,10 @@
         [
           14,
           22
+        ],
+        [
+          18,
+          28
         ],
         [
           22,
@@ -585,6 +657,10 @@
           22
         ],
         [
+          18,
+          28
+        ],
+        [
           22,
           35
         ]
@@ -606,6 +682,10 @@
         [
           14,
           22
+        ],
+        [
+          18,
+          28
         ],
         [
           22,
@@ -631,6 +711,10 @@
           22
         ],
         [
+          18,
+          28
+        ],
+        [
           22,
           35
         ]
@@ -652,6 +736,10 @@
         [
           12,
           18
+        ],
+        [
+          15,
+          23
         ],
         [
           18,
@@ -677,6 +765,10 @@
           14
         ],
         [
+          11,
+          18
+        ],
+        [
           14,
           22
         ]
@@ -698,6 +790,10 @@
         [
           8,
           14
+        ],
+        [
+          11,
+          18
         ],
         [
           14,
@@ -723,6 +819,10 @@
           11
         ],
         [
+          9,
+          14
+        ],
+        [
           11,
           16
         ]
@@ -744,6 +844,10 @@
         [
           20,
           35
+        ],
+        [
+          28,
+          48
         ],
         [
           35,
@@ -769,6 +873,10 @@
           15
         ],
         [
+          12,
+          20
+        ],
+        [
           15,
           24
         ]
@@ -790,6 +898,10 @@
         [
           14,
           22
+        ],
+        [
+          18,
+          27
         ],
         [
           22,
@@ -815,6 +927,10 @@
           7
         ],
         [
+          6,
+          10
+        ],
+        [
           7,
           12
         ]
@@ -836,6 +952,10 @@
         [
           4,
           7
+        ],
+        [
+          6,
+          10
         ],
         [
           7,
@@ -861,6 +981,10 @@
           7
         ],
         [
+          6,
+          9
+        ],
+        [
           7,
           11
         ]
@@ -882,6 +1006,10 @@
         [
           14,
           22
+        ],
+        [
+          18,
+          28
         ],
         [
           22,
@@ -907,6 +1035,10 @@
           24
         ],
         [
+          19,
+          32
+        ],
+        [
           24,
           40
         ]
@@ -928,6 +1060,10 @@
         [
           10,
           16
+        ],
+        [
+          13,
+          20
         ],
         [
           16,
@@ -953,6 +1089,10 @@
           16
         ],
         [
+          13,
+          20
+        ],
+        [
           16,
           25
         ]
@@ -974,6 +1114,10 @@
         [
           10,
           18
+        ],
+        [
+          14,
+          24
         ],
         [
           18,
@@ -999,6 +1143,10 @@
           4
         ],
         [
+          3,
+          5
+        ],
+        [
           4,
           6
         ]
@@ -1009,6 +1157,10 @@
       "key": "stunCh",
       "text": "% chance to stun on hit (legendary)",
       "ranges": [
+        [
+          0,
+          0
+        ],
         [
           0,
           0
@@ -1046,6 +1198,10 @@
           0
         ],
         [
+          0,
+          0
+        ],
+        [
           10,
           20
         ]
@@ -1057,6 +1213,10 @@
       "key": "cdr",
       "text": "cooldown reduction on all skills (legendary)",
       "ranges": [
+        [
+          0,
+          0
+        ],
         [
           0,
           0
@@ -1094,6 +1254,10 @@
           0
         ],
         [
+          0,
+          0
+        ],
+        [
           1,
           1
         ]
@@ -1118,11 +1282,71 @@
           12
         ],
         [
+          10,
+          15
+        ],
+        [
           12,
           18
         ]
       ],
       "slots": "whb"
+    },
+    {
+      "key": "execute",
+      "text": "% more damage to a target below 30% HP (epic)",
+      "ranges": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "slots": "w",
+      "legendaryOnly": true
+    },
+    {
+      "key": "ward",
+      "text": "% chance to shrug off a harmful status (epic)",
+      "ranges": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "slots": "ahbc",
+      "legendaryOnly": true
     }
   ],
   "uniques": [
@@ -1591,27 +1815,80 @@
     "bands": [
       {
         "upToFloor": 10,
-        "lowChance": 0.7,
-        "low": 0,
-        "high": 1
+        "odds": [
+          {
+            "below": 0.7,
+            "rarity": 0
+          },
+          {
+            "below": 1,
+            "rarity": 1
+          }
+        ]
+      },
+      {
+        "upToFloor": 20,
+        "odds": [
+          {
+            "below": 0.7,
+            "rarity": 1
+          },
+          {
+            "below": 1,
+            "rarity": 2
+          }
+        ]
       },
       {
         "upToFloor": 30,
-        "lowChance": 0.7,
-        "low": 1,
-        "high": 2
+        "odds": [
+          {
+            "below": 0.5,
+            "rarity": 1
+          },
+          {
+            "below": 0.9,
+            "rarity": 2
+          },
+          {
+            "below": 1,
+            "rarity": 3
+          }
+        ]
       },
       {
         "upToFloor": 60,
-        "lowChance": 0.93,
-        "low": 2,
-        "high": 3
+        "odds": [
+          {
+            "below": 0.55,
+            "rarity": 2
+          },
+          {
+            "below": 0.95,
+            "rarity": 3
+          },
+          {
+            "below": 1,
+            "rarity": 4
+          }
+        ]
       },
       {
         "upToFloor": 0,
-        "lowChance": 0.75,
-        "low": 2,
-        "high": 3
+        "odds": [
+          {
+            "below": 0.3,
+            "rarity": 2
+          },
+          {
+            "below": 0.8,
+            "rarity": 3
+          },
+          {
+            "below": 1,
+            "rarity": 4
+          }
+        ]
       }
     ],
     "dropChance": 0.6,
@@ -1622,19 +1899,40 @@
     "mainWeapon": 0.6,
     "chests": {
       "gold": [
-        2,
-        3
+        {
+          "below": 0.65,
+          "rarity": 2
+        },
+        {
+          "below": 0.95,
+          "rarity": 3
+        },
+        {
+          "below": 1,
+          "rarity": 4
+        }
       ],
       "silver": [
-        1,
-        2
+        {
+          "below": 0.7,
+          "rarity": 1
+        },
+        {
+          "below": 1,
+          "rarity": 2
+        }
       ],
       "wood": [
-        0,
-        1
+        {
+          "below": 0.7,
+          "rarity": 0
+        },
+        {
+          "below": 1,
+          "rarity": 1
+        }
       ]
     },
-    "chestUsual": 0.7,
     "classAffixes": {
       "Assassin": [
         "dmg",
@@ -1650,7 +1948,9 @@
         "elec",
         "fire",
         "hpPct",
-        "bossDmg"
+        "bossDmg",
+        "execute",
+        "ward"
       ],
       "Dragon Knight": [
         "dmg",
@@ -1667,7 +1967,9 @@
         "hpPct",
         "defPct",
         "dr",
-        "thorns"
+        "thorns",
+        "execute",
+        "ward"
       ],
       "Gunslinger": [
         "dmg",
@@ -1684,7 +1986,9 @@
         "elec",
         "evade",
         "hpPct",
-        "dr"
+        "dr",
+        "execute",
+        "ward"
       ],
       "Healer": [
         "healPct",
@@ -1697,7 +2001,8 @@
         "defPct",
         "dr",
         "evade",
-        "hit"
+        "hit",
+        "ward"
       ],
       "Knight": [
         "dmg",
@@ -1713,7 +2018,9 @@
         "thorns",
         "light",
         "dark",
-        "elec"
+        "elec",
+        "execute",
+        "ward"
       ],
       "Mage": [
         "dmg",
@@ -1728,7 +2035,9 @@
         "hpPct",
         "evade",
         "dr",
-        "regen"
+        "regen",
+        "execute",
+        "ward"
       ],
       "Ranger": [
         "dmg",
@@ -1745,7 +2054,9 @@
         "elec",
         "evade",
         "hpPct",
-        "dr"
+        "dr",
+        "execute",
+        "ward"
       ],
       "Tank": [
         "dmg",
@@ -1761,7 +2072,9 @@
         "bossDmg",
         "dark",
         "ice",
-        "fire"
+        "fire",
+        "execute",
+        "ward"
       ],
       "Warrior": [
         "dmg",
@@ -1779,7 +2092,9 @@
         "regen",
         "fire",
         "light",
-        "elec"
+        "elec",
+        "execute",
+        "ward"
       ],
       "Witch": [
         "dmg",
@@ -1794,7 +2109,9 @@
         "evade",
         "dr",
         "regen",
-        "leech"
+        "leech",
+        "execute",
+        "ward"
       ]
     },
     "legendaryFromLevel": 30,
@@ -1805,5 +2122,166 @@
     "goldBounty": 2,
     "goldWanted": 3,
     "goldReplayed": 0.5
-  }
+  },
+  "prefixes": [
+    {
+      "name": "Vampiric",
+      "slots": "wc",
+      "bonuses": [
+        {
+          "key": "leech",
+          "low": 9,
+          "high": 11
+        }
+      ]
+    },
+    {
+      "name": "Searing",
+      "slots": "wc",
+      "bonuses": [
+        {
+          "key": "addFire",
+          "low": 16,
+          "high": 20
+        }
+      ]
+    },
+    {
+      "name": "Thundering",
+      "slots": "wc",
+      "bonuses": [
+        {
+          "key": "addElec",
+          "low": 16,
+          "high": 20
+        }
+      ]
+    },
+    {
+      "name": "Keen",
+      "slots": "wbc",
+      "bonuses": [
+        {
+          "key": "crit",
+          "low": 13,
+          "high": 15
+        }
+      ]
+    },
+    {
+      "name": "Brutal",
+      "slots": "wc",
+      "bonuses": [
+        {
+          "key": "critDmg",
+          "low": 45,
+          "high": 55
+        }
+      ]
+    },
+    {
+      "name": "Huntsman's",
+      "slots": "w",
+      "bonuses": [
+        {
+          "key": "bossDmg",
+          "low": 30,
+          "high": 36
+        }
+      ]
+    },
+    {
+      "name": "Venomous",
+      "slots": "wc",
+      "bonuses": [
+        {
+          "key": "poisonCh",
+          "low": 20,
+          "high": 24
+        }
+      ]
+    },
+    {
+      "name": "Serrated",
+      "slots": "w",
+      "bonuses": [
+        {
+          "key": "bleedCh",
+          "low": 20,
+          "high": 24
+        }
+      ]
+    },
+    {
+      "name": "Echoing",
+      "slots": "w",
+      "bonuses": [
+        {
+          "key": "double",
+          "low": 6,
+          "high": 8
+        }
+      ]
+    },
+    {
+      "name": "Bulwark",
+      "slots": "ahc",
+      "bonuses": [
+        {
+          "key": "dr",
+          "low": 9,
+          "high": 11
+        }
+      ]
+    },
+    {
+      "name": "Thorned",
+      "slots": "ah",
+      "bonuses": [
+        {
+          "key": "thorns",
+          "low": 22,
+          "high": 26
+        }
+      ]
+    },
+    {
+      "name": "Mending",
+      "slots": "wc",
+      "bonuses": [
+        {
+          "key": "healPct",
+          "low": 28,
+          "high": 32
+        },
+        {
+          "key": "regen",
+          "low": 3,
+          "high": 3
+        }
+      ]
+    },
+    {
+      "name": "Executioner's",
+      "slots": "w",
+      "bonuses": [
+        {
+          "key": "execute",
+          "low": 25,
+          "high": 25
+        }
+      ]
+    },
+    {
+      "name": "Warding",
+      "slots": "ahbc",
+      "bonuses": [
+        {
+          "key": "ward",
+          "low": 25,
+          "high": 25
+        }
+      ]
+    }
+  ]
 }

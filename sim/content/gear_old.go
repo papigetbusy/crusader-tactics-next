@@ -43,7 +43,7 @@ func oldGear(tables fs.FS) (Gear, error) {
 		StatusChances:  map[string]Affix{"bleedCh": {"bleed", 3}, "poisonCh": {"poison", 3}, "stunCh": {"stun", 1}},                                 // hurt, line 1702
 		Rarities: []Rarity{{"common", 1, "#cfd3e6"}, {"uncommon", 2, "#7be0a8"}, {"rare", 4, "#5da8ff"}, // RAR, line 841
 			{"legendary", 10, "#f2b84b"}},
-		ArmorNames: map[string]map[string][2]string{ // ARN, line 1027
+		ArmorNames: map[string]map[string][]string{ // ARN, line 1027
 			"L": {"h": {"Cloth Hood", "Leather Cap"}, "a": {"Cloth Tunic", "Leather Vest"}, "b": {"Worn Boots", "Leather Boots"}},
 			"M": {"h": {"Chain Coif", "Scale Helm"}, "a": {"Chain Mail", "Scale Mail"}, "b": {"Chain Boots", "Scale Greaves"}},
 			"H": {"h": {"Iron Helm", "Steel Helm"}, "a": {"Plate Armor", "Full Plate"}, "b": {"Iron Greaves", "Plate Sabatons"}},
@@ -52,13 +52,12 @@ func oldGear(tables fs.FS) (Gear, error) {
 		ArmorWeights: map[string]ArmorWeight{"H": {1.35, .9}, "L": {.7, 1.2}, "M": {1, 1}}, // genItem, lines 1064, 1067
 		Sets:         map[string]GearSet{},
 		Loot: Loot{
-			Power:      .8,                                                                          // TUNE.loot, line 845
-			Bands:      []LootBand{{10, .7, 0, 1}, {30, .7, 1, 2}, {60, .93, 2, 3}, {0, .75, 2, 3}}, // bandRoll, line 1005
-			DropChance: .6, BossLegendary: .25, EliteBetter: .3,                                     // drop, line 784
+			Power:      .8,                                                                                                  // TUNE.loot, line 845
+			Bands:      []LootBand{{10, odds(.7, 0, 1)}, {30, odds(.7, 1, 2)}, {60, odds(.93, 2, 3)}, {0, odds(.75, 2, 3)}}, // bandRoll, line 1005
+			DropChance: .6, BossLegendary: .25, EliteBetter: .3,                                                             // drop, line 784
 			ForKiller: .5,                  // lootFor, line 1074
 			EmptySlot: .75, MainWeapon: .6, // lootPick, lines 1071-1072
-			Chests:       map[string][2]int{"wood": {0, 1}, "silver": {1, 2}, "gold": {2, 3}},                            // CHT, line 999
-			ChestUsual:   .7,                                                                                             // openChest, line 1003
+			Chests:       map[string][]Odds{"wood": odds(.7, 0, 1), "silver": odds(.7, 1, 2), "gold": odds(.7, 2, 3)},    // CHT, line 999; openChest, line 1003
 			ClassAffixes: oldClassAffixes,                                                                                // CAF, lines 1197-1201
 			GoldBase:     2, GoldPerLevel: .6, GoldBoss: 8, GoldElite: 3, GoldBounty: 2, GoldWanted: 3, GoldReplayed: .5, // hurt, line 1707; gmul, line 1460
 		},
@@ -136,3 +135,6 @@ var oldClassAffixes = map[string][]string{
 	"Assassin":      {"dmg", "phys", "crit", "critDmg", "hit", "poisonCh", "bleedCh", "leech", "evade", "dark", "elec", "fire", "hpPct", "bossDmg"},
 	"Gunslinger":    {"dmg", "phys", "crit", "critDmg", "hit", "bossDmg", "addFire", "addElec", "bleedCh", "fire", "dark", "elec", "evade", "hpPct", "dr"},
 }
+
+// odds is the old game's two-way roll: rarity lo with chance p, else hi.
+func odds(p float64, lo, hi int) []Odds { return []Odds{{p, lo}, {1, hi}} }

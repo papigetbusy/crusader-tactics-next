@@ -31,6 +31,23 @@ func Make(c *content.Content, floor int, dice rng.Dice, k int, sl, wt, at, class
 		}
 		return it
 	}
+	legendary := g.Legendary()
+	finish := func(it content.Item, wt string) content.Item {
+		var pre []content.Affix
+		var name string
+		if k == g.Epic() {
+			name, pre = prefix(c, dice, sl, class, wt)
+		}
+		var skip []string
+		for _, a := range pre {
+			skip = append(skip, a.Key)
+		}
+		it.Affixes = append(pre, bonuses(c, dice, k, sl, class, wt, skip)...)
+		if name != "" {
+			it.Name = name + " " + it.Name
+		}
+		return it
+	}
 	if k >= legendary {
 		var pool []content.Unique
 		for _, u := range g.Uniques {
@@ -75,24 +92,54 @@ func Make(c *content.Content, floor int, dice rng.Dice, k int, sl, wt, at, class
 			}
 		}
 		w := pool[rng.IntN(dice, RollItem, len(pool))]
-		return content.Item{Name: w.Name, Slot: "w", Rarity: k, WeaponType: w.Type, Atk: pw, Affixes: bonuses(c, dice, k, "w", class, w.Type)}
+		return finish(content.Item{Name: w.Name, Slot: "w", Rarity: k, WeaponType: w.Type, Atk: pw}, w.Type)
 	case "c":
-		name := g.CharmNames[rng.IntN(dice, RollItem, len(g.CharmNames))]
-		return content.Item{Name: name, Slot: "c", Rarity: k, HP: pw * 3, Affixes: bonuses(c, dice, k, "c", class, "")}
+		names := g.CharmNames
+		if k == g.Epic() && len(g.EpicCharms) > 0 {
+			names = g.EpicCharms
+		}
+		name := names[rng.IntN(dice, RollItem, len(names))]
+		return finish(content.Item{Name: name, Slot: "c", Rarity: k, HP: pw * 3}, "")
 	}
 	if at == "" {
 		at = string("LMH"[rng.IntN(dice, RollItem, 3)])
 	}
-	name := g.ArmorNames[at][sl][0]
+	names := g.ArmorNames[at][sl]
+	name := names[0]
 	if k >= 2 {
-		name = g.ArmorNames[at][sl][1]
+		name = names[1]
+	}
+	if k == g.Epic() && len(names) > 2 {
+		name = names[2]
 	}
 	it := sized(content.Item{Name: name, Slot: sl, Rarity: k, Weight: at}, at)
 	if sl == "b" && k >= 2 {
 		it.Mov = 1
 	}
-	it.Affixes = bonuses(c, dice, k, sl, class, "")
-	return it
+	return finish(it, "")
+}
+
+// prefix rolls an epic item's own bonus (approved 2026-10-11): one of the
+// prefixes that fit the slot, the class and the weapon. It returns the
+// prefix's name and its bonuses.
+func prefix(c *content.Content, dice rng.Dice, sl, class, wt string) (string, []content.Affix) {
+	keys := c.Gear.Loot.ClassAffixes[class]
+	var cand []content.Prefix
+	for _, p := range c.Gear.Prefixes {
+		k := p.Bonuses[0].Key
+		if strings.Contains(p.Slots, sl) && (len(keys) == 0 || slices.Contains(keys, k)) && (sl != "w" || weaponAllows(c, k, wt)) {
+			cand = append(cand, p)
+		}
+	}
+	if len(cand) == 0 {
+		return "", nil
+	}
+	p := cand[rng.IntN(dice, RollPrefix, len(cand))]
+	var out []content.Affix
+	for _, b := range p.Bonuses {
+		out = append(out, content.Affix{Key: b.Key, Value: b.Low + rng.IntN(dice, RollPrefix, b.High-b.Low+1)})
+	}
+	return p.Name, out
 }
 
 // weaponTypeOrder is the old WTYPES order (Object.keys(WTN)).
@@ -101,15 +148,19 @@ var weaponTypeOrder = []string{"sword", "axe", "lance", "bow", "gun", "staff", "
 func round(x float64) int { return int(stats.Round(x)) }
 
 // bonuses rolls a new item's bonuses (old rollAffixes, line 1203): 0-1 for
-// common, 1-2 uncommon, 2-3 rare; only kinds that fit the slot, the class
-// and the weapon; each rolled within its rarity's range.
-func bonuses(c *content.Content, dice rng.Dice, k int, sl, class, wt string) []content.Affix {
+// common, 1-2 uncommon, 2-3 rare or epic; only kinds that fit the slot, the
+// class and the weapon, and not one the epic bonus already gives (skip);
+// each rolled within its rarity's range.
+func bonuses(c *content.Content, dice rng.Dice, k int, sl, class, wt string, skip []string) []content.Affix {
 	counts := []int{rng.IntN(dice, RollBonus, 2), 1 + rng.IntN(dice, RollBonus, 2), 2 + rng.IntN(dice, RollBonus, 2), 3}
 	n := counts[min(k, 3)]
+	if k == c.Gear.Epic() {
+		n = counts[2]
+	}
 	allowedKeys := c.Gear.Loot.ClassAffixes[class]
 	var cand []content.AffixKind
 	for _, a := range c.Gear.Affixes {
-		if strings.Contains(a.Slots, sl) && a.Ranges[k][1] > 0 && !a.LegendaryOnly &&
+		if strings.Contains(a.Slots, sl) && a.Ranges[k][1] > 0 && !a.LegendaryOnly && !slices.Contains(skip, a.Key) &&
 			(len(allowedKeys) == 0 || slices.Contains(allowedKeys, a.Key)) && (sl != "w" || weaponAllows(c, a.Key, wt)) {
 			cand = append(cand, a)
 		}

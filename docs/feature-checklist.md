@@ -22,7 +22,7 @@ Every feature of the old game (v0.26.1), and where it lands in the rebuild. Noth
 - ✅ Loot drops, chests (wood, silver, gold), gold, loot that targets gear your party can use
 - ✅ Companion spirits (rare blue-glowing monsters that bond with the hero who defeats them; the blue glow comes with the new sprites in Phase 8)
 - ✅ **Unequip** (take an item off into the bag; the old gear sheet allowed it by tapping a slot)
-- 🔜 6d: the purple (epic) tier, after item-by-item approval
+- ✅ The purple (epic) tier, new (approved 2026-10-11): 8 weapons, 9 armor pieces, 3 charms, 14 purple bonuses
 
 ## 2. The run (Phase 7)
 
@@ -95,7 +95,7 @@ Already fixed with your sign-off: forecast now matches real damage; traps work a
 Signed off by the owner on 2026-10-11 (nothing built yet; each lands in the step named):
 1. ✅ done: the battle ends the moment it is won (the old game let heroes keep acting until the next floor loaded).
 2. ✅ done: an undo that can't happen (a shadow clone stands on the old tile) says why instead of silently doing nothing.
-3. ✅ approved, **6d design, tuned after Phase 7:** (the Lv 30 rule is in place) legendaries only start to drop once any one hero reaches Lv 30, and only ones that hero can use. A new **purple tier (epic)** sits between rare (blue) and legendary (gold): weapons, armor and charms with their own bonuses (prefixes), built for the middle levels. Claude designs the purple items and bonuses and sends them for approval (like the skill list) before anything goes in; their numbers are then tuned with the autoplayer.
+3. ✅ approved, **6d design, tuned after Phase 7:** (the Lv 30 rule is in place) legendaries only start to drop once any one hero reaches Lv 30, and only ones that hero can use. (purple built 2026-10-11) A new **purple tier (epic)** sits between rare (blue) and legendary (gold): weapons, armor and charms with their own bonuses (prefixes), built for the middle levels. Claude designs the purple items and bonuses and sends them for approval (like the skill list) before anything goes in; their numbers are then tuned with the autoplayer.
 4. ✅ settled by point 3: legendary weapons needing rank S fits, since legendaries now arrive at Lv 30, when heroes reach rank S.
 5. ✅ approved, **Phase 7:** a design call on what a defeat costs and whether shop floors need a fight.
 6. ✅ approved, **Phase 9:** smarter monsters as floors rise.

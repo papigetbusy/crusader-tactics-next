@@ -3598,7 +3598,7 @@
     {
      "name": "Stormweave Coif",
      "slot": "h",
-     "rarity": 3,
+     "rarity": 4,
      "weight": "M",
      "def": 30,
      "hp": 60,
@@ -3618,7 +3618,7 @@
     {
      "name": "Stormweave Mail",
      "slot": "a",
-     "rarity": 3,
+     "rarity": 4,
      "weight": "M",
      "def": 60,
      "hp": 120,
@@ -3642,7 +3642,7 @@
     {
      "name": "Stormweave Treads",
      "slot": "b",
-     "rarity": 3,
+     "rarity": 4,
      "weight": "M",
      "def": 30,
      "affixes": [
@@ -3661,7 +3661,7 @@
     {
      "name": "Phoenix Feather",
      "slot": "c",
-     "rarity": 3,
+     "rarity": 4,
      "hp": 180,
      "affixes": [
       {
@@ -3682,7 +3682,7 @@
     {
      "name": "Dawnguard Helm",
      "slot": "h",
-     "rarity": 3,
+     "rarity": 4,
      "weight": "H",
      "def": 41,
      "hp": 54,
@@ -3730,6 +3730,153 @@
       {
        "key": "addElec",
        "value": 11
+      }
+     ]
+    },
+    {
+     "name": "Huntsman's Gravewarden Blade",
+     "slot": "w",
+     "rarity": 3,
+     "weaponType": "sword",
+     "atk": 36,
+     "affixes": [
+      {
+       "key": "bossDmg",
+       "value": 32
+      },
+      {
+       "key": "dmg",
+       "value": 19
+      },
+      {
+       "key": "phys",
+       "value": 22
+      },
+      {
+       "key": "critDmg",
+       "value": 43
+      }
+     ]
+    },
+    {
+     "name": "Huntsman's Duskwind Recurve",
+     "slot": "w",
+     "rarity": 3,
+     "weaponType": "bow",
+     "atk": 36,
+     "affixes": [
+      {
+       "key": "bossDmg",
+       "value": 30
+      },
+      {
+       "key": "ice",
+       "value": 19
+      },
+      {
+       "key": "addElec",
+       "value": 15
+      },
+      {
+       "key": "elec",
+       "value": 19
+      }
+     ]
+    },
+    {
+     "name": "Mending Candlewood Crozier",
+     "slot": "w",
+     "rarity": 3,
+     "weaponType": "staff",
+     "atk": 36,
+     "affixes": [
+      {
+       "key": "healPct",
+       "value": 30
+      },
+      {
+       "key": "regen",
+       "value": 3
+      },
+      {
+       "key": "light",
+       "value": 19
+      },
+      {
+       "key": "dark",
+       "value": 22
+      }
+     ]
+    },
+    {
+     "name": "Warding Brigandine",
+     "slot": "a",
+     "rarity": 3,
+     "weight": "M",
+     "def": 36,
+     "hp": 72,
+     "affixes": [
+      {
+       "key": "ward",
+       "value": 25
+      },
+      {
+       "key": "dmg",
+       "value": 16
+      },
+      {
+       "key": "dr",
+       "value": 8
+      },
+      {
+       "key": "hpPct",
+       "value": 13
+      }
+     ]
+    },
+    {
+     "name": "Warding Moonstep Boots",
+     "slot": "b",
+     "rarity": 3,
+     "weight": "L",
+     "def": 13,
+     "mov": 1,
+     "affixes": [
+      {
+       "key": "ward",
+       "value": 25
+      },
+      {
+       "key": "crit",
+       "value": 13
+      },
+      {
+       "key": "hpPct",
+       "value": 19
+      },
+      {
+       "key": "evade",
+       "value": 6
+      }
+     ]
+    },
+    {
+     "name": "Thundering Saint's Reliquary",
+     "slot": "c",
+     "rarity": 3,
+     "hp": 108,
+     "affixes": [
+      {
+       "key": "addElec",
+       "value": 18
+      },
+      {
+       "key": "elec",
+       "value": 27
+      },
+      {
+       "key": "dmg",
+       "value": 14
       }
      ]
     }
@@ -4790,7 +4937,7 @@
     {
      "name": "Stormweave Coif",
      "slot": "h",
-     "rarity": 3,
+     "rarity": 4,
      "weight": "M",
      "def": 30,
      "hp": 60,
@@ -4810,7 +4957,7 @@
     {
      "name": "Stormweave Mail",
      "slot": "a",
-     "rarity": 3,
+     "rarity": 4,
      "weight": "M",
      "def": 60,
      "hp": 120,
@@ -4834,7 +4981,7 @@
     {
      "name": "Stormweave Treads",
      "slot": "b",
-     "rarity": 3,
+     "rarity": 4,
      "weight": "M",
      "def": 30,
      "affixes": [
@@ -4853,7 +5000,7 @@
     {
      "name": "Phoenix Feather",
      "slot": "c",
-     "rarity": 3,
+     "rarity": 4,
      "hp": 180,
      "affixes": [
       {
@@ -4874,7 +5021,7 @@
     {
      "name": "Dawnguard Helm",
      "slot": "h",
-     "rarity": 3,
+     "rarity": 4,
      "weight": "H",
      "def": 41,
      "hp": 54,
@@ -4922,6 +5069,153 @@
       {
        "key": "addElec",
        "value": 11
+      }
+     ]
+    },
+    {
+     "name": "Huntsman's Gravewarden Blade",
+     "slot": "w",
+     "rarity": 3,
+     "weaponType": "sword",
+     "atk": 36,
+     "affixes": [
+      {
+       "key": "bossDmg",
+       "value": 32
+      },
+      {
+       "key": "dmg",
+       "value": 19
+      },
+      {
+       "key": "phys",
+       "value": 22
+      },
+      {
+       "key": "critDmg",
+       "value": 43
+      }
+     ]
+    },
+    {
+     "name": "Huntsman's Duskwind Recurve",
+     "slot": "w",
+     "rarity": 3,
+     "weaponType": "bow",
+     "atk": 36,
+     "affixes": [
+      {
+       "key": "bossDmg",
+       "value": 30
+      },
+      {
+       "key": "ice",
+       "value": 19
+      },
+      {
+       "key": "addElec",
+       "value": 15
+      },
+      {
+       "key": "elec",
+       "value": 19
+      }
+     ]
+    },
+    {
+     "name": "Mending Candlewood Crozier",
+     "slot": "w",
+     "rarity": 3,
+     "weaponType": "staff",
+     "atk": 36,
+     "affixes": [
+      {
+       "key": "healPct",
+       "value": 30
+      },
+      {
+       "key": "regen",
+       "value": 3
+      },
+      {
+       "key": "light",
+       "value": 19
+      },
+      {
+       "key": "dark",
+       "value": 22
+      }
+     ]
+    },
+    {
+     "name": "Warding Brigandine",
+     "slot": "a",
+     "rarity": 3,
+     "weight": "M",
+     "def": 36,
+     "hp": 72,
+     "affixes": [
+      {
+       "key": "ward",
+       "value": 25
+      },
+      {
+       "key": "dmg",
+       "value": 16
+      },
+      {
+       "key": "dr",
+       "value": 8
+      },
+      {
+       "key": "hpPct",
+       "value": 13
+      }
+     ]
+    },
+    {
+     "name": "Warding Moonstep Boots",
+     "slot": "b",
+     "rarity": 3,
+     "weight": "L",
+     "def": 13,
+     "mov": 1,
+     "affixes": [
+      {
+       "key": "ward",
+       "value": 25
+      },
+      {
+       "key": "crit",
+       "value": 13
+      },
+      {
+       "key": "hpPct",
+       "value": 19
+      },
+      {
+       "key": "evade",
+       "value": 6
+      }
+     ]
+    },
+    {
+     "name": "Thundering Saint's Reliquary",
+     "slot": "c",
+     "rarity": 3,
+     "hp": 108,
+     "affixes": [
+      {
+       "key": "addElec",
+       "value": 18
+      },
+      {
+       "key": "elec",
+       "value": 27
+      },
+      {
+       "key": "dmg",
+       "value": 14
       }
      ]
     }
@@ -5965,7 +6259,7 @@
     {
      "name": "Stormweave Coif",
      "slot": "h",
-     "rarity": 3,
+     "rarity": 4,
      "weight": "M",
      "def": 30,
      "hp": 60,
@@ -5985,7 +6279,7 @@
     {
      "name": "Stormweave Mail",
      "slot": "a",
-     "rarity": 3,
+     "rarity": 4,
      "weight": "M",
      "def": 60,
      "hp": 120,
@@ -6009,7 +6303,7 @@
     {
      "name": "Stormweave Treads",
      "slot": "b",
-     "rarity": 3,
+     "rarity": 4,
      "weight": "M",
      "def": 30,
      "affixes": [
@@ -6028,7 +6322,7 @@
     {
      "name": "Phoenix Feather",
      "slot": "c",
-     "rarity": 3,
+     "rarity": 4,
      "hp": 180,
      "affixes": [
       {
@@ -6049,7 +6343,7 @@
     {
      "name": "Dawnguard Helm",
      "slot": "h",
-     "rarity": 3,
+     "rarity": 4,
      "weight": "H",
      "def": 41,
      "hp": 54,
@@ -6097,6 +6391,153 @@
       {
        "key": "addElec",
        "value": 11
+      }
+     ]
+    },
+    {
+     "name": "Huntsman's Gravewarden Blade",
+     "slot": "w",
+     "rarity": 3,
+     "weaponType": "sword",
+     "atk": 36,
+     "affixes": [
+      {
+       "key": "bossDmg",
+       "value": 32
+      },
+      {
+       "key": "dmg",
+       "value": 19
+      },
+      {
+       "key": "phys",
+       "value": 22
+      },
+      {
+       "key": "critDmg",
+       "value": 43
+      }
+     ]
+    },
+    {
+     "name": "Huntsman's Duskwind Recurve",
+     "slot": "w",
+     "rarity": 3,
+     "weaponType": "bow",
+     "atk": 36,
+     "affixes": [
+      {
+       "key": "bossDmg",
+       "value": 30
+      },
+      {
+       "key": "ice",
+       "value": 19
+      },
+      {
+       "key": "addElec",
+       "value": 15
+      },
+      {
+       "key": "elec",
+       "value": 19
+      }
+     ]
+    },
+    {
+     "name": "Mending Candlewood Crozier",
+     "slot": "w",
+     "rarity": 3,
+     "weaponType": "staff",
+     "atk": 36,
+     "affixes": [
+      {
+       "key": "healPct",
+       "value": 30
+      },
+      {
+       "key": "regen",
+       "value": 3
+      },
+      {
+       "key": "light",
+       "value": 19
+      },
+      {
+       "key": "dark",
+       "value": 22
+      }
+     ]
+    },
+    {
+     "name": "Warding Brigandine",
+     "slot": "a",
+     "rarity": 3,
+     "weight": "M",
+     "def": 36,
+     "hp": 72,
+     "affixes": [
+      {
+       "key": "ward",
+       "value": 25
+      },
+      {
+       "key": "dmg",
+       "value": 16
+      },
+      {
+       "key": "dr",
+       "value": 8
+      },
+      {
+       "key": "hpPct",
+       "value": 13
+      }
+     ]
+    },
+    {
+     "name": "Warding Moonstep Boots",
+     "slot": "b",
+     "rarity": 3,
+     "weight": "L",
+     "def": 13,
+     "mov": 1,
+     "affixes": [
+      {
+       "key": "ward",
+       "value": 25
+      },
+      {
+       "key": "crit",
+       "value": 13
+      },
+      {
+       "key": "hpPct",
+       "value": 19
+      },
+      {
+       "key": "evade",
+       "value": 6
+      }
+     ]
+    },
+    {
+     "name": "Thundering Saint's Reliquary",
+     "slot": "c",
+     "rarity": 3,
+     "hp": 108,
+     "affixes": [
+      {
+       "key": "addElec",
+       "value": 18
+      },
+      {
+       "key": "elec",
+       "value": 27
+      },
+      {
+       "key": "dmg",
+       "value": 14
       }
      ]
     }
@@ -7157,7 +7598,7 @@
     {
      "name": "Stormweave Coif",
      "slot": "h",
-     "rarity": 3,
+     "rarity": 4,
      "weight": "M",
      "def": 30,
      "hp": 60,
@@ -7177,7 +7618,7 @@
     {
      "name": "Stormweave Mail",
      "slot": "a",
-     "rarity": 3,
+     "rarity": 4,
      "weight": "M",
      "def": 60,
      "hp": 120,
@@ -7201,7 +7642,7 @@
     {
      "name": "Stormweave Treads",
      "slot": "b",
-     "rarity": 3,
+     "rarity": 4,
      "weight": "M",
      "def": 30,
      "affixes": [
@@ -7220,7 +7661,7 @@
     {
      "name": "Phoenix Feather",
      "slot": "c",
-     "rarity": 3,
+     "rarity": 4,
      "hp": 180,
      "affixes": [
       {
@@ -7241,7 +7682,7 @@
     {
      "name": "Dawnguard Helm",
      "slot": "h",
-     "rarity": 3,
+     "rarity": 4,
      "weight": "H",
      "def": 41,
      "hp": 54,
@@ -7289,6 +7730,153 @@
       {
        "key": "addElec",
        "value": 11
+      }
+     ]
+    },
+    {
+     "name": "Huntsman's Gravewarden Blade",
+     "slot": "w",
+     "rarity": 3,
+     "weaponType": "sword",
+     "atk": 36,
+     "affixes": [
+      {
+       "key": "bossDmg",
+       "value": 32
+      },
+      {
+       "key": "dmg",
+       "value": 19
+      },
+      {
+       "key": "phys",
+       "value": 22
+      },
+      {
+       "key": "critDmg",
+       "value": 43
+      }
+     ]
+    },
+    {
+     "name": "Huntsman's Duskwind Recurve",
+     "slot": "w",
+     "rarity": 3,
+     "weaponType": "bow",
+     "atk": 36,
+     "affixes": [
+      {
+       "key": "bossDmg",
+       "value": 30
+      },
+      {
+       "key": "ice",
+       "value": 19
+      },
+      {
+       "key": "addElec",
+       "value": 15
+      },
+      {
+       "key": "elec",
+       "value": 19
+      }
+     ]
+    },
+    {
+     "name": "Mending Candlewood Crozier",
+     "slot": "w",
+     "rarity": 3,
+     "weaponType": "staff",
+     "atk": 36,
+     "affixes": [
+      {
+       "key": "healPct",
+       "value": 30
+      },
+      {
+       "key": "regen",
+       "value": 3
+      },
+      {
+       "key": "light",
+       "value": 19
+      },
+      {
+       "key": "dark",
+       "value": 22
+      }
+     ]
+    },
+    {
+     "name": "Warding Brigandine",
+     "slot": "a",
+     "rarity": 3,
+     "weight": "M",
+     "def": 36,
+     "hp": 72,
+     "affixes": [
+      {
+       "key": "ward",
+       "value": 25
+      },
+      {
+       "key": "dmg",
+       "value": 16
+      },
+      {
+       "key": "dr",
+       "value": 8
+      },
+      {
+       "key": "hpPct",
+       "value": 13
+      }
+     ]
+    },
+    {
+     "name": "Warding Moonstep Boots",
+     "slot": "b",
+     "rarity": 3,
+     "weight": "L",
+     "def": 13,
+     "mov": 1,
+     "affixes": [
+      {
+       "key": "ward",
+       "value": 25
+      },
+      {
+       "key": "crit",
+       "value": 13
+      },
+      {
+       "key": "hpPct",
+       "value": 19
+      },
+      {
+       "key": "evade",
+       "value": 6
+      }
+     ]
+    },
+    {
+     "name": "Thundering Saint's Reliquary",
+     "slot": "c",
+     "rarity": 3,
+     "hp": 108,
+     "affixes": [
+      {
+       "key": "addElec",
+       "value": 18
+      },
+      {
+       "key": "elec",
+       "value": 27
+      },
+      {
+       "key": "dmg",
+       "value": 14
       }
      ]
     }

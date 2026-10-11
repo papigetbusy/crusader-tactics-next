@@ -1,5 +1,7 @@
 # Crusader Tactics: the Purple Tier
 
+**Approved in full by the owner on 2026-10-11**, with these answers: power 6 stays; Executioner's and Warding go in from the start; gold chests give 65% rare, 30% purple and 5% legendary (legendary only once a hero is Lv 30, purple before that). One clarification while building: purple boots keep the +1 move that rare boots already give; there is no extra move bonus on top.
+
 For approval, item by item. Text only; art comes with your new sprites. Each item has a number (P1, P2…). Reply "approve all", or list the numbers you want changed or cut.
 
 ## 1. What purple is for

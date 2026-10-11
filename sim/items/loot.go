@@ -25,7 +25,7 @@ const (
 	RollBonus  = "item bonus roll"
 	RollOrder  = "item bonus order"
 	RollChest  = "chest roll"
-	legendary  = 3
+	RollPrefix = "epic bonus roll"
 	rareRarity = 2
 )
 
@@ -34,10 +34,7 @@ func Band(c *content.Content, floor int, dice rng.Dice) int {
 	r := dice.Roll(RollBand)
 	for _, bd := range c.Gear.Loot.Bands {
 		if bd.UpToFloor == 0 || floor <= bd.UpToFloor {
-			if r < bd.LowChance {
-				return bd.Low
-			}
-			return bd.High
+			return content.Pick(bd.Odds, r)
 		}
 	}
 	return 0
@@ -48,6 +45,7 @@ func Band(c *content.Content, floor int, dice rng.Dice) int {
 // rarity better; bosses a legendary the first time on a floor, at 25%.
 func Drop(c *content.Content, b *state.Battle, dice rng.Dice, e, killer *state.Unit, emit action.Emit) {
 	l := c.Gear.Loot
+	legendary := c.Gear.Legendary()
 	r := dice.Roll(RollDrop)
 	bd := Band(c, b.Floor, dice)
 	k := -1
@@ -98,26 +96,26 @@ func OpenChest(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Unit
 	}
 	ch := b.Chests[i]
 	b.Chests = append(b.Chests[:i:i], b.Chests[i+1:]...)
-	t := c.Gear.Loot.Chests[ch.Kind]
-	k := t[1]
-	if dice.Roll(RollChest) < c.Gear.Loot.ChestUsual {
-		k = t[0]
-	}
+	k := content.Pick(c.Gear.Loot.Chests[ch.Kind], dice.Roll(RollChest))
 	it, ok := lootFor(c, b, dice, u, allowed(c, b, k))
 	give(b, it, ok, emit)
 }
 
-// allowed lowers a legendary to rare until a hero has reached the level
-// legendaries need (approved 2026-10-11; the old game had no such limit).
+// allowed lowers a legendary to epic (rare without an epic tier) until a
+// hero has reached the level legendaries need (approved 2026-10-11; the old
+// game had no such limit).
 func allowed(c *content.Content, b *state.Battle, k int) int {
 	need := c.Gear.Loot.LegendaryFromLevel
-	if k < legendary || need == 0 {
+	if k < c.Gear.Legendary() || need == 0 {
 		return k
 	}
 	for _, id := range b.Party {
 		if u := heroOf(b, id); u != nil && u.Level >= need {
 			return k
 		}
+	}
+	if e := c.Gear.Epic(); e >= 0 {
+		return e
 	}
 	return rareRarity
 }
@@ -186,6 +184,7 @@ func lootPick(c *content.Content, b *state.Battle, dice rng.Dice, p *state.Unit,
 	if ok {
 		armor = cg.Armor
 	}
+	legendary := c.Gear.Legendary()
 	slots := append([]string{"h", "a", "b", "c"}, stats.WeaponSlotsOf(c, p.Class)...)
 	var empty []string
 	for _, sl := range slots {

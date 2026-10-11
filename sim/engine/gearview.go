@@ -61,7 +61,7 @@ func (g *Game) itemText(it content.Item) string {
 func (g *Game) affixText(key string, v int) string {
 	for _, k := range g.C.Gear.Affixes {
 		if k.Key == key {
-			t := strings.TrimSuffix(k.Text, " (legendary)")
+			t := strings.TrimSuffix(strings.TrimSuffix(k.Text, " (legendary)"), " (epic)")
 			if strings.HasPrefix(t, "%") {
 				return fmt.Sprintf("%d%s", v, t)
 			}

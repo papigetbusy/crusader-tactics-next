@@ -95,7 +95,16 @@ func applyStatuses(c *content.Content, b *state.Battle, dice rng.Dice, a Attack,
 		v.Status = map[string]int{}
 	}
 	put := map[string]int{}
-	for q, n := range fx {
+	order := make([]string, 0, len(fx))
+	for q := range fx {
+		order = append(order, q)
+	}
+	slices.Sort(order) // the same order every time, so Warding's rolls are repeatable
+	for _, q := range order {
+		n := fx[q]
+		if u.Team != v.Team && warded(dice, v) {
+			continue
+		}
 		if u.Ascension == "Hex Queen" && slices.Contains(hexed, q) {
 			n++
 		}

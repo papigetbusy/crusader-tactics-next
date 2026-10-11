@@ -27,7 +27,7 @@ type Affix struct {
 type Item struct {
 	Name       string  `json:"name"`
 	Slot       string  `json:"slot"`   // w, h, a, b or c
-	Rarity     int     `json:"rarity"` // 0 common, 1 uncommon, 2 rare, 3 legendary
+	Rarity     int     `json:"rarity"` // index into Gear.Rarities: common, uncommon, rare, (epic), legendary
 	WeaponType string  `json:"weaponType,omitempty"`
 	Weight     string  `json:"weight,omitempty"` // armor: L light, M medium, H heavy
 	Atk        int     `json:"atk,omitempty"`
@@ -121,15 +121,45 @@ type Gear struct {
 	AddedElements  map[string]string `json:"addedElements"`
 	StatusChances  map[string]Affix  `json:"statusChances"` // affix -> status and its turns
 
-	Rarities     []Rarity                        `json:"rarities"`
-	Weapons      []WeaponBase                    `json:"weapons"`
-	ArmorNames   map[string]map[string][2]string `json:"armorNames"` // weight -> slot -> [common/uncommon, rare+]
-	CharmNames   []string                        `json:"charmNames"`
-	Affixes      []AffixKind                     `json:"affixes"`
-	Uniques      []Unique                        `json:"uniques"`
-	Sets         map[string]GearSet              `json:"sets"`
-	ArmorWeights map[string]ArmorWeight          `json:"armorWeights"`
-	Loot         Loot                            `json:"loot"`
+	Rarities     []Rarity                       `json:"rarities"`
+	Weapons      []WeaponBase                   `json:"weapons"`
+	ArmorNames   map[string]map[string][]string `json:"armorNames"` // weight -> slot -> [common/uncommon, rare, epic]
+	CharmNames   []string                       `json:"charmNames"`
+	EpicCharms   []string                       `json:"epicCharms,omitempty"` // epic charm names
+	Affixes      []AffixKind                    `json:"affixes"`
+	Uniques      []Unique                       `json:"uniques"`
+	Sets         map[string]GearSet             `json:"sets"`
+	ArmorWeights map[string]ArmorWeight         `json:"armorWeights"`
+	Loot         Loot                           `json:"loot"`
+	Prefixes     []Prefix                       `json:"prefixes,omitempty"` // epic bonuses (approved 2026-10-11)
+}
+
+// Prefix is an epic item's own bonus: only epic items roll it, and its name
+// starts the item's name ("Vampiric Gravewarden Blade").
+type Prefix struct {
+	Name    string        `json:"name"`
+	Slots   string        `json:"slots"` // the slots it can roll on (w h a b c)
+	Bonuses []PrefixBonus `json:"bonuses"`
+}
+
+// PrefixBonus is one bonus a prefix gives, rolled from Low to High.
+type PrefixBonus struct {
+	Key  string `json:"key"`
+	Low  int    `json:"low"`
+	High int    `json:"high"`
+}
+
+// Legendary is the legendary rarity: always the last one.
+func (g Gear) Legendary() int { return len(g.Rarities) - 1 }
+
+// Epic is the epic (purple) rarity, or -1 when there is none (the old game).
+func (g Gear) Epic() int {
+	for i, r := range g.Rarities {
+		if r.Name == "epic" {
+			return i
+		}
+	}
+	return -1
 }
 
 // ArmorWeight scales a piece of armor's DEF and HP by its weight.
@@ -181,13 +211,27 @@ func (g Gear) check() error {
 	return nil
 }
 
-// LootBand is the rarity range loot rolls in up to a floor: Low with
-// chance LowChance, else High (old bandRoll).
+// LootBand is the rarities loot rolls up to a floor (old bandRoll).
 type LootBand struct {
-	UpToFloor int     `json:"upToFloor"` // 0: every floor after the bands before
-	LowChance float64 `json:"lowChance"`
-	Low       int     `json:"low"`
-	High      int     `json:"high"`
+	UpToFloor int    `json:"upToFloor"` // 0: every floor after the bands before
+	Odds      []Odds `json:"odds"`
+}
+
+// Odds is one step of a rarity roll: a roll below Below (and not below the
+// steps before) gives Rarity. The last step's Below is 1.
+type Odds struct {
+	Below  float64 `json:"below"`
+	Rarity int     `json:"rarity"`
+}
+
+// Pick is the rarity a roll from 0 to 1 gives.
+func Pick(odds []Odds, r float64) int {
+	for _, o := range odds {
+		if r < o.Below {
+			return o.Rarity
+		}
+	}
+	return odds[len(odds)-1].Rarity
 }
 
 // Loot is how items drop: from monsters, chests and bounties (old drop,
@@ -201,11 +245,11 @@ type Loot struct {
 	ForKiller     float64             `json:"forKiller"`     // loot is for the hero who made the kill (else the least geared hero)
 	EmptySlot     float64             `json:"emptySlot"`     // loot fills an empty slot
 	MainWeapon    float64             `json:"mainWeapon"`    // a weapon is of the class's first weapon type
-	Chests        map[string][2]int   `json:"chests"`        // chest kind -> rarity [usual, lucky]
-	ChestUsual    float64             `json:"chestUsual"`    // chance of the usual rarity
+	Chests        map[string][]Odds   `json:"chests"`        // chest kind -> its rarity roll
 	ClassAffixes  map[string][]string `json:"classAffixes"`  // the bonuses each class's loot can roll
 	// LegendaryFromLevel: legendaries only drop once a hero has reached this
-	// level (0: any time). Until then a legendary roll gives a rare item.
+	// level (0: any time). Until then a legendary roll gives an epic item
+	// (a rare one when there is no epic tier).
 	LegendaryFromLevel int `json:"legendaryFromLevel"`
 
 	GoldBase     float64 `json:"goldBase"`

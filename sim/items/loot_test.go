@@ -1,12 +1,15 @@
 package items
 
 import (
+	"slices"
+	"strings"
 	"testing"
 
 	"github.com/papigetbusy/crusader-tactics-next/sim/action"
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
 	"github.com/papigetbusy/crusader-tactics-next/sim/rng"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
+	"github.com/papigetbusy/crusader-tactics-next/sim/stats"
 )
 
 // dice return these fractions, then 0.5 forever.
@@ -51,15 +54,15 @@ func TestLoot(t *testing.T) {
 		}
 	})
 
-	t.Run("Legendaries only drop once a hero has reached Lv 30; before that a legendary roll gives a rare item", func(t *testing.T) {
+	t.Run("Legendaries only drop once a hero has reached Lv 30; before that a legendary roll gives a purple item", func(t *testing.T) {
 		c, b, w, _ := party(25)
 		Drop(c, b, dice(0.1), monster(true, false), w, nop)
-		if len(b.Bag) != 1 || b.Bag[0].Rarity != 2 || b.BossLegendary {
+		if len(b.Bag) != 1 || b.Bag[0].Rarity != c.Gear.Epic() || b.BossLegendary {
 			t.Fatalf("bag %v", b.Bag)
 		}
 		c, b, w, _ = party(30)
 		Drop(c, b, dice(0.1), monster(true, false), w, nop)
-		if len(b.Bag) != 1 || b.Bag[0].Rarity != 3 || !b.Bag[0].Unique {
+		if len(b.Bag) != 1 || b.Bag[0].Rarity != c.Gear.Legendary() || !b.Bag[0].Unique {
 			t.Fatalf("bag %v", b.Bag)
 		}
 	})
@@ -68,7 +71,7 @@ func TestLoot(t *testing.T) {
 		c, b, w, _ := party(30)
 		Drop(c, b, dice(0.1), monster(true, false), w, nop)
 		Drop(c, b, dice(0.1, 0.1), monster(true, false), w, nop)
-		if !b.BossLegendary || len(b.Bag) != 2 || b.Bag[1].Rarity == 3 {
+		if !b.BossLegendary || len(b.Bag) != 2 || b.Bag[1].Rarity == c.Gear.Legendary() {
 			t.Fatalf("bag %v", b.Bag)
 		}
 	})
@@ -109,8 +112,8 @@ func TestLoot(t *testing.T) {
 	t.Run("A legendary weapon a hero can't use yet becomes a legendary armor piece or charm", func(t *testing.T) {
 		c, b, w, _ := party(29)
 		w.Gear = map[string]content.Item{"h": {}, "a": {}, "b": {}, "c": {}, "w2": {}} // only the sword slot is empty
-		it := lootPick(c, b, dice(0.1, 0.1, 0.1, 0.1, 0.1), w, 3)
-		if it.Slot == "w" || it.Rarity != 3 {
+		it := lootPick(c, b, dice(0.1, 0.1, 0.1, 0.1, 0.1), w, c.Gear.Legendary())
+		if it.Slot == "w" || it.Rarity != c.Gear.Legendary() {
 			t.Fatalf("got %+v", it)
 		}
 	})
@@ -130,12 +133,18 @@ func TestLoot(t *testing.T) {
 		}
 	})
 
-	t.Run("Opening a chest gives an item of the chest's rarity", func(t *testing.T) {
-		c, b, w, _ := party(20)
-		b.Chests = []state.Chest{{X: 0, Y: 0, Kind: "gold"}}
-		OpenChest(c, b, dice(0.9), w, nop)
-		if len(b.Chests) != 0 || len(b.Bag) != 1 || b.Bag[0].Rarity != 2 {
-			t.Fatalf("chests %v bag %v", b.Chests, b.Bag)
+	t.Run("A gold chest gives a rare item 65% of the time, a purple one 30% and a legendary 5% (purple until a hero is Lv 30)", func(t *testing.T) {
+		for _, tc := range []struct {
+			roll  float64
+			level int
+			want  int
+		}{{0.5, 20, 2}, {0.9, 20, 3}, {0.97, 20, 3}, {0.97, 30, 4}} {
+			c, b, w, _ := party(tc.level)
+			b.Chests = []state.Chest{{X: 0, Y: 0, Kind: "gold"}}
+			OpenChest(c, b, dice(tc.roll), w, nop)
+			if len(b.Chests) != 0 || len(b.Bag) != 1 || b.Bag[0].Rarity != tc.want {
+				t.Fatalf("roll %v at Lv %d: chests %v bag %v", tc.roll, tc.level, b.Chests, b.Bag)
+			}
 		}
 	})
 
@@ -153,6 +162,60 @@ func TestLoot(t *testing.T) {
 		b.Replayed = true
 		if g := Gold(c, b, w, monster(false, false)); g != 7 {
 			t.Fatalf("replayed floor: %d", g)
+		}
+	})
+
+	t.Run("Purple first drops on floors 21-30, 10% of the time", func(t *testing.T) {
+		c := content.MustDefault()
+		if Band(c, 20, dice(0.95)) != 2 || Band(c, 25, dice(0.95)) != c.Gear.Epic() || Band(c, 25, dice(0.6)) != 2 {
+			t.Fatal("wrong floor bands")
+		}
+	})
+
+	t.Run("A purple item has one purple bonus, named in front of the item, plus 2 or 3 ordinary bonuses", func(t *testing.T) {
+		c, _, _, _ := party(25)
+		for i := 0; i < 200; i++ {
+			it := Make(c, 25, rng.New(uint64(i), 3), c.Gear.Epic(), "w", "sword", "", "Warrior")
+			pre := ""
+			for _, p := range c.Gear.Prefixes {
+				if strings.HasPrefix(it.Name, p.Name+" ") && p.Bonuses[0].Key == it.Affixes[0].Key {
+					pre = p.Name
+				}
+			}
+			if pre == "" || !strings.HasSuffix(it.Name, "Gravewarden Blade") || len(it.Affixes) < 3 || len(it.Affixes) > 4 {
+				t.Fatalf("%+v", it)
+			}
+			seen := map[string]bool{}
+			for _, a := range it.Affixes {
+				if seen[a.Key] {
+					t.Fatalf("%s twice on %s", a.Key, it.Name)
+				}
+				seen[a.Key] = true
+			}
+		}
+	})
+
+	t.Run("A purple weapon needs weapon rank A: a Lv 17 hero gets a rare one instead", func(t *testing.T) {
+		c, b, w, _ := party(17)
+		w.Gear = map[string]content.Item{"h": {}, "a": {}, "b": {}, "c": {}, "w2": {}}
+		for i := 0; i < 30; i++ {
+			if it := lootPick(c, b, rng.New(uint64(i), 4), w, c.Gear.Epic()); it.Slot == "w" && it.Rarity > 2 {
+				t.Fatalf("a Lv 17 Warrior got %+v", it)
+			}
+		}
+		w.Level = 18
+		if ok, _ := stats.CanUse(c, "Warrior", 18, Make(c, 25, dice(), c.Gear.Epic(), "w", "sword", "", "Warrior")); !ok {
+			t.Fatal("a Lv 18 Warrior can't hold a purple sword")
+		}
+	})
+
+	t.Run("Purple charms and armor have their own names", func(t *testing.T) {
+		c, _, _, _ := party(25)
+		if n := Make(c, 25, dice(0.1), c.Gear.Epic(), "a", "", "H", "Warrior").Name; !strings.HasSuffix(n, "Cathedral Plate") {
+			t.Fatal(n)
+		}
+		if n := Make(c, 25, dice(0.1), 2, "c", "", "", "Warrior").Name; slices.Contains(c.Gear.EpicCharms, n) {
+			t.Fatalf("a rare charm called %s", n)
 		}
 	})
 }

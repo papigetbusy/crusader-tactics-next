@@ -343,7 +343,7 @@ function say(e){
     case 'immune':logLine('',`The scales stop the shot.`);break;
     case 'exploded':logLine('',`${n(e.unit)} bursts!`);break;
     case 'ascended':logLine('good',`★ ${n(e.unit)} ascends: ${e.skill}!`);break;
-    case 'loot':logLine('good',`Loot: ${e.skill} (${['common','uncommon','rare','legendary'][e.amount||0]}).`);break;
+    case 'loot':logLine('good',`Loot: ${e.skill} (${((V.bag||[]).find(i=>i.name===e.skill)||{}).rarity||'item'}).`);break;
     case 'gold':logLine('',`+${e.amount} gold.`);break;
     case 'unequipped':logLine('',`${n(e.unit)} takes off ${e.skill}.`);break;
     case 'bonded':logLine('good',`${n(e.unit)} bonds with a ${e.skill}.`);break;

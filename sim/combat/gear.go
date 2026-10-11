@@ -38,6 +38,19 @@ func rankDamage(c *content.Content, u *state.Unit) float64 {
 	return 1
 }
 
+// executeBelow is the share of max HP (in %) below which Executioner's
+// gear hits harder.
+const executeBelow = 30
+
+// RollWard is an epic Warding item's chance to shrug off a status.
+const RollWard = "ward roll"
+
+// warded reports a harmful status shrugged off by epic Warding gear
+// (approved 2026-10-11). No roll is made without Warding gear.
+func warded(dice rng.Dice, v *state.Unit) bool {
+	return v.Af("ward") > 0 && dice.Roll(RollWard)*100 < float64(v.Af("ward"))
+}
+
 // gearDamage is the gear part of the hero damage formula (old dcalc, line
 // 447): more damage, more damage of the hit's element (or the hero's own),
 // more physical damage, more damage to elites and bosses.
@@ -56,6 +69,9 @@ func gearDamage(c *content.Content, a Attack, el string, atk float64) float64 {
 	}
 	if u.Af("bossDmg") != 0 && (v.Boss || v.Elite) {
 		atk *= 1 + float64(u.Af("bossDmg"))/100
+	}
+	if u.Af("execute") != 0 && v.HP*100 < v.MaxHP*executeBelow {
+		atk *= 1 + float64(u.Af("execute"))/100 // epic Executioner's (approved 2026-10-11)
 	}
 	return atk
 }
