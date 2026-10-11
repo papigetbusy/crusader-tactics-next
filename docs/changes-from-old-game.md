@@ -21,6 +21,9 @@ Every place where the new game intentionally behaves differently from the old on
 ## Decided, arriving with later phases
 - Team select and deployment: start with 5 hero slots; one more slot at floors 25, 50 and 75 (8 is the most). Before each map you choose who to bring from your whole roster and must fill every slot. Only the heroes who fight on a floor earn its XP. You place them yourself on blue starting tiles, and each map has more blue tiles than heroes, so where you start is a real choice. If you don't choose, the game brings your highest-level heroes. The old game took the whole party into every fight. (Approved 2026-10-10; arrives in Phase 7, screen in Phase 8.)
 
+- Legendaries only drop once you reach Lv 30, and a new purple (epic) tier sits between rare and legendary for the middle levels. The old game dropped legendaries from bosses at any floor. (Approved 2026-10-11; arrives in 6d, items approved one by one.)
+- A battle ends the moment it is won (the old game let heroes keep acting until the next floor loaded), and an undo that can't happen says why. (Approved 2026-10-11.)
+
 ## Not changed yet (conscious design calls for later)
 - Shop floors count as cleared without a fight.
 - A defeat re-runs the same floor with no penalty.

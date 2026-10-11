@@ -91,10 +91,10 @@ The old screen is carried over and wired to the referee; each of these gets tick
 
 Already fixed with your sign-off: forecast now matches real damage; traps work along the whole walk; Grave Bloom no longer depends on a timer; a fallen hero can be revived however they died; one skill version for monsters and heroes; gear swaps cost the turn; level-ups keep the weapon in hand; the auto-walk endless loop cannot happen.
 
-Found while porting, proposed (say yes or no to each):
-1. 🛠 After a battle is won, the old game still let heroes act until the next floor loaded. The new game ends the battle at once.
-2. 🛠 Undo when the old tile is now occupied (a shadow clone stands there): the old game silently did nothing; the new game says why.
-3. 🛠 Legendary gear power: a legendary is 10x a common item's numbers (rare is 4x). At floor 27 a legendary chest piece gives about +80 DEF. Worth checking with the autoplayer.
-4. 🛠 Legendary weapons need rank S, which most heroes reach only at Lv 30, so legendary weapons sit in the bag for most of the game.
-5. 🛠 Defeat re-runs the floor with no penalty; shop floors count as cleared without a fight (already on your list).
-6. 🛠 The old AI never uses many of its tools well; Phase 9 makes it smarter as floors rise (approved).
+Signed off by the owner on 2026-10-11 (nothing built yet; each lands in the step named):
+1. ✅ approved, **6d:** the battle ends the moment it is won (the old game let heroes keep acting until the next floor loaded).
+2. ✅ approved, **6d:** an undo that can't happen (a shadow clone stands on the old tile) says why instead of silently doing nothing.
+3. ✅ approved, **6d design, tuned after Phase 7:** legendaries only start to drop once you reach Lv 30. A new **purple tier (epic)** sits between rare (blue) and legendary (gold): weapons, armor and charms with their own bonuses (prefixes), built for the middle levels. Claude designs the purple items and bonuses and sends them for approval (like the skill list) before anything goes in; their numbers are then tuned with the autoplayer.
+4. ✅ settled by point 3: legendary weapons needing rank S fits, since legendaries now arrive at Lv 30, when heroes reach rank S.
+5. ✅ approved, **Phase 7:** a design call on what a defeat costs and whether shop floors need a fight.
+6. ✅ approved, **Phase 9:** smarter monsters as floors rise.
