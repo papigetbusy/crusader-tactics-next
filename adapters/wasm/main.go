@@ -55,6 +55,8 @@ func main() {
 	g.Set("ctInfo", fn(func([]js.Value) any {
 		return text(map[string]string{"go": runtime.Version(), "build": build})
 	}))
+	// ctGuide() -> the fixed rules the screen describes in words
+	g.Set("ctGuide", fn(func([]js.Value) any { return text(engine.RulesGuide(rules)) }))
 	// ctPractice() -> ["Floor 1", ...]
 	g.Set("ctPractice", fn(func([]js.Value) any {
 		var names []string

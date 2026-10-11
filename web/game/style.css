@@ -1,0 +1,109 @@
+/* Crusader Tactics: the look of the game screen. Written new to match the old
+   game's final look (Nightfall gothic skin with Tiny Swords panels). Pictures
+   come from assets/ui. */
+:root { --gold: #e8bf5e; --safe-t: env(safe-area-inset-top, 0px); --safe-b: env(safe-area-inset-bottom, 0px); }
+html, body { height: 100%; margin: 0; overflow: hidden; }
+body {
+  background: #0c0507; color: #f6e6c4;
+  font: 600 17px/1.2 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
+  -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent;
+}
+button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
+[hidden] { display: none !important; }
+#map { position: fixed; inset: 0; display: block; touch-action: none; }
+
+/* ---------- buttons ---------- */
+.b {
+  border: 14px solid transparent; border-image: url(../assets/ui/btnn.png) 64 fill / 14px stretch;
+  background: none; color: #fff1d6; text-shadow: 0 2px 0 #2a0408, 0 0 4px #000;
+  padding: 0 6px; min-height: 46px; font: 700 15px 'EB Garamond', Garamond, Georgia, serif; letter-spacing: .06em;
+}
+.b:active { border-image-source: url(../assets/ui/btnnp.png); }
+.b.on { border-image-source: url(../assets/ui/btng.png); color: #2a1606; text-shadow: 0 1px 0 #ffe6a8; }
+.b:disabled { filter: grayscale(.85) brightness(.75); opacity: .6; }
+.b.red, .redb {
+  border: 14px solid transparent; border-image: url(../assets/ui/btna.png) 64 fill / 14px stretch; background: none;
+  color: #fff1d6; text-shadow: 0 2px 0 #2a0408, 0 0 4px #000;
+  font-family: 'Grenze Gotisch', 'UnifrakturCook', Georgia, serif; letter-spacing: .05em; font-weight: 800;
+}
+.redb { min-width: 230px; min-height: 62px; font-size: 28px; letter-spacing: .1em; }
+
+/* ---------- floating panels ---------- */
+.panel {
+  position: fixed; z-index: 4;
+  background: linear-gradient(180deg, rgba(28,10,14,.96), rgba(10,4,6,.96)); border: 1px solid #c9a24a;
+  box-shadow: 0 0 0 2px #120608, 0 0 0 3px #6a4a1a, 0 10px 24px rgba(0,0,0,.7);
+  color: #efe3c8; font-family: 'EB Garamond', Garamond, Georgia, serif;
+}
+#chip {
+  right: 8px; top: calc(8px + var(--safe-t)); display: flex; align-items: center; gap: 6px;
+  padding: 4px 6px 4px 12px; font: 600 13px 'EB Garamond', Georgia, serif; letter-spacing: .12em; text-transform: uppercase;
+}
+.ib { background: none; border: 1px solid #6a4a1a; color: #f2c14e; font-size: 18px; width: 36px; height: 34px; line-height: 1; padding: 0; }
+
+/* the message line under the chip */
+#toast {
+  position: fixed; left: 50%; transform: translateX(-50%); top: calc(var(--safe-t) + 74px); z-index: 8;
+  max-width: 86vw; pointer-events: none; text-align: center;
+}
+#log {
+  display: inline-block; background: rgba(10,4,6,.78); border: 1px solid rgba(201,162,74,.5); padding: 5px 12px;
+  font: 500 13px 'EB Garamond', Georgia, serif; color: #e8dcc0;
+}
+#log:empty { display: none; }
+
+#endTurn { position: fixed; right: 10px; bottom: calc(14px + var(--safe-b)); z-index: 4; min-height: 44px; padding: 0 18px; font-size: 15px; }
+#endTurn.pulse { animation: endpulse 1.2s ease-in-out infinite; }
+@keyframes endpulse { 0%, 100% { filter: none; transform: scale(1); } 50% { filter: brightness(1.35) drop-shadow(0 0 10px #f2c14e); transform: scale(1.05); } }
+
+#mini {
+  position: fixed; right: 8px; top: calc(54px + var(--safe-t)); z-index: 4; border-radius: 8px;
+  box-shadow: 0 2px 12px #000c; border: 1.5px solid var(--gold); touch-action: none; cursor: pointer;
+}
+
+/* ---------- title ---------- */
+#title { position: fixed; inset: 0; z-index: 20; background: #05030a; overflow: hidden; }
+#titleArt { position: absolute; inset: 0; background: #05030a url(../assets/title/background.webp) center top / cover no-repeat; image-rendering: pixelated; z-index: 0; }
+#titleFx { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+.titlePanel {
+  position: absolute; left: 0; right: 0; bottom: calc(14vh + var(--safe-b)); z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 18px;
+}
+#loading p { color: #e8bf5e; font-size: 18px; text-shadow: 0 2px 0 #000; }
+#version {
+  position: fixed; left: calc(env(safe-area-inset-left, 0px) + 10px); bottom: calc(var(--safe-b) + 4px); z-index: 25;
+  font: 600 12px/1 'EB Garamond', Georgia, serif; color: rgba(217,194,122,.75); pointer-events: none; text-shadow: 0 1px 2px #000;
+}
+
+/* ---------- battle panels ---------- */
+#menu {
+  right: 10px; top: 40%; min-width: 150px; max-width: 220px; padding: 2px 0; z-index: 7;
+  border: 13px solid transparent; border-image: url(../assets/ui/wood.png) 64 fill / 13px stretch; background: none; box-shadow: none;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,.55));
+}
+#menu .row {
+  display: block; width: 100%; height: 34px; padding: 0 8px 0 19px; border: 0; background: none; text-align: left;
+  font: 600 14px 'EB Garamond', Georgia, serif; color: #fff1d6; text-shadow: 0 2px 0 #2a0e04; white-space: nowrap;
+}
+#menu .row:active { border: 7px solid transparent; border-image: url(../assets/ui/btnt.png) 48 fill / 7px stretch; color: #2a1606; text-shadow: 0 1px 0 #ffe6a8; }
+#menu .row:disabled { opacity: .45; }
+#forecast {
+  left: 8px; right: 8px; bottom: calc(var(--safe-b) + 8px); padding: 8px 10px; z-index: 5; font-size: 14px; line-height: 19px;
+}
+#forecast.red { border-color: #d0343e; background: linear-gradient(180deg, rgba(40,8,12,.96), rgba(14,3,5,.96)); }
+#forecast.green { border-color: #4cd97b; }
+#forecast .fh { font: 700 13px 'EB Garamond', Georgia, serif; letter-spacing: .1em; text-transform: uppercase; color: #ff9a8a; border-bottom: 1px solid rgba(208,52,62,.45); padding-bottom: 3px; margin-bottom: 3px; }
+#forecast.green .fh { color: #8ff0b0; }
+#forecast .fd { color: #ffd77a; }
+#forecast .fs { font-size: 12px; color: #c9b89a; line-height: 15px; margin-top: 2px; }
+#forecast .fr { display: flex; gap: 6px; margin-top: 6px; }
+#forecast .fr .b { flex: 1; min-height: 46px; }
+#forecast .fr .red { flex: 2.2; }
+#prepare { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(14px + var(--safe-b)); z-index: 4; }
+#prepare .b { min-height: 52px; padding: 0 22px; font-size: 18px; }
+.cover { position: fixed; inset: 0; z-index: 12; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; }
+.box { position: relative; width: min(340px, 90vw); max-height: 86vh; overflow: auto; padding: 14px 16px; font-size: 15px; line-height: 20px; text-align: center; }
+#decision { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 12; }
+.box .ttl { font: 700 18px 'Grenze Gotisch', 'EB Garamond', Georgia, serif; letter-spacing: .08em; color: #f2c14e; text-transform: uppercase; margin-bottom: 6px; }
+.box p { margin: 6px 0; }
+.box .b { margin-top: 8px; min-width: 160px; }

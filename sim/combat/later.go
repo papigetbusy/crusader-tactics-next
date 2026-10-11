@@ -100,11 +100,7 @@ func openVeins(c *content.Content, b *state.Battle, dice rng.Dice, u, v *state.U
 		if v.Status[q] <= 0 {
 			continue
 		}
-		share := float64(float64(v.MaxHP) * c.Turns.DamageOverTime[q])
-		if q == "bleed" && v.HeavyBleed {
-			share *= 2
-		}
-		n := max(c.Turns.DamageOverTimeMin, int(Round(share)))
+		n := Tick(c, v, q)
 		v.HP -= n
 		v.Status[q] *= 2
 		emit(action.Event{Kind: action.Ticked, Unit: v.ID, Amount: n, Statuses: map[string]int{q: v.Status[q]}})

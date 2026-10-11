@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0c0507">
+<title>Crusader Tactics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@600;800&family=EB+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="game/style.css?v=__BUILD__">
+</head>
+<body>
+<canvas id="map" aria-label="Battle map"></canvas>
+<canvas id="mini" hidden></canvas>
+<div id="chip" class="panel" hidden><span id="chipText"></span><button class="ib" id="nextHero" title="Next hero">⇥</button><button class="ib" id="menuButton" title="Menu">☰</button></div>
+<div id="toast"><div id="log"></div></div>
+<button class="b red" id="endTurn" hidden>⚑ End Turn</button>
+<div id="menu" class="panel" hidden></div>
+<div id="forecast" class="panel" hidden></div>
+<div id="prepare" hidden><button class="b red" id="startBattle">⚔ Start battle</button></div>
+<div id="decision" class="panel box" hidden></div>
+<div id="summary" class="cover" hidden><div class="panel box"><div id="summaryText"></div><button class="b" id="summaryGo">Continue</button></div></div>
+<div id="title">
+  <div id="titleArt"></div><canvas id="titleFx"></canvas>
+  <div id="titleStart" class="titlePanel"><button id="startButton" class="redb">Start</button></div>
+  <div id="titleMenu" class="titlePanel" hidden><button id="newGame" class="redb">New Game</button><button id="continueGame" class="redb">Continue</button></div>
+  <div id="loading" class="titlePanel" hidden><p id="loadingText">Loading…</p></div>
+</div>
+<div id="version"></div>
+<script type="module">
+  import { boot } from './game/js/main.js?v=__BUILD__';
+  boot('__BUILD__');
+</script>
+</body>
+</html>

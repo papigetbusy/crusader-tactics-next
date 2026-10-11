@@ -52,20 +52,24 @@ type UnitView struct {
 	XP        int            `json:"xp,omitempty"`     // heroes: experience toward the next level
 	XPNext    int            `json:"xpNext,omitempty"` // heroes: experience the next level needs
 	Form      string         `json:"form,omitempty"`   // heroes: the form's name ("Vanguard")
+	Stage     int            `json:"stage,omitempty"`  // heroes: which form, 0 base, 1-2 evolved, 3 ascended (picks the picture)
 	Ascension string         `json:"ascension,omitempty"`
 	Ability   *AbilityView   `json:"ability,omitempty"` // heroes: the class ability
 	Decoy     bool           `json:"decoy,omitempty"`
 	Companion bool           `json:"companion,omitempty"`
 	Pet       bool           `json:"pet,omitempty"`
 	Element   string         `json:"element,omitempty"`
+	Weapon    string         `json:"weapon,omitempty"` // the weapon it counts as in the triangle
 	Boss      bool           `json:"boss,omitempty"`
 	Elite     bool           `json:"elite,omitempty"`
 	Statuses  map[string]int `json:"statuses,omitempty"`
+	Ticks     map[string]int `json:"ticks,omitempty"` // bleed, burn, poison: HP lost per turn; regen: HP healed per turn
 	Enraged   bool           `json:"enraged,omitempty"`
 	Potions   int            `json:"potions"`
 	CanUndo   bool           `json:"canUndo"`
 	Done      bool           `json:"done"`
 	CanMove   bool           `json:"canMove"`
+	Acted     bool           `json:"acted,omitempty"` // used its action but may still move (Hit and Run)
 	Skills    []SkillView    `json:"skills"`
 	Gear      *GearView      `json:"gear,omitempty"`    // heroes: what they wear
 	Bond      *state.Bond    `json:"bond,omitempty"`    // heroes: their companion spirit
@@ -152,11 +156,12 @@ func (g *Game) View() View {
 	}
 	for _, u := range b.Units {
 		uv := UnitView{ID: u.ID, Team: u.Team, Class: u.Class, X: u.X, Y: u.Y, HP: u.HP, MaxHP: u.MaxHP,
-			Atk: u.Atk, Def: u.Def, Mov: u.Mov, Level: u.Level, Element: u.Element, Boss: u.Boss, Elite: u.Elite,
+			Atk: u.Atk, Def: u.Def, Mov: u.Mov, Level: u.Level, Element: u.Element, Weapon: u.Weapon, Boss: u.Boss, Elite: u.Elite,
 			Enraged: combat.Enraged(g.C, u), Potions: u.Potions, CanUndo: u.Undo != nil && !u.Done,
-			Done: u.Done, CanMove: !u.Done && board.CanMove(u), Statuses: map[string]int{}}
+			Done: u.Done, CanMove: !u.Done && board.CanMove(u), Acted: u.Acted && !u.Done, Statuses: map[string]int{}}
 		if u.Team == state.Heroes && !u.Summoned && !u.Companion && !u.Decoy {
 			uv.XP, uv.XPNext, uv.Form = u.XP, stats.XPToNext(g.C, u.Level), stats.FormName(g.C, u.Class, u.Level)
+			uv.Stage = stats.Form(g.C, u.Level, u.Ascension)
 			if u.Ascension != "" {
 				uv.Form = u.Ascension
 			}
@@ -173,6 +178,12 @@ func (g *Game) View() View {
 		for k, n := range u.Status {
 			if n > 0 {
 				uv.Statuses[k] = n
+				if t := combat.Tick(g.C, u, k); t > 0 {
+					if uv.Ticks == nil {
+						uv.Ticks = map[string]int{}
+					}
+					uv.Ticks[k] = t
+				}
 			}
 		}
 		for i, s := range u.Skills {

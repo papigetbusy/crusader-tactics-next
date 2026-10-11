@@ -37,11 +37,7 @@ func Start(c *content.Content, b *state.Battle, dice rng.Dice, side int, emit ac
 		if u.Status[status] <= 0 {
 			return 0
 		}
-		share := float64(float64(u.MaxHP) * t.DamageOverTime[status])
-		if status == "bleed" && u.HeavyBleed {
-			share *= 2
-		}
-		n := max(t.DamageOverTimeMin, int(combat.Round(share)))
+		n := combat.Tick(c, u, status)
 		u.HP -= n
 		u.Status[status]--
 		emit(action.Event{Kind: action.Ticked, Unit: u.ID, Amount: n, Statuses: map[string]int{status: u.Status[status]}})
@@ -84,7 +80,7 @@ func Start(c *content.Content, b *state.Battle, dice rng.Dice, side int, emit ac
 			u.HP = min(u.MaxHP, u.HP+int(combat.Round(float64(u.MaxHP)*float64(u.Af("regen"))/100)))
 		}
 		if u.Status["regen"] > 0 && u.HP > 0 {
-			u.HP = min(u.MaxHP, u.HP+int(combat.Round(float64(u.MaxHP)*t.RegenShare)))
+			u.HP = min(u.MaxHP, u.HP+combat.Tick(c, u, "regen"))
 		}
 		for _, q := range t.Stunned {
 			if u.Status[q] > 0 {
