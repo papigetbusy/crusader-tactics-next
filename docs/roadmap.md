@@ -86,6 +86,7 @@ Working agreement: Claude ports the original first, then flags improvements in p
 - **Phase 6 (done 2026-10-11):** skill changes once per floor: any number of skills (and the ultimate) in one go, then fixed until the next floor.
 - **Phase 6:** the "switching skills counts double for skill levels" rule stays, explained once in the tips.
 - **Phase 7 (owner, 2026-10-11):** the shop comes up every 7 floors with no floor number of its own; a defeat re-runs the floor with no penalty; old saves not needed for now.
+- **Phase 7 calls approved (owner, 2026-10-11):** ascension changes between battles only; purple costs 200 gold before its numbers; the shop stocks items for the strongest heroes; leaving a battle by the floor list keeps what was earned; winning a cleared floor stays on it (to farm); gear and skill changes before a battle only for heroes on the team; a defeat doesn't give back a once-per-floor change; the 100-floor gift lands in a random slot; saves live in the browser (export to move them); only a climb autosaves; a loaded battle uses fresh dice.
 - **Phase 7 rules, Phase 8 screen: team select and deployment, Fire Emblem style (settled 2026-10-10; roster clarified 2026-10-11).**
   - **All 10 heroes (one of each class) are yours from the start. There is no recruiting** (replaces the old "a new hero every 25 floors").
   - Hero slots: 5 at the start; one more slot on reaching floor 25, 50 and 75 (8 is the most).
