@@ -56,7 +56,7 @@ The old screen is carried over and wired to the referee; each of these gets tick
 - ➕ Optional auto-zoom on the selected hero; the camera follows your selection when zoomed in
 - ➕ Minimap you can tap to jump, with your view box drawn on it
 - ➕ Units turn into simple markers only when zoomed far out
-- ➕ Flat (Fire Emblem) view and isometric view with rotate (flat is the main view)
+- ✅ Flat (Fire Emblem) view and isometric view with rotate (flat is the main view) (new screen, 8g)
 - 🔜 The camera waits for each animation to finish before moving on (your request)
 
 **Moving and acting**

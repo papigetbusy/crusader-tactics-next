@@ -4,6 +4,7 @@ import { map, tiles, drawWater, drawTile, objects, vignette, poly, top, turnStep
 import { cam, layout } from './camera.js';
 import * as units from './units.js';
 import { CHEST, TS } from './look.js';
+import * as iso from './iso.js';
 
 // st: { view, sel, look, aim, reach:Set, targets:Set(ids), starts:Set, danger:Set,
 //       zone:{walk:Set, hit:Set}, attack:Set, picks:{tiles:Set, all:Set}, opt,
@@ -28,12 +29,14 @@ export function draw(canvas, st) {
   const K = cam.k, D = cam.dpr;
   g.setTransform(D * K, 0, 0, D * K, D * (cam.offX + sx * K), D * (cam.offY + sy * K));
   const list = tiles(), calm = st.opt.lowGraphics;
-  drawWater(g, list, now, calm);
+  if (map.flat) drawWater(g, list, now, calm);
+  else iso.water(g, list, now, calm);
   for (const [x, y, p] of list) {
-    drawTile(g, x, y, p);
+    if (map.flat) drawTile(g, x, y, p);
+    else iso.tile(g, x, y, p);
     marks(g, x, y, p, st, now);
   }
-  const obj = objects(list, now, calm, !!v.throne && !v.outcome);
+  const obj = map.flat ? objects(list, now, calm, !!v.throne && !v.outcome) : iso.objects(list, now, calm);
   obj.sort((a, b) => a[0] - b[0]);
   g.save();
   g.imageSmoothingEnabled = false;

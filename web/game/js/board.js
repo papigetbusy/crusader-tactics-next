@@ -232,7 +232,7 @@ export function poly(g, pts, fill) {
 
 // top is a tile's four corners on screen.
 export function top(x, y) {
-  const h = height(x, y) > 0 ? map.th : 0;
+  const h = height(x, y) > 0 ? map.th : !map.flat && ground(x, y) === 'm' ? map.th * 1.8 : 0;
   return CORNERS.map(([a, b]) => {
     const c = pj(x, y, a, b);
     return [c.x, c.y - h];

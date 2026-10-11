@@ -32,6 +32,7 @@ export function open() {
     <button class="row" id="sSet">Settings</button><button class="row" id="sClose">✕ Close</button>
     <div class="lbl">Map</div>
     <div class="mrow"><span>Zoom</span><input type="range" id="sZoom" min="1" max="3.4" step="0.05" value="${cam.zt.toFixed(2)}"></div>
+    <div class="mrow"><span>View</span>${seg('sView', [[1, 'Flat'], [0, 'Isometric']], options.flat ? 1 : 0)}</div>
     <div class="mrow"><span>Minimap</span>${sw('sMini', options.minimap)}</div>
     <div class="mrow"><span>Danger zone</span>${sw('sDanger', options.danger)}</div>
     <div class="mrow"><span>Battle speed</span>${seg('sSpeed', [[1, '1×'], [2, '2×'], [3, 'Instant']], options.speed)}</div>
@@ -52,6 +53,7 @@ export function open() {
   flip('sMini', 'minimap');
   flip('sDanger', 'danger');
   $('sSpeed').querySelectorAll('button').forEach((b) => (b.onclick = () => { options.speed = +b.dataset.v; saveOptions(); open(); }));
+  $('sView').querySelectorAll('button').forEach((b) => (b.onclick = () => { screen.setView(b.dataset.v === '1'); saveOptions(); open(); }));
 }
 
 // ---------- settings ----------
@@ -63,7 +65,7 @@ export function settings() {
     <h4>Battle</h4>${row('Battle speed', seg('oSpeed', [[1, '1×'], [2, '2×'], [3, 'Instant']], options.speed))}
     ${row('Auto end turn', sw('oAuto', options.autoEnd), 'Ends your turn once every hero has acted')}
     ${row('Ask before ending turn', sw('oAsk', options.confirmEnd), 'Warns if heroes haven’t acted yet')}
-    <h4>Map</h4>${row('Minimap', sw('oMini', options.minimap))}${row('Danger zone', sw('oDanger', options.danger), 'Shade every tile monsters can reach')}
+    <h4>Map</h4>${row('Map view', seg('oView', [[1, 'Flat'], [0, 'Isometric']], options.flat ? 1 : 0))}${row('Minimap', sw('oMini', options.minimap))}${row('Danger zone', sw('oDanger', options.danger), 'Shade every tile monsters can reach')}
     <h4>Accessibility &amp; performance</h4>${row('Reduce flashing effects', sw('oCalm', options.calm))}
     ${row('Low graphics', sw('oLow', options.lowGraphics), 'Still water and trees, no vignette; saves battery')}
     ${row('Colorblind-friendly tiles', sw('oCb', options.colorblind))}
@@ -73,6 +75,7 @@ export function settings() {
   flip('oAuto', 'autoEnd'); flip('oAsk', 'confirmEnd'); flip('oMini', 'minimap'); flip('oDanger', 'danger');
   flip('oCalm', 'calm'); flip('oLow', 'lowGraphics'); flip('oCb', 'colorblind');
   $('oSpeed').querySelectorAll('button').forEach((b) => (b.onclick = () => { options.speed = +b.dataset.v; saveOptions(); settings(); }));
+  $('oView').querySelectorAll('button').forEach((b) => (b.onclick = () => { screen.setView(b.dataset.v === '1'); saveOptions(); settings(); }));
   $('oClose').onclick = () => { w.hidden = true; };
   $('oTitle').onclick = () => { if (confirm('Go back to the title screen? Unsaved progress is lost (the autosave keeps your last turn).')) location.reload(); };
 }

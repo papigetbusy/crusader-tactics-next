@@ -65,6 +65,17 @@ export function show(view, again) {
   kick();
 }
 
+// setView switches between the flat and the isometric view.
+export function setView(flat) {
+  st.opt.flat = flat;
+  map.flat = flat;
+  if (st.view) {
+    setSize(st.view.n);
+    frame(st.units.filter((u) => u.team === 0 && !u.companion), st.sel);
+  }
+  kick();
+}
+
 function chip() {
   const v = st.view, c = v.climb;
   $('chip').hidden = false;
@@ -118,7 +129,7 @@ export async function boot(build) {
   battle.wire({ st, show, kick, log });
   gear.wire({ st, show, kick, log, after: battle.after });
   shop.wire({ st, show, kick, log, after: battle.after });
-  sysmenu.wire({ st, show, kick, log, after: battle.after, gear: () => gear.open(), endTurn: battle.endTurn, nextHero });
+  sysmenu.wire({ st, show, kick, log, setView, after: battle.after, gear: () => gear.open(), endTurn: battle.endTurn, nextHero });
   requestAnimationFrame(loop);
 }
 
