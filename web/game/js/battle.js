@@ -5,6 +5,7 @@ import * as referee from './referee.js';
 import { tileAt, unitAt, closeUp, focusOn } from './camera.js';
 import { feet } from './board.js';
 import * as team from './team.js';
+import * as playback from './playback.js';
 
 const $ = (id) => document.getElementById(id);
 let screen = null; // { st, show, kick, log }
@@ -17,6 +18,7 @@ export function wire(s) {
   $('endTurn').onclick = endTurn;
   $('startBattle').onclick = () => send({ kind: 'start' }, 'Your turn. Tap a hero.');
   $('summaryGo').onclick = () => send({ kind: 'continue' });
+  $('skip').onclick = () => { playback.skip(); $('skip').hidden = true; };
   $('teamButton').onclick = () => team.open(view(), (v) => { clear(); screen.show(v); after(); }, screen.log);
 }
 
@@ -28,19 +30,30 @@ const key = (x, y) => x + ',' + y;
 
 // ---------- sending an action ----------
 
-// send asks the referee to do something and draws its answer.
-function send(action, message) {
+// send asks the referee to do something; its events play, then its answer
+// is shown.
+function send(action, message, then) {
+  if (playback.playing()) return false;
   const r = referee.act(action);
   if (!r) return false;
   if (r.refused) {
     screen.log(r.refused.reason);
     return false;
   }
-  sparks(r.events || []);
   clear();
-  screen.show(r.view);
-  if (message) screen.log(message);
-  after();
+  $('endTurn').hidden = true;
+  const finish = () => {
+    $('skip').hidden = true;
+    screen.show(r.view);
+    if (message) screen.log(message);
+    after();
+    if (then) then();
+  };
+  playback.play(st().units, r.events || [], st().opt.speed, finish, () => {
+    screen.log('Enemy turn.');
+    $('skip').hidden = st().opt.speed === 3;
+  });
+  screen.kick();
   return true;
 }
 
@@ -87,7 +100,7 @@ export function after() {
 
 function tap(e) {
   const s = st(), v = view();
-  if (!v || $('decision').hidden === false || $('summary').hidden === false) return;
+  if (!v || playback.playing() || $('decision').hidden === false || $('summary').hidden === false) return;
   const t = tileAt(e.clientX, e.clientY), u = unitAt(s.units, e.clientX, e.clientY);
   const sel = s.sel;
   if (phase() === 'prepare') return place(t, u);
@@ -104,7 +117,7 @@ function tap(e) {
   }
   // a hero is chosen: walk to a blue tile, or tap an enemy in reach
   if (sel && t && s.reach.has(key(t[0], t[1])) && !u) {
-    return send({ kind: 'move', unit: sel.id, x: t[0], y: t[1] }) && reselect(sel.id);
+    return send({ kind: 'move', unit: sel.id, x: t[0], y: t[1] }, '', () => reselect(sel.id));
   }
   if (sel && u && u.team !== sel.team) {
     const slot = sel.skills.findIndex((sk, i) => !sk.wait && !sk.heal && !sk.support && !sk.revive && referee.targets(sel.id, i).includes(u.id));
@@ -184,7 +197,7 @@ function menu() {
     });
     if (u.potions > 0 && u.hp < u.maxHp) row(`Item: Potion ×${u.potions}`, () => send({ kind: 'potion', unit: u.id }));
   }
-  if (u.canUndo) row('Undo Move', () => send({ kind: 'undo', unit: u.id }) && select(st().units.find((x) => x.id === u.id)));
+  if (u.canUndo) row('Undo Move', () => send({ kind: 'undo', unit: u.id }, '', () => select(st().units.find((x) => x.id === u.id))));
   if (!u.acted) row('Defend', () => send({ kind: 'defend', unit: u.id }));
   row('Wait', () => send({ kind: 'wait', unit: u.id }));
   row('Cancel', () => { clear(); screen.kick(); });
@@ -264,46 +277,4 @@ function summary() {
     ${s.heroes.map((h) => `<p>${h.class} · Lv ${h.from}${h.to > h.from ? ' → ' + h.to + ' ▲' : ''} · +${h.xp} XP</p>`).join('')}
     ${s.loot && s.loot.length ? `<p>Loot: ${s.loot.map((i) => i.name).join(', ')}</p>` : ''}<p>Gold +${s.gold}</p>`;
   $('summaryGo').textContent = `Continue to Floor ${c.floor}`;
-}
-
-// ---------- sparks: numbers that float up from the referee's events ----------
-
-const pops = [];
-function sparks(events) {
-  const now = performance.now();
-  let delay = 0;
-  for (const e of events) {
-    const who = st().units.find((u) => u.id === (e.target || e.unit));
-    if (!who) continue;
-    const at = feet(who.x, who.y);
-    const add = (txt, col, big) => pops.push({ x: at.x, y: at.y - 72, t0: now + delay, txt, col, big });
-    if (e.kind === 'hit') add(e.crit ? 'CRIT ' + e.amount : e.amount + (e.mult > 1 ? '!' : ''), e.crit ? '#ff9a2e' : e.mult > 1 ? '#ffd84a' : e.mult < 1 ? '#c9c9d6' : '#fff', e.crit || e.mult > 1);
-    else if (e.kind === 'missed') add('MISS', '#c9c9d6');
-    else if (e.kind === 'healed' || e.kind === 'potion') add('+' + e.amount, '#6ee7a0');
-    else if (e.kind === 'ticked') add(String(e.amount), '#ff9a9a');
-    else continue;
-    delay += 120;
-  }
-}
-
-// drawSparks draws the floating numbers (called by the scene each frame).
-export function drawSparks(g, now) {
-  for (let i = pops.length; i--; ) if (now > pops[i].t0 + 1000) pops.splice(i, 1);
-  for (const o of pops) {
-    const p = (now - o.t0) / 1000;
-    if (p < 0) continue;
-    g.save();
-    g.globalAlpha = p > 0.7 ? (1 - p) / 0.3 : 1;
-    g.font = `bold ${o.big ? 32 : 26}px ui-monospace,Menlo,monospace`;
-    g.textAlign = 'center';
-    g.lineWidth = 6;
-    g.strokeStyle = '#1a0f2a';
-    g.lineJoin = 'round';
-    const y = o.y - p * 30 + (p < 0.15 ? (1 - p / 0.15) * 10 : 0);
-    g.strokeText(o.txt, o.x, y);
-    g.fillStyle = o.col;
-    g.fillText(o.txt, o.x, y);
-    g.restore();
-  }
-  return pops.length > 0;
 }

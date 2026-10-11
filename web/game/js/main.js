@@ -9,6 +9,7 @@ import * as scene from './scene.js';
 import * as minimap from './minimap.js';
 import { options } from './options.js';
 import * as battle from './battle.js';
+import * as playback from './playback.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -16,9 +17,9 @@ const $ = (id) => document.getElementById(id);
 export const st = {
   view: null, units: [], sel: null, look: null, aim: null,
   skill: -1, reach: new Set(), targets: new Set(), starts: null, danger: null, zone: null, attack: null, picks: null, inReach: null,
-  overlay: (g, now) => { if (battle.drawSparks(g, now)) kick(); },
+  overlay: (g, now) => { if (playback.draw(g, now)) kick(); },
   opt: options,
-  anim: () => ({ x: 0, y: 0 }),
+  anim: playback.anim,
   shownHp: (u) => u.hp,
   unitAt: (x, y) => st.units.find((u) => u.x === x && u.y === y) || null,
 };

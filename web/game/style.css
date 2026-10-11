@@ -132,3 +132,5 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
 .pickRow { display: flex; gap: 10px; justify-content: center; align-items: center; padding-top: 8px; }
 .pickRow .redb { min-width: 160px; min-height: 56px; font-size: 24px; }
 .pickRow .redb:disabled { filter: grayscale(.85) brightness(.75); opacity: .6; }
+
+#skip { position: fixed; right: 10px; bottom: calc(14px + var(--safe-b)); z-index: 6; min-height: 44px; padding: 0 16px; }
