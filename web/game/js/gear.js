@@ -1,0 +1,94 @@
+// The gear sheet: a hero's numbers, weapon sets, worn gear, the bag, its
+// skills (changed once per floor) and its ascension. Every change is an
+// action; the sheet is redrawn from the referee's answer.
+import * as referee from './referee.js';
+import { heroPicUrl } from './team.js';
+
+const $ = (id) => document.getElementById(id);
+const SLOT = { w: 'Set 1', w2: 'Set 2', w3: 'Set 3', h: 'Helm', a: 'Armor', b: 'Boots', c: 'Charm' };
+let screen = null, cls = null, skillsOpen = false;
+
+export const wire = (s) => { screen = s; };
+
+const heroes = () => screen.st.units.filter((u) => u.team === 0 && u.gear && !u.companion && !u.decoy && !u.pet);
+
+// open shows the sheet for a hero (the chosen one, else the first).
+export function open(className) {
+  const list = heroes();
+  if (!list.length) return screen.log('No hero to show.');
+  cls = className || (screen.st.sel && screen.st.sel.gear ? screen.st.sel.class : cls) || list[0].class;
+  if (!list.some((u) => u.class === cls)) cls = list[0].class;
+  render();
+}
+
+function act(a) {
+  const r = referee.act(a);
+  if (!r || r.refused) {
+    screen.log(r ? r.refused.reason : 'The referee did not answer.');
+    return false;
+  }
+  screen.show(r.view);
+  screen.after();
+  render();
+  return true;
+}
+
+function row(it, buttons) {
+  return `<div class="srow"><span><b style="color:${it.color}">${it.name}</b> <small>(${it.kind})</small>${it.text ? `<br><small class="afx">${it.text}</small>` : ''}${it.lore ? `<br><small><i>${it.lore}</i></small>` : ''}</span><span class="btns">${buttons || ''}</span></div>`;
+}
+
+function render() {
+  const v = screen.st.view, c = v.climb, w = $('gearWin');
+  const u = heroes().find((x) => x.class === cls);
+  if (!u) { w.hidden = true; return; }
+  const g = u.gear, phase = c ? c.phase : 'battle';
+  const locked = u.done || v.side !== 0 || (phase !== 'battle' && phase !== 'prepare');
+  const dis = locked ? 'disabled' : '';
+  let h = `<div class="panel box wide sheet"><div class="tabs">${heroes().map((x) => `<button class="${x.class === cls ? 'on' : ''}" data-h="${x.class}">${x.class}</button>`).join('')}</div>
+    <div class="who"><img src="${heroPicUrl({ class: u.class, stage: u.stage, ascension: u.ascension })}" alt=""><div><div class="ttl">${u.class}</div>
+    <small>${u.form || ''} · Lv ${u.level}${u.ascension ? ' · ' + u.ascension : ''}</small><br>
+    <small>HP ${u.hp}/${u.maxHp} · ATK ${u.atk} · DEF ${u.def} · MOV ${u.mov}</small><br><small class="weap">${g.weapons}</small></div></div>`;
+  h += `<h4>Weapon sets</h4><div class="btns">` + (g.sets || []).map((s, i) => `<button class="b ${s.inHand ? 'on' : ''}" data-set="${i + 1}" ${s.inHand || locked || (g.sets || []).length < 2 ? 'disabled' : ''}>Set ${i + 1}: ${s.weapons}${s.rank ? ' (' + s.rank + ')' : ''}</button>`).join('') + '</div>';
+  h += '<h4>Worn</h4>' + ((g.worn || []).map((it) => row(Object.assign({}, it, { kind: SLOT[it.slot] + ' · ' + it.kind }), `<button class="b" data-off="${it.slot}" ${dis}>Take off</button>`)).join('') || '<p><small>Nothing worn.</small></p>');
+  if (g.bonuses) h += `<p><small>Active bonuses: ${g.bonuses}</small></p>`;
+  h += '<h4>Bag</h4><p><small>Putting gear on or taking it off in battle uses up the hero’s turn.</small></p>';
+  h += (v.bag || []).map((it, i) => {
+    const eq = it.slot === 'w' && !(g.freeSlots || []).length
+      ? (g.weaponSlots || []).map((s) => `<button class="b" data-eq="${i}" data-slot="${s}" ${dis}>Into ${SLOT[s]}</button>`).join('')
+      : `<button class="b" data-eq="${i}" ${dis}>Equip</button>`;
+    return row(it, eq + `<button class="b" data-drop="${i}">Drop</button>`);
+  }).join('') || '<p><small>The bag is empty.</small></p>';
+  const bar = (u.skills || []).filter((s) => s.name !== 'Strike' && !s.ultimate), ult = (u.skills || []).find((s) => s.ultimate);
+  h += `<h4>Skills</h4><p><small>${bar.map((s) => s.name).join(', ')}${ult ? ' · ★ ' + ult.name : ''}</small></p>`;
+  if (u.swapped) h += '<p><small>Skills already changed on this floor.</small></p>';
+  else if ((u.library || []).length && !locked) {
+    h += `<button class="b" id="skToggle">${skillsOpen ? 'Hide' : 'Change skills (once per floor)'}</button>`;
+    if (skillsOpen) {
+      const normals = bar.map((s) => ({ name: s.name, on: 1 })).concat(u.library.filter((s) => !s.ultimate));
+      const ults = (ult ? [{ name: ult.name, on: 1 }] : []).concat(u.library.filter((s) => s.ultimate));
+      h += normals.map((s) => `<label class="pick"><input type="checkbox" class="skPick" value="${s.name}" ${s.on ? 'checked' : ''}> ${s.name}</label>`).join('');
+      h += ults.map((s) => `<label class="pick"><input type="radio" name="ultPick" value="${s.name}" ${s.on ? 'checked' : ''}> ★ ${s.name}</label>`).join('');
+      h += '<button class="b" id="skGo">Change skills</button>';
+    }
+  }
+  const hr = c && c.heroes.find((x) => x.class === cls);
+  if (hr && hr.canAscend && phase !== 'battle') h += '<h4>Ascension</h4><p><small>Change once per floor: learned skills stay; the ultimate switches.</small></p><div class="btns">' + hr.canAscend.map((a) => `<button class="b" data-asc="${a}">${a}</button>`).join('') + '</div>';
+  h += '<button class="b" id="gearClose">Close</button></div>';
+  w.innerHTML = h;
+  w.hidden = false;
+  const q = (s) => w.querySelectorAll(s);
+  q('[data-h]').forEach((b) => (b.onclick = () => { cls = b.dataset.h; skillsOpen = false; render(); }));
+  q('[data-set]').forEach((b) => (b.onclick = () => act({ kind: 'set', unit: u.id, set: +b.dataset.set })));
+  q('[data-off]').forEach((b) => (b.onclick = () => act({ kind: 'unequip', unit: u.id, slot: b.dataset.off })));
+  q('[data-eq]').forEach((b) => (b.onclick = () => act({ kind: 'equip', unit: u.id, item: +b.dataset.eq, slot: b.dataset.slot || '' })));
+  q('[data-drop]').forEach((b) => (b.onclick = () => { const it = v.bag[+b.dataset.drop]; if (confirm(`Drop ${it.name}? It will be gone for good.`)) act({ kind: 'drop', item: +b.dataset.drop }); }));
+  q('[data-asc]').forEach((b) => (b.onclick = () => act({ kind: 'ascend', hero: cls, choice: b.dataset.asc })));
+  q('.skPick').forEach((cb) => (cb.onchange = () => { if (w.querySelectorAll('.skPick:checked').length > 4) cb.checked = false; }));
+  if ($('skToggle')) $('skToggle').onclick = () => { skillsOpen = !skillsOpen; render(); };
+  if ($('skGo')) $('skGo').onclick = () => {
+    const picked = [...w.querySelectorAll('.skPick:checked')].map((x) => x.value), ultimate = (w.querySelector('[name=ultPick]:checked') || {}).value || '';
+    if (!picked.length) return alert('Pick at least one skill.');
+    if (confirm('Change skills now? You can only do this once on this floor.')) { skillsOpen = false; act({ kind: 'bring', unit: u.id, bar: picked, choice: ultimate }); }
+  };
+  $('gearClose').onclick = () => { w.hidden = true; };
+}

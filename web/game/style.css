@@ -134,3 +134,47 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
 .pickRow .redb:disabled { filter: grayscale(.85) brightness(.75); opacity: .6; }
 
 #skip { position: fixed; right: 10px; bottom: calc(14px + var(--safe-b)); z-index: 6; min-height: 44px; padding: 0 16px; }
+
+/* ---------- system menu, settings, floor list, saves, gear sheet ---------- */
+#sys { right: 8px; top: calc(56px + var(--safe-t)); width: min(320px, calc(100vw - 16px)); max-height: calc(100vh - 70px); overflow: auto; z-index: 8; padding: 8px 0 10px; }
+.sysh { padding: 2px 14px 6px; font-size: 13px; color: #c9b89a; border-bottom: 1px solid rgba(201,162,74,.35); margin-bottom: 4px; }
+.sysh img { width: 18px; height: 18px; vertical-align: -4px; }
+#sys .row { display: block; width: 100%; border: 0; background: none; text-align: left; padding: 9px 16px 9px 26px; font: 600 15px 'EB Garamond', Georgia, serif; letter-spacing: .08em; text-transform: uppercase; color: #efe3c8; text-shadow: 0 1px 2px #000; }
+#sys .row:active { background: linear-gradient(90deg, rgba(201,162,74,.34), rgba(201,162,74,0)); }
+#sEnd { color: #ff9a8a !important; }
+.lbl { font: 600 10px 'EB Garamond', Georgia, serif; letter-spacing: .2em; text-transform: uppercase; color: #b89a6a; padding: 8px 14px 2px; }
+.mrow { display: flex; align-items: center; gap: 12px; padding: 8px 14px; font: 500 15px 'EB Garamond', Georgia, serif; color: #efe3c8; }
+.mrow > span { flex: 1; }
+.mrow small { font-size: 12px; color: #c9b89a; }
+.mrow input[type=range] { flex: 1; }
+.sw { flex: none; width: 48px; height: 27px; border-radius: 14px; background: #2a1014; border: 1px solid #6a4a1a; position: relative; padding: 0; }
+.sw i { position: absolute; top: 3px; left: 3px; width: 19px; height: 19px; border-radius: 50%; background: #a89a82; transition: left .15s; }
+.sw.on { background: linear-gradient(#a4202c, #5a0c14); border-color: #e2c26a; }
+.sw.on i { left: 24px; background: #ffe9b0; }
+.seg { display: flex; border: 1px solid #6a4a1a; flex: none; }
+.seg button { background: none; border: none; color: #d8ccb0; font: 600 12px 'EB Garamond', Georgia, serif; letter-spacing: .1em; text-transform: uppercase; padding: 7px 10px; min-height: 34px; }
+.seg button.on { background: linear-gradient(#a4202c, #5a0c14); color: #fff3d0; }
+.mbtns { display: flex; gap: 8px; padding: 8px 14px 4px; }
+.mb { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 6px; background: linear-gradient(180deg, rgba(40,12,16,.95), rgba(14,5,8,.95)); border: 1px solid #c9a24a; color: #e9cf8a; font: 600 11px 'EB Garamond', Georgia, serif; letter-spacing: .14em; text-transform: uppercase; }
+.b.wide { display: block; width: calc(100% - 28px); margin: 2px 14px; }
+.box.wide { width: min(520px, 94vw); text-align: left; }
+.box h4 { font: 700 12px 'EB Garamond', Georgia, serif; letter-spacing: .2em; text-transform: uppercase; color: #b89a6a; margin: 12px 0 4px; }
+.btns { display: flex; flex-wrap: wrap; gap: 6px; }
+.box > .b { display: block; margin: 10px auto 0; }
+.srow { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.08); }
+.srow .b { min-height: 40px; }
+.afx { color: #9fd8ff; }
+.list { max-height: 60vh; overflow: auto; }
+.fl { display: block; width: 100%; background: none; border: none; border-bottom: 1px solid rgba(201,162,74,.18); color: #efe3c8; padding: 8px 6px; text-align: left; font: 15px 'EB Garamond', Georgia, serif; }
+.fl.cur { background: rgba(201,162,74,.12); }
+.fl span { display: block; }
+.fl i { font: 700 10px system-ui, sans-serif; font-style: normal; padding: 1px 6px; border-radius: 8px; margin: 3px 4px 0 0; display: inline-block; background: #2a1014; border: 1px solid #6a4a1a; }
+.t-ok { color: #8ff0b0; } .t-b { color: #ff9a8a; } .t-ch { color: #f2c14e; } .t-c { color: #8fc8ff; } .t-top { color: #fff; } .t-s { color: #d8ccb0; } .t-e { color: #ffb36a; }
+.sheet .tabs { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+.sheet .tabs button { background: rgba(40,10,14,.65); border: 1px solid rgba(201,162,74,.45); color: #efe3c8; font: 600 13px 'EB Garamond', Georgia, serif; padding: 6px 10px; border-radius: 4px; }
+.sheet .tabs button.on { background: linear-gradient(#6a1a22, #3a0c12); border-color: #d9c27a; color: #ffe6a8; }
+.sheet .who { display: flex; gap: 10px; align-items: center; }
+.sheet .who img { height: 64px; image-rendering: pixelated; }
+.sheet .weap { color: #ffd45a; }
+.pick { display: block; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.08); }
+.pick input { transform: scale(1.3); margin-right: 8px; }

@@ -6,7 +6,7 @@ import { url } from './assets.js';
 
 const $ = (id) => document.getElementById(id);
 
-const picture = (h) =>
+export const heroPicUrl = (h) =>
   (h.stage >= 3 && h.ascension && url('heroes', h.class + ' ' + h.ascension)) ||
   url('heroes', h.class + ' form' + (Math.min(2, h.stage || 0) + 1)) ||
   url('heroes-first', h.class);
@@ -23,7 +23,7 @@ export function open(view, done, log) {
   for (const h of c.heroes) {
     const b = document.createElement('button');
     b.className = 'card' + (chosen.includes(h.class) ? ' on' : '');
-    b.innerHTML = `<img src="${picture(h)}" alt=""><b>${h.class}</b><small>Lv ${h.level} · ${h.form}</small>
+    b.innerHTML = `<img src="${heroPicUrl(h)}" alt=""><b>${h.class}</b><small>Lv ${h.level} · ${h.form}</small>
       <small>HP ${h.hp} · ATK ${h.atk} · DEF ${h.def} · MOV ${h.mov}</small>
       <small class="weap">⚔ ${h.weapons}</small>${h.ability ? `<small class="abil">✦ ${h.ability}: ${h.abilityText}</small>` : ''}`;
     b.onclick = () => {

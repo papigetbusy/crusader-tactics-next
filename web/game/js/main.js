@@ -10,6 +10,8 @@ import * as minimap from './minimap.js';
 import { options } from './options.js';
 import * as battle from './battle.js';
 import * as playback from './playback.js';
+import * as sysmenu from './sysmenu.js';
+import * as gear from './gear.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -44,8 +46,8 @@ function loop() {
 // ---------- the referee's View on screen ----------
 
 // show puts a new View on screen.
-export function show(view) {
-  const fresh = !st.view || st.view.n !== view.n || (st.view.floor || 0) !== (view.floor || 0);
+export function show(view, again) {
+  const fresh = again || !st.view || st.view.n !== view.n || (st.view.floor || 0) !== (view.floor || 0);
   st.view = view;
   st.units = view.units;
   if (st.sel) st.sel = st.units.find((u) => u.id === st.sel.id) || null;
@@ -92,12 +94,13 @@ export async function boot(build) {
   }
   loading.hidden = true;
   $('titleStart').hidden = false;
-  $('startButton').onclick = () => { $('titleStart').hidden = true; $('titleMenu').hidden = false; };
   $('newGame').onclick = () => start(referee.newClimb());
-  $('continueGame').disabled = true;
+  $('startButton').onclick = () => { $('titleStart').hidden = true; $('titleMenu').hidden = false; $('continueGame').disabled = !sysmenu.anySave(); };
+  $('continueGame').onclick = () => sysmenu.slots('load');
   controls($('map'), keys, (on) => log(on ? 'Map overview. Pinch in or tap + to zoom back in.' : ''));
   $('mini').addEventListener('pointerdown', (e) => minimap.tap($('mini'), e));
-  $('nextHero').onclick = () => {
+  $('nextHero').onclick = () => nextHero();
+  const nextHero = () => {
     const hs = st.units.filter((u) => u.team === 0 && !u.done && !u.companion && !u.decoy && !u.pet);
     if (!hs.length) return log('Everyone has acted. Tap End Turn.');
     const h = hs[(hs.indexOf(st.sel) + 1) % hs.length];
@@ -105,6 +108,8 @@ export async function boot(build) {
     closeUp(h.x, h.y);
   };
   battle.wire({ st, show, kick, log });
+  gear.wire({ st, show, kick, log, after: battle.after });
+  sysmenu.wire({ st, show, kick, log, after: battle.after, gear: () => gear.open(), endTurn: battle.endTurn, nextHero });
   requestAnimationFrame(loop);
 }
 

@@ -6,6 +6,7 @@ import { tileAt, unitAt, closeUp, focusOn } from './camera.js';
 import { feet } from './board.js';
 import * as team from './team.js';
 import * as playback from './playback.js';
+import { autosave } from './sysmenu.js';
 
 const $ = (id) => document.getElementById(id);
 let screen = null; // { st, show, kick, log }
@@ -17,7 +18,7 @@ export function wire(s) {
   c.addEventListener('click', tap);
   $('endTurn').onclick = endTurn;
   $('startBattle').onclick = () => send({ kind: 'start' }, 'Your turn. Tap a hero.');
-  $('summaryGo').onclick = () => send({ kind: 'continue' });
+  $('summaryGo').onclick = () => send({ kind: 'continue' }, '', autosave);
   $('skip').onclick = () => { playback.skip(); $('skip').hidden = true; };
   $('teamButton').onclick = () => team.open(view(), (v) => { clear(); screen.show(v); after(); }, screen.log);
 }
@@ -93,6 +94,12 @@ export function after() {
   if (p === 'shop') send({ kind: 'continue' }, 'The shop is not on this screen yet: on to the floor.');
   const readyHeroes = st().units.filter(ready);
   $('endTurn').classList.toggle('pulse', p === 'battle' && !readyHeroes.length);
+  // the danger zone: every tile a monster could walk to next turn
+  s.danger = s.opt.danger && p === 'battle' && !v.outcome
+    ? new Set(st().units.filter((u) => u.team === 1).flatMap((u) => referee.threat(u.id).map(([x, y]) => key(x, y))))
+    : null;
+  if (s.opt.autoEnd && p === 'battle' && !v.outcome && !readyHeroes.length && st().units.some((u) => u.team === 1))
+    setTimeout(() => { if (!playback.playing() && !st().units.some(ready)) send({ kind: 'endturn' }, 'Your turn.', autosave); }, 800);
   screen.kick();
 }
 
@@ -246,10 +253,10 @@ function attack() {
   send({ kind: 'attack', unit: s.sel.id, skill: s.skill, target: s.aim.id });
 }
 
-function endTurn() {
+export function endTurn() {
   const left = st().units.filter(ready).length;
   if (left && !confirm(`End turn? ${left} hero${left > 1 ? "es haven't" : " hasn't"} acted yet.`)) return;
-  send({ kind: 'endturn' }, 'Your turn.');
+  send({ kind: 'endturn' }, 'Your turn.', autosave);
 }
 
 // ---------- choices and the floor summary ----------
