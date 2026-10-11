@@ -13,6 +13,7 @@ import (
 type View struct {
 	N         int           `json:"n"`
 	Ground    []string      `json:"ground"`
+	Heights   [][]int       `json:"heights,omitempty"` // -2 mountain, -1 water, 1 hill, 0 flat
 	Turn      int           `json:"turn"`
 	Side      int           `json:"side"`
 	Outcome   string        `json:"outcome"`
@@ -127,7 +128,7 @@ type SkillView struct {
 // View returns the current board.
 func (g *Game) View() View {
 	b := g.B
-	v := View{N: b.N, Ground: make([]string, b.N), Turn: b.Turn, Side: b.Side, Outcome: b.Outcome, Throne: b.Throne, LevelCap: b.LevelCap}
+	v := View{N: b.N, Ground: make([]string, b.N), Turn: b.Turn, Side: b.Side, Outcome: b.Outcome, Throne: b.Throne, LevelCap: b.LevelCap, Heights: b.Heights}
 	for _, f := range b.Fallen {
 		v.Fallen = append(v.Fallen, f.Class)
 	}

@@ -49,6 +49,8 @@ jobs:
           GOOS=js GOARCH=wasm go build -trimpath -ldflags "-s -w -X main.build=$LABEL" -o site/app.wasm ./adapters/wasm
           cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" site/
           sed "s/__BUILD__/$LABEL/g" web/index.html > site/index.html
+          sed "s/__BUILD__/$LABEL/g" web/play.html > site/play.html
+          mkdir -p site/play && cp web/play/*.js site/play/ && cp -r web/art site/art
           ls -l site
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
