@@ -99,6 +99,7 @@ Working agreement: Claude ports the original first, then flags improvements in p
 - **Phase 9:** smarter enemies as floors rise: go after healers, and attack heroes who are weak to them.
 
 **Reminders to raise at the right phase:**
+- **When the whole build is done and plays well (owner, 2026-10-11): remind him to add the new art.** Phase 8 is built with the old game's art and screen first.
 - **After the full build (owner, 2026-10-11): more gear.** More gear, better gear sprites, more named sets with their own play styles at every level.
 - **Phase 8:** explain each mechanic once in tips; show the battle goal only at the start, then keep it in the pause menu.
 - **Phase 8:** the camera waits until a hero's animation finishes before jumping to the next hero.
