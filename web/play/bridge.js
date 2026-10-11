@@ -157,6 +157,7 @@
     kick();
     return hd;
   }
+  CT.playNow = playNow;
   // playSlow shows events one after another (the enemy turn).
   async function playSlow(evs) {
     for (const e of evs) {
@@ -256,6 +257,7 @@
     sync();
     ENEMYPH = false; busy = false; CT.playing = false;
     log('Your turn.');
+    if (CT.autosave) CT.autosave();
     after(); ui(); draw();
   };
   // sync0Positions keeps units where they stood before the enemy turn, so
@@ -307,6 +309,7 @@
     $('party').innerHTML = '';
     buildChips();
     bar();
+    if (CT.autosave) CT.autosave();
     log(`Floor ${floor}: choose your team, then drag heroes onto the blue tiles. Tap Start when ready.`);
     ui(); draw();
   }
