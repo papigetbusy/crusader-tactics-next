@@ -264,4 +264,20 @@ func TestClimb(t *testing.T) {
 			t.Fatalf("pairs %v", p)
 		}
 	})
+
+	t.Run("Aiming a skill asks for one pick at a time, and nothing more once it is aimed", func(t *testing.T) {
+		g := climbGame()
+		must(t, g, action.Action{Kind: action.Start})
+		u := g.B.Unit(g.B.Party[0])
+		u.Skills = append(u.Skills, g.C.Skills["Bog of Despair"])
+		u.Cooldowns = append(u.Cooldowns, 0)
+		slot := len(u.Skills) - 1
+		_, tiles := g.SkillAim(u.ID, slot, action.Action{})
+		if len(tiles) == 0 {
+			t.Fatal("no tiles to aim at")
+		}
+		if units, more := g.SkillAim(u.ID, slot, action.Action{Tiles: [][2]int{tiles[0]}}); len(units)+len(more) != 0 {
+			t.Fatalf("still asking after a tile was picked: %v %v", units, more)
+		}
+	})
 }

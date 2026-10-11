@@ -37,8 +37,8 @@ func (g *Game) checkNew(u *state.Unit, s content.Skill, a action.Action) error {
 }
 
 // SkillAim is the next thing to pick for a skill, given the picks so far
-// (target, second and tiles as in the action): unit IDs, or tiles. Skills
-// of the old game always ask for one unit.
+// (target, second and tiles as in the action): unit IDs, or tiles, or
+// nothing once the aim is complete. Skills of the old game ask for one unit.
 func (g *Game) SkillAim(unit, slot int, so action.Action) (units []int, tiles [][2]int) {
 	u := g.B.Unit(unit)
 	if u == nil || slot < 0 || slot >= len(u.Skills) || u.Cooldowns[slot] > 0 {
@@ -72,16 +72,33 @@ func (g *Game) skillAim(u *state.Unit, slot int, so action.Action) (units []int,
 	}
 	switch s.Aim {
 	case content.AimTile, content.AimLine:
+		if len(p.Tiles) > 0 {
+			return nil, nil // aimed
+		}
 		return nil, tl(combat.AimTiles(g.C, g.B, u, s, p))
 	case content.AimRoll:
 		if len(p.Tiles) == 0 {
 			return nil, tl(combat.AimTiles(g.C, g.B, u, s, p))
 		}
+		if p.Target != nil {
+			return nil, nil
+		}
 		return ids(combat.RollTargets(g.C, g.B, u, s, p.Tiles[0])), nil
 	case content.AimShove:
 		if p.Target != nil {
+			if len(p.Tiles) > 0 {
+				return nil, nil
+			}
 			return nil, tl(combat.AimTiles(g.C, g.B, u, s, p))
 		}
+	case content.AimTwo:
+		if p.Second != nil {
+			return nil, nil
+		}
+		return ids(combat.Targets(g.C, g.B, u, s)), nil
+	}
+	if p.Target != nil {
+		return nil, nil // aimed
 	}
 	return ids(combat.Targets(g.C, g.B, u, s)), nil
 }

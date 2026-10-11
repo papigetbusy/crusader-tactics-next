@@ -69,6 +69,9 @@ function clear() {
   s.reach = new Set();
   s.targets = new Set();
   s.zone = null;
+  s.picks = null;
+  s.picking = null;
+  $('aimPanel').hidden = true;
   $('menu').hidden = true;
   $('forecast').hidden = true;
 }
@@ -113,6 +116,7 @@ function tap(e) {
   const sel = s.sel;
   if (phase() === 'prepare') return place(t, u);
   if (phase() !== 'battle' || v.outcome) return;
+  if (s.picking) return tapPick(t, u);
   // aiming: tap a highlighted target
   if (sel && s.skill >= 0) {
     if (u && s.targets.has(u.id)) {
@@ -197,11 +201,17 @@ function menu() {
     b.onclick = (e) => { e.stopPropagation(); f(); };
     m.append(b);
   };
+  if (u.ability) {
+    const ab = u.ability;
+    row('✦ ' + ab.name + (ab.wait ? ` (${ab.wait})` : ''), () => ability(u), ab.wait > 0);
+  }
   if (!u.acted) {
     u.skills.forEach((sk, i) => {
-      const n = sk.wait ? 0 : referee.targets(u.id, i).length;
+      const multi = MULTI.has(sk.aim);
+      const ask = multi ? referee.skillAim(u.id, i, {}) : null;
+      const n = sk.wait ? 0 : multi ? (ask.units || []).length + (ask.tiles || []).length : referee.targets(u.id, i).length;
       const name = (sk.ultimate ? '★ ' : '') + (sk.name === 'Strike' ? 'Attack' : sk.name);
-      row(name + (sk.wait ? ` (${sk.wait})` : ''), () => aimWith(i), !n);
+      row(name + (sk.wait ? ` (${sk.wait})` : ''), () => (multi ? pick(u, sk.name, sk.text, { kind: 'attack', unit: u.id, skill: i, tiles: [] }, (a) => referee.skillAim(u.id, i, a)) : aimWith(i)), !n);
     });
     if (u.potions > 0 && u.hp < u.maxHp) row(`Item: Potion ×${u.potions}`, () => send({ kind: 'potion', unit: u.id }));
   }
@@ -211,6 +221,66 @@ function menu() {
   row('Cancel', () => { clear(); screen.kick(); });
   m.hidden = false;
   screen.kick();
+}
+
+// ---------- aiming in several taps ----------
+
+// Skills aimed at tiles, or at more than one thing, one tap at a time.
+const MULTI = new Set(['tile', 'line', 'rollThenFoe', 'foeThenTile', 'twoFoes', 'echo']);
+
+// ability uses the class ability: at once, or aimed in taps.
+function ability(u) {
+  const ab = u.ability, t = ab.target;
+  if (!t) return send({ kind: 'ability', unit: u.id });
+  const a = { kind: 'ability', unit: u.id, tiles: [] };
+  const ask = t.kind === 'unit'
+    ? () => (a.target ? {} : { units: referee.abilityAim(u.id).units || [] })
+    : () => ((a.tiles || []).length < (t.n || 1) ? { tiles: referee.abilityAim(u.id).tiles || [] } : {});
+  pick(u, ab.name, ab.text, a, ask);
+}
+
+// pick asks the referee what can be picked next, lets the player tap it, and
+// sends the action once nothing more is needed.
+function pick(u, title, text, action, ask) {
+  const s = st();
+  $('menu').hidden = true;
+  const next = () => {
+    const o = ask(action) || {}, units = o.units || [], tiles = (o.tiles || []).filter(([x, y]) => !(action.tiles || []).some((q) => q[0] === x && q[1] === y));
+    if (!units.length && !tiles.length) {
+      $('aimPanel').hidden = true;
+      // nothing picked yet and nothing to pick: say so instead of asking the referee
+      if (!action.target && !(action.tiles || []).length && first) { clear(); screen.kick(); return screen.log('No target in reach.'); }
+      return send(action);
+    }
+    first = false;
+    s.reach = new Set();
+    s.targets = new Set(units);
+    s.picks = tiles.length ? { all: new Set(tiles.map(([x, y]) => key(x, y))), chosen: new Set((action.tiles || []).map(([x, y]) => key(x, y))) } : null;
+    s.picking = { action, next };
+    const P = $('aimPanel');
+    P.innerHTML = `<div class="fh">✦ ${title}</div><div class="fs">${units.length ? 'Tap a highlighted unit.' : 'Tap a highlighted tile (gold).'} ${text || ''}</div><div class="fr"><button class="b" id="aimNo">✕ Cancel</button></div>`;
+    P.hidden = false;
+    $('aimNo').onclick = () => { clear(); screen.kick(); };
+    screen.kick();
+  };
+  let first = true;
+  s.sel = u;
+  next();
+}
+
+// tapPick handles a tap while picking.
+function tapPick(t, u) {
+  const s = st(), p = s.picking, a = p.action;
+  if (u && s.targets.has(u.id)) {
+    if (a.target) a.second = u.id;
+    else a.target = u.id;
+    return p.next();
+  }
+  if (t && s.picks && s.picks.all.has(key(t[0], t[1]))) {
+    a.tiles = (a.tiles || []).concat([[t[0], t[1]]]);
+    return p.next();
+  }
+  screen.log(s.picks ? 'Tap a gold tile.' : 'Tap a highlighted unit.');
 }
 
 function aimWith(slot, target) {
