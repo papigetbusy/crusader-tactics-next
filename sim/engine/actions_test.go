@@ -207,3 +207,39 @@ func TestReviveAnyDeath(t *testing.T) {
 		}
 	})
 }
+
+func TestAbilityRules(t *testing.T) {
+	t.Run("A class ability cannot be used again while it is on cooldown", func(t *testing.T) {
+		g := duel()
+		if _, err := g.Apply(action.Action{Kind: action.Ability, Unit: 1}); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := g.Apply(action.Action{Kind: action.Ability, Unit: 1}); code(err) != "on-cooldown" {
+			t.Fatalf("err %v", err)
+		}
+	})
+
+	t.Run("Deadeye Focus only works before the Sniper moves", func(t *testing.T) {
+		g := duel()
+		h := g.B.Unit(1)
+		h.Class, h.Level, h.Ascension = "Ranger", 30, "Sniper"
+		_, _ = g.Apply(action.Action{Kind: action.Move, Unit: 1, X: 1, Y: 0})
+		if _, err := g.Apply(action.Action{Kind: action.Ability, Unit: 1}); code(err) != "moved" {
+			t.Fatalf("err %v", err)
+		}
+	})
+
+	t.Run("A tile-aimed ability needs open, reachable tiles in range", func(t *testing.T) {
+		g := duel()
+		h := g.B.Unit(1)
+		h.Class, h.Level, h.Ascension = "Ranger", 30, "Trapper"
+		far := action.Action{Kind: action.Ability, Unit: 1, Tiles: [][2]int{{1, 0}, {2, 0}, {4, 4}}}
+		if _, err := g.Apply(far); code(err) != "bad-target" { // 4,4 holds the monster
+			t.Fatalf("err %v", err)
+		}
+		ok := action.Action{Kind: action.Ability, Unit: 1, Tiles: [][2]int{{1, 0}, {2, 0}, {0, 1}}}
+		if _, err := g.Apply(ok); err != nil || len(g.B.Traps) != 3 {
+			t.Fatalf("err %v traps %d", err, len(g.B.Traps))
+		}
+	})
+}

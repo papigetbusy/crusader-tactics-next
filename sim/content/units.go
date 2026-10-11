@@ -23,16 +23,34 @@ func (c *Content) StartingBuild(class string, level int) (learned, equipped []st
 	return learned, equipped, ultimate
 }
 
+// RaisePrefix starts the name of a Necromancer's raise skills ("Raise Goblin").
+const RaisePrefix = "Raise "
+
+// SkillNamed finds a skill by name, including the Necromancer's raise
+// skills, which exist for every monster kind (old mkRaise, line 642).
+func (c *Content) SkillNamed(name string) (Skill, bool) {
+	if s, ok := c.Skills[name]; ok {
+		return s, true
+	}
+	if len(name) > len(RaisePrefix) && name[:len(RaisePrefix)] == RaisePrefix {
+		if m, i, ok := c.MonsterNamed(name[len(RaisePrefix):]); ok {
+			return Skill{Name: name, Class: "Witch", Kind: "n", Level: 99, Cooldown: 99, Summon: &i, Visual: "revive",
+				Text: "Summon a " + m.Name + " once per floor. It acts on your turn: if it moves or attacks you can't, and vice versa."}, true
+		}
+	}
+	return Skill{}, false
+}
+
 // Bar is a hero's skill bar (old heroSks, index.html line 440): the four
 // equipped skills, the ultimate, the basic Strike, and Cloak for Assassins.
 func (c *Content) Bar(class string, equipped []string, ultimate string) []Skill {
 	var out []Skill
 	for _, n := range equipped {
-		if s, ok := c.Skills[n]; ok {
+		if s, ok := c.SkillNamed(n); ok {
 			out = append(out, s)
 		}
 	}
-	if s, ok := c.Skills[ultimate]; ok && ultimate != "" {
+	if s, ok := c.SkillNamed(ultimate); ok && ultimate != "" {
 		out = append(out, s)
 	}
 	if s, ok := c.Skills["Strike"]; ok {

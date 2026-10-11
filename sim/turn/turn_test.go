@@ -1,6 +1,7 @@
 package turn
 
 import (
+	"github.com/papigetbusy/crusader-tactics-next/sim/rng"
 	"testing"
 
 	"github.com/papigetbusy/crusader-tactics-next/sim/action"
@@ -23,12 +24,12 @@ func TestTurns(t *testing.T) {
 	t.Run("Poison takes 7% of max HP at turn start, never less than 3", func(t *testing.T) {
 		c, b, h, _ := field("ggg")
 		h.Status["poison"] = 2
-		Start(c, b, state.Heroes, quiet)
+		Start(c, b, rng.New(1, 1), state.Heroes, quiet)
 		if h.HP != 43 || h.Status["poison"] != 1 {
 			t.Fatalf("hp %d, poison %d", h.HP, h.Status["poison"])
 		}
 		h.MaxHP, h.HP = 20, 20
-		Start(c, b, state.Heroes, quiet)
+		Start(c, b, rng.New(1, 1), state.Heroes, quiet)
 		if h.HP != 17 {
 			t.Fatalf("small unit lost %d, want 3", 20-h.HP)
 		}
@@ -37,7 +38,7 @@ func TestTurns(t *testing.T) {
 	t.Run("Burn and bleed each take 6% of max HP at turn start", func(t *testing.T) {
 		c, b, h, _ := field("ggg")
 		h.Status["burn"], h.Status["bleed"] = 1, 1
-		Start(c, b, state.Heroes, quiet)
+		Start(c, b, rng.New(1, 1), state.Heroes, quiet)
 		if h.HP != 38 {
 			t.Fatalf("hp %d, want 50-6-6", h.HP)
 		}
@@ -46,7 +47,7 @@ func TestTurns(t *testing.T) {
 	t.Run("A unit killed by poison leaves the board", func(t *testing.T) {
 		c, b, h, _ := field("ggg")
 		h.HP, h.Status["poison"] = 2, 1
-		Start(c, b, state.Heroes, quiet)
+		Start(c, b, rng.New(1, 1), state.Heroes, quiet)
 		if b.Unit(h.ID) != nil || b.Outcome != state.Lost {
 			t.Fatal("the poisoned hero should be gone and the battle lost")
 		}
@@ -54,7 +55,7 @@ func TestTurns(t *testing.T) {
 
 	t.Run("Standing in a fort heals 10% of max HP at turn start", func(t *testing.T) {
 		c, b, h, _ := field("tgg")
-		Start(c, b, state.Heroes, quiet)
+		Start(c, b, rng.New(1, 1), state.Heroes, quiet)
 		if h.HP != 60 {
 			t.Fatalf("hp %d", h.HP)
 		}
@@ -63,7 +64,7 @@ func TestTurns(t *testing.T) {
 	t.Run("A stunned unit skips its turn", func(t *testing.T) {
 		c, b, h, _ := field("ggg")
 		h.Status["stun"] = 1
-		Start(c, b, state.Heroes, quiet)
+		Start(c, b, rng.New(1, 1), state.Heroes, quiet)
 		if !h.Done {
 			t.Fatal("stunned hero can act")
 		}
@@ -71,7 +72,7 @@ func TestTurns(t *testing.T) {
 
 	t.Run("Cooldowns count down by one at turn start (a cooldown of 99 never does)", func(t *testing.T) {
 		c, b, h, _ := field("ggg")
-		Start(c, b, state.Heroes, quiet)
+		Start(c, b, rng.New(1, 1), state.Heroes, quiet)
 		if h.Cooldowns[1] != 1 || h.Cooldowns[2] != 99 {
 			t.Fatalf("cooldowns %v", h.Cooldowns)
 		}

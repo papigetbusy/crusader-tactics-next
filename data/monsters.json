@@ -1,0 +1,136 @@
+{
+  "_about": "Normal monster kinds: name, the class they fight as, and their element (empty = rolled when they spawn). From the old game's MON and MNAMES tables; their pictures live with the art.",
+  "monsters": [
+    {
+      "name": "Slime",
+      "class": "Healer"
+    },
+    {
+      "name": "Carrion Strider",
+      "class": "Ranger"
+    },
+    {
+      "name": "Goblin",
+      "class": "Warrior"
+    },
+    {
+      "name": "Skeleton",
+      "class": "Tank"
+    },
+    {
+      "name": "Zombie",
+      "class": "Warrior"
+    },
+    {
+      "name": "Rogue",
+      "class": "Mage",
+      "element": "dark"
+    },
+    {
+      "name": "Imp Bat",
+      "class": "Ranger"
+    },
+    {
+      "name": "Wolf",
+      "class": "Warrior"
+    },
+    {
+      "name": "Man-Eater",
+      "class": "Healer"
+    },
+    {
+      "name": "Eyeball",
+      "class": "Mage",
+      "element": "elec"
+    },
+    {
+      "name": "Rock Golem",
+      "class": "Tank"
+    },
+    {
+      "name": "Hedgehog",
+      "class": "Tank"
+    },
+    {
+      "name": "Lizardman",
+      "class": "Tank"
+    },
+    {
+      "name": "Mushroom",
+      "class": "Healer"
+    },
+    {
+      "name": "Flame Spirit",
+      "class": "Mage",
+      "element": "fire"
+    },
+    {
+      "name": "Ice Drop",
+      "class": "Mage",
+      "element": "ice"
+    },
+    {
+      "name": "Spider",
+      "class": "Ranger"
+    },
+    {
+      "name": "Minotaur",
+      "class": "Warrior"
+    },
+    {
+      "name": "Bone Wyvern",
+      "class": "Ranger"
+    },
+    {
+      "name": "Ghost",
+      "class": "Mage",
+      "element": "dark"
+    },
+    {
+      "name": "Reaper",
+      "class": "Mage",
+      "element": "dark"
+    },
+    {
+      "name": "Crystal",
+      "class": "Mage",
+      "element": "ice"
+    },
+    {
+      "name": "Mimic",
+      "class": "Tank"
+    },
+    {
+      "name": "Bomb",
+      "class": "Warrior",
+      "element": "fire"
+    },
+    {
+      "name": "Rat",
+      "class": "Warrior"
+    },
+    {
+      "name": "Scorpion",
+      "class": "Warrior",
+      "element": "dark"
+    },
+    {
+      "name": "Sludge",
+      "class": "Mage",
+      "element": "dark"
+    },
+    {
+      "name": "Worm",
+      "class": "Tank"
+    },
+    {
+      "name": "Horned Skull",
+      "class": "Mage",
+      "element": "dark"
+    },
+    {
+      "name": "Bone Hound",
+      "class": "Warrior"
+    }
+  ]
+}

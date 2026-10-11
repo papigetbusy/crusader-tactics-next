@@ -41,6 +41,15 @@ type Step struct {
 		S []int    `json:"s"` // which code site rolled each one (index into Fight.Sites)
 	} `json:"dice"`
 	Snap Snap `json:"snap"`
+
+	// Phase 6 recordings.
+	Ability string          `json:"ab"`     // ability: its name
+	V       json.RawMessage `json:"v"`      // ability: the unit aimed at, or the tiles picked
+	T       *string         `json:"t"`      // decide: the kind of choice (learn, spec, evo...), when known
+	P       *int            `json:"p"`      // decide: which party member, when known
+	S       string          `json:"s"`      // decide: the skill offered, when known
+	Title   string          `json:"title"`  // decide: the popup's title
+	Choice  string          `json:"choice"` // decide: the button pressed
 }
 
 // Event is one thing the old game reported happening.
@@ -97,6 +106,11 @@ type Snap struct {
 	Fallen []int      `json:"fallen"` // heroes who can be revived, oldest first (Phase 5 recordings)
 	Seized []int      `json:"seized"` // the throne tile on seize-the-throne floors (Phase 5 recordings)
 	XP     [][2]int   `json:"xp"`     // each party member's [level, XP], in party order, alive or not
+
+	// Phase 6 recordings.
+	Party    []PartySnap `json:"party"`    // each party member's build, in party order
+	FieldsAt [][]any     `json:"fieldsAt"` // x, y, range, turns, kind, square
+	TrapsAt  [][2]int    `json:"trapsAt"`
 }
 
 // SnapUnit is one unit in a Snap.
@@ -123,6 +137,27 @@ type SnapUnit struct {
 	Def2  int            `json:"df"`
 	Sh    int            `json:"sh"`
 	Pot   *int           `json:"pot"` // potions left (heroes; Phase 5 recordings only)
+
+	// Phase 6 recordings.
+	Sk []string `json:"sk"` // heroes: the skill bar
+	Ab int      `json:"ab"` // class ability cooldown
+	Sp *string  `json:"sp"` // ascension
+	Dc int      `json:"dc"` // shadow clone
+	Cp int      `json:"cp"` // companion
+	Sm int      `json:"sm"` // raised by a hero
+	Wt *int     `json:"wt"` // marked by this hero's Wanted Poster
+	Ow []int    `json:"ow"` // overwatch direction
+	M  *int     `json:"m"`  // monsters: which kind (index into the monster list), when recorded
+	Al int      `json:"al"` // a monster that can bond as a companion
+}
+
+// PartySnap is a party member's build at a recorded moment.
+type PartySnap struct {
+	Eq      []string       `json:"eq"`
+	Ult     *string        `json:"ult"`
+	Spec    *string        `json:"spec"`
+	Learned []string       `json:"learned"`
+	Su      map[string]int `json:"su"`
 }
 
 // Load reads the recorded fights file.

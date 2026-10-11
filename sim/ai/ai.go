@@ -6,6 +6,7 @@ package ai
 
 import (
 	"math"
+	"slices"
 	"sort"
 
 	"github.com/papigetbusy/crusader-tactics-next/sim/action"
@@ -82,8 +83,16 @@ func ChooseSkill(c *content.Content, b *state.Battle, dice rng.Dice, e *state.Un
 }
 
 // foes are who the chosen skill is aimed at: hurt allies for a heal,
-// otherwise every visible opponent.
+// otherwise every visible opponent. A monster attacking heroes must go for
+// a taunting Paladin within 4 tiles, or else for shadow clones within 8
+// (old aiTurn, line 1743).
 func foes(b *state.Battle, e *state.Unit, s content.Skill) []*state.Unit {
+	if tn := taunter(b, e, s); tn != nil {
+		return []*state.Unit{tn}
+	}
+	if dc := decoys(b, e, s); len(dc) > 0 {
+		return dc
+	}
 	var out []*state.Unit
 	for _, v := range b.Units {
 		if s.Heal {
@@ -136,10 +145,51 @@ func ChooseTile(c *content.Content, b *state.Battle, e *state.Unit, s content.Sk
 	return best, found
 }
 
-// ChooseTarget is the weakest target in range (lowest HP; ties go to the
-// first in board order), or nil.
+// taunter is a hero within 4 tiles whose Oath of Protection forces attacks.
+func taunter(b *state.Battle, e *state.Unit, s content.Skill) *state.Unit {
+	if s.Heal || e.Team == state.Heroes {
+		return nil
+	}
+	for _, h := range b.Units {
+		if h.Team == state.Heroes && h.Status["taunt"] > 0 && abs(h.X-e.X)+abs(h.Y-e.Y) <= 4 {
+			return h
+		}
+	}
+	return nil
+}
+
+// decoys are shadow clones within 8 tiles.
+func decoys(b *state.Battle, e *state.Unit, s content.Skill) []*state.Unit {
+	if s.Heal || e.Team == state.Heroes {
+		return nil
+	}
+	var out []*state.Unit
+	for _, h := range b.Units {
+		if h.Decoy && abs(h.X-e.X)+abs(h.Y-e.Y) <= 8 {
+			out = append(out, h)
+		}
+	}
+	return out
+}
+
+// ChooseTarget picks who to hit among those in range: a taunting hero, then
+// a shadow clone, then the weakest (lowest HP; ties go to the first in board
+// order). nil if nobody is in range.
 func ChooseTarget(c *content.Content, b *state.Battle, e *state.Unit, s content.Skill) *state.Unit {
+	return chooseTarget(c, b, e, s, taunter(b, e, s))
+}
+
+// chooseTarget is ChooseTarget with the taunting hero found before walking.
+func chooseTarget(c *content.Content, b *state.Battle, e *state.Unit, s content.Skill, tn *state.Unit) *state.Unit {
 	cands := combat.Targets(c, b, e, s)
+	if tn != nil && slices.Contains(cands, tn) {
+		return tn
+	}
+	for _, z := range cands {
+		if z.Decoy {
+			return z
+		}
+	}
 	sort.SliceStable(cands, func(i, j int) bool { return cands[i].HP < cands[j].HP })
 	if len(cands) == 0 {
 		return nil
@@ -154,10 +204,19 @@ func Turn(c *content.Content, b *state.Battle, dice rng.Dice, e *state.Unit, emi
 		return nil
 	}
 	s := e.Skills[slot]
+	tn := taunter(b, e, s) // decided before walking, as in the old game
+	var path []board.Tile
 	if t, ok := ChooseTile(c, b, e, s); ok {
-		board.MoveUnit(c, b, e, t.X, t.Y, emit)
+		path = board.MoveUnit(c, b, e, t.X, t.Y, emit)
 	}
-	if v := ChooseTarget(c, b, e, s); v != nil {
+	if e.Team == state.Enemies {
+		combat.Trap(c, b, e, path, emit)
+		combat.Overwatch(c, b, dice, e, emit)
+		if b.Unit(e.ID) == nil {
+			return nil
+		}
+	}
+	if v := chooseTarget(c, b, e, s, tn); v != nil {
 		return combat.UseSkill(c, b, dice, e, slot, v, emit)
 	}
 	return nil

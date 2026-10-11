@@ -3,6 +3,7 @@ package engine
 import (
 	"github.com/papigetbusy/crusader-tactics-next/sim/board"
 	"github.com/papigetbusy/crusader-tactics-next/sim/combat"
+	"github.com/papigetbusy/crusader-tactics-next/sim/content"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
 	"github.com/papigetbusy/crusader-tactics-next/sim/stats"
 )
@@ -10,43 +11,77 @@ import (
 // View is the board as the screen sees it: a read-only copy, so the screen
 // can never change a rule by accident.
 type View struct {
-	N        int         `json:"n"`
-	Ground   []string    `json:"ground"`
-	Turn     int         `json:"turn"`
-	Side     int         `json:"side"`
-	Outcome  string      `json:"outcome"`
-	Units    []UnitView  `json:"units"`
-	Throne   *state.Tile `json:"throne,omitempty"`
-	LevelCap int         `json:"levelCap,omitempty"`
-	Fallen   []string    `json:"fallen,omitempty"` // classes of fallen heroes, last to fall at the end
+	N        int           `json:"n"`
+	Ground   []string      `json:"ground"`
+	Turn     int           `json:"turn"`
+	Side     int           `json:"side"`
+	Outcome  string        `json:"outcome"`
+	Units    []UnitView    `json:"units"`
+	Throne   *state.Tile   `json:"throne,omitempty"`
+	LevelCap int           `json:"levelCap,omitempty"`
+	Decision *DecisionView `json:"decision,omitempty"` // the first waiting choice
+	Fields   []state.Field `json:"fields,omitempty"`
+	Traps    int           `json:"traps,omitempty"`  // how many hidden traps (where is a secret only to monsters)
+	Fallen   []string      `json:"fallen,omitempty"` // classes of fallen heroes, last to fall at the end
 }
 
 // UnitView is one unit as the screen sees it.
 type UnitView struct {
-	ID       int            `json:"id"`
-	Team     int            `json:"team"`
-	Class    string         `json:"class"`
-	X        int            `json:"x"`
-	Y        int            `json:"y"`
-	HP       int            `json:"hp"`
-	MaxHP    int            `json:"maxHp"`
-	Atk      int            `json:"atk"`
-	Def      int            `json:"def"`
-	Mov      int            `json:"mov"`
-	Level    int            `json:"level"`
-	XP       int            `json:"xp,omitempty"`     // heroes: experience toward the next level
-	XPNext   int            `json:"xpNext,omitempty"` // heroes: experience the next level needs
-	Form     string         `json:"form,omitempty"`   // heroes: the form's name ("Vanguard")
-	Element  string         `json:"element,omitempty"`
-	Boss     bool           `json:"boss,omitempty"`
-	Elite    bool           `json:"elite,omitempty"`
-	Statuses map[string]int `json:"statuses,omitempty"`
-	Enraged  bool           `json:"enraged,omitempty"`
-	Potions  int            `json:"potions"`
-	CanUndo  bool           `json:"canUndo"`
-	Done     bool           `json:"done"`
-	CanMove  bool           `json:"canMove"`
-	Skills   []SkillView    `json:"skills"`
+	ID        int            `json:"id"`
+	Team      int            `json:"team"`
+	Class     string         `json:"class"`
+	X         int            `json:"x"`
+	Y         int            `json:"y"`
+	HP        int            `json:"hp"`
+	MaxHP     int            `json:"maxHp"`
+	Atk       int            `json:"atk"`
+	Def       int            `json:"def"`
+	Mov       int            `json:"mov"`
+	Level     int            `json:"level"`
+	XP        int            `json:"xp,omitempty"`     // heroes: experience toward the next level
+	XPNext    int            `json:"xpNext,omitempty"` // heroes: experience the next level needs
+	Form      string         `json:"form,omitempty"`   // heroes: the form's name ("Vanguard")
+	Ascension string         `json:"ascension,omitempty"`
+	Ability   *AbilityView   `json:"ability,omitempty"` // heroes: the class ability
+	Decoy     bool           `json:"decoy,omitempty"`
+	Companion bool           `json:"companion,omitempty"`
+	Pet       bool           `json:"pet,omitempty"`
+	Element   string         `json:"element,omitempty"`
+	Boss      bool           `json:"boss,omitempty"`
+	Elite     bool           `json:"elite,omitempty"`
+	Statuses  map[string]int `json:"statuses,omitempty"`
+	Enraged   bool           `json:"enraged,omitempty"`
+	Potions   int            `json:"potions"`
+	CanUndo   bool           `json:"canUndo"`
+	Done      bool           `json:"done"`
+	CanMove   bool           `json:"canMove"`
+	Skills    []SkillView    `json:"skills"`
+}
+
+// AbilityView is a hero's class ability as the screen shows it.
+type AbilityView struct {
+	Name   string                 `json:"name"`
+	Text   string                 `json:"text"`
+	Wait   int                    `json:"wait"` // turns until ready
+	Free   bool                   `json:"free,omitempty"`
+	Target *content.AbilityTarget `json:"target,omitempty"`
+}
+
+// DecisionView is a waiting choice, with every option spelled out.
+type DecisionView struct {
+	Kind    string       `json:"kind"`
+	Unit    int          `json:"unit"`
+	Skill   string       `json:"skill,omitempty"`
+	Text    string       `json:"text,omitempty"` // what the skill does
+	Options []OptionView `json:"options"`
+}
+
+// OptionView is one button of a choice.
+type OptionView struct {
+	Choice string `json:"choice"`
+	Slot   int    `json:"slot"`
+	Label  string `json:"label"`
+	Text   string `json:"text,omitempty"`
 }
 
 // SkillView is one skill on a unit's bar.
@@ -71,6 +106,8 @@ func (g *Game) View() View {
 	for _, f := range b.Fallen {
 		v.Fallen = append(v.Fallen, f.Class)
 	}
+	v.Fields, v.Traps = b.Fields, len(b.Traps)
+	v.Decision = g.decisionView()
 	for y := 0; y < b.N; y++ {
 		row := make([]byte, b.N)
 		for x := range row {
@@ -83,9 +120,20 @@ func (g *Game) View() View {
 			Atk: u.Atk, Def: u.Def, Mov: u.Mov, Level: u.Level, Element: u.Element, Boss: u.Boss, Elite: u.Elite,
 			Enraged: combat.Enraged(g.C, u), Potions: u.Potions, CanUndo: u.Undo != nil && !u.Done,
 			Done: u.Done, CanMove: !u.Done && board.CanMove(u), Statuses: map[string]int{}}
-		if u.Team == state.Heroes && !u.Summoned {
+		if u.Team == state.Heroes && !u.Summoned && !u.Companion && !u.Decoy {
 			uv.XP, uv.XPNext, uv.Form = u.XP, stats.XPToNext(g.C, u.Level), stats.FormName(g.C, u.Class, u.Level)
+			if u.Ascension != "" {
+				uv.Form = u.Ascension
+			}
+			if ab, ok := combat.AbilityOf(g.C, u); ok {
+				wait := u.AbilityCooldown
+				if ab.Free {
+					wait = 0
+				}
+				uv.Ability = &AbilityView{Name: ab.Name, Text: ab.Text, Wait: wait, Free: ab.Free, Target: ab.Target}
+			}
 		}
+		uv.Ascension, uv.Decoy, uv.Companion, uv.Pet = u.Ascension, u.Decoy, u.Companion, u.Summoned
 		for k, n := range u.Status {
 			if n > 0 {
 				uv.Statuses[k] = n
@@ -170,3 +218,63 @@ func (g *Game) Preview(unit, slot, target int) (Forecast, bool) {
 
 // Options lists the answers to the first waiting choice (empty if none).
 func (g *Game) Options() []string { return stats.Options(g.C, g.B) }
+
+// decisionView spells out the first waiting choice for the screen.
+func (g *Game) decisionView() *DecisionView {
+	if len(g.B.Decisions) == 0 {
+		return nil
+	}
+	d := g.B.Decisions[0]
+	dv := &DecisionView{Kind: d.Kind, Unit: d.Unit, Skill: d.Skill}
+	if s, ok := g.C.SkillNamed(d.Skill); ok {
+		dv.Text = s.Text
+	}
+	u := g.B.Unit(d.Unit)
+	for _, o := range g.Options() {
+		switch {
+		case d.Kind == state.DecideAscend:
+			a := g.C.Ascensions[o]
+			dv.Options = append(dv.Options, OptionView{Choice: o, Label: o, Text: a.Bonus + ". " + a.Passive + " Ultimate: " + a.Ultimate + "."})
+		case o == stats.ChooseReplace && u != nil:
+			if s, _ := g.C.SkillNamed(d.Skill); s.Kind == "u" {
+				dv.Options = append(dv.Options, OptionView{Choice: o, Label: "Replace " + u.Ultimate})
+				continue
+			}
+			for i, n := range u.Equipped {
+				dv.Options = append(dv.Options, OptionView{Choice: o, Slot: i, Label: "Replace " + n})
+			}
+		case o == stats.ChooseKeep:
+			dv.Options = append(dv.Options, OptionView{Choice: o, Label: "Keep current skills"})
+		default:
+			dv.Options = append(dv.Options, OptionView{Choice: o, Label: "Continue"})
+		}
+	}
+	return dv
+}
+
+// AbilityAim lists where a hero's ability can be aimed now: unit IDs for a
+// unit-aimed ability, tiles for a tile-aimed one.
+func (g *Game) AbilityAim(unit int) (units []int, tiles [][2]int) {
+	u := g.B.Unit(unit)
+	if u == nil {
+		return nil, nil
+	}
+	ab, ok := combat.AbilityOf(g.C, u)
+	if !ok || ab.Target == nil {
+		return nil, nil
+	}
+	if ab.Target.Kind == "unit" {
+		for _, z := range combat.AbilityUnits(g.B, u, ab.Target) {
+			units = append(units, z.ID)
+		}
+		return units, nil
+	}
+	for y := 0; y < g.B.N; y++ {
+		for x := 0; x < g.B.N; x++ {
+			if combat.AbilityTileOK(g.B, u, ab.Target, x, y) {
+				tiles = append(tiles, [2]int{x, y})
+			}
+		}
+	}
+	return nil, tiles
+}

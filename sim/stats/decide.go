@@ -32,7 +32,7 @@ func Options(c *content.Content, b *state.Battle) []string {
 	case state.DecideAscend:
 		return c.AscensionChoices[u.Class]
 	case state.DecideLearn:
-		s := c.Skills[d.Skill]
+		s, _ := c.SkillNamed(d.Skill)
 		switch {
 		case s.Kind == "u" && (u.Ultimate == "" || u.Ultimate == s.Name):
 			return []string{ChooseOK}
@@ -67,7 +67,7 @@ func Decide(c *content.Content, b *state.Battle, choice string, slot int, emit a
 		// Its ultimate is learned next, before anything else waiting.
 		b.Decisions = append([]state.Decision{{Kind: state.DecideLearn, Unit: u.ID, Skill: a.Ultimate}}, b.Decisions...)
 	case state.DecideLearn:
-		s := c.Skills[d.Skill]
+		s, _ := c.SkillNamed(d.Skill)
 		if !slices.Contains(u.Learned, s.Name) {
 			u.Learned = append(u.Learned, s.Name)
 		}

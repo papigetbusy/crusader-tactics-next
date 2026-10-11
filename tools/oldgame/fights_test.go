@@ -9,146 +9,12 @@ import (
 	"testing"
 
 	"github.com/papigetbusy/crusader-tactics-next/sim/action"
-	"github.com/papigetbusy/crusader-tactics-next/sim/content"
 	"github.com/papigetbusy/crusader-tactics-next/sim/engine"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
 )
 
-// goUnit builds a referee unit from a recorded one, with its skill bar.
-func goUnit(c *content.Content, su SnapUnit) *state.Unit {
-	u := &state.Unit{
-		ID: su.ID, Team: su.Team, Class: su.Class, X: su.X, Y: su.Y,
-		HP: su.HP, MaxHP: su.MaxHP, Atk: su.Atk, Def: su.Def, Mov: su.Mov, Level: su.Lv,
-		Element: su.Elem, Boss: su.Boss != 0, Elite: su.Elite != 0, Defending: su.Def2 != 0, Shield: su.Sh,
-		Moved: su.Moved != 0, Acted: su.Acted != 0, Done: su.Done != 0, Status: map[string]int{},
-	}
-	for k, v := range su.St {
-		u.Status[k] = v
-	}
-	if u.Team == state.Heroes {
-		u.Learned, u.Equipped, u.Ultimate = c.StartingBuild(u.Class, u.Level)
-		u.Skills = c.Bar(u.Class, u.Equipped, u.Ultimate)
-	} else {
-		u.Skills = c.MonsterSkills(u.Class, u.Level, u.Boss || u.Elite)
-		u.Weapon = c.Classes[u.Class].Weapon
-	}
-	if su.Pot != nil {
-		u.Potions = *su.Pot
-	}
-	u.Cooldowns = make([]int, len(u.Skills))
-	for i, cd := range su.Cd {
-		if cd != nil && i < len(u.Cooldowns) {
-			u.Cooldowns[i] = *cd
-		}
-	}
-	return u
-}
-
-// resync makes Go's board equal to a recorded moment, keeping what the
-// recording does not store (tiles walked this turn, skill uses).
-func resync(c *content.Content, f *Fight, g *engine.Game, s Snap, party []int) {
-	old := map[int]*state.Unit{}
-	b := f.Battle(Snap{Turn: s.Turn})
-	if g.B != nil {
-		for _, u := range g.B.Units {
-			old[u.ID] = u
-		}
-		b.Side, b.Outcome = g.B.Side, g.B.Outcome
-	}
-	for _, su := range s.Units {
-		u := goUnit(c, su)
-		if o := old[su.ID]; o != nil {
-			u.TilesMoved, u.SkillUses, u.LastSkill, u.Undo = o.TilesMoved, o.SkillUses, o.LastSkill, o.Undo
-		}
-		b.Units = append(b.Units, u)
-	}
-	if len(s.Seized) == 2 {
-		b.Throne = &state.Tile{X: s.Seized[0], Y: s.Seized[1]}
-	}
-	if g.B != nil {
-		fallen := map[int]*state.Unit{}
-		for _, u := range g.B.Fallen {
-			fallen[u.ID] = u
-		}
-		for _, id := range s.Fallen {
-			if u := fallen[id]; u != nil {
-				b.Fallen = append(b.Fallen, u)
-			}
-		}
-	}
-	b.LevelCap = levelCap(c, f.Init.Snap)
-	g.B = b
-	for i, id := range party {
-		if u := heroOf(b, id); u != nil && i < len(s.XP) {
-			u.XP = s.XP[i][1]
-		}
-	}
-}
-
-// actionsFor turns one recorded player input into referee actions.
-func actionsFor(step Step, b *state.Battle) []action.Action {
-	switch step.Kind {
-	case "wait":
-		return []action.Action{{Kind: action.Wait, Unit: step.ID}}
-	case "endturn":
-		return []action.Action{{Kind: action.EndTurn}}
-	case "defend":
-		return []action.Action{{Kind: action.Defend, Unit: step.ID}}
-	case "potion":
-		return []action.Action{{Kind: action.Potion, Unit: step.ID}}
-	case "undo":
-		return []action.Action{{Kind: action.Undo, Unit: step.ID}}
-	case "move", "attack", "skill":
-		var out []action.Action
-		for _, e := range step.Ev {
-			if e.K == "mv" && e.ID == step.ID {
-				out = append(out, action.Action{Kind: action.Move, Unit: e.ID, X: e.To[0], Y: e.To[1]})
-			}
-			if e.K == "act" && e.ID == step.ID {
-				u := b.Unit(e.ID)
-				slot := -1
-				if u != nil {
-					slot = slices.IndexFunc(u.Skills, func(s content.Skill) bool { return s.Name == e.S })
-				}
-				out = append(out, action.Action{Kind: action.Attack, Unit: e.ID, Skill: slot, Target: e.V})
-			}
-		}
-		return out
-	}
-	return nil
-}
-
-// arrivals adds reinforcements before the enemy phase. Where they appear is a
-// floor rule ported later, so the recording says where.
-func arrivals(c *content.Content, g *engine.Game, prev Snap, step Step) int {
-	had := map[int]bool{}
-	for _, u := range prev.Units {
-		had[u.ID] = true
-	}
-	n := 0
-	for _, su := range step.Snap.Units {
-		if had[su.ID] || g.B.Unit(su.ID) != nil {
-			continue
-		}
-		u := goUnit(c, su)
-		u.HP, u.Status, u.Done, u.Moved = su.MaxHP, map[string]int{}, false, false
-		for i := range u.Cooldowns {
-			u.Cooldowns[i] = 0
-		}
-		for _, e := range step.Ev {
-			if e.K == "mv" && e.ID == su.ID {
-				u.X, u.Y = e.From[0], e.From[1]
-				break
-			}
-		}
-		g.B.Units = append(g.B.Units, u)
-		n++
-	}
-	return n
-}
-
 // differences describes how Go's board differs from a recorded moment.
-func differences(g *engine.Game, s Snap, party []int) []string {
+func differences(g *engine.Game, s Snap, party []int, seen int) []string {
 	var out []string
 	for i, id := range party {
 		if u := heroOf(g.B, id); u != nil && i < len(s.XP) && (u.Level != s.XP[i][0] || u.XP != s.XP[i][1]) {
@@ -157,7 +23,26 @@ func differences(g *engine.Game, s Snap, party []int) []string {
 		}
 	}
 	rec := map[int]SnapUnit{}
+	var goClones, oldClones []string
+	for _, u := range g.B.Units {
+		if u.Decoy {
+			goClones = append(goClones, fmt.Sprintf("%d,%d:%d", u.X, u.Y, u.HP))
+		}
+	}
 	for _, su := range s.Units {
+		if su.Dc != 0 {
+			oldClones = append(oldClones, fmt.Sprintf("%d,%d:%d", su.X, su.Y, su.HP))
+		}
+	}
+	slices.Sort(goClones)
+	slices.Sort(oldClones)
+	if !slices.Equal(goClones, oldClones) {
+		out = append(out, fmt.Sprintf("shadow clones (tile:HP): Go %v, old game %v", goClones, oldClones))
+	}
+	for _, su := range s.Units {
+		if su.Dc != 0 {
+			continue // the recorder gave clones their Phantom's ID; compared above
+		}
 		rec[su.ID] = su
 		u := g.B.Unit(su.ID)
 		if u == nil {
@@ -189,6 +74,21 @@ func differences(g *engine.Game, s Snap, party []int) []string {
 		if su.Pot != nil && u.Potions != *su.Pot {
 			out = append(out, fmt.Sprintf("%s %d potions: Go %d, old game %d", su.Class, su.ID, u.Potions, *su.Pot))
 		}
+		if u.AbilityCooldown != su.Ab {
+			out = append(out, fmt.Sprintf("%s %d ability cooldown: Go %d, old game %d", su.Class, su.ID, u.AbilityCooldown, su.Ab))
+		}
+		if su.Sp != nil && u.Ascension != *su.Sp {
+			out = append(out, fmt.Sprintf("%s %d ascension: Go %q, old game %q", su.Class, su.ID, u.Ascension, *su.Sp))
+		}
+		if su.Sk != nil {
+			var bar []string
+			for _, sk := range u.Skills {
+				bar = append(bar, sk.Name)
+			}
+			if fmt.Sprint(bar) != fmt.Sprint(su.Sk) {
+				out = append(out, fmt.Sprintf("%s %d skill bar: Go %v, old game %v", su.Class, su.ID, bar, su.Sk))
+			}
+		}
 		if u.Done != (su.Done != 0) {
 			out = append(out, fmt.Sprintf("%s %d finished-for-the-turn: Go %v, old game %v", su.Class, su.ID, u.Done, su.Done != 0))
 		}
@@ -202,8 +102,11 @@ func differences(g *engine.Game, s Snap, party []int) []string {
 			out = append(out, fmt.Sprintf("fallen heroes: Go %v, old game %v", ids, s.Fallen))
 		}
 	}
+	if s.FieldsAt != nil && (len(g.B.Fields) != len(s.FieldsAt) || len(g.B.Traps) != len(s.TrapsAt)) {
+		out = append(out, fmt.Sprintf("Go has %d fields and %d traps, the old game %d and %d", len(g.B.Fields), len(g.B.Traps), len(s.FieldsAt), len(s.TrapsAt)))
+	}
 	for _, u := range g.B.Units {
-		if _, ok := rec[u.ID]; !ok {
+		if _, ok := rec[u.ID]; !ok && !u.Decoy {
 			out = append(out, fmt.Sprintf("%s %d is alive in Go but gone in the old game", u.Class, u.ID))
 		}
 	}
@@ -231,6 +134,12 @@ func TestOldGameFights(t *testing.T) { replayAll(t, recordings, "core") }
 // buffs, Defend, Potion, Undo, revives and seize-the-throne floors.
 func TestOldGameCombat(t *testing.T) { replayAll(t, combatRecordings, "combat") }
 
+// TestOldGameHeroes replays the Phase 6 recordings: high-level parties with
+// ascensions, every class ability, and the choices made at level-ups.
+func TestOldGameHeroes(t *testing.T) { replayAll(t, heroesRecordings, "heroes") }
+
+const heroesRecordings = "../../testdata/oldgame/recordings/heroes6-recordings.json.gz"
+
 const combatRecordings = "../../testdata/oldgame/recordings/combat5-recordings.json.gz"
 
 func replayAll(t *testing.T, file, set string) {
@@ -239,7 +148,7 @@ func replayAll(t *testing.T, file, set string) {
 		t.Fatal(err)
 	}
 	c := oldContent(t)
-	var steps, matched, perfect, levelUps, reinforced, enemyTurns, rolls, ended int
+	var steps, matched, perfect, levelUps, reinforced, enemyTurns, rolls, ended, raised int
 	var bad problems
 	usable := 0
 	type fightResult struct {
@@ -271,11 +180,13 @@ func replayAll(t *testing.T, file, set string) {
 				fr.Enemies = append(fr.Enemies, u.Class)
 			}
 		}
+		seen, clones := maxID(f.Init.Snap, -1), 500_000
 		for si := range f.Steps {
 			step := f.Steps[si]
 			steps++
 			feed := newSiteFeed(f, &step)
 			g.Dice = feed
+			g.B.NextID = seen + 1 // units Go creates get the IDs the recorder gave them
 			restart := restarted(prev, step.Snap)
 			if step.Kind == "endturn" && !restart {
 				reinforced += arrivals(c, g, prev, step)
@@ -287,8 +198,22 @@ func replayAll(t *testing.T, file, set string) {
 						problem = fmt.Sprint(r)
 					}
 				}()
-				for _, a := range actionsFor(step, g.B) {
+				if debugging(set, fi, si) {
+					printUnits(g)
+					g.Dice = loudDice{feed}
+				}
+				acts := actionsFor(step, g.B)
+				if step.Kind == "decide" {
+					if a, ok := decision(c, g, step, party); ok {
+						acts = append(acts, a)
+					}
+				}
+				for _, a := range acts {
 					evs, err := g.Apply(a)
+					debugStep(set, fi, si, step, evs)
+					if err != nil && a.Kind == action.Ability {
+						continue // the old game also refuses some uses; the board comparison tells
+					}
 					if err != nil {
 						problem = fmt.Sprintf("Go refused %s: %v", a.Kind, err)
 						return
@@ -302,6 +227,13 @@ func replayAll(t *testing.T, file, set string) {
 						}
 					}
 				}
+				for _, u := range g.B.Units {
+					if u.Decoy && u.ID < 1_000_000 {
+						// The recorder never gave clones IDs of their own; keep Go's
+						// clones clear of the IDs it gives later arrivals.
+						u.ID, clones = 1_000_000+clones, clones+1
+					}
+				}
 				if set != "heroes" {
 					// These recordings dismissed every level-up choice unanswered.
 					g.B.Decisions = nil
@@ -311,6 +243,7 @@ func replayAll(t *testing.T, file, set string) {
 				}
 			}()
 			rolls += feed.used
+			raised += skeletonsFromRecording(c, g, step.Snap, seen)
 			if restart {
 				// The old game ended the battle in this step and started the floor
 				// again (a defeat re-runs the floor). Go must agree the battle ended.
@@ -330,7 +263,7 @@ func replayAll(t *testing.T, file, set string) {
 				break
 			}
 			if problem == "" {
-				if d := differences(g, step.Snap, party); len(d) > 0 {
+				if d := differences(g, step.Snap, party, seen); len(d) > 0 {
 					problem = d[0]
 					if len(d) > 1 {
 						problem += fmt.Sprintf(" (and %d more differences)", len(d)-1)
@@ -349,6 +282,7 @@ func replayAll(t *testing.T, file, set string) {
 				fr.Matched++
 			}
 			prev = step.Snap
+			seen = maxID(step.Snap, seen)
 		}
 		if clean {
 			perfect++
@@ -361,8 +295,8 @@ func replayAll(t *testing.T, file, set string) {
 			t.Fatal(err)
 		}
 	}
-	t.Logf("%d of %d fights replayed perfectly; %d of %d steps matched; %d monster skill uses decided by Go; %d dice used; %d battles ended with the same result in Go; %d level-ups worked out by Go; %d reinforcements taken from the recording",
-		perfect, usable, matched, steps, enemyTurns, rolls, ended, levelUps, reinforced)
+	t.Logf("%d of %d fights replayed perfectly; %d of %d steps matched; %d monster skill uses decided by Go; %d dice used; %d battles ended with the same result in Go; %d level-ups worked out by Go; %d reinforcements and %d Grave Bloom skeletons taken from the recording",
+		perfect, usable, matched, steps, enemyTurns, rolls, ended, levelUps, reinforced, raised)
 	for _, p := range bad {
 		t.Error(p)
 	}
@@ -379,9 +313,20 @@ func restarted(prev, now Snap) bool {
 		had[id] = true
 	}
 	for _, u := range now.Units {
-		if u.Team == state.Heroes && !had[u.ID] {
+		if u.Team == state.Heroes && !had[u.ID] && u.Cp == 0 && u.Sm == 0 && u.Dc == 0 {
 			return true
 		}
 	}
 	return false
+}
+
+// maxID is the highest unit ID seen so far.
+func maxID(s Snap, seen int) int {
+	for _, u := range s.Units {
+		seen = max(seen, u.ID)
+	}
+	for _, id := range s.Fallen {
+		seen = max(seen, id)
+	}
+	return seen
 }

@@ -39,6 +39,10 @@ type Content struct {
 
 	Ascensions       map[string]Ascension // by name
 	AscensionChoices map[string][]string  // class -> its three ascensions, in the order they are offered
+
+	Abilities map[string]ClassAbility // class abilities by class
+	CrashDown Ability                 // the Storm Dragoon's landing from Sky Lord
+	Monsters  []Monster               // normal monster kinds, in the old game's order
 }
 
 // Default loads the live data files built into the program.
@@ -88,13 +92,20 @@ func Load(fsys fs.FS) (*Content, error) {
 	var turns Turns
 	var ai AI
 	var progress Progress
+	var abil struct {
+		Classes   map[string]ClassAbility `json:"classes"`
+		CrashDown Ability                 `json:"crashDown"`
+	}
+	var mons struct {
+		Monsters []Monster `json:"monsters"`
+	}
 	var asc struct {
 		Ascensions []Ascension         `json:"ascensions"`
 		Choices    map[string][]string `json:"choices"`
 	}
 	for name, v := range map[string]any{"skills.json": &skills, "classes.json": &classes,
 		"elements.json": &elements, "rules/combat.json": &combat, "rules/turns.json": &turns, "rules/ai.json": &ai,
-		"rules/progress.json": &progress, "ascensions.json": &asc} {
+		"rules/progress.json": &progress, "ascensions.json": &asc, "abilities.json": &abil, "monsters.json": &mons} {
 		if err := readJSON(fsys, name, v); err != nil {
 			return nil, err
 		}
@@ -115,6 +126,9 @@ func Load(fsys fs.FS) (*Content, error) {
 		Progress:          progress,
 		Ascensions:        map[string]Ascension{},
 		AscensionChoices:  asc.Choices,
+		Abilities:         abil.Classes,
+		CrashDown:         abil.CrashDown,
+		Monsters:          mons.Monsters,
 	}
 	for _, a := range asc.Ascensions {
 		c.Ascensions[a.Name] = a
@@ -169,6 +183,11 @@ func (c *Content) Check() error {
 	for name, a := range c.Ascensions {
 		if _, ok := c.Skills[a.Ultimate]; !ok {
 			return fmt.Errorf("ascensions.json, %s: its ultimate %q is not in skills.json", name, a.Ultimate)
+		}
+	}
+	for class, ca := range c.Abilities {
+		if len(ca.Tiers) != len(abilityTierLevels) {
+			return fmt.Errorf("abilities.json, %s: needs one ability per tier (%d)", class, len(abilityTierLevels))
 		}
 	}
 	if err := c.Progress.check(); err != nil {

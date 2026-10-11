@@ -60,6 +60,7 @@ type Combat struct {
 	PotionPerLevel int     `json:"potionPerLevel"` // ...plus this much per level
 	ReviveShare    float64 `json:"reviveShare"`    // a revived hero comes back with this share of max HP
 	ReviveAnyDeath bool    `json:"reviveAnyDeath"` // heroes killed by poison or bleeding can be revived too
+	TrapsOnPath    bool    `json:"trapsOnPath"`    // traps spring anywhere along a monster's walk, not only where it stops
 
 	// Statuses that change damage.
 	RallyAttack   float64 `json:"rallyAttack"`   // rally: attacker hits this much harder

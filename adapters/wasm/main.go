@@ -116,6 +116,11 @@ func main() {
 		}
 		return text(f)
 	}))
+	// ctAim(unit) -> {units:[ids]} or {tiles:[[x,y]...]}: where the class ability can be aimed
+	g.Set("ctAim", fn(func(a []js.Value) any {
+		units, tiles := game.AbilityAim(a[0].Int())
+		return text(map[string]any{"units": units, "tiles": tiles})
+	}))
 	// ctPlan(unit, target) -> {slot, walk} or null: which skill a tap on
 	// that unit uses, and where to walk first if needed.
 	g.Set("ctPlan", fn(func(a []js.Value) any {

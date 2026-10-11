@@ -50,17 +50,25 @@ func FormName(c *content.Content, class string, level int) string {
 	return class
 }
 
-// Hero is a hero's numbers at a level, with its ascension, without gear (old
-// calc, index.html lines 736-737). Gear is added in step 6c.
-func Hero(c *content.Content, class string, level int, ascension string) Numbers {
+// Plain is a class's numbers at a level with no evolution, ascension or gear:
+// what a monster raised on the heroes' side gets (old calc for a record with
+// no form, index.html line 736).
+func Plain(c *content.Content, class string, level int) Numbers {
 	p, b := c.Progress, c.Classes[class]
 	lv := float64(level - 1)
-	n := Numbers{
+	return Numbers{
 		MaxHP: int(Round(float64(b.HP) + float64(p.GrowthHP*lv))),
 		Atk:   int(Round(float64(b.Atk) + float64(lv*p.GrowthAtk) + p.AtkBonus)),
 		Def:   int(Round(float64(b.Def) + float64(lv*p.GrowthDef))),
 		Mov:   b.Mov,
 	}
+}
+
+// Hero is a hero's numbers at a level, with its ascension, without gear (old
+// calc, index.html lines 736-737). Gear is added in step 6c.
+func Hero(c *content.Content, class string, level int, ascension string) Numbers {
+	p := c.Progress
+	n := Plain(c, class, level)
 	f := p.Forms[Form(c, level, ascension)]
 	n.MaxHP = int(Round(float64(n.MaxHP) * f.HP))
 	n.Atk = int(Round(float64(n.Atk) * f.Atk))
@@ -85,8 +93,11 @@ func Hero(c *content.Content, class string, level int, ascension string) Numbers
 // XPToNext is the experience a hero needs to leave this level.
 func XPToNext(c *content.Content, level int) int { return level * c.Progress.XPPerLevel }
 
-// gains is whether this unit earns experience: heroes, not summons.
-func gains(u *state.Unit) bool { return u.Team == state.Heroes && !u.Summoned }
+// gains is whether this unit earns experience: heroes, not summons,
+// companions or shadow clones (old gain and xpShare, lines 779-780).
+func gains(u *state.Unit) bool {
+	return u.Team == state.Heroes && !u.Summoned && !u.Companion && !u.Decoy
+}
 
 // Gain gives a hero experience and levels it up as often as it earns (old
 // gain, index.html line 780). A hero at the level cap gains nothing; reaching

@@ -25,6 +25,11 @@ func died(c *content.Content, b *state.Battle, dice rng.Dice, u, v *state.Unit, 
 	if u.Team == state.Heroes {
 		u.KilledThisAction = true
 	}
+	if v.Team == state.Enemies && isHero(u) && u.Ascension == "Necromancer" && v.Kind != "" && !v.Ally && !slices.Contains(u.Souls, v.Kind) {
+		// Soul Harvest: each new kind of monster becomes a raise skill (old hurt, line 1706).
+		u.Souls = append(u.Souls, v.Kind)
+		b.Decisions = append(b.Decisions, state.Decision{Kind: state.DecideLearn, Unit: u.ID, Skill: content.RaisePrefix + v.Kind})
+	}
 	if u.Ascension == "Black Knight" {
 		for _, z := range b.Units {
 			if z.Team != u.Team && Distance(z, v) <= 1 {
@@ -95,6 +100,12 @@ func gravebloomer(b *state.Battle) *state.Unit {
 		}
 	}
 	return nil
+}
+
+// Burst is a skeleton or clone destroyed by poison or bleeding bursting at
+// the start of a turn.
+func Burst(c *content.Content, b *state.Battle, dice rng.Dice, v *state.Unit, emit action.Emit) {
+	explode(c, b, dice, v, emit)
 }
 
 // explode is a destroyed skeleton or shadow clone bursting (old explodeAt,

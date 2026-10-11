@@ -36,7 +36,7 @@ var sections = []struct{ pkg, title, about string }{
 	{"sim/engine", "Actions", "What you may do, and what the referee refuses."},
 	{"sim/board", "Movement", "Who can walk where."},
 	{"sim/combat", "Hitting and damage", "Hit chance, damage, statuses from hits."},
-	{"sim/stats", "Levels and experience", "How heroes earn experience, level up and evolve."},
+	{"sim/stats", "Levels, skills and ascensions", "How heroes earn experience, level up, evolve, learn skills and ascend."},
 	{"sim/turn", "Turns", "What happens when a turn starts and ends."},
 	{"sim/ai", "Enemy decisions", "How monsters choose what to do."},
 	{"sim/rng", "Dice", "The dice every roll comes from."},

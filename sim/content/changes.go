@@ -49,3 +49,12 @@ func ApplyChanges(c *Content) {
 		ch.Apply(c)
 	}
 }
+
+func init() {
+	Changes = append(Changes, Change{
+		Date: "2026-10-09",
+		What: "A Trapper's traps spring on any tile a monster walks over. Before, the old game only noticed " +
+			"a trap on the tile a monster stopped on, because it checked after the walking animation.",
+		Apply: func(c *Content) { c.Combat.TrapsOnPath = true },
+	})
+}

@@ -1,7 +1,6 @@
 package combat
 
 import (
-	"fmt"
 	"slices"
 
 	"github.com/papigetbusy/crusader-tactics-next/sim/action"
@@ -16,16 +15,14 @@ const RollShuffle = "shuffle"
 
 // UseSkill is one unit using the skill in a slot of its bar on a target:
 // revives, buffs, heals and attacks (old act, index.html lines 1711-1734).
-// It assumes the caller already checked the use is allowed. Summons arrive
-// with the Necromancer in step 6b.
+// It assumes the caller already checked the use is allowed.
 func UseSkill(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Unit, slot int, v *state.Unit, emit action.Emit) error {
 	s := u.Skills[slot]
-	if s.Summon != nil {
-		return fmt.Errorf("%s: summons arrive with the Necromancer in step 6b", s.Name)
-	}
 	_, classBase, _ := c.SkillFor(u.Team, u.Class, s.Name)
 	emit(action.Event{Kind: action.SkillUsed, Unit: u.ID, Target: v.ID, Skill: s.Name})
 	switch {
+	case s.Summon != nil:
+		raise(c, b, u, *s.Summon, emit)
 	case s.Revive:
 		revive(c, b, u, emit)
 	case s.Support:
@@ -37,6 +34,35 @@ func UseSkill(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Unit,
 	}
 	finishSkill(c, b, u, slot, s, emit)
 	return nil
+}
+
+// raise is a Necromancer's raise skill: the monster appears on the first open
+// tile around the caster, one level lower, undead, and shares the caster's
+// action (old act, line 1714).
+func raise(c *content.Content, b *state.Battle, u *state.Unit, kind int, emit action.Emit) {
+	for _, d := range reviveSpots {
+		t := state.Tile{X: u.X + d[0], Y: u.Y + d[1]}
+		if !b.Inside(t.X, t.Y) || heightAt(b, t.X, t.Y) < 0 || b.UnitAt(t.X, t.Y) != nil {
+			continue
+		}
+		z := monsterUnit(c, b, c.Monsters[kind], max(1, u.Level-1), "dark", state.Heroes, t)
+		z.Summoned, z.Undead, z.Owner, z.Done = true, true, u.ID, true
+		b.Units = append(b.Units, z)
+		emit(action.Event{Kind: action.Summoned, Unit: u.ID, Target: z.ID})
+		return
+	}
+}
+
+// FlushRaises raises the skeletons Grave Bloom owes for this action's kills
+// (the old game raised them a moment after each kill).
+func FlushRaises(c *content.Content, b *state.Battle, emit action.Emit) {
+	for len(b.Raises) > 0 {
+		r := b.Raises[0]
+		b.Raises = b.Raises[1:]
+		if nb := b.Unit(r.By); nb != nil {
+			RaiseSkeleton(c, b, nb, r.X, r.Y, true, emit)
+		}
+	}
 }
 
 // attack is a damaging skill (old act, lines 1721-1727): breaking a cloak,
@@ -298,6 +324,9 @@ func finishSkill(c *content.Content, b *state.Battle, u *state.Unit, slot int, s
 		emit(action.Event{Kind: action.ActAgain, Unit: u.ID, Skill: "Blade Dance"})
 	}
 	u.KilledThisAction = false
+	if u.Team == state.Heroes {
+		PairDone(b, u)
+	}
 }
 
 // setParam sets one of a unit's ability numbers.

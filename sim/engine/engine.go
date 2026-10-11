@@ -53,6 +53,7 @@ func (g *Game) Apply(a action.Action) ([]action.Event, error) {
 		if u.Acted { // a hero that already acted (Hit and Run) is finished after moving
 			u.Done, u.Undo = true, nil
 		}
+		combat.PairDone(b, u) // a hero and its raised monster share one turn
 		seizeThrone(b, u, emit)
 	case action.Defend:
 		u := b.Unit(a.Unit)
@@ -84,11 +85,23 @@ func (g *Game) Apply(a action.Action) ([]action.Event, error) {
 		if err := turn.EndTurn(g.C, b, g.Dice, emit); err != nil {
 			return events, err
 		}
+	case action.Ability:
+		u := b.Unit(a.Unit)
+		ab, _ := combat.AbilityOf(g.C, u)
+		var tiles []state.Tile
+		for _, t := range a.Tiles {
+			tiles = append(tiles, state.Tile{X: t[0], Y: t[1]})
+		}
+		if err := combat.UseAbility(g.C, b, g.Dice, u, ab, b.Unit(a.Target), tiles, emit); err != nil {
+			return events, err
+		}
+		turn.Check(b, emit)
 	case action.Decide:
 		if err := stats.Decide(g.C, b, a.Choice, a.Skill, emit); err != nil {
 			return events, no("bad-choice", "%v", err)
 		}
 	}
+	combat.FlushRaises(g.C, b, emit)
 	return events, nil
 }
 
@@ -129,8 +142,11 @@ func (g *Game) check(a action.Action) error {
 		return nil
 	}
 	u := b.Unit(a.Unit)
-	if u == nil || u.Team != state.Heroes {
+	if u == nil || u.Team != state.Heroes || u.Companion || u.Decoy {
 		return no("no-such-hero", "That is not one of your heroes.")
+	}
+	if a.Kind == action.Ability {
+		return g.checkAbility(u, a)
 	}
 	if u.Done {
 		return no("finished", "%s has finished for this turn.", u.Class)
@@ -149,6 +165,9 @@ func (g *Game) check(a action.Action) error {
 		}
 		if u.Cooldowns[a.Skill] > 0 {
 			return no("on-cooldown", "%s is not ready yet (%d turns).", u.Skills[a.Skill].Name, u.Cooldowns[a.Skill])
+		}
+		if err := skillReady(u, a.Skill); err != nil {
+			return err
 		}
 		v := b.Unit(a.Target)
 		ok := false

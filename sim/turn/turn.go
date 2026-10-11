@@ -25,18 +25,26 @@ func members(b *state.Battle, side int) []*state.Unit {
 	return out
 }
 
-// Start begins a side's turn: cooldowns tick down, burn, bleed and poison
-// hurt, forts heal, flags reset, stunned units skip. Units brought to 0 HP die.
-func Start(c *content.Content, b *state.Battle, side int, emit action.Emit) {
+// Start begins a side's turn (old startPhase, line 1738): cooldowns and the
+// class ability tick down, burn, bleed (doubled by Blood Pact, which heals the
+// Blood Witch) and poison hurt, forts heal, flags reset, stunned units,
+// frozen units and clones skip, a Sacred Vow heals. Units brought to 0 HP
+// die; skeletons and clones burst.
+func Start(c *content.Content, b *state.Battle, dice rng.Dice, side int, emit action.Emit) {
 	t := c.Turns
-	dot := func(u *state.Unit, status string) {
+	dot := func(u *state.Unit, status string) int {
 		if u.Status[status] <= 0 {
-			return
+			return 0
 		}
-		n := max(t.DamageOverTimeMin, int(combat.Round(float64(u.MaxHP)*t.DamageOverTime[status])))
+		share := float64(float64(u.MaxHP) * t.DamageOverTime[status])
+		if status == "bleed" && u.HeavyBleed {
+			share *= 2
+		}
+		n := max(t.DamageOverTimeMin, int(combat.Round(share)))
 		u.HP -= n
 		u.Status[status]--
 		emit(action.Event{Kind: action.Ticked, Unit: u.ID, Amount: n, Statuses: map[string]int{status: u.Status[status]}})
+		return n
 	}
 	b.Side = side
 	emit(action.Event{Kind: action.TurnStart, Side: side, Turn: b.Turn})
@@ -46,9 +54,20 @@ func Start(c *content.Content, b *state.Battle, side int, emit action.Emit) {
 				u.Cooldowns[i] = cd - 1
 			}
 		}
+		if u.AbilityCooldown > 0 {
+			u.AbilityCooldown--
+		}
+		u.QuickShots, u.QuickUsed = 0, nil
 		dot(u, "burn")
-		u.Defending, u.Done, u.Moved, u.Acted, u.TilesMoved, u.Undo = false, false, false, false, 0, nil
-		dot(u, "bleed")
+		u.Defending, u.Done, u.Moved, u.Acted, u.Danced, u.TilesMoved, u.Undo = false, false, false, false, false, 0, nil
+		if bd := dot(u, "bleed"); bd > 0 && u.HeavyBleed {
+			if w := b.Unit(u.HeavyBleedBy); w != nil {
+				w.HP = min(w.MaxHP, w.HP+bd)
+			}
+			if u.Status["bleed"] == 0 {
+				u.HeavyBleed = false
+			}
+		}
 		dot(u, "poison")
 		if tr, ok := c.Terrain[board.GroundAt(b, u.X, u.Y)]; ok && tr.Heal > 0 && u.HP > 0 && u.HP < u.MaxHP {
 			u.HP = min(u.MaxHP, u.HP+int(combat.Round(float64(u.MaxHP)*tr.Heal)))
@@ -60,6 +79,21 @@ func Start(c *content.Content, b *state.Battle, side int, emit action.Emit) {
 			if u.Status[q] > 0 {
 				u.Done = true
 			}
+		}
+		if u.Decoy {
+			u.Done = true
+		}
+		if u.Status["sky"] <= 0 {
+			u.SkyReady = false
+		}
+		u.Overwatch = nil
+		if u.Status["svow"] > 0 {
+			u.HP = min(u.MaxHP, u.HP+int(combat.Round(float64(u.MaxHP)*0.1)))
+		}
+	}
+	for _, u := range slices.Clone(b.Units) {
+		if u.HP <= 0 && (u.Undead || u.Decoy) {
+			combat.Burst(c, b, dice, u, emit)
 		}
 	}
 	for _, u := range slices.Clone(b.Units) {
@@ -74,7 +108,9 @@ func Start(c *content.Content, b *state.Battle, side int, emit action.Emit) {
 	Check(b, emit)
 }
 
-// End finishes a side's turn: timed statuses count down by one.
+// End finishes a side's turn (old endPhase, line 1739): timed statuses count
+// down by one, a finished cloak starts its cooldown; after the heroes' turn,
+// fields burn and tick down, and expired shadow clones fade.
 func End(c *content.Content, b *state.Battle, side int, emit action.Emit) {
 	for _, u := range members(b, side) {
 		for _, q := range c.Turns.CountdownAtEnd {
@@ -86,18 +122,35 @@ func End(c *content.Content, b *state.Battle, side int, emit action.Emit) {
 			combat.CloakCooldown(u)
 		}
 	}
+	if side == state.Heroes {
+		combat.FieldTick(b)
+		for _, u := range slices.Clone(b.Units) {
+			if u.Decoy && u.Status["clone"] <= 0 {
+				b.Remove(u.ID)
+				emit(action.Event{Kind: action.Faded, Unit: u.ID})
+			}
+		}
+	}
 	emit(action.Event{Kind: action.TurnEnd, Side: side})
 }
 
-// Check decides the battle once one side is gone.
+// Check decides the battle once one side is gone (old check, line 1735):
+// won when no monster is left, lost when no real hero is (companions,
+// summons and clones do not count).
 func Check(b *state.Battle, emit action.Emit) {
 	if b.Outcome != state.Ongoing {
 		return
 	}
+	heroes := 0
+	for _, u := range members(b, state.Heroes) {
+		if !u.Companion && !u.Summoned && !u.Decoy {
+			heroes++
+		}
+	}
 	if len(members(b, state.Enemies)) == 0 {
 		b.Outcome = state.Won
 		emit(action.Event{Kind: action.Won})
-	} else if len(members(b, state.Heroes)) == 0 {
+	} else if heroes == 0 {
 		b.Outcome = state.Lost
 		emit(action.Event{Kind: action.Lost})
 	}
@@ -107,7 +160,22 @@ func Check(b *state.Battle, emit action.Emit) {
 // monster acts in board order, then a new turn starts for the heroes.
 func EndTurn(c *content.Content, b *state.Battle, dice rng.Dice, emit action.Emit) error {
 	End(c, b, state.Heroes, emit)
-	Start(c, b, state.Enemies, emit)
+	// Companions (bonded monsters and raised skeletons) act on their own first
+	// (old enemyPhase, line 1747).
+	for _, z := range members(b, state.Heroes) {
+		if !z.Companion || b.Unit(z.ID) == nil || z.Status["stun"] > 0 {
+			continue
+		}
+		if err := ai.Turn(c, b, dice, z, emit); err != nil {
+			return err
+		}
+		combat.FlushRaises(c, b, emit)
+		Check(b, emit)
+		if len(members(b, state.Enemies)) == 0 {
+			return nil
+		}
+	}
+	Start(c, b, dice, state.Enemies, emit)
 	for _, e := range members(b, state.Enemies) {
 		if b.Unit(e.ID) == nil || e.Done {
 			continue
@@ -115,6 +183,7 @@ func EndTurn(c *content.Content, b *state.Battle, dice rng.Dice, emit action.Emi
 		if err := ai.Turn(c, b, dice, e, emit); err != nil {
 			return err
 		}
+		combat.FlushRaises(c, b, emit)
 		Check(b, emit)
 		if b.Outcome == state.Lost {
 			return nil
@@ -122,6 +191,6 @@ func EndTurn(c *content.Content, b *state.Battle, dice rng.Dice, emit action.Emi
 	}
 	End(c, b, state.Enemies, emit)
 	b.Turn++
-	Start(c, b, state.Heroes, emit)
+	Start(c, b, dice, state.Heroes, emit)
 	return nil
 }

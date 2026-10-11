@@ -54,6 +54,13 @@ func main() {
 	write("data/ascensions.json", map[string]any{
 		"_about":     "The Lv 30 ascensions: element, stat changes, ultimate, and the numbers their passive uses. From the old game's SPEC and SPECS tables.",
 		"ascensions": asc, "choices": c.AscensionChoices})
+	write("data/monsters.json", map[string]any{
+		"_about":   "Normal monster kinds: name, the class they fight as, and their element (empty = rolled when they spawn). From the old game's MON and MNAMES tables; their pictures live with the art.",
+		"monsters": c.Monsters})
+	write("data/abilities.json", map[string]any{
+		"_about":    "Class abilities: a free action with a cooldown, at Lv 1, 5 and 20, and each ascension's own version. statuses go on the user; params tune them; effect names a special action. From the old game's AB2 table.",
+		"classes":   c.Abilities,
+		"crashDown": c.CrashDown})
 }
 
 func write(path string, v any) {

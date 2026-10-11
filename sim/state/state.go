@@ -15,6 +15,8 @@ type Unit struct {
 	ID     int            // stable for the whole battle, including summons
 	Team   int            // Heroes or Enemies
 	Class  string         // "Knight", "Bat Lord"...
+	Kind   string         // monsters: which kind ("Goblin"), when known
+	Ally   bool           // a monster glowing blue: defeating it bonds it as a companion (Phase 7)
 	X, Y   int            // position
 	HP     int            // current hit points
 	MaxHP  int            // maximum hit points
@@ -45,6 +47,7 @@ type Unit struct {
 	Equipped  []string // up to four skills on the bar
 	Ultimate  string   // the skill in the ultimate slot
 	Ascension string   // chosen at Lv 30 ("" before)
+	Souls     []string // Necromancer: monster kinds whose raise skill it learned
 
 	Skills    []content.Skill // the skill bar, in order
 	Cooldowns []int           // turns until each skill is ready again (0 = ready)

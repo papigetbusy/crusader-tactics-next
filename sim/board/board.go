@@ -55,24 +55,54 @@ func CanMove(u *state.Unit) bool {
 	return !u.Moved && u.Status["snare"] <= 0 && u.Status["lock"] <= 0 && u.Status["shock"] <= 0
 }
 
-// Budget is how far a unit may walk this turn, in half-steps: its move,
-// plus 2 while hasted. (Abilities that add move, such as Vow of Honor,
-// arrive in Phase 6.)
-func Budget(u *state.Unit) int {
+// Budget is how far a unit may walk this turn, in half-steps (old
+// moveBudget, line 1225): its move, plus haste, Bloodlust, Beast Mode, Vow of
+// Honor, and standing in a War Banner.
+func Budget(b *state.Battle, u *state.Unit) int {
 	mov := u.Mov
 	if u.Status["haste"] > 0 {
 		mov += 2
 	}
+	if u.Status["blood"] > 0 {
+		mov += int(u.P("blM", 3))
+	}
+	if u.Status["beast"] > 0 {
+		mov += int(u.P("bmM", 7))
+	}
+	if u.Status["vow"] > 0 {
+		mov += int(u.P("vwM", 5))
+	}
+	if inBanner(b, u) {
+		mov++
+	}
 	return 2 * mov
 }
 
-// MoveUnit walks a unit to (x, y) and reports the route. It counts the tiles
-// walked this turn (charge skills use it). It does not check the move is
-// allowed; callers do that first. Walking zero tiles does nothing.
-func MoveUnit(c *content.Content, b *state.Battle, u *state.Unit, x, y int, emit action.Emit) {
+// inBanner reports a hero standing inside a War Banner.
+func inBanner(b *state.Battle, u *state.Unit) bool {
+	if u.Team != state.Heroes {
+		return false
+	}
+	for _, f := range b.Fields {
+		if f.Kind == "banner" && abs(f.X-u.X)+abs(f.Y-u.Y) <= f.Range {
+			return true
+		}
+	}
+	return false
+}
+
+// MoveUnit walks a unit to (x, y) and returns the route. It counts the tiles
+// walked this turn (charge skills use it), and a hero in an upgraded Beast
+// Mode sets the tile it lands on ablaze (old startMove, line 788). It does
+// not check the move is allowed; callers do that first. Walking zero tiles
+// does nothing.
+func MoveUnit(c *content.Content, b *state.Battle, u *state.Unit, x, y int, emit action.Emit) []Tile {
 	n := abs(u.X-x) + abs(u.Y-y)
 	if n == 0 {
-		return
+		return nil
+	}
+	if u.Team == state.Heroes && u.Status["beast"] > 0 && u.P("bmT", 0) != 0 {
+		b.Fields = append(b.Fields, state.Field{X: x, Y: y, Turns: 2, Kind: "fire", Owner: u.ID})
 	}
 	path := Path(c, b, u, x, y)
 	if len(path) < 2 {
@@ -87,6 +117,7 @@ func MoveUnit(c *content.Content, b *state.Battle, u *state.Unit, x, y int, emit
 		}
 		emit(ev)
 	}
+	return path
 }
 
 func abs(v int) int {
@@ -107,8 +138,19 @@ func enemyBlocks(b *state.Battle, u *state.Unit) func(x, y int) bool {
 // Reach lists every tile this unit can walk to and stop on, in the old game's
 // order (row by row). It includes the tile the unit stands on.
 func Reach(c *content.Content, b *state.Battle, u *state.Unit) []Tile {
+	if u.Status["vamp"] > 0 { // Blood Pact: any open tile (old bfs, line 1226)
+		var out []Tile
+		for y := 0; y < b.N; y++ {
+			for x := 0; x < b.N; x++ {
+				if o := b.UnitAt(x, y); o == nil || o == u {
+					out = append(out, Tile{X: x, Y: y})
+				}
+			}
+		}
+		return out
+	}
 	cost := func(x, y int) int { return StepCost(c, b, u, x, y) }
-	r := search(b, []Tile{{X: u.X, Y: u.Y}}, cost, Budget(u), enemyBlocks(b, u))
+	r := search(b, []Tile{{X: u.X, Y: u.Y}}, cost, Budget(b, u), enemyBlocks(b, u))
 	var out []Tile
 	for k, d := range r.dist {
 		if d >= Blocked {
@@ -137,6 +179,9 @@ func CanReach(c *content.Content, b *state.Battle, u *state.Unit, x, y int) bool
 // game broke them, because traps and auto-walk depend on the route taken.
 func Path(c *content.Content, b *state.Battle, u *state.Unit, x, y int) []Tile {
 	cost := func(a, bb int) int { return StepCost(c, b, u, a, bb) }
+	if u.Status["vamp"] > 0 { // Blood Pact walks over anything (old bfsPath, line 1228)
+		cost = func(int, int) int { return 2 }
+	}
 	r := search(b, []Tile{{X: u.X, Y: u.Y}}, cost, 10_000_000, enemyBlocks(b, u))
 	k := y*b.N + x
 	if r.dist[k] >= Blocked {

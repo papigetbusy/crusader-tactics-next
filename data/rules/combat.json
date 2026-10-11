@@ -37,6 +37,7 @@
   "potionPerLevel": 3,
   "reviveShare": 0.4,
   "reviveAnyDeath": true,
+  "trapsOnPath": true,
   "rallyAttack": 1.25,
   "weakAttack": 0.7,
   "brokenDefense": 0.7,

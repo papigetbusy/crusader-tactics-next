@@ -37,7 +37,10 @@ func hidden(v *state.Unit) bool {
 // (old tgt, line 777). Heals pick hurt allies; attacks pick enemies in range.
 func Targets(c *content.Content, b *state.Battle, u *state.Unit, s content.Skill) []*state.Unit {
 	switch {
-	case s.Summon != nil:
+	case s.Summon != nil: // one raised monster at a time (old tgt, line 777)
+		if PetOf(b, u) != nil {
+			return nil
+		}
 		return []*state.Unit{u}
 	case s.Support:
 		var out []*state.Unit
@@ -68,6 +71,12 @@ func Targets(c *content.Content, b *state.Battle, u *state.Unit, s content.Skill
 	}
 	if !s.Heal {
 		hi += u.RangeBonus
+		if u.Status["heye"] > 0 && s.Kind != "u" {
+			hi += int(u.P("heR", 3))
+		}
+		if u.Status["deadeye"] > 0 {
+			hi += 99
+		}
 	}
 	var out []*state.Unit
 	for _, v := range b.Units {
@@ -83,4 +92,14 @@ func Targets(c *content.Content, b *state.Battle, u *state.Unit, s content.Skill
 		}
 	}
 	return out
+}
+
+// PetOf is the monster a hero raised and still has on the board, or nil.
+func PetOf(b *state.Battle, u *state.Unit) *state.Unit {
+	for _, z := range b.Units {
+		if z.Summoned && z.Owner == u.ID {
+			return z
+		}
+	}
+	return nil
 }
