@@ -63,6 +63,7 @@ func addPurple(c *Content) {
 			g.ArmorNames[w][sl] = append(g.ArmorNames[w][sl], name)
 		}
 	}
+	c.Floors.Shop.Prices = slices.Insert(c.Floors.Shop.Prices, epic, 200)          // between rare (100) and legendary (400)
 	g.EpicCharms = []string{"Saint's Reliquary", "Blood Ruby", "Hourglass of Ash"} // P39-P41
 	for i, a := range g.Affixes {
 		g.Affixes[i].Ranges = slices.Insert(a.Ranges, epic, epicRanges[a.Key])
@@ -103,7 +104,7 @@ func init() {
 		Date: "2026-10-11",
 		What: "Shops no longer take a floor number: every 7 floors the shop comes up between floors, then that floor is " +
 			"fought. Before, floors 7, 14, 21... were shop floors with no fight.",
-		Apply: func(c *Content) { c.Floors.ShopEvery = 0 },
+		Apply: func(c *Content) { c.Floors.ShopEvery, c.Floors.ShopBefore = 0, 7 },
 	}, Change{
 		Date: "2026-10-10",
 		What: "Heroes start on blue starting tiles the player picks: every open tile of the bottom 2 rows. " +

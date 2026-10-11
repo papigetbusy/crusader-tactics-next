@@ -264,3 +264,12 @@ func Gold(c *content.Content, b *state.Battle, killer, v *state.Unit) int {
 	}
 	return g
 }
+
+// For makes an item of rarity k for hero p, as loot would (the shop's
+// stock, old openShop, line 765). A legendary waits for a Lv 30 hero.
+func For(c *content.Content, b *state.Battle, dice rng.Dice, p *state.Unit, k int) content.Item {
+	return lootPick(c, b, dice, p, allowed(c, b, k))
+}
+
+// Allowed is the rarity loot can have now (legendaries wait for Lv 30).
+func Allowed(c *content.Content, b *state.Battle, k int) int { return allowed(c, b, k) }

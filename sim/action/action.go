@@ -24,6 +24,17 @@ const (
 	// Bring changes Unit's skills, once per floor: Bar is the new bar of
 	// 1-4 learned normal skills, Choice the ultimate (empty: keep it).
 	Bring Kind = "bring"
+
+	// The climb between battles (Phase 7).
+	Team     Kind = "team"     // choose the heroes for this floor: Heroes (classes), one per slot
+	Place    Kind = "place"    // put hero Hero on starting tile X, Y (swaps with a hero already there)
+	Start    Kind = "start"    // start the battle (with the strongest heroes if none were chosen)
+	Continue Kind = "continue" // after a battle or the shop: go on to the next step
+	Travel   Kind = "travel"   // go to floor Floor (one already reached)
+	Buy      Kind = "buy"      // buy shop item Item
+	Sell     Kind = "sell"     // sell bag item Item
+	Combine  Kind = "combine"  // combine bag items Item and Second (two copies) into one a rarity higher
+	Ascend   Kind = "ascend"   // change hero Hero's ascension to Choice (once per floor)
 )
 
 // Action is one request.
@@ -38,6 +49,9 @@ type Action struct {
 	Choice string   `json:"choice,omitempty"` // Decide: "ok", "keep", "replace", or an ascension's name
 	Tiles  [][2]int `json:"tiles,omitempty"`  // the tiles picked, for tile-aimed abilities and skills
 	Bar    []string `json:"bar,omitempty"`    // Bring: the 1-4 normal skills to carry, in order
+	Heroes []string `json:"heroes,omitempty"` // Team: hero classes
+	Hero   string   `json:"hero,omitempty"`   // Place, Ascend: a hero class
+	Floor  int      `json:"floor,omitempty"`  // Travel
 	Set    int      `json:"set,omitempty"`    // Attack: weapon set 1-3 to use (0 = the one in hand, or the first that fits the skill)
 	Item   int      `json:"item,omitempty"`   // Equip, Drop: index in the bag
 	Slot   string   `json:"slot,omitempty"`   // Equip: weapon slot for a weapon
@@ -86,6 +100,7 @@ const (
 	GearDropped   = "dropped"    // item Skill was thrown away
 	SkillBrought  = "brought"    // Unit changed its skills (once per floor)
 	Reinforced    = "reinforced" // Amount monsters arrived (reinforcement floors)
+	Combined      = "combined"   // the shop combined two items into Skill (rarity Amount)
 	SetSwitched   = "set"        // Unit took weapon set Amount (1-3) in hand
 	Evolved       = "evolved"    // Unit evolved into the form named Skill (at levels 5 and 20)
 	Guarded       = "guarded"    // Unit (a Guardian) takes the hit aimed at Target

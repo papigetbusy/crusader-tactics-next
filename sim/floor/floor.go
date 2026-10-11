@@ -24,6 +24,7 @@ type Hero struct {
 type Memory struct {
 	Opened  []state.Tile // chests already opened
 	Cleared bool         // beaten before: no companion spirit
+	Level   int          // the monster level set on the first visit (0: work it out)
 }
 
 // Floor is a built floor, ready for the team to be placed.

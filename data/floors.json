@@ -77,6 +77,20 @@
     }
   ],
   "startRows": 2,
+  "shopBefore": 7,
+  "shop": {
+    "stock": 6,
+    "betterChance": 0.15,
+    "prices": [
+      12,
+      35,
+      100,
+      200,
+      400
+    ],
+    "perPoint": 3,
+    "sellShare": 0.5
+  },
   "bosses": [
     {
       "name": "Bat Lord",

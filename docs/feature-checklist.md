@@ -30,16 +30,16 @@ Every feature of the old game (v0.26.1), and where it lands in the rebuild. Noth
 - ✅ 7a: endless floors; maps grow from 14x14 to 32x32; 7 biomes; rivers, bridges, mountain passes, forts, roads, forests, hills (1,500 old floors rebuilt exactly)
 - ✅ 7a: monster count and level by floor (the v0.22.1 tuning), elites every 5 floors, bosses every 10, throne floors, reinforcement floors (now worked out by Go in every old fight), max 1 enemy healer, chests and companion spirits placed by the floor
 - ✅ 7a: blue starting tiles on every floor (every open tile of the bottom 2 rows); placing heroes on them comes with team select (7c)
-- 🔜 Persistent floors: going back gives the same map, monsters, opened chests and shop stock; replaying a cleared floor gives half gold and full XP; boss legendary memory
-- 🔜 Floor travel list (cleared floors, chests left, boss loot)
-- 🔜 Shop: buy, sell, **combine** two items (mixes and amplifies their bonuses)
-- 🛠 Recruiting is replaced (owner, 2026-10-11): all 10 heroes are yours from the start; every 25 floors (25, 50, 75) you get one more hero slot instead, from 5 up to 8
-- 🔜 A free legendary gift every 100 floors
-- 🔜 Team select and deployment (approved 2026-10-10): look at the map, pick heroes for every slot, place them on blue starting tiles (more tiles than heroes); only heroes who fight earn XP; if you don't choose, your highest-level heroes go
-- ➕ **Change ascension once per floor** from the gear sheet (the old "re-spec" and "Choose Ascension" buttons)
-- 🔜 Floor-clear summary (XP, level-ups, loot, gold)
+- ✅ 7b: persistent floors: going back gives the same map, monsters, opened chests and shop stock; replaying a cleared floor gives half gold and full XP; boss legendary memory
+- ✅ 7b: floor travel list (cleared floors, chests left, boss loot); also from the middle of a battle (what was earned is kept)
+- ✅ 7b: shop before every 7th floor: buy, sell, **combine** two items (mixes and amplifies their bonuses; two rares make a purple, two purples a legendary from Lv 30)
+- ✅ 7c: recruiting is replaced (owner, 2026-10-11): all 10 heroes are yours from the start; every 25 floors (25, 50, 75) you get one more hero slot instead, from 5 up to 8
+- ✅ 7b: a free legendary gift every 100 floors
+- ✅ 7c: team select and deployment (approved 2026-10-10): look at the map, pick heroes for every slot, place them on blue starting tiles (more tiles than heroes); only heroes who fight earn XP; if you don't choose, your highest-level heroes go
+- ✅ 7b: **change ascension once per floor**, between battles (the old "re-spec" and "Choose Ascension" buttons)
+- ✅ 7b: floor-clear summary (XP, level-ups, loot, gold), and a defeat summary
 - 🔜 Saves: 3 save slots, autosave at the start of every turn, resume mid-battle, save export and import (copy, download, paste or file); old saves not needed for now (owner, 2026-10-11), Claude makes a playtest save
-- 🔜 Defeat re-runs the floor with no penalty (kept on purpose, owner 2026-10-11: getting stuck and farming earlier floors is the game)
+- ✅ 7b: defeat re-runs the floor with no penalty (kept on purpose, owner 2026-10-11: getting stuck and farming earlier floors is the game)
 - 🛠 Shops (owner, 2026-10-11): no floor number; every 7 floors the shop comes up between floors, then you fight that floor
 
 ## 3. Screen and controls (Phase 8)

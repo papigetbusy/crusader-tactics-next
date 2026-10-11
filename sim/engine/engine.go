@@ -20,9 +20,10 @@ import (
 
 // Game is one battle in progress.
 type Game struct {
-	C    *content.Content
-	B    *state.Battle
-	Dice rng.Dice
+	C     *content.Content
+	B     *state.Battle
+	Dice  rng.Dice
+	climb *climb // the climb around the battle (nil: a single practice fight)
 }
 
 // Refused explains why an action was not allowed.
@@ -41,6 +42,10 @@ func no(code, format string, a ...any) error {
 func (g *Game) Apply(a action.Action) ([]action.Event, error) {
 	var events []action.Event
 	emit := func(e action.Event) { events = append(events, e) }
+	if g.climb != nil && climbKinds[a.Kind] {
+		err := g.climbAction(a, emit)
+		return events, err
+	}
 	if err := g.check(a); err != nil {
 		return nil, err
 	}
@@ -120,8 +125,18 @@ func (g *Game) Apply(a action.Action) ([]action.Event, error) {
 		}
 	}
 	combat.FlushRaises(g.C, b, emit)
+	if g.climb != nil {
+		g.finish()
+	}
 	return events, nil
 }
+
+// climbKinds are the actions between battles.
+var climbKinds = map[action.Kind]bool{action.Team: true, action.Place: true, action.Start: true, action.Continue: true,
+	action.Travel: true, action.Buy: true, action.Sell: true, action.Combine: true, action.Ascend: true}
+
+// preparing are the battle actions allowed while looking at the map.
+var preparing = map[action.Kind]bool{action.Equip: true, action.Unequip: true, action.Drop: true, action.UseSet: true, action.Bring: true}
 
 // seizeThrone is the seize-the-throne win: a hero who reaches the throne
 // makes every enemy flee (old click handler, index.html line 1761).
@@ -149,6 +164,9 @@ func (g *Game) check(a action.Action) error {
 	}
 	if b.Outcome != state.Ongoing {
 		return no("battle-over", "The battle is over.")
+	}
+	if g.climb != nil && g.climb.phase != PhaseBattle && !(g.climb.phase == PhasePrepare && preparing[a.Kind]) {
+		return no("not-in-battle", "Start the battle first.")
 	}
 	if len(b.Decisions) > 0 {
 		return no("decide-first", "Answer the waiting choice first.")

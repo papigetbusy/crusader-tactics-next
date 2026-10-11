@@ -80,6 +80,12 @@ func main() {
 		game = engine.NewFight(rules, s, seed)
 		return text(map[string]any{"name": s.Name, "view": game.View()})
 	}))
+	// ctClimb(runSeed, seedHigh, seedLow) -> view: a new climb from floor 1
+	g.Set("ctClimb", fn(func(a []js.Value) any {
+		seed := uint64(uint32(a[1].Float()))<<32 | uint64(uint32(a[2].Float()))
+		game = engine.NewClimb(rules, uint32(a[0].Float()), seed)
+		return text(game.View())
+	}))
 	// ctApply(actionJSON) -> {events, view} or {refused}
 	g.Set("ctApply", fn(func(a []js.Value) any {
 		var act action.Action

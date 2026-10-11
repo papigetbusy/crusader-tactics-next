@@ -89,10 +89,12 @@ footer{margin-top:16px;color:var(--muted);font-size:13px}
 <nav><a class="on" href="./">Practice fight</a><a href="rules.html">Rule Book</a><a href="match.html">Old-Game Match</a><a href="house.html">House Rules</a><a href="changes.html">Changes</a></nav></header>
 <div id="err"></div>
 <div class="bar"><select id="pick" aria-label="Choose a fight"></select><button class="gold" id="new">New fight</button></div>
+<div class="bar"><button class="gold" id="climbgo">Start a climb</button><span class="muted">all ten heroes from floor 1</span></div>
 <div class="bar"><label for="fl">Climb: floor</label><input type="number" id="fl" min="1" max="300" value="1" inputmode="numeric" style="width:5em"><button class="gold" id="build">Build floor</button></div>
 <div id="status">Loading the referee…</div>
 <div id="wrap" style="overflow:auto"><div id="board"></div></div>
 <div id="banner"></div>
+<div class="card" id="climb" style="display:none"></div>
 <div class="card" id="panel"><div class="muted">Tap one of your heroes (gold) to begin. Gold tiles show where it can walk; red outlines show who its skill can reach.</div></div>
 <div class="card"><h2>Battle log</h2><div id="log"></div></div>
 <div id="choice"><div class="box" id="choicebox"></div></div>
@@ -133,6 +135,52 @@ function buildFloor(){
   logLine('turn','Turn 1 · your move');render();
 }
 $('build').onclick=buildFloor;
+// The climb: all ten heroes from floor 1, team select, the shop, the floor list.
+let floorsOpen=false;
+function startClimb(){
+  const s=crypto.getRandomValues(new Uint32Array(3));
+  V=J(ctClimb(s[2],s[0],s[1]));sel=null;aim=null;walk=null;reach=[];targets=[];floorsOpen=false;
+  $('log').innerHTML='';$('banner').className='';logLine('turn','A new climb: look at the map, choose your team and place it on the blue tiles.');render();
+}
+$('climbgo').onclick=startClimb;
+function climbCard(){
+  const el=$('climb'),c=V.climb;if(!c){el.style.display='none';return}
+  el.style.display='';
+  let h=`<h2>Climb · floor ${c.floor} <span class="muted">(best ${c.best} · ${c.gold} gold · ${c.slots} hero slots)</span></h2>`;
+  if(c.phase==='prepare'){
+    h+=`<div class="muted">Choose ${c.slots} heroes, then tap one of them on the map and a blue tile to move it. Monsters on this floor are Lv ${(V.units.find(u=>u.team===1)||{}).level||'?'}.</div>`;
+    h+=c.heroes.map(r=>`<label class="item"><div><b>${r.class}</b> <span class="muted">${r.form} · Lv ${r.level} (${r.xp}/${r.xpNext} XP)${r.ascension?' · '+r.ascension:''}</span>${r.canAscend?`<small>Change ascension (once per floor): ${r.canAscend.map(a=>`<button data-asc="${r.class}|${a}">${a}</button>`).join(' ')}</small>`:''}</div><input type="checkbox" class="teampick" value="${r.class}" ${r.inTeam?'checked':''}></label>`).join('');
+    h+=`<div class="acts"><button id="teamgo">Use this team</button><button class="gold" id="startgo">Start battle</button></div>`;
+  } else if(c.phase==='won'||c.phase==='lost'){
+    const s=c.summary||{};
+    h+=`<h3>${s.won?`Floor ${s.floor} cleared`+(s.newBest?' · new highest floor!':s.replayed?' · a replay (half gold)':''):`Defeated on floor ${s.floor}. Everything earned is kept; try again.`}</h3>`;
+    h+=(s.heroes||[]).map(x=>`<div>${x.class}: Lv ${x.from}${x.to>x.from?' → '+x.to+' ▲':''} · +${x.xp} XP${x.capped?' · CAPPED':''}</div>`).join('');
+    h+=`<div>Gold +${s.gold} · Loot: ${(s.loot||[]).map(i=>`<b style="color:${i.color}">${i.name}</b>`).join(', ')||'none'}</div>`;
+    if(s.gift)h+=`<div>Gift for reaching floor ${c.best}: <b style="color:${s.gift.color}">${s.gift.name}</b></div>`;
+    h+=`<div class="acts"><button class="gold" id="contgo">Continue to floor ${c.floor}</button></div>`;
+  } else if(c.phase==='shop'){
+    h+=`<h3>Shop before floor ${c.floor}</h3>`;
+    h+=(c.shop||[]).map((it,i)=>itemRow(it,`<button class="gold" data-buy="${i}" ${c.gold<it.price?'disabled':''}>Buy ${it.price}g</button>`)).join('')||'<div class="muted">Sold out.</div>';
+    h+=`<h3>Your bag</h3>`;
+    const seen={};
+    h+=(c.bag||[]).map((it,i)=>{const k=it.name+'|'+it.rarity;let comb='';if(seen[k]!=null&&it.rarity!=='legendary')comb=`<button data-comb="${seen[k]}|${i}">Combine with the other</button>`;else seen[k]=i;
+      return itemRow(it,`<button data-sell="${i}">Sell ${it.price}g</button>${comb}`)}).join('')||'<div class="muted">The bag is empty.</div>';
+    h+=`<div class="acts"><button class="gold" id="contgo">Leave the shop</button></div>`;
+  }
+  h+=`<div class="acts"><button id="flgo">${floorsOpen?'Hide floors':'Floors'}</button></div>`;
+  if(floorsOpen)h+=c.floors.map(f=>`<div class="item"><div><b>Floor ${f.number}</b> <span class="muted">${f.biome||''} ${f.here?'· here':''}${f.top?' · top':''}${f.cleared?' · ✓ cleared':''}${f.boss?(f.bossLegendary?' · boss (legendary taken)':' · boss'):f.elite?' · elite':''}${f.shop?' · shop':''}${f.chestsLeft?` · ${f.chestsLeft} chest${f.chestsLeft>1?'s':''} left`:''}</span></div>${f.here?'':`<button data-go="${f.number}">Go</button>`}</div>`).join('');
+  el.innerHTML=h;
+  el.querySelectorAll('.teampick').forEach(cb=>cb.onchange=()=>{if(el.querySelectorAll('.teampick:checked').length>c.slots)cb.checked=false});
+  if($('teamgo'))$('teamgo').onclick=()=>{const t=[...el.querySelectorAll('.teampick:checked')].map(x=>x.value);if(t.length!==c.slots){alert(`Choose ${c.slots} heroes.`);return}sel=null;apply({kind:'team',heroes:t})};
+  if($('startgo'))$('startgo').onclick=()=>{sel=null;apply({kind:'start'})&&logLine('turn','Turn 1 · your move')};
+  if($('contgo'))$('contgo').onclick=()=>{sel=null;apply({kind:'continue'})};
+  if($('flgo'))$('flgo').onclick=()=>{floorsOpen=!floorsOpen;render()};
+  el.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{if(c.phase==='battle'&&!confirm('Leave this battle? What you earned is kept.'))return;sel=null;floorsOpen=false;apply({kind:'travel',floor:+b.dataset.go})});
+  el.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>apply({kind:'buy',item:+b.dataset.buy}));
+  el.querySelectorAll('[data-sell]').forEach(b=>b.onclick=()=>apply({kind:'sell',item:+b.dataset.sell}));
+  el.querySelectorAll('[data-comb]').forEach(b=>b.onclick=()=>{const [i,j]=b.dataset.comb.split('|').map(Number);apply({kind:'combine',item:i,second:j})});
+  el.querySelectorAll('[data-asc]').forEach(b=>b.onclick=()=>{const [hero,choice]=b.dataset.asc.split('|');apply({kind:'ascend',hero,choice})});
+}
 
 const unit=id=>V.units.find(u=>u.id===id);
 const at=(x,y)=>V.units.find(u=>u.x===x&&u.y===y);
@@ -159,7 +207,7 @@ function refreshAim(){
 }
 function render(){
   const b=$('board'),n=V.n;b.style.gridTemplateColumns=`repeat(${n},1fr)`;b.innerHTML='';b.style.width=n>16?`${n*26}px`:'100%';
-  const st=new Set(V.turn===1&&V.side===0?(V.starts||[]).map(t=>t.x+','+t.y):[]);
+  const st=new Set((V.climb?V.climb.phase==='prepare':V.turn===1&&V.side===0)?(V.starts||[]).map(t=>t.x+','+t.y):[]);
   const rs=new Set(reach.map(t=>t[0]+','+t[1]));
   for(let y=0;y<n;y++)for(let x=0;x<n;x++){
     const d=document.createElement('div');d.className='tile '+V.ground[y][x]+(rs.has(x+','+y)?' reach':'')+(walk&&walk.x===x&&walk.y===y?' walkto':'')+(st.has(x+','+y)?' start':'');
@@ -181,7 +229,7 @@ function render(){
   if(V.fallen&&V.fallen.length&&!V.outcome)$('status').textContent+=` · fallen: ${V.fallen.join(', ')}`;
   $('status').textContent+=` · ${V.gold||0} gold`;
   if(V.biome)$('status').textContent+=` · floor ${V.floor}, ${V.biome}${V.reinforce?' · reinforcements on turns 3 and 5':''}`;
-  showChoice();
+  showChoice();climbCard();
   if(V.outcome){$('banner').className=V.outcome;$('banner').textContent=V.outcome==='won'?'Victory: every enemy is gone':'Defeat: every hero has fallen'}
   panel();
 }
@@ -201,7 +249,7 @@ function panel(){
     if(u.ability)h+=`<button class="gold" id="abl" ${u.ability.wait||(u.done&&!u.ability.free)?'disabled':''} title="${u.ability.text.replace(/"/g,'')}">✦ ${u.ability.name}${u.ability.wait?' ('+u.ability.wait+')':''}</button>`;
     if(abil)h+=`<button id="abx">Cancel ${abil.name}</button>`;
     if(sk)h+=`<button id="skx">Cancel ${sk.name}</button>`;
-    if(!u.done){
+    if(!u.done&&(!V.climb||V.climb.phase==='battle')){
       h+=`<button id="def">Defend</button>`;
       h+=`<button id="pot" ${u.potions&&u.hp<u.maxHp?'':'disabled'}>Potion (${u.potions})</button>`;
       if(u.canUndo)h+=`<button id="undo">Undo move</button>`;
@@ -291,6 +339,11 @@ function startAbility(){
   refreshAim();render();
 }
 function tap(x,y){
+  if(V.climb&&V.climb.phase!=='battle'&&V.climb.phase!=='prepare')return;
+  if(V.climb&&V.climb.phase==='prepare'){const u=at(x,y);
+    if(u&&u.team===0){sel=u.id;render();return}
+    if(sel!=null&&(V.starts||[]).some(t=>t.x===x&&t.y===y)){apply({kind:'place',hero:unit(sel).class,x,y});return}
+    return}
   if(V.outcome||V.side!==0||V.decision)return;
   const u=at(x,y);
   if(sk){
@@ -381,6 +434,7 @@ function say(e){
     case 'equipped':logLine('good',`${n(e.unit)} puts on ${e.skill}.`);break;
     case 'dropped':logLine('',`${e.skill} is thrown away.`);break;
     case 'set':logLine('',`${n(e.unit)} takes weapon set ${e.amount} in hand.`);break;
+    case 'combined':logLine('good',`Combined into ${e.skill}!`);break;
     case 'reinforced':logLine('bad',`${e.amount} enemy reinforcements arrive!`);break;
     case 'brought':logLine('',`${n(e.unit)} changes skills for this floor.`);break;
     case 'learned':logLine('good',`${n(e.unit)} learns ${e.skill}.`);break;

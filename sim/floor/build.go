@@ -19,6 +19,9 @@ func Build(c *content.Content, run uint32, number int, team []Hero, mem Memory, 
 	n := Size(c, number)
 	boss, shop, throne, rein := Is(c, number)
 	fl := Floor{Number: number, N: n, Shop: shop, Boss: boss, Reinforce: rein, Level: Level(c, number, team)}
+	if mem.Level > 0 {
+		fl.Level = mem.Level
+	}
 	ground := terrain(n, throne || boss, rng.NewStream(seed+1))
 	for _, row := range ground {
 		fl.Ground = append(fl.Ground, string(row))

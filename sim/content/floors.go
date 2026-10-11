@@ -51,10 +51,25 @@ type Floors struct {
 	Chests          []ChestOdds `json:"chests"`
 	StartRows       int         `json:"startRows"` // blue starting tiles: the bottom rows (0: the old game's fixed spots)
 
+	// ShopBefore: the shop comes up before every floor that is a multiple
+	// of this, with no floor number of its own (owner, 2026-10-11; 0: none).
+	ShopBefore int  `json:"shopBefore"`
+	Shop       Shop `json:"shop"`
+
 	Bosses   []Named  `json:"bosses"` // one per boss floor, in turn
 	Elites   []Named  `json:"elites"`
 	Biomes   []string `json:"biomes"`
 	Elements []string `json:"elements"` // a monster with no element rolls one of these
+}
+
+// Shop is how the shop works (old openShop, renderShop and itemVal, lines
+// 762-768).
+type Shop struct {
+	Stock        int     `json:"stock"`        // items for sale on a floor's shop
+	BetterChance float64 `json:"betterChance"` // an item one rarity above the floor's
+	Prices       []int   `json:"prices"`       // base price by rarity
+	PerPoint     float64 `json:"perPoint"`     // plus this per point of the item's numbers
+	SellShare    float64 `json:"sellShare"`    // selling pays this share of the price
 }
 
 // Named is a boss or elite: its class and element.
@@ -78,7 +93,8 @@ func oldFloors(tables fs.FS) (Floors, error) {
 		ThroneEvery: 3, ThroneAt: 2, ReinforceEvery: 4, ReinforceAt: 3, // line 745
 		ReinforceTurns: []int{3, 5}, ReinforceMax: 2, // reinforce, line 1209
 		MaxHealers: 1, EnemyRows: 3, // lines 753 and 757
-		Chests: []ChestOdds{{"wood", .4}, {"silver", .18}, {"gold", .06}}, // spawnChests, line 1000
+		Chests: []ChestOdds{{"wood", .4}, {"silver", .18}, {"gold", .06}},                                      // spawnChests, line 1000
+		Shop:   Shop{Stock: 6, BetterChance: .15, Prices: []int{12, 35, 100, 400}, PerPoint: 3, SellShare: .5}, // lines 762-768
 	}
 	var tune map[string]float64
 	var bosses, elites []struct {

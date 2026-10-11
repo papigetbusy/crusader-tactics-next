@@ -31,6 +31,7 @@ type View struct {
 	Biome     string        `json:"biome,omitempty"`
 	Reinforce bool          `json:"reinforce,omitempty"` // monsters arrive on turns 3 and 5
 	Starts    []state.Tile  `json:"starts,omitempty"`    // blue starting tiles
+	Climb     *ClimbView    `json:"climb,omitempty"`     // the climb around the battle (Phase 7)
 }
 
 // UnitView is one unit as the screen sees it.
@@ -134,6 +135,9 @@ func (g *Game) View() View {
 	v.Decision = g.decisionView()
 	v.Bag, v.Gold, v.Chests = g.bagView(), b.Gold, b.Chests
 	v.Floor, v.Biome, v.Reinforce, v.Starts = b.Floor, b.Biome, b.Reinforce, b.Starts
+	if g.climb != nil {
+		v.Climb = g.climbView()
+	}
 	for y := 0; y < b.N; y++ {
 		row := make([]byte, b.N)
 		for x := range row {
