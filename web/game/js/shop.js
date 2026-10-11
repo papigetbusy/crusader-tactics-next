@@ -3,6 +3,7 @@
 // combined all come from the referee; every button is an action.
 import * as referee from './referee.js';
 import { url } from './assets.js';
+import { icon } from './icons.js';
 
 const $ = (id) => document.getElementById(id);
 let screen = null, tab = 'buy';
@@ -20,7 +21,7 @@ function act(a) {
 const row = (it, label, f, off) => {
   const d = document.createElement('div');
   d.className = 'srow';
-  d.innerHTML = `<span><b style="color:${it.color}">${it.name}</b> <small>(${it.kind})</small>${it.text ? `<br><small class="afx">${it.text}</small>` : ''}</span>`;
+  d.innerHTML = `<img class="ic" src="${icon(it)}" alt=""><span><b style="color:${it.color}">${it.name}</b> <small>(${it.kind})</small>${it.text ? `<br><small class="afx">${it.text}</small>` : ''}</span>`;
   const b = document.createElement('button');
   b.className = 'b';
   b.textContent = label;

@@ -210,3 +210,14 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
 #forecast .skills button.on { background: linear-gradient(#6a1a22, #3a0c12); border-color: #d9c27a; color: #ffe6a8; }
 #forecast .fr .b { flex: 1 1 0; }
 #forecast .fr .go { flex: 2.2 1 0; }
+.srow .ic { width: 36px; height: 36px; flex: none; image-rendering: pixelated; }
+.srow > span:not(.btns) { flex: 1; }
+.cmp .up { color: #8ff0b0; } .cmp .dn { color: #ff8a8a; } .cmp span { margin-right: 6px; } .cmp { color: #c9b89a; }
+.why { color: #ff8a8a; }
+.capt { display: inline-block; margin-left: 6px; font: 700 11px system-ui, sans-serif; color: #1a0a06; background: #ffb36a; padding: 2px 8px; border-radius: 8px; }
+.srow > span:not(.btns) { min-width: 0; }
+.srow .btns { flex: none; display: flex; flex-direction: column; gap: 4px; width: 104px; }
+.srow .btns .b, .srow > .b { min-height: 38px; padding: 0 4px; font-size: 13px; border-width: 10px; border-image-width: 10px; }
+.srow > .b { flex: none; width: 104px; }
+.srow .btns .b, .srow > .b { box-sizing: border-box; width: 100%; }
+.srow > .b { width: 104px; }

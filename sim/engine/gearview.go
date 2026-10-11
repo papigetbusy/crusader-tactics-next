@@ -19,6 +19,11 @@ type ItemView struct {
 	Kind   string `json:"kind"` // "Sword · needs rank C", "Heavy armor", "Charm"
 	Text   string `json:"text"` // its numbers and bonuses in a line
 	Lore   string `json:"lore,omitempty"`
+	// For the item's picture: its rarity as a number (0 common, up to the
+	// legendary), weapon type and armor weight.
+	Tier       int    `json:"tier"`
+	WeaponType string `json:"weaponType,omitempty"`
+	Weight     string `json:"weight,omitempty"`
 }
 
 // SetView is one weapon set.
@@ -36,6 +41,8 @@ type GearView struct {
 	Weapons    string     `json:"weapons"`               // what the class can use: "Sword C · Axe D · Medium and Heavy armor"
 	FreeSlots  []string   `json:"freeSlots,omitempty"`   // empty weapon slots
 	WeaponSlot []string   `json:"weaponSlots,omitempty"` // every weapon slot
+	Bag        []BagFit   `json:"bag,omitempty"`         // how each bag item suits this hero
+	Capped     bool       `json:"capped,omitempty"`      // at the level cap: earns no XP until the highest floor is cleared
 }
 
 // itemText describes an item's numbers and bonuses in one line.
@@ -73,7 +80,7 @@ func (g *Game) affixText(key string, v int) string {
 
 func (g *Game) itemView(slot string, it content.Item) ItemView {
 	gr := g.C.Gear
-	iv := ItemView{Slot: slot, Name: it.Name, Text: g.itemText(it)}
+	iv := ItemView{Slot: slot, Name: it.Name, Text: g.itemText(it), Tier: it.Rarity, WeaponType: it.WeaponType, Weight: it.Weight}
 	if it.Rarity >= 0 && it.Rarity < len(gr.Rarities) {
 		iv.Rarity, iv.Color = gr.Rarities[it.Rarity].Name, gr.Rarities[it.Rarity].Color
 	}
@@ -133,6 +140,8 @@ func (g *Game) gearView(u *state.Unit) *GearView {
 	}
 	gv.Bonuses = strings.Join(bon, " · ")
 	gv.Weapons = g.weaponsText(u.Class, u.Level)
+	gv.Bag = g.bagFits(u)
+	gv.Capped = g.B.LevelCap > 0 && u.Level >= g.B.LevelCap
 	return gv
 }
 

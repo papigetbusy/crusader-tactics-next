@@ -75,7 +75,7 @@ The old screen is carried over and wired to the referee; each of these gets tick
 
 **Menus and info**
 - ➕ Title screen (castle art, candle flicker, lightning and mist), New Game hero pick, Continue with save slots
-- ➕ Gear sheet: CAPPED tag, bag sorting, stat comparison with worn gear, weapon ranks shown, Drop with confirmation
+- ✅ Gear sheet: CAPPED tag, bag sorting, stat comparison with worn gear, weapon ranks shown, Drop with confirmation, item pictures (8k)
 - ➕ Settings: Options, How to Play (with a link to the Codex), What's New, a copyable bug Report
 - ➕ Options: damage numbers, reduced flashing, low graphics, colorblind-friendly tiles, minimap, danger zone
 - 🔜 First-time tips, off by default (v0.25), each shown once; battle goal only at the start (your request)

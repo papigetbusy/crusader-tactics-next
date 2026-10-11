@@ -280,4 +280,22 @@ func TestClimb(t *testing.T) {
 			t.Fatalf("still asking after a tile was picked: %v %v", units, more)
 		}
 	})
+
+	t.Run("The gear sheet compares each bag item with what the hero wears, and says when it can't be worn", func(t *testing.T) {
+		g := climbGame()
+		var w *state.Unit
+		for _, id := range g.B.Party {
+			if u := g.B.Unit(id); u.Class == "Warrior" {
+				w = u
+			}
+		}
+		g.B.Bag = []content.Item{
+			{Name: "Steel Sword", Slot: "w", Rarity: 1, WeaponType: "sword", Atk: 4},
+			{Name: "Ash Staff", Slot: "w", Rarity: 0, WeaponType: "staff", Atk: 4},
+		}
+		f := g.bagFits(w)
+		if !f[0].OK || f[0].Diff["atk"] != 4 || f[1].OK || f[1].Why == "" {
+			t.Fatalf("%+v", f)
+		}
+	})
 }
