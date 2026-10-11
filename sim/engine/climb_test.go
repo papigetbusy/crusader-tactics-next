@@ -236,4 +236,20 @@ func TestClimb(t *testing.T) {
 			}
 		}
 	})
+
+	t.Run("Gear changed before the battle starts doesn't use up the hero's turn", func(t *testing.T) {
+		g := climbGame()
+		g.B.Bag = append(g.B.Bag, content.Item{Name: "Steel Sword", Slot: "w", Rarity: 1, WeaponType: "sword", Atk: 4})
+		var w *state.Unit
+		for _, id := range g.B.Party {
+			if u := g.B.Unit(id); u.Class == "Warrior" {
+				w = u
+			}
+		}
+		must(t, g, action.Action{Kind: action.Equip, Unit: w.ID, Item: len(g.B.Bag) - 1})
+		must(t, g, action.Action{Kind: action.Unequip, Unit: w.ID, Slot: "w"})
+		if w.Done {
+			t.Fatal("the Warrior is finished before the battle started")
+		}
+	})
 }

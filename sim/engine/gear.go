@@ -125,7 +125,7 @@ func (g *Game) equip(a action.Action, emit action.Emit) {
 	u.Gear[sl] = it
 	stats.Refresh(g.C, b, u)
 	emit(action.Event{Kind: action.GearOn, Unit: u.ID, Skill: it.Name})
-	if g.C.Combat.EquipEndsTurn {
+	if g.C.Combat.EquipEndsTurn && g.fighting() {
 		u.Done = true
 		combat.PairDone(b, u)
 		emit(action.Event{Kind: action.Finished, Unit: u.ID})
@@ -160,9 +160,13 @@ func (g *Game) unequip(a action.Action, emit action.Emit) {
 	b.Bag = append(b.Bag, it)
 	stats.Refresh(g.C, b, u)
 	emit(action.Event{Kind: action.GearOff, Unit: u.ID, Skill: it.Name})
-	if g.C.Combat.EquipEndsTurn {
+	if g.C.Combat.EquipEndsTurn && g.fighting() {
 		u.Done = true
 		combat.PairDone(b, u)
 		emit(action.Event{Kind: action.Finished, Unit: u.ID})
 	}
 }
+
+// fighting is true once the battle has started (a practice fight always is):
+// gear changed while looking at the map before a climb battle is free.
+func (g *Game) fighting() bool { return g.climb == nil || g.climb.phase == PhaseBattle }

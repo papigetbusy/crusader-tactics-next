@@ -70,8 +70,15 @@ function chip() {
   $('chipText').textContent = `Floor ${c ? c.floor : v.floor || 1} · Turn ${v.turn}`;
 }
 
+// log shows a message for 3 seconds, then it fades away (owner, 2026-10-11:
+// messages must not stay on screen and clutter the battle).
+let logTimer = 0;
 export function log(text) {
-  $('log').textContent = text || '';
+  const l = $('log');
+  clearTimeout(logTimer);
+  l.classList.remove('gone');
+  l.textContent = text || '';
+  if (text) logTimer = setTimeout(() => { l.classList.add('gone'); logTimer = setTimeout(() => { l.textContent = ''; }, 400); }, 3000);
 }
 
 // ---------- starting ----------

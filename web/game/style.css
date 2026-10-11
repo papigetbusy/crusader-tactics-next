@@ -51,6 +51,8 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
   font: 500 13px 'EB Garamond', Georgia, serif; color: #e8dcc0;
 }
 #log:empty { display: none; }
+#log { transition: opacity .4s; }
+#log.gone { opacity: 0; }
 
 #endTurn { position: fixed; right: 10px; bottom: calc(14px + var(--safe-b)); z-index: 4; min-height: 44px; padding: 0 18px; font-size: 15px; }
 #endTurn.pulse { animation: endpulse 1.2s ease-in-out infinite; }
