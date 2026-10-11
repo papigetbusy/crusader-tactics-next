@@ -417,6 +417,212 @@
             "visual": "spit"
           }
         }
+      ],
+      "schedule": [
+        {
+          "level": 1,
+          "skill": {
+            "name": "Spore Bolt",
+            "kind": "n",
+            "level": 1,
+            "power": 0.9,
+            "minRange": 1,
+            "maxRange": 3,
+            "visual": "spit"
+          }
+        },
+        {
+          "level": 1,
+          "skill": {
+            "name": "Heal Ally",
+            "class": "Healer",
+            "kind": "n",
+            "level": 1,
+            "power": 1.2,
+            "minRange": 1,
+            "maxRange": 3,
+            "heal": true,
+            "text": "Heals one ally up to 3 tiles away."
+          }
+        },
+        {
+          "level": 1,
+          "skill": {
+            "name": "Divine Grace",
+            "class": "Healer",
+            "kind": "u",
+            "level": 1,
+            "power": 3,
+            "minRange": 0,
+            "maxRange": 99,
+            "heal": true,
+            "lockSelf": true,
+            "text": "Huge heal anywhere on the map, but you cannot move for 2 turns."
+          }
+        },
+        {
+          "level": 3,
+          "skill": {
+            "name": "Mend Self",
+            "class": "Healer",
+            "kind": "n",
+            "level": 3,
+            "power": 0.8,
+            "minRange": 0,
+            "maxRange": 0,
+            "heal": true,
+            "text": "Heals yourself."
+          }
+        },
+        {
+          "level": 6,
+          "skill": {
+            "name": "Radiant Burst",
+            "class": "Healer",
+            "kind": "n",
+            "level": 6,
+            "power": 1,
+            "minRange": 2,
+            "maxRange": 6,
+            "element": "light",
+            "text": "Holy light damage. Strong against dark enemies."
+          }
+        },
+        {
+          "level": 9,
+          "skill": {
+            "name": "Mass Mend",
+            "kind": "n",
+            "level": 9,
+            "power": 1,
+            "minRange": 1,
+            "maxRange": 4,
+            "cooldown": 3,
+            "area": 2,
+            "heal": true
+          }
+        },
+        {
+          "level": 12,
+          "skill": {
+            "name": "Cleanse",
+            "class": "Healer",
+            "kind": "n",
+            "level": 12,
+            "power": 0,
+            "minRange": 0,
+            "maxRange": 3,
+            "heal": true,
+            "cleanse": true,
+            "text": "Removes bleed, snare, stun and armor break."
+          }
+        },
+        {
+          "level": 15,
+          "skill": {
+            "name": "Toxic Spores",
+            "kind": "n",
+            "level": 15,
+            "power": 1,
+            "minRange": 1,
+            "maxRange": 3,
+            "cooldown": 3,
+            "effects": {
+              "bleed": 4
+            },
+            "visual": "spit"
+          }
+        },
+        {
+          "level": 18,
+          "skill": {
+            "name": "Holy Siphon",
+            "class": "Healer",
+            "kind": "n",
+            "level": 18,
+            "power": 0.9,
+            "minRange": 2,
+            "maxRange": 6,
+            "cooldown": 2,
+            "element": "light",
+            "siphon": true,
+            "text": "Light damage, then heals your most hurt ally for 100% of the damage dealt."
+          }
+        },
+        {
+          "level": 20,
+          "skill": {
+            "name": "Last Light",
+            "class": "Healer",
+            "kind": "u",
+            "level": 20,
+            "power": 0,
+            "minRange": 0,
+            "maxRange": 0,
+            "cooldown": 6,
+            "area": 3,
+            "support": true,
+            "buffs": {
+              "lastlight": 2
+            },
+            "text": "You and allies within 3 tiles are healed 30% and, for 2 turns, a blow that would defeat them leaves them at 1 HP instead.",
+            "aim": "self",
+            "trick": "lastLight"
+          }
+        },
+        {
+          "level": 21,
+          "skill": {
+            "name": "Blessing",
+            "class": "Healer",
+            "kind": "n",
+            "level": 21,
+            "power": 0,
+            "minRange": 0,
+            "maxRange": 0,
+            "cooldown": 3,
+            "area": 4,
+            "support": true,
+            "buffs": {
+              "rally": 2
+            },
+            "text": "You and allies within 4 tiles deal 25% more damage for 2 turns."
+          }
+        },
+        {
+          "level": 24,
+          "skill": {
+            "name": "Renewal",
+            "class": "Healer",
+            "kind": "n",
+            "level": 24,
+            "power": 0,
+            "minRange": 0,
+            "maxRange": 0,
+            "cooldown": 4,
+            "area": 4,
+            "support": true,
+            "buffs": {
+              "regen": 3
+            },
+            "text": "You and allies within 4 tiles regenerate 12% HP at the start of each turn for 3 turns."
+          }
+        },
+        {
+          "level": 27,
+          "skill": {
+            "name": "Resurrection",
+            "class": "Healer",
+            "kind": "n",
+            "level": 27,
+            "power": 0,
+            "minRange": 0,
+            "maxRange": 0,
+            "cooldown": 99,
+            "revive": true,
+            "text": "Revives the most recently fallen ally next to you at 40% HP. Once per battle."
+          }
+        }
       ]
     },
     {
@@ -534,6 +740,216 @@
             "element": "user",
             "area": 2,
             "visual": "nova"
+          }
+        }
+      ],
+      "schedule": [
+        {
+          "level": 1,
+          "skill": {
+            "name": "Fireball",
+            "class": "Mage",
+            "kind": "n",
+            "level": 1,
+            "power": 1.2,
+            "minRange": 2,
+            "maxRange": 6,
+            "element": "fire",
+            "text": "Fire magic. Ignores half of armor."
+          }
+        },
+        {
+          "level": 1,
+          "skill": {
+            "name": "Frost Bolt",
+            "class": "Mage",
+            "kind": "n",
+            "level": 1,
+            "power": 1,
+            "minRange": 2,
+            "maxRange": 6,
+            "element": "ice",
+            "effects": {
+              "snare": 1
+            },
+            "text": "Ice magic that snares for 1 turn."
+          }
+        },
+        {
+          "level": 1,
+          "skill": {
+            "name": "Meteor",
+            "class": "Mage",
+            "kind": "u",
+            "level": 1,
+            "power": 1.5,
+            "minRange": 2,
+            "maxRange": 6,
+            "cooldown": 4,
+            "element": "fire",
+            "area": 1,
+            "text": "Calls a flaming rock down on an area."
+          }
+        },
+        {
+          "level": 3,
+          "skill": {
+            "name": "Thunder",
+            "class": "Mage",
+            "kind": "n",
+            "level": 3,
+            "power": 1.2,
+            "minRange": 2,
+            "maxRange": 6,
+            "element": "elec",
+            "text": "Thunder magic. Ignores half of armor."
+          }
+        },
+        {
+          "level": 6,
+          "skill": {
+            "name": "Ice Lance",
+            "class": "Mage",
+            "kind": "n",
+            "level": 6,
+            "power": 1.3,
+            "minRange": 2,
+            "maxRange": 6,
+            "element": "ice",
+            "text": "A long-range spear of ice."
+          }
+        },
+        {
+          "level": 9,
+          "skill": {
+            "name": "Chain Lightning",
+            "class": "Mage",
+            "kind": "n",
+            "level": 9,
+            "power": 0.9,
+            "minRange": 2,
+            "maxRange": 6,
+            "cooldown": 2,
+            "element": "elec",
+            "area": 1,
+            "text": "Lightning jumps to every enemy next to the target."
+          }
+        },
+        {
+          "level": 12,
+          "skill": {
+            "name": "Greater Spell",
+            "kind": "n",
+            "level": 12,
+            "power": 1.5,
+            "minRange": 2,
+            "maxRange": 5,
+            "cooldown": 3,
+            "element": "user",
+            "area": 1,
+            "visual": "meteor"
+          }
+        },
+        {
+          "level": 15,
+          "skill": {
+            "name": "Blizzard",
+            "class": "Mage",
+            "kind": "n",
+            "level": 15,
+            "power": 1.1,
+            "minRange": 2,
+            "maxRange": 6,
+            "cooldown": 3,
+            "element": "ice",
+            "effects": {
+              "snare": 1
+            },
+            "area": 1,
+            "text": "Snowstorm on an area that snares everything hit."
+          }
+        },
+        {
+          "level": 18,
+          "skill": {
+            "name": "Mana Burn",
+            "class": "Mage",
+            "kind": "n",
+            "level": 18,
+            "power": 0.8,
+            "minRange": 2,
+            "maxRange": 6,
+            "cooldown": 3,
+            "magic": true,
+            "text": "Arcane hit that adds 1 turn to every cooldown the target has.",
+            "trick": "manaBurn"
+          }
+        },
+        {
+          "level": 20,
+          "skill": {
+            "name": "Cataclysm",
+            "kind": "u",
+            "level": 20,
+            "power": 2,
+            "minRange": 1,
+            "maxRange": 5,
+            "cooldown": 4,
+            "element": "user",
+            "area": 2,
+            "visual": "nova"
+          }
+        },
+        {
+          "level": 21,
+          "skill": {
+            "name": "Static Field",
+            "class": "Mage",
+            "kind": "n",
+            "level": 21,
+            "power": 0.6,
+            "minRange": 2,
+            "maxRange": 6,
+            "cooldown": 3,
+            "element": "elec",
+            "area": 2,
+            "text": "Lightning within 2 tiles of the target; those tiles stay charged for 2 turns and shock any enemy that ends its turn on them.",
+            "field": "static",
+            "fieldRange": 2,
+            "fieldTurns": 2
+          }
+        },
+        {
+          "level": 24,
+          "skill": {
+            "name": "Gravity Well",
+            "class": "Mage",
+            "kind": "n",
+            "level": 24,
+            "power": 0.7,
+            "minRange": 2,
+            "maxRange": 6,
+            "cooldown": 3,
+            "magic": true,
+            "area": 1,
+            "text": "Arcane hit on an area that pulls every enemy within 2 tiles one step toward the center.",
+            "gather": 2
+          }
+        },
+        {
+          "level": 27,
+          "skill": {
+            "name": "Echo",
+            "class": "Mage",
+            "kind": "n",
+            "level": 27,
+            "power": 0,
+            "minRange": 0,
+            "maxRange": 0,
+            "cooldown": 4,
+            "text": "Cast the last spell you used again at 60% power on a new target, without starting its cooldown.",
+            "aim": "echo",
+            "trick": "echo"
           }
         }
       ]
@@ -691,6 +1107,212 @@
             "area": 2
           }
         }
+      ],
+      "schedule": [
+        {
+          "level": 1,
+          "skill": {
+            "name": "Shot",
+            "class": "Ranger",
+            "kind": "n",
+            "level": 1,
+            "power": 1,
+            "minRange": 2,
+            "maxRange": 6,
+            "text": "A standard arrow. Cannot hit adjacent enemies."
+          }
+        },
+        {
+          "level": 1,
+          "skill": {
+            "name": "Snaring Shot",
+            "class": "Ranger",
+            "kind": "n",
+            "level": 1,
+            "power": 0.6,
+            "minRange": 2,
+            "maxRange": 6,
+            "effects": {
+              "snare": 1
+            },
+            "text": "Snares the target for 1 turn."
+          }
+        },
+        {
+          "level": 1,
+          "skill": {
+            "name": "Power Shot",
+            "class": "Ranger",
+            "kind": "u",
+            "level": 1,
+            "power": 1.6,
+            "minRange": 2,
+            "maxRange": 6,
+            "cooldown": 3,
+            "text": "A fully drawn heavy arrow."
+          }
+        },
+        {
+          "level": 3,
+          "skill": {
+            "name": "Multishot",
+            "class": "Ranger",
+            "kind": "n",
+            "level": 3,
+            "power": 0.7,
+            "minRange": 2,
+            "maxRange": 6,
+            "area": 1,
+            "text": "Three arrows: hits the target and enemies next to it."
+          }
+        },
+        {
+          "level": 6,
+          "skill": {
+            "name": "Venom Spit",
+            "kind": "n",
+            "level": 6,
+            "power": 0.9,
+            "minRange": 2,
+            "maxRange": 5,
+            "cooldown": 2,
+            "effects": {
+              "bleed": 3
+            }
+          }
+        },
+        {
+          "level": 9,
+          "skill": {
+            "name": "Pinning Shot",
+            "class": "Ranger",
+            "kind": "n",
+            "level": 9,
+            "power": 0.7,
+            "minRange": 2,
+            "maxRange": 6,
+            "cooldown": 3,
+            "effects": {
+              "stun": 1
+            },
+            "text": "Pins the target in place: stun 1 turn."
+          }
+        },
+        {
+          "level": 12,
+          "skill": {
+            "name": "Piercing Shot",
+            "class": "Ranger",
+            "kind": "n",
+            "level": 12,
+            "power": 1.4,
+            "minRange": 2,
+            "maxRange": 6,
+            "cooldown": 2,
+            "line": 2,
+            "text": "Passes through and hits the next 2 tiles behind the target."
+          }
+        },
+        {
+          "level": 15,
+          "skill": {
+            "name": "Disengage",
+            "class": "Ranger",
+            "kind": "n",
+            "level": 15,
+            "power": 0.8,
+            "minRange": 2,
+            "maxRange": 6,
+            "cooldown": 3,
+            "text": "Shoot, then leap 2 tiles directly away from the target.",
+            "away": 2
+          }
+        },
+        {
+          "level": 18,
+          "skill": {
+            "name": "Hunter's Mark",
+            "class": "Ranger",
+            "kind": "n",
+            "level": 18,
+            "power": 0.5,
+            "minRange": 2,
+            "maxRange": 6,
+            "cooldown": 3,
+            "effects": {
+              "hmark": 3
+            },
+            "text": "Marks the target for 3 turns: everyone on your side deals it +20% damage."
+          }
+        },
+        {
+          "level": 20,
+          "skill": {
+            "name": "Barrage",
+            "kind": "u",
+            "level": 20,
+            "power": 1.2,
+            "minRange": 3,
+            "maxRange": 7,
+            "cooldown": 4,
+            "area": 2
+          }
+        },
+        {
+          "level": 21,
+          "skill": {
+            "name": "Concussive Arrow",
+            "class": "Ranger",
+            "kind": "n",
+            "level": 21,
+            "power": 0.9,
+            "minRange": 2,
+            "maxRange": 6,
+            "cooldown": 2,
+            "text": "Knocks the target 2 tiles back.",
+            "push": 2
+          }
+        },
+        {
+          "level": 24,
+          "skill": {
+            "name": "Flaming Volley",
+            "class": "Ranger",
+            "kind": "n",
+            "level": 24,
+            "power": 0.7,
+            "minRange": 2,
+            "maxRange": 6,
+            "cooldown": 3,
+            "element": "fire",
+            "physical": true,
+            "area": 1,
+            "text": "Fire arrows on the target and its neighbors; the ground burns for 2 turns.",
+            "field": "fire",
+            "fieldRange": 1,
+            "fieldTurns": 2
+          }
+        },
+        {
+          "level": 27,
+          "skill": {
+            "name": "Steady Aim",
+            "class": "Ranger",
+            "kind": "n",
+            "level": 27,
+            "power": 0,
+            "minRange": 0,
+            "maxRange": 0,
+            "cooldown": 3,
+            "buffs": {
+              "aim": 1
+            },
+            "text": "Stand still this turn: your next shot gets +2 range and cannot miss.",
+            "aim": "self",
+            "free": true,
+            "still": true
+          }
+        }
       ]
     },
     {
@@ -778,6 +1400,220 @@
             "area": 1
           }
         }
+      ],
+      "schedule": [
+        {
+          "level": 1,
+          "skill": {
+            "name": "Bash",
+            "class": "Tank",
+            "kind": "n",
+            "level": 1,
+            "power": 1.1,
+            "minRange": 1,
+            "maxRange": 1,
+            "text": "A solid shield-and-axe hit."
+          }
+        },
+        {
+          "level": 1,
+          "skill": {
+            "name": "Shield Bash",
+            "class": "Tank",
+            "kind": "n",
+            "level": 1,
+            "power": 0.9,
+            "minRange": 1,
+            "maxRange": 1,
+            "cooldown": 3,
+            "effects": {
+              "stun": 1
+            },
+            "text": "Stuns the target for 1 turn."
+          }
+        },
+        {
+          "level": 1,
+          "skill": {
+            "name": "Crushing Blow",
+            "class": "Tank",
+            "kind": "u",
+            "level": 1,
+            "power": 1.8,
+            "minRange": 1,
+            "maxRange": 1,
+            "cooldown": 3,
+            "effects": {
+              "brk": 2
+            },
+            "text": "Smashes armor: the target loses 30% DEF for 2 turns."
+          }
+        },
+        {
+          "level": 3,
+          "skill": {
+            "name": "Ground Pound",
+            "class": "Tank",
+            "kind": "n",
+            "level": 3,
+            "power": 0.8,
+            "minRange": 1,
+            "maxRange": 1,
+            "cooldown": 2,
+            "effects": {
+              "snare": 1
+            },
+            "area": 1,
+            "text": "Hits the target and its neighbors and snares them."
+          }
+        },
+        {
+          "level": 6,
+          "skill": {
+            "name": "Shell Slam",
+            "kind": "n",
+            "level": 6,
+            "power": 1.5,
+            "minRange": 1,
+            "maxRange": 1,
+            "cooldown": 3,
+            "effects": {
+              "stun": 1
+            }
+          }
+        },
+        {
+          "level": 9,
+          "skill": {
+            "name": "Hook Chain",
+            "class": "Tank",
+            "kind": "n",
+            "level": 9,
+            "power": 0.7,
+            "minRange": 2,
+            "maxRange": 3,
+            "cooldown": 2,
+            "text": "Throw a chain 2-3 tiles and drag the target to the tile next to you.",
+            "pull": true
+          }
+        },
+        {
+          "level": 12,
+          "skill": {
+            "name": "Ironhide",
+            "class": "Tank",
+            "kind": "n",
+            "level": 12,
+            "power": 0,
+            "minRange": 0,
+            "maxRange": 0,
+            "cooldown": 4,
+            "support": true,
+            "buffs": {
+              "grd": 2
+            },
+            "text": "Brace: take 40% less damage until your next turn ends."
+          }
+        },
+        {
+          "level": 15,
+          "skill": {
+            "name": "Fortress Slam",
+            "class": "Tank",
+            "kind": "n",
+            "level": 15,
+            "power": 1.2,
+            "minRange": 1,
+            "maxRange": 1,
+            "cooldown": 4,
+            "effects": {
+              "stun": 1
+            },
+            "area": 2,
+            "text": "Shockwave that stuns everything within 2 tiles of the target."
+          }
+        },
+        {
+          "level": 18,
+          "skill": {
+            "name": "Iron Shell",
+            "class": "Tank",
+            "kind": "n",
+            "level": 18,
+            "power": 0,
+            "minRange": 0,
+            "maxRange": 0,
+            "cooldown": 4,
+            "text": "Gain a shield worth 25% of your max HP.",
+            "aim": "self",
+            "shield": 0.25
+          }
+        },
+        {
+          "level": 20,
+          "skill": {
+            "name": "Stone Quake",
+            "kind": "u",
+            "level": 20,
+            "power": 1.2,
+            "minRange": 1,
+            "maxRange": 1,
+            "cooldown": 3,
+            "area": 1
+          }
+        },
+        {
+          "level": 21,
+          "skill": {
+            "name": "Taunting Roar",
+            "class": "Tank",
+            "kind": "n",
+            "level": 21,
+            "power": 0,
+            "minRange": 0,
+            "maxRange": 0,
+            "cooldown": 4,
+            "area": 3,
+            "text": "Every enemy within 3 tiles must attack you on its next turn.",
+            "aim": "self",
+            "trick": "taunt"
+          }
+        },
+        {
+          "level": 24,
+          "skill": {
+            "name": "Aftershock",
+            "class": "Tank",
+            "kind": "n",
+            "level": 24,
+            "power": 1,
+            "minRange": 1,
+            "maxRange": 1,
+            "cooldown": 3,
+            "effects": {
+              "snare": 1
+            },
+            "area": 1,
+            "text": "Hits the target and its neighbors and snares them; at the start of the next enemy turn the ground shakes again for half damage.",
+            "trick": "aftershock"
+          }
+        },
+        {
+          "level": 27,
+          "skill": {
+            "name": "Unstoppable",
+            "class": "Tank",
+            "kind": "n",
+            "level": 27,
+            "power": 0.9,
+            "minRange": 0,
+            "maxRange": 4,
+            "cooldown": 4,
+            "text": "Bulldoze up to 4 tiles in a straight line. Every enemy in the way is hit and shoved to the side.",
+            "aim": "line",
+            "trick": "unstoppable"
+          }
+        }
       ]
     },
     {
@@ -847,6 +1683,207 @@
             "maxRange": 1,
             "cooldown": 3,
             "area": 1
+          }
+        }
+      ],
+      "schedule": [
+        {
+          "level": 1,
+          "skill": {
+            "name": "Slash",
+            "class": "Warrior",
+            "kind": "n",
+            "level": 1,
+            "power": 1,
+            "minRange": 1,
+            "maxRange": 1,
+            "text": "A quick sword cut."
+          }
+        },
+        {
+          "level": 1,
+          "skill": {
+            "name": "Rend",
+            "class": "Warrior",
+            "kind": "n",
+            "level": 1,
+            "power": 0.8,
+            "minRange": 1,
+            "maxRange": 1,
+            "effects": {
+              "bleed": 3
+            },
+            "text": "A cut that makes the target bleed for 3 turns."
+          }
+        },
+        {
+          "level": 1,
+          "skill": {
+            "name": "Power Strike",
+            "class": "Warrior",
+            "kind": "u",
+            "level": 1,
+            "power": 1.6,
+            "minRange": 1,
+            "maxRange": 1,
+            "cooldown": 3,
+            "text": "A heavy two-handed blow."
+          }
+        },
+        {
+          "level": 3,
+          "skill": {
+            "name": "Whirlwind",
+            "class": "Warrior",
+            "kind": "n",
+            "level": 3,
+            "power": 0.9,
+            "minRange": 1,
+            "maxRange": 1,
+            "cooldown": 2,
+            "area": 1,
+            "text": "Spin attack: hits the target and every enemy next to it."
+          }
+        },
+        {
+          "level": 6,
+          "skill": {
+            "name": "Savage Claw",
+            "kind": "n",
+            "level": 6,
+            "power": 1.2,
+            "minRange": 1,
+            "maxRange": 1,
+            "cooldown": 2,
+            "effects": {
+              "bleed": 3
+            }
+          }
+        },
+        {
+          "level": 9,
+          "skill": {
+            "name": "Shoulder Check",
+            "class": "Warrior",
+            "kind": "n",
+            "level": 9,
+            "power": 0.9,
+            "minRange": 1,
+            "maxRange": 1,
+            "cooldown": 2,
+            "text": "Shoves the target 2 tiles back. If it slams into a wall or another unit it takes +50% and is stunned 1 turn.",
+            "push": 2,
+            "slam": true
+          }
+        },
+        {
+          "level": 12,
+          "skill": {
+            "name": "Crescent Wave",
+            "class": "Warrior",
+            "kind": "n",
+            "level": 12,
+            "power": 1.3,
+            "minRange": 2,
+            "maxRange": 3,
+            "cooldown": 2,
+            "text": "Throws a blade of energy 2–3 tiles away."
+          }
+        },
+        {
+          "level": 15,
+          "skill": {
+            "name": "Riposte Stance",
+            "class": "Warrior",
+            "kind": "n",
+            "level": 15,
+            "power": 0,
+            "minRange": 0,
+            "maxRange": 0,
+            "cooldown": 4,
+            "buffs": {
+              "riposte": 2
+            },
+            "text": "Until your next turn, strike back at every enemy that hits you in melee (power 0.8).",
+            "aim": "self"
+          }
+        },
+        {
+          "level": 18,
+          "skill": {
+            "name": "Leaping Cleave",
+            "class": "Warrior",
+            "kind": "n",
+            "level": 18,
+            "power": 1.1,
+            "minRange": 1,
+            "maxRange": 4,
+            "cooldown": 3,
+            "area": 1,
+            "text": "Leap up to 3 tiles to land next to the target, then hit it and every enemy next to you.",
+            "leap": 3,
+            "around": true
+          }
+        },
+        {
+          "level": 20,
+          "skill": {
+            "name": "Rampage",
+            "kind": "u",
+            "level": 20,
+            "power": 1.5,
+            "minRange": 1,
+            "maxRange": 1,
+            "cooldown": 3,
+            "area": 1
+          }
+        },
+        {
+          "level": 21,
+          "skill": {
+            "name": "Sunder",
+            "class": "Warrior",
+            "kind": "n",
+            "level": 21,
+            "power": 1.2,
+            "minRange": 1,
+            "maxRange": 1,
+            "cooldown": 3,
+            "text": "Strips every buff and shield from the target.",
+            "dispel": true
+          }
+        },
+        {
+          "level": 24,
+          "skill": {
+            "name": "Battle Trance",
+            "class": "Warrior",
+            "kind": "n",
+            "level": 24,
+            "power": 0,
+            "minRange": 0,
+            "maxRange": 0,
+            "cooldown": 4,
+            "buffs": {
+              "trance": 2
+            },
+            "text": "For 2 turns: +25% damage and +1 Move, but you take 15% more damage.",
+            "aim": "self"
+          }
+        },
+        {
+          "level": 27,
+          "skill": {
+            "name": "Momentum",
+            "class": "Warrior",
+            "kind": "n",
+            "level": 27,
+            "power": 1,
+            "minRange": 1,
+            "maxRange": 1,
+            "cooldown": 3,
+            "text": "If it defeats the target you may act once more this turn (once per turn).",
+            "trick": "momentum"
           }
         }
       ]

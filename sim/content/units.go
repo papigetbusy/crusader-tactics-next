@@ -1,5 +1,7 @@
 package content
 
+import "slices"
+
 // StartingBuild is what a new hero of this class and level knows (old
 // initP, index.html line 436): every skill of its class up to its level,
 // the first four normal skills equipped in table order, and the newest
@@ -72,8 +74,33 @@ func (c *Content) HeroSkills(class string, level int) []Skill {
 
 // MonsterSkills is the skill bar of a monster (old enemySks, line 438):
 // its type's skills, plus level-unlocked ones unless it is a boss or elite.
+// A type on the even schedule fights with its 4 newest normal skills, its
+// newest ultimate and Strike instead, like a hero's starting bar.
 func (c *Content) MonsterSkills(class string, level int, bossOrElite bool) []Skill {
 	cl := c.Classes[class]
+	if len(cl.Schedule) > 0 {
+		var normal []Skill
+		var ult *Skill
+		for _, ls := range cl.Schedule {
+			if ls.Level > level {
+				continue
+			}
+			if ls.Skill.Kind == "u" {
+				s := ls.Skill
+				ult = &s
+			} else {
+				normal = append(normal, ls.Skill)
+			}
+		}
+		out := slices.Clone(normal[max(0, len(normal)-4):])
+		if ult != nil {
+			out = append(out, *ult)
+		}
+		if s, ok := c.Skills["Strike"]; ok {
+			out = append(out, s)
+		}
+		return out
+	}
 	out := append([]Skill(nil), cl.Skills...)
 	if bossOrElite {
 		return out

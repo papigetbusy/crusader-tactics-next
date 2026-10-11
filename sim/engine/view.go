@@ -21,6 +21,7 @@ type View struct {
 	LevelCap int           `json:"levelCap,omitempty"`
 	Decision *DecisionView `json:"decision,omitempty"` // the first waiting choice
 	Fields   []state.Field `json:"fields,omitempty"`
+	Kegs     []state.Keg   `json:"kegs,omitempty"`   // Powder Kegs waiting to blow up
 	Traps    int           `json:"traps,omitempty"`  // how many hidden traps (where is a secret only to monsters)
 	Fallen   []string      `json:"fallen,omitempty"` // classes of fallen heroes, last to fall at the end
 }
@@ -96,7 +97,9 @@ type SkillView struct {
 	Heal     bool    `json:"heal,omitempty"`
 	Revive   bool    `json:"revive,omitempty"`
 	Support  bool    `json:"support,omitempty"`
-	Wait     int     `json:"wait"` // turns until ready (0 = ready)
+	Aim      string  `json:"aim,omitempty"`  // how it is aimed (content.Aim...); "" = tap a unit
+	Free     bool    `json:"free,omitempty"` // does not use up the turn
+	Wait     int     `json:"wait"`           // turns until ready (0 = ready)
 }
 
 // View returns the current board.
@@ -106,7 +109,7 @@ func (g *Game) View() View {
 	for _, f := range b.Fallen {
 		v.Fallen = append(v.Fallen, f.Class)
 	}
-	v.Fields, v.Traps = b.Fields, len(b.Traps)
+	v.Fields, v.Kegs, v.Traps = b.Fields, b.Kegs, len(b.Traps)
 	v.Decision = g.decisionView()
 	for y := 0; y < b.N; y++ {
 		row := make([]byte, b.N)
@@ -141,7 +144,7 @@ func (g *Game) View() View {
 		}
 		for i, s := range u.Skills {
 			uv.Skills = append(uv.Skills, SkillView{Name: s.Name, Text: s.Text, MinRange: s.MinRange, MaxRange: s.MaxRange,
-				Power: s.Power, Element: s.Element, Area: s.Area, Heal: s.Heal, Revive: s.Revive, Support: s.Support, Wait: u.Cooldowns[i]})
+				Power: s.Power, Element: s.Element, Area: s.Area, Heal: s.Heal, Revive: s.Revive, Support: s.Support, Aim: s.Aim, Free: s.Free, Wait: u.Cooldowns[i]})
 		}
 		v.Units = append(v.Units, uv)
 	}

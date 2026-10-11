@@ -49,7 +49,7 @@ func (g *Game) Apply(a action.Action) ([]action.Event, error) {
 		u := b.Unit(a.Unit)
 		from := state.Tile{X: u.X, Y: u.Y}
 		board.MoveUnit(g.C, b, u, a.X, a.Y, emit)
-		u.Moved, u.Undo = true, &from
+		u.Moved, u.Undo, u.MoveLeft = true, &from, 0
 		if u.Acted { // a hero that already acted (Hit and Run) is finished after moving
 			u.Done, u.Undo = true, nil
 		}
@@ -74,7 +74,7 @@ func (g *Game) Apply(a action.Action) ([]action.Event, error) {
 		u.Moved, u.TilesMoved = false, 0
 	case action.Attack:
 		u := b.Unit(a.Unit)
-		if err := combat.UseSkill(g.C, b, g.Dice, u, a.Skill, b.Unit(a.Target), emit); err != nil {
+		if err := combat.UseAimed(g.C, b, g.Dice, u, a.Skill, g.pick(a), emit); err != nil {
 			return events, err
 		}
 		turn.Check(b, emit)
@@ -168,6 +168,9 @@ func (g *Game) check(a action.Action) error {
 		}
 		if err := skillReady(u, a.Skill); err != nil {
 			return err
+		}
+		if s := u.Skills[a.Skill]; combat.IsNew(s) {
+			return g.checkNew(u, s, a)
 		}
 		v := b.Unit(a.Target)
 		ok := false

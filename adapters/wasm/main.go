@@ -121,6 +121,14 @@ func main() {
 		units, tiles := game.AbilityAim(a[0].Int())
 		return text(map[string]any{"units": units, "tiles": tiles})
 	}))
+	// ctSkillAim(unit, slot, picksJSON) -> {units:[ids]} or {tiles:[[x,y]...]}:
+	// what to pick next for a skill, given {target, second, tiles} so far.
+	g.Set("ctSkillAim", fn(func(a []js.Value) any {
+		var so action.Action
+		_ = json.Unmarshal([]byte(a[2].String()), &so)
+		units, tiles := game.SkillAim(a[0].Int(), a[1].Int(), so)
+		return text(map[string]any{"units": units, "tiles": tiles})
+	}))
 	// ctPlan(unit, target) -> {slot, walk} or null: which skill a tap on
 	// that unit uses, and where to walk first if needed.
 	g.Set("ctPlan", fn(func(a []js.Value) any {

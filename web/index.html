@@ -70,6 +70,8 @@ button:disabled{opacity:.4;cursor:default}
 .tile.aim::after{content:"";position:absolute;inset:0;background:rgba(192,57,75,.3);box-shadow:inset 0 0 0 1px rgba(255,107,125,.7)}
 .tile.picked::after{content:"";position:absolute;inset:0;background:rgba(230,200,120,.5)}
 .tile.fire{box-shadow:inset 0 0 0 2px rgba(255,120,40,.6)}.tile.banner{box-shadow:inset 0 0 0 2px rgba(230,200,120,.6)}
+.tile.static{box-shadow:inset 0 0 0 2px rgba(120,190,255,.75)}.tile.swamp{box-shadow:inset 0 0 0 2px rgba(110,170,70,.75);background-image:linear-gradient(rgba(60,90,30,.35),rgba(60,90,30,.35))}
+.keg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;z-index:1}
 .u.decoy{opacity:.55;border-style:dashed}.u.comp{border-color:#9ae6b4;color:#cfeedd}
 #err{display:none;background:#2a1013;border:1px solid var(--blood2);padding:10px;border-radius:8px}
 footer{margin-top:16px;color:var(--muted);font-size:13px}
@@ -91,7 +93,10 @@ footer{margin-top:16px;color:var(--muted);font-size:13px}
 <script>
 const $=id=>document.getElementById(id), J=s=>JSON.parse(s);
 const ICON={fire:'🔥',ice:'❄',elec:'⚡',light:'☀',dark:'☾'};
-let V=null, sel=null, slot=0, aim=null, walk=null, reach=[], targets=[], names={}, abil=null;
+let V=null, sel=null, slot=0, aim=null, walk=null, reach=[], targets=[], names={}, abil=null, sk=null;
+// Skills aimed in more than one tap: what each tap picks, in order.
+const STEPS={tile:['tile'],line:['tile'],rollThenFoe:['tile','unit'],foeThenTile:['unit','tile'],twoFoes:['unit','unit']};
+const STEP_TEXT={tile:'Tap a highlighted tile.',unit:'Tap a highlighted unit.'};
 
 function fail(msg){$('err').style.display='block';$('err').innerHTML=msg;$('status').textContent='The referee did not start.'}
 async function boot(){
@@ -116,9 +121,21 @@ const unit=id=>V.units.find(u=>u.id===id);
 const at=(x,y)=>V.units.find(u=>u.x===x&&u.y===y);
 function nameOf(u){return u?(u.team===0?u.class:'enemy '+u.class):'someone'}
 function short(c){const w=c.split(' ');return w.length>1?w[0][0]+w[1][0]:c.slice(0,2)}
-function defaultSlot(u){const i=u.skills.findIndex(s=>!s.wait&&!s.support&&!s.heal);return i<0?0:i}
+function defaultSlot(u){const i=u.skills.findIndex(s=>!s.wait&&!s.support&&!s.heal&&!STEPS[s.aim]);return i<0?0:i}
+function skRefresh(){
+  const r=J(ctSkillAim(sel,sk.slot,JSON.stringify(sk.a)));sk.units=r.units||[];sk.tiles=r.tiles||[];reach=[];targets=sk.units;
+}
+function chooseSkill(i){
+  const u=unit(sel),s=u.skills[i];slot=i;aim=null;walk=null;sk=null;
+  if(STEPS[s.aim]&&!u.done){
+    sk={slot:i,name:s.name,text:s.text,steps:STEPS[s.aim],n:0,a:{tiles:[]}};skRefresh();
+    if(!sk.units.length&&!sk.tiles.length){logLine('bad','No: nowhere to use '+s.name+' from here.');sk=null}
+  }
+  refreshAim();render();
+}
 function refreshAim(){
   if(abil){reach=[];targets=abil.units||[];return}
+  if(sk){skRefresh();return}
   if(sel==null){reach=[];targets=[];return}
   reach=J(ctReach(sel))||[];targets=J(ctTargets(sel,slot))||[];
   if(aim!=null&&!targets.includes(aim)&&!walk)aim=null;
@@ -130,7 +147,10 @@ function render(){
     const d=document.createElement('div');d.className='tile '+V.ground[y][x]+(rs.has(x+','+y)?' reach':'')+(walk&&walk.x===x&&walk.y===y?' walkto':'');
     if(V.throne&&V.throne.x===x&&V.throne.y===y)d.innerHTML='<span class=throne>♔</span>';
     if(abil&&abil.tiles&&abil.tiles.some(t=>t[0]===x&&t[1]===y))d.classList.add(abil.picked.some(t=>t[0]===x&&t[1]===y)?'picked':'aim');
-    (V.fields||[]).forEach(f=>{const dd=f.Square?Math.max(Math.abs(x-f.X),Math.abs(y-f.Y)):Math.abs(x-f.X)+Math.abs(y-f.Y);if(dd<=f.Range)d.classList.add(f.Kind==='banner'?'banner':'fire')});
+    if(sk&&sk.a.tiles.some(t=>t[0]===x&&t[1]===y))d.classList.add('picked');
+    else if(sk&&sk.steps[sk.n]==='tile'&&sk.tiles.some(t=>t[0]===x&&t[1]===y))d.classList.add('aim');
+    (V.fields||[]).forEach(f=>{const dd=f.Square?Math.max(Math.abs(x-f.X),Math.abs(y-f.Y)):Math.abs(x-f.X)+Math.abs(y-f.Y);if(dd<=f.Range)d.classList.add(['banner','static','swamp'].includes(f.Kind)?f.Kind:'fire')});
+    if((V.kegs||[]).some(k=>k.X===x&&k.Y===y))d.innerHTML+='<span class=keg title="Powder Keg">💣</span>';
     const u=at(x,y);
     if(u){const e=document.createElement('div');
       e.className='u '+(u.team===0?'h':'e')+(u.done&&u.team===0?' done':'')+(u.id===sel?' sel':'')+(targets.includes(u.id)?' tg':'')+(u.id===aim?(walk?' walk':' aim'):'')+(u.enraged?' rage':'')+(u.decoy?' decoy':'')+(u.companion||u.pet?' comp':'');
@@ -149,7 +169,7 @@ function panel(){
   if(!u){p.innerHTML=`<div class="muted">Tap one of your heroes (gold) to begin. Tap an enemy to see its numbers.</div>${endBtn()}`;bindEnd();return}
   const st=Object.entries(u.statuses||{}).map(([k,v])=>`${k} ${v}`).join(', ');
   let h=`<h2>${u.form&&u.form!==u.class?u.form+' <span class="muted">('+u.class+')</span>':u.class}${u.element?' '+ICON[u.element]:''} <span class="muted">level ${u.level}</span></h2>
-  ${u.team===0&&u.xpNext?`<div class="xpbar"><b style="width:${Math.min(100,100*u.xp/u.xpNext)}%"></b></div><div class="muted">XP ${u.xp}/${u.xpNext}${V.levelCap&&u.level>=V.levelCap?' · level cap reached on this floor':''}</div>`:''}
+  ${u.team===0&&u.xpNext?`<div class="xpbar"><b style="width:${Math.min(100,100*(u.xp||0)/u.xpNext)}%"></b></div><div class="muted">XP ${u.xp||0}/${u.xpNext}${V.levelCap&&u.level>=V.levelCap?' · level cap reached on this floor':''}</div>`:''}
   <div class="muted">HP ${u.hp}/${u.maxHp} · Attack ${u.atk} · Defense ${u.def} · Move ${u.mov}${u.team===0?' · Potions '+u.potions:''}${st?' · '+st:''}${u.enraged?' · <span style="color:var(--blood2)">Enraged: hits 30% harder</span>':''}</div>`;
   if(u.team===0){
     h+=`<div class="skills">${u.skills.map((s,i)=>`<button data-i="${i}" class="${i===slot?'on':''}" ${s.wait?'disabled':''} title="${(s.text||'').replace(/"/g,'')}">${s.name}${s.wait?' ('+s.wait+')':''}</button>`).join('')}</div>`;
@@ -159,6 +179,7 @@ function panel(){
     if(aim!=null)h+=`<button class="main" id="go">${walk?'Walk and ':''}${s.revive?'Revive':s.heal?'Heal':s.support?'Use':'Attack'} ${s.revive?'':nameOf(unit(aim))}</button>`;
     if(u.ability)h+=`<button class="gold" id="abl" ${u.ability.wait||(u.done&&!u.ability.free)?'disabled':''} title="${u.ability.text.replace(/"/g,'')}">✦ ${u.ability.name}${u.ability.wait?' ('+u.ability.wait+')':''}</button>`;
     if(abil)h+=`<button id="abx">Cancel ${abil.name}</button>`;
+    if(sk)h+=`<button id="skx">Cancel ${sk.name}</button>`;
     if(!u.done){
       h+=`<button id="def">Defend</button>`;
       h+=`<button id="pot" ${u.potions&&u.hp<u.maxHp?'':'disabled'}>Potion (${u.potions})</button>`;
@@ -168,7 +189,8 @@ function panel(){
     h+=`</div>${endBtn()}`;
   } else h+=`<div class="muted">Skills: ${u.skills.map(s=>s.name).join(', ')}</div>${endBtn()}`;
   p.innerHTML=h;
-  p.querySelectorAll('.skills button').forEach(bt=>bt.onclick=()=>{slot=+bt.dataset.i;aim=null;walk=null;refreshAim();render()});
+  p.querySelectorAll('.skills button').forEach(bt=>bt.onclick=()=>chooseSkill(+bt.dataset.i));
+  if($('skx'))$('skx').onclick=()=>{sk=null;refreshAim();render()};
   if($('go'))$('go').onclick=strikeAim;
   if($('def'))$('def').onclick=()=>apply({kind:'defend',unit:sel});
   if($('abl'))$('abl').onclick=startAbility;
@@ -179,8 +201,9 @@ function panel(){
   bindEnd();
 }
 function endBtn(){return V.outcome||V.side!==0?'':`<div class="acts"><button class="gold" id="end">End turn</button></div>`}
-function bindEnd(){if($('end'))$('end').onclick=()=>{sel=null;aim=null;apply({kind:'endturn'})}}
+function bindEnd(){if($('end'))$('end').onclick=()=>{sel=null;aim=null;sk=null;apply({kind:'endturn'})}}
 function forecast(u){
+  if(sk)return `<b>${sk.name}</b>: ${sk.text}<br><span class="muted">${STEP_TEXT[sk.steps[sk.n]]}${sk.steps.length>1?' (step '+(sk.n+1)+' of '+sk.steps.length+')':''}</span>`;
   if(abil)return `<b>✦ ${abil.name}</b>: ${abil.text}<br><span class="muted">${abil.units?'Tap a highlighted unit.':'Tap '+abil.need+' highlighted tile'+(abil.need>1?'s':'')+' ('+abil.picked.length+' picked).'}</span>`;
   if(u.ability)var abl=`<br><span class="muted">✦ ${u.ability.name}: ${u.ability.text}</span>`;else abl='';
   if(u.done)return '<span class="muted">Finished for this turn.</span>'+abl;
@@ -210,6 +233,14 @@ function startAbility(){
 function tap(x,y){
   if(V.outcome||V.side!==0||V.decision)return;
   const u=at(x,y);
+  if(sk){
+    const step=sk.steps[sk.n];
+    if(step==='unit'&&u&&sk.units.includes(u.id)){if(sk.a.target==null)sk.a.target=u.id;else sk.a.second=u.id}
+    else if(step==='tile'&&sk.tiles.some(t=>t[0]===x&&t[1]===y))sk.a.tiles.push([x,y]);
+    else return;
+    if(++sk.n>=sk.steps.length){const a=Object.assign({kind:'attack',unit:sel,skill:sk.slot},sk.a);sk=null;return apply(a)}
+    skRefresh();render();return;
+  }
   if(abil){
     if(abil.units&&u&&abil.units.includes(u.id)){const a={kind:'ability',unit:sel,target:u.id};abil=null;return apply(a)}
     if(abil.tiles&&abil.tiles.some(t=>t[0]===x&&t[1]===y)&&!abil.picked.some(t=>t[0]===x&&t[1]===y)){
@@ -227,7 +258,7 @@ function tap(x,y){
   }
   walk=null;
   if(u&&u.team===0&&(u.decoy||u.companion)){sel=u.id;aim=null;reach=[];targets=[];render();return}
-  if(u&&u.team===0){walk=null;if(sel!==u.id){sel=u.id;slot=defaultSlot(u);aim=null}refreshAim();render();return}
+  if(u&&u.team===0){walk=null;if(sel!==u.id){sel=u.id;slot=defaultSlot(u);aim=null;sk=null}refreshAim();render();return}
   if(u){sel=u.id;aim=null;reach=[];targets=[];render();return}
   if(sel!=null&&reach.some(t=>t[0]===x&&t[1]===y))return apply({kind:'move',unit:sel,x,y});
   sel=null;aim=null;reach=[];targets=[];render();
@@ -251,6 +282,7 @@ function apply(a){
   V=r.view;V.units.forEach(u=>names[u.id]=nameOf(u));
   if(sel!=null&&!unit(sel))sel=null;
   if(a.kind==='attack')aim=null;
+  if(sk&&(!unit(sel)||a.kind!=='attack'))sk=null;
   refreshAim();render();return true
 }
 function say(e){

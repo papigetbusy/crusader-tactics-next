@@ -183,6 +183,7 @@ func Damage(c *content.Content, b *state.Battle, a Attack, roll float64) (int, f
 	if s.Ambush && v.HP >= v.MaxHP {
 		atk *= k.Ambush
 	}
+	atk *= newAttack(b, a)
 	if v.Status["brk"] > 0 {
 		def *= k.BrokenDefense
 	}
@@ -222,6 +223,7 @@ func Damage(c *content.Content, b *state.Battle, a Attack, roll float64) (int, f
 	if v.Status["grd"] > 0 {
 		r *= k.GuardDamage
 	}
+	r *= newTaken(a)
 	if v.Status["taunt"] > 0 {
 		r *= 0.7
 	}

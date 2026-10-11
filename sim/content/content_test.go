@@ -3,6 +3,7 @@ package content
 import (
 	"os"
 	"reflect"
+	"slices"
 	"testing"
 )
 
@@ -52,6 +53,65 @@ func TestApprovedChanges(t *testing.T) {
 				if h, ok := c.Skills[s.Name]; ok && (h.MinRange != s.MinRange || h.MaxRange != s.MaxRange || h.Power != s.Power) {
 					t.Errorf("%s's %s differs from the hero version", cl.Name, s.Name)
 				}
+			}
+		}
+	})
+}
+
+func TestSkillSchedule(t *testing.T) {
+	c := MustDefault()
+	classes := []string{"Warrior", "Tank", "Mage", "Healer", "Ranger", "Assassin", "Gunslinger", "Knight", "Dragon Knight", "Witch"}
+
+	t.Run("Every class learns 13 skills at the same levels: 2 normal and an ultimate at Lv 1, a normal every 3 levels, an ultimate at Lv 20", func(t *testing.T) {
+		for _, class := range classes {
+			var levels []int
+			var ults []int
+			for _, n := range c.SkillOrder {
+				if s := c.Skills[n]; s.Class == class && s.Ascension == "" {
+					levels = append(levels, s.Level)
+					if s.Kind == "u" {
+						ults = append(ults, s.Level)
+					}
+				}
+			}
+			if !slices.Equal(levels, ScheduleLevels) || !slices.Equal(ults, []int{1, 20}) {
+				t.Errorf("%s learns at %v (ultimates %v)", class, levels, ults)
+			}
+		}
+	})
+
+	t.Run("Resurrection is a normal skill at Lv 24, and the Healer's Lv 20 ultimate is Last Light", func(t *testing.T) {
+		r, l := c.Skills["Resurrection"], c.Skills["Last Light"]
+		if r.Kind != "n" || r.Level != 24 || l.Kind != "u" || l.Level != 20 || l.Class != "Healer" {
+			t.Fatalf("Resurrection %s %d, Last Light %s %d", r.Kind, r.Level, l.Kind, l.Level)
+		}
+	})
+
+	t.Run("A monster fights with its 4 newest normal skills, its newest ultimate and Strike", func(t *testing.T) {
+		names := func(ss []Skill) []string {
+			var out []string
+			for _, s := range ss {
+				out = append(out, s.Name)
+			}
+			return out
+		}
+		if got := names(c.MonsterSkills("Warrior", 1, false)); !slices.Equal(got, []string{"Slash", "Rend", "Power Strike", "Strike"}) {
+			t.Errorf("Lv 1: %v", got)
+		}
+		want := []string{"Riposte Stance", "Leaping Cleave", "Sunder", "Battle Trance", "Rampage", "Strike"}
+		if got := names(c.MonsterSkills("Warrior", 25, true)); !slices.Equal(got, want) {
+			t.Errorf("Lv 25 elite: %v", got)
+		}
+	})
+
+	t.Run("Every monster type learns on the same schedule", func(t *testing.T) {
+		for _, class := range []string{"Warrior", "Tank", "Mage", "Ranger", "Healer"} {
+			var levels []int
+			for _, ls := range c.Classes[class].Schedule {
+				levels = append(levels, ls.Level)
+			}
+			if !slices.Equal(levels, ScheduleLevels) {
+				t.Errorf("%s monsters learn at %v", class, levels)
 			}
 		}
 	})

@@ -89,7 +89,11 @@ func tryAttack(t *testing.T, g *Game, u *state.Unit) bool {
 		return false
 	}
 	for slot, s := range u.Skills {
-		if s.Heal || s.Support || s.Revive || s.Summon != nil {
+		if s.Heal || s.Support || s.Revive || s.Summon != nil || s.Friendly() {
+			continue
+		}
+		switch s.Aim { // skills aimed in more than one tap are tried in TestNewSkillsInFullFights
+		case content.AimTile, content.AimLine, content.AimRoll, content.AimShove, content.AimTwo, content.AimSelf:
 			continue
 		}
 		if ts := g.Targets(u.ID, slot); len(ts) > 0 {

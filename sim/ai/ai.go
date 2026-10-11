@@ -147,6 +147,9 @@ func ChooseTile(c *content.Content, b *state.Battle, e *state.Unit, s content.Sk
 
 // taunter is a hero within 4 tiles whose Oath of Protection forces attacks.
 func taunter(b *state.Battle, e *state.Unit, s content.Skill) *state.Unit {
+	if t := b.Unit(e.TauntedBy); e.Status["taunted"] > 0 && t != nil && !s.Friendly() {
+		return t // Taunting Roar
+	}
 	if s.Heal || e.Team == state.Heroes {
 		return nil
 	}
@@ -199,6 +202,9 @@ func chooseTarget(c *content.Content, b *state.Battle, e *state.Unit, s content.
 
 // Turn plays one monster's turn: choose a skill, walk, use it.
 func Turn(c *content.Content, b *state.Battle, dice rng.Dice, e *state.Unit, emit action.Emit) error {
+	if Scheduled(c, e) {
+		return scheduledTurn(c, b, dice, e, emit)
+	}
 	slot := ChooseSkill(c, b, dice, e)
 	if slot < 0 {
 		return nil
@@ -212,6 +218,7 @@ func Turn(c *content.Content, b *state.Battle, dice rng.Dice, e *state.Unit, emi
 	if e.Team == state.Enemies {
 		combat.Trap(c, b, e, path, emit)
 		combat.Overwatch(c, b, dice, e, emit)
+		combat.LanceWall(c, b, dice, e, path, emit)
 		if b.Unit(e.ID) == nil {
 			return nil
 		}

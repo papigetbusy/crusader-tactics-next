@@ -48,7 +48,14 @@ func Start(c *content.Content, b *state.Battle, dice rng.Dice, side int, emit ac
 	}
 	b.Side = side
 	emit(action.Event{Kind: action.TurnStart, Side: side, Turn: b.Turn})
+	combat.Kegs(c, b, dice, side, emit)
 	for _, u := range members(b, side) {
+		u.MomentumUsed, u.MoveLeft = false, 0
+		if u.Quake > 0 { // Aftershock: the ground shakes again
+			u.HP -= u.Quake
+			emit(action.Event{Kind: action.Ticked, Unit: u.ID, Amount: u.Quake, Statuses: map[string]int{"quake": 0}})
+			u.Quake = 0
+		}
 		for i, cd := range u.Cooldowns {
 			if cd > 0 && cd < 99 {
 				u.Cooldowns[i] = cd - 1
@@ -102,6 +109,9 @@ func Start(c *content.Content, b *state.Battle, dice rng.Dice, side int, emit ac
 			if c.Combat.ReviveAnyDeath && u.Team == state.Heroes && !u.Summoned {
 				b.Fallen = append(b.Fallen, u)
 			}
+			if c.Combat.MonstersRevive && u.Team == state.Enemies && !u.Summoned {
+				b.FallenFoes = append(b.FallenFoes, u)
+			}
 			emit(action.Event{Kind: action.Died, Unit: u.ID})
 		}
 	}
@@ -111,7 +121,8 @@ func Start(c *content.Content, b *state.Battle, dice rng.Dice, side int, emit ac
 // End finishes a side's turn (old endPhase, line 1739): timed statuses count
 // down by one, a finished cloak starts its cooldown; after the heroes' turn,
 // fields burn and tick down, and expired shadow clones fade.
-func End(c *content.Content, b *state.Battle, side int, emit action.Emit) {
+func End(c *content.Content, b *state.Battle, dice rng.Dice, side int, emit action.Emit) {
+	combat.WyrmClaws(c, b, dice, side, emit)
 	for _, u := range members(b, side) {
 		for _, q := range c.Turns.CountdownAtEnd {
 			if u.Status[q] > 0 {
@@ -122,8 +133,9 @@ func End(c *content.Content, b *state.Battle, side int, emit action.Emit) {
 			combat.CloakCooldown(u)
 		}
 	}
+	combat.Charged(b, side, emit)
+	combat.FieldTick(b, side)
 	if side == state.Heroes {
-		combat.FieldTick(b)
 		for _, u := range slices.Clone(b.Units) {
 			if u.Decoy && u.Status["clone"] <= 0 {
 				b.Remove(u.ID)
@@ -159,7 +171,7 @@ func Check(b *state.Battle, emit action.Emit) {
 // EndTurn is the player ending their turn: the heroes' turn ends, every
 // monster acts in board order, then a new turn starts for the heroes.
 func EndTurn(c *content.Content, b *state.Battle, dice rng.Dice, emit action.Emit) error {
-	End(c, b, state.Heroes, emit)
+	End(c, b, dice, state.Heroes, emit)
 	// Companions (bonded monsters and raised skeletons) act on their own first
 	// (old enemyPhase, line 1747).
 	for _, z := range members(b, state.Heroes) {
@@ -189,7 +201,7 @@ func EndTurn(c *content.Content, b *state.Battle, dice rng.Dice, emit action.Emi
 			return nil
 		}
 	}
-	End(c, b, state.Enemies, emit)
+	End(c, b, dice, state.Enemies, emit)
 	b.Turn++
 	Start(c, b, dice, state.Heroes, emit)
 	return nil

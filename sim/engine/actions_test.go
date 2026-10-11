@@ -100,8 +100,8 @@ func TestMoreActions(t *testing.T) {
 	t.Run("Resurrection brings back the hero who fell last, beside the healer, with 40% health", func(t *testing.T) {
 		g := duel()
 		h := g.B.Unit(1)
-		h.Class, h.Level = "Healer", 20
-		h.Skills = g.C.HeroSkills("Healer", 20)
+		h.Class, h.Level = "Healer", 24
+		h.Skills = g.C.Bar("Healer", []string{"Resurrection"}, "Last Light")
 		h.Cooldowns = make([]int, len(h.Skills))
 		slot := -1
 		for i, s := range h.Skills {

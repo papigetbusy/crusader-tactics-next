@@ -18,6 +18,9 @@ const RollShuffle = "shuffle"
 // It assumes the caller already checked the use is allowed.
 func UseSkill(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Unit, slot int, v *state.Unit, emit action.Emit) error {
 	s := u.Skills[slot]
+	if IsNew(s) {
+		return useNew(c, b, dice, u, slot, s, Pick{Target: v}, emit)
+	}
 	_, classBase, _ := c.SkillFor(u.Team, u.Class, s.Name)
 	emit(action.Event{Kind: action.SkillUsed, Unit: u.ID, Target: v.ID, Skill: s.Name})
 	switch {
@@ -120,6 +123,9 @@ func attack(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit a
 				break
 			}
 			hit := Attack{By: u, Skill: s, ClassBase: a.ClassBase, Target: z, Extra: 1}
+			if z == v {
+				hit.Extra = extraOf(a) // a Shoulder Check's slam
+			}
 			if outlaw {
 				hit.Extra = c.Ascensions["Outlaw"].N("shotPower")
 			}
@@ -271,8 +277,14 @@ func finishSkill(c *content.Content, b *state.Battle, u *state.Unit, slot int, s
 		u.Status["cloak"] = 3
 		u.CloakUsed = true
 	}
-	offensive := !(s.Heal || s.Support || s.Revive || s.Summon != nil)
+	offensive := !s.Friendly()
 	if offensive {
+		if u.Status["aim"] > 0 {
+			u.Status["aim"] = 0 // Steady Aim is spent on the next shot
+		}
+		if s.IsMagic() && s.Aim != content.AimEcho {
+			u.LastSpell = s.Name
+		}
 		if s.Kind != "u" {
 			u.Status["dbl"] = 0
 			if u.P("heK", 0) == 0 {

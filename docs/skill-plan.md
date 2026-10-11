@@ -1,4 +1,4 @@
-# Skill plan (proposal, waiting for owner approval)
+# Skill plan (approved 2026-10-10, in the game)
 
 Sent as a PDF on 2026-10-10. Schedule for every class: Lv 1 two normals + one ultimate; a normal at 3, 6, 9, 12, 15, 18, 21, 24, 27; ultimate at 20; ascension ultimate at 30. 53 new hero skills plus the Healer's new Lv 20 ultimate Last Light.
 
@@ -165,6 +165,8 @@ Rule changes in the proposal: Execution and Fortress Slam become normal; Resurre
 - Lv 27 **Bog of Despair** NEW: A swamp 1 tile around a spot for 3 turns: enemies inside are snared and poisoned. Cooldown 4.
 
 ## Monsters
+
+Monsters fight with their 4 newest normal skills, their newest ultimate and Strike (so they always have a basic attack while the rest cool down).
 
 - **Warrior** (Goblin, Zombie, Wolf, Minotaur, Bomb, Rat, Scorpion, Bone Hound): 1 Slash, 1 Rend, 1 Power Strike (ult), 3 Whirlwind, 6 Savage Claw [old monster], 9 Shoulder Check, 12 Crescent Wave, 15 Riposte Stance, 18 Leaping Cleave, 20 Rampage (ult) [old monster], 21 Sunder, 24 Battle Trance, 27 Momentum
 - **Tank** (Skeleton, Rock Golem, Hedgehog, Lizardman, Mimic, Worm): 1 Bash, 1 Shield Bash, 1 Crushing Blow (ult), 3 Ground Pound, 6 Shell Slam [old monster], 9 Hook Chain, 12 Ironhide, 15 Fortress Slam, 18 Iron Shell, 20 Stone Quake (ult) [old monster], 21 Taunting Roar, 24 Aftershock, 27 Unstoppable

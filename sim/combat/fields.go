@@ -65,21 +65,33 @@ func Overwatch(c *content.Content, b *state.Battle, dice rng.Dice, e *state.Unit
 	}
 }
 
-// FieldTick is the end of the heroes' turn for fields: every monster in a
-// burning field or a war banner's reach burns for 2 turns, and each field
-// has one turn less (old fieldTick, line 1127).
-func FieldTick(b *state.Battle) {
+// FieldTick is the end of a side's turn for the fields that side made (old
+// fieldTick, line 1127, for the heroes): every foe in a burning field or a
+// war banner's reach burns for 2 turns, a swamp snares and poisons, and each
+// field has one turn less.
+func FieldTick(b *state.Battle, side int) {
 	for i := range b.Fields {
 		f := &b.Fields[i]
+		if f.Team != side {
+			continue
+		}
 		for _, z := range b.Units {
-			if z.Team != state.Enemies {
+			if z.Team == side {
 				continue
 			}
 			d := abs(z.X-f.X) + abs(z.Y-f.Y)
 			if f.Square {
 				d = max(abs(z.X-f.X), abs(z.Y-f.Y))
 			}
-			if d <= f.Range {
+			if d > f.Range {
+				continue
+			}
+			switch f.Kind {
+			case "static": // shocks at the end of the victim's own turn (Charged)
+			case "swamp":
+				putStatus(z, "snare", 1, func(action.Event) {})
+				z.Status["poison"] = max(z.Status["poison"], 2)
+			default:
 				z.Status["burn"] = max(z.Status["burn"], 2)
 			}
 		}
@@ -87,7 +99,7 @@ func FieldTick(b *state.Battle) {
 	}
 	kept := b.Fields[:0]
 	for _, f := range b.Fields {
-		if f.Turns > 0 {
+		if f.Turns > 0 || f.Team != side {
 			kept = append(kept, f)
 		}
 	}

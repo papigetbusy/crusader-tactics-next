@@ -59,6 +59,9 @@ func CanMove(u *state.Unit) bool {
 // moveBudget, line 1225): its move, plus haste, Bloodlust, Beast Mode, Vow of
 // Honor, and standing in a War Banner.
 func Budget(b *state.Battle, u *state.Unit) int {
+	if u.MoveLeft > 0 {
+		return u.MoveLeft // Relentless Charge: what is left after the charge
+	}
 	mov := u.Mov
 	if u.Status["haste"] > 0 {
 		mov += 2
@@ -74,6 +77,12 @@ func Budget(b *state.Battle, u *state.Unit) int {
 	}
 	if inBanner(b, u) {
 		mov++
+	}
+	if u.Status["trance"] > 0 {
+		mov++ // Battle Trance
+	}
+	if u.Status["slow"] > 0 {
+		mov = max(0, mov-2) // Crippling Cut
 	}
 	return 2 * mov
 }

@@ -38,6 +38,10 @@ const (
 func Hurt(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit action.Emit) Result {
 	k := c.Combat
 	u, s := a.By, a.Skill
+	a = bodyguard(b, a, emit)
+	if u.Status["aim"] > 0 && !s.Friendly() {
+		a.Sure = true // Steady Aim
+	}
 	if a.Target.Team == state.Heroes && a.Target.Ascension != "Guardian" && !a.NoRedirect {
 		for _, z := range b.Units {
 			if z.Team == state.Heroes && z.Ascension == "Guardian" && z != a.Target && Distance(z, a.Target) == 1 {
@@ -68,7 +72,12 @@ func Hurt(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit act
 			return res
 		}
 	}
-	if cc := critChance(u, a); cc > 0 && dice.Roll(RollCrit)*100 < float64(cc) {
+	cc := critChance(u, a)
+	if u.Status["coin"] > 0 && !fixed && !a.Counter {
+		cc = 100 // Lucky Coin
+		u.Status["coin"]--
+	}
+	if cc > 0 && dice.Roll(RollCrit)*100 < float64(cc) {
 		res.Damage = int(Round(float64(res.Damage) * critDamage(c, u)))
 		res.Crit = true
 	}
@@ -95,6 +104,10 @@ func Hurt(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit act
 		v.HP, v.UnbrokenUsed = 1, true
 		emit(action.Event{Kind: action.Unbroken, Unit: v.ID})
 	}
+	if v.HP <= 0 && v.Status["lastlight"] > 0 {
+		v.HP = 1 // Last Light
+		emit(action.Event{Kind: action.Unbroken, Unit: v.ID})
+	}
 	emit(action.Event{Kind: action.Hit, Unit: u.ID, Target: v.ID, Amount: dm, Mult: res.Mult, Crit: res.Crit})
 	if u.Status["beast"] > 0 && !fixed {
 		ex := max(1, int(Round(float64(float64(dm)*u.P("bmF", 0.25))*Multiplier(c, unarmed(u), v, "fire"))))
@@ -116,6 +129,7 @@ func Hurt(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit act
 		stats.Gain(c, b, u, stats.HitXP(c, dm, len(s.Effects) > 0), emit)
 	}
 	res.HPAfter = v.HP
+	strikeBack(c, b, dice, a, v, dm, emit)
 	if v.HP > 0 && v.Ascension == "Duelist" && !a.Counter && Distance(u, v) == 1 && b.Unit(u.ID) != nil {
 		riposte := Attack{By: v, Skill: c.Skills["Slash"], Target: u, Counter: true, NoRedirect: true,
 			Extra: c.Ascensions["Duelist"].N("riposte")}
@@ -217,6 +231,9 @@ func afterHit(c *content.Content, b *state.Battle, a Attack, v *state.Unit, dm i
 
 // heal restores up to n HP (rounded), never above max.
 func heal(z *state.Unit, n float64) int {
+	if z.Status["wither"] > 0 {
+		n /= 2 // Wither
+	}
 	add := min(z.MaxHP-z.HP, int(Round(n)))
 	if add > 0 {
 		z.HP += add

@@ -25,29 +25,6 @@
       "text": "A cut that makes the target bleed for 3 turns."
     },
     {
-      "name": "Whirlwind",
-      "class": "Warrior",
-      "kind": "n",
-      "level": 4,
-      "power": 0.9,
-      "minRange": 1,
-      "maxRange": 1,
-      "cooldown": 2,
-      "area": 1,
-      "text": "Spin attack: hits the target and every enemy next to it."
-    },
-    {
-      "name": "Crescent Wave",
-      "class": "Warrior",
-      "kind": "n",
-      "level": 8,
-      "power": 1.3,
-      "minRange": 2,
-      "maxRange": 3,
-      "cooldown": 2,
-      "text": "Throws a blade of energy 2–3 tiles away."
-    },
-    {
       "name": "Power Strike",
       "class": "Warrior",
       "kind": "u",
@@ -59,9 +36,45 @@
       "text": "A heavy two-handed blow."
     },
     {
+      "name": "Whirlwind",
+      "class": "Warrior",
+      "kind": "n",
+      "level": 3,
+      "power": 0.9,
+      "minRange": 1,
+      "maxRange": 1,
+      "cooldown": 2,
+      "area": 1,
+      "text": "Spin attack: hits the target and every enemy next to it."
+    },
+    {
+      "name": "Crescent Wave",
+      "class": "Warrior",
+      "kind": "n",
+      "level": 6,
+      "power": 1.3,
+      "minRange": 2,
+      "maxRange": 3,
+      "cooldown": 2,
+      "text": "Throws a blade of energy 2–3 tiles away."
+    },
+    {
+      "name": "Shoulder Check",
+      "class": "Warrior",
+      "kind": "n",
+      "level": 9,
+      "power": 0.9,
+      "minRange": 1,
+      "maxRange": 1,
+      "cooldown": 2,
+      "text": "Shoves the target 2 tiles back. If it slams into a wall or another unit it takes +50% and is stunned 1 turn.",
+      "push": 2,
+      "slam": true
+    },
+    {
       "name": "Execution",
       "class": "Warrior",
-      "kind": "u",
+      "kind": "n",
       "level": 12,
       "power": 2.2,
       "minRange": 1,
@@ -69,6 +82,35 @@
       "cooldown": 4,
       "execute": true,
       "text": "Finishing blow: +50% damage on enemies under 40% HP."
+    },
+    {
+      "name": "Riposte Stance",
+      "class": "Warrior",
+      "kind": "n",
+      "level": 15,
+      "power": 0,
+      "minRange": 0,
+      "maxRange": 0,
+      "cooldown": 4,
+      "buffs": {
+        "riposte": 2
+      },
+      "text": "Until your next turn, strike back at every enemy that hits you in melee (power 0.8).",
+      "aim": "self"
+    },
+    {
+      "name": "Leaping Cleave",
+      "class": "Warrior",
+      "kind": "n",
+      "level": 18,
+      "power": 1.1,
+      "minRange": 1,
+      "maxRange": 4,
+      "cooldown": 3,
+      "area": 1,
+      "text": "Leap up to 3 tiles to land next to the target, then hit it and every enemy next to you.",
+      "leap": 3,
+      "around": true
     },
     {
       "name": "Dragon Slash",
@@ -85,6 +127,45 @@
         "bleed": 4
       },
       "text": "A blazing fire slash that leaves a 4-turn burn."
+    },
+    {
+      "name": "Sunder",
+      "class": "Warrior",
+      "kind": "n",
+      "level": 21,
+      "power": 1.2,
+      "minRange": 1,
+      "maxRange": 1,
+      "cooldown": 3,
+      "text": "Strips every buff and shield from the target.",
+      "dispel": true
+    },
+    {
+      "name": "Battle Trance",
+      "class": "Warrior",
+      "kind": "n",
+      "level": 24,
+      "power": 0,
+      "minRange": 0,
+      "maxRange": 0,
+      "cooldown": 4,
+      "buffs": {
+        "trance": 2
+      },
+      "text": "For 2 turns: +25% damage and +1 Move, but you take 15% more damage.",
+      "aim": "self"
+    },
+    {
+      "name": "Momentum",
+      "class": "Warrior",
+      "kind": "n",
+      "level": 27,
+      "power": 1,
+      "minRange": 1,
+      "maxRange": 1,
+      "cooldown": 3,
+      "text": "If it defeats the target you may act once more this turn (once per turn).",
+      "trick": "momentum"
     },
     {
       "name": "Bash",
@@ -111,36 +192,6 @@
       "text": "Stuns the target for 1 turn."
     },
     {
-      "name": "Ground Pound",
-      "class": "Tank",
-      "kind": "n",
-      "level": 4,
-      "power": 0.8,
-      "minRange": 1,
-      "maxRange": 1,
-      "cooldown": 2,
-      "effects": {
-        "snare": 1
-      },
-      "area": 1,
-      "text": "Hits the target and its neighbors and snares them."
-    },
-    {
-      "name": "Ironhide",
-      "class": "Tank",
-      "kind": "n",
-      "level": 8,
-      "power": 0,
-      "minRange": 0,
-      "maxRange": 0,
-      "cooldown": 4,
-      "support": true,
-      "buffs": {
-        "grd": 2
-      },
-      "text": "Brace: take 40% less damage until your next turn ends."
-    },
-    {
       "name": "Crushing Blow",
       "class": "Tank",
       "kind": "u",
@@ -155,10 +206,65 @@
       "text": "Smashes armor: the target loses 30% DEF for 2 turns."
     },
     {
+      "name": "Ground Pound",
+      "class": "Tank",
+      "kind": "n",
+      "level": 3,
+      "power": 0.8,
+      "minRange": 1,
+      "maxRange": 1,
+      "cooldown": 2,
+      "effects": {
+        "snare": 1
+      },
+      "area": 1,
+      "text": "Hits the target and its neighbors and snares them."
+    },
+    {
+      "name": "Ironhide",
+      "class": "Tank",
+      "kind": "n",
+      "level": 6,
+      "power": 0,
+      "minRange": 0,
+      "maxRange": 0,
+      "cooldown": 4,
+      "support": true,
+      "buffs": {
+        "grd": 2
+      },
+      "text": "Brace: take 40% less damage until your next turn ends."
+    },
+    {
+      "name": "Hook Chain",
+      "class": "Tank",
+      "kind": "n",
+      "level": 9,
+      "power": 0.7,
+      "minRange": 2,
+      "maxRange": 3,
+      "cooldown": 2,
+      "text": "Throw a chain 2-3 tiles and drag the target to the tile next to you.",
+      "pull": true
+    },
+    {
+      "name": "Bodyguard",
+      "class": "Tank",
+      "kind": "n",
+      "level": 12,
+      "power": 0,
+      "minRange": 1,
+      "maxRange": 3,
+      "cooldown": 4,
+      "text": "Pick an ally within 3 tiles. For 2 turns, hits aimed at them hit you instead, for 70% of the damage.",
+      "aim": "ally",
+      "trick": "bodyguard"
+    },
+    {
       "name": "Fortress Slam",
       "class": "Tank",
-      "kind": "u",
-      "level": 14,
+      "kind": "n",
+      "level": 15,
       "power": 1.2,
       "minRange": 1,
       "maxRange": 1,
@@ -168,6 +274,19 @@
       },
       "area": 2,
       "text": "Shockwave that stuns everything within 2 tiles of the target."
+    },
+    {
+      "name": "Iron Shell",
+      "class": "Tank",
+      "kind": "n",
+      "level": 18,
+      "power": 0,
+      "minRange": 0,
+      "maxRange": 0,
+      "cooldown": 4,
+      "text": "Gain a shield worth 25% of your max HP.",
+      "aim": "self",
+      "shield": 0.25
     },
     {
       "name": "Titan's Wrath",
@@ -185,6 +304,49 @@
       "text": "Golden smash that stuns the target and its neighbors."
     },
     {
+      "name": "Taunting Roar",
+      "class": "Tank",
+      "kind": "n",
+      "level": 21,
+      "power": 0,
+      "minRange": 0,
+      "maxRange": 0,
+      "cooldown": 4,
+      "area": 3,
+      "text": "Every enemy within 3 tiles must attack you on its next turn.",
+      "aim": "self",
+      "trick": "taunt"
+    },
+    {
+      "name": "Aftershock",
+      "class": "Tank",
+      "kind": "n",
+      "level": 24,
+      "power": 1,
+      "minRange": 1,
+      "maxRange": 1,
+      "cooldown": 3,
+      "effects": {
+        "snare": 1
+      },
+      "area": 1,
+      "text": "Hits the target and its neighbors and snares them; at the start of the next enemy turn the ground shakes again for half damage.",
+      "trick": "aftershock"
+    },
+    {
+      "name": "Unstoppable",
+      "class": "Tank",
+      "kind": "n",
+      "level": 27,
+      "power": 0.9,
+      "minRange": 0,
+      "maxRange": 4,
+      "cooldown": 4,
+      "text": "Bulldoze up to 4 tiles in a straight line. Every enemy in the way is hit and shoved to the side.",
+      "aim": "line",
+      "trick": "unstoppable"
+    },
+    {
       "name": "Fireball",
       "class": "Mage",
       "kind": "n",
@@ -194,17 +356,6 @@
       "maxRange": 6,
       "element": "fire",
       "text": "Fire magic. Ignores half of armor."
-    },
-    {
-      "name": "Thunder",
-      "class": "Mage",
-      "kind": "n",
-      "level": 1,
-      "power": 1.2,
-      "minRange": 2,
-      "maxRange": 6,
-      "element": "elec",
-      "text": "Thunder magic. Ignores half of armor."
     },
     {
       "name": "Frost Bolt",
@@ -221,10 +372,34 @@
       "text": "Ice magic that snares for 1 turn."
     },
     {
-      "name": "Ice Lance",
+      "name": "Meteor",
+      "class": "Mage",
+      "kind": "u",
+      "level": 1,
+      "power": 1.5,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 4,
+      "element": "fire",
+      "area": 1,
+      "text": "Calls a flaming rock down on an area."
+    },
+    {
+      "name": "Thunder",
       "class": "Mage",
       "kind": "n",
       "level": 3,
+      "power": 1.2,
+      "minRange": 2,
+      "maxRange": 6,
+      "element": "elec",
+      "text": "Thunder magic. Ignores half of armor."
+    },
+    {
+      "name": "Ice Lance",
+      "class": "Mage",
+      "kind": "n",
+      "level": 6,
       "power": 1.3,
       "minRange": 2,
       "maxRange": 6,
@@ -235,7 +410,7 @@
       "name": "Chain Lightning",
       "class": "Mage",
       "kind": "n",
-      "level": 6,
+      "level": 9,
       "power": 0.9,
       "minRange": 2,
       "maxRange": 6,
@@ -248,7 +423,7 @@
       "name": "Blizzard",
       "class": "Mage",
       "kind": "n",
-      "level": 10,
+      "level": 12,
       "power": 1.1,
       "minRange": 2,
       "maxRange": 6,
@@ -261,17 +436,31 @@
       "text": "Snowstorm on an area that snares everything hit."
     },
     {
-      "name": "Meteor",
+      "name": "Blink",
       "class": "Mage",
-      "kind": "u",
-      "level": 1,
-      "power": 1.5,
+      "kind": "n",
+      "level": 15,
+      "power": 0,
+      "minRange": 1,
+      "maxRange": 4,
+      "cooldown": 4,
+      "text": "Teleport to an open tile up to 4 away. You can still attack this turn.",
+      "aim": "tile",
+      "free": true,
+      "trick": "blink"
+    },
+    {
+      "name": "Mana Burn",
+      "class": "Mage",
+      "kind": "n",
+      "level": 18,
+      "power": 0.8,
       "minRange": 2,
       "maxRange": 6,
-      "cooldown": 4,
-      "element": "fire",
-      "area": 1,
-      "text": "Calls a flaming rock down on an area."
+      "cooldown": 3,
+      "magic": true,
+      "text": "Arcane hit that adds 1 turn to every cooldown the target has.",
+      "trick": "manaBurn"
     },
     {
       "name": "Arcane Nova",
@@ -287,15 +476,47 @@
       "text": "Pure arcane blast hitting everything within 2 tiles."
     },
     {
-      "name": "Mend Self",
-      "class": "Healer",
+      "name": "Static Field",
+      "class": "Mage",
       "kind": "n",
-      "level": 1,
-      "power": 0.8,
+      "level": 21,
+      "power": 0.6,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 3,
+      "element": "elec",
+      "area": 2,
+      "text": "Lightning within 2 tiles of the target; those tiles stay charged for 2 turns and shock any enemy that ends its turn on them.",
+      "field": "static",
+      "fieldRange": 2,
+      "fieldTurns": 2
+    },
+    {
+      "name": "Gravity Well",
+      "class": "Mage",
+      "kind": "n",
+      "level": 24,
+      "power": 0.7,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 3,
+      "magic": true,
+      "area": 1,
+      "text": "Arcane hit on an area that pulls every enemy within 2 tiles one step toward the center.",
+      "gather": 2
+    },
+    {
+      "name": "Echo",
+      "class": "Mage",
+      "kind": "n",
+      "level": 27,
+      "power": 0,
       "minRange": 0,
       "maxRange": 0,
-      "heal": true,
-      "text": "Heals yourself."
+      "cooldown": 4,
+      "text": "Cast the last spell you used again at 60% power on a new target, without starting its cooldown.",
+      "aim": "echo",
+      "trick": "echo"
     },
     {
       "name": "Heal Ally",
@@ -309,16 +530,27 @@
       "text": "Heals one ally up to 3 tiles away."
     },
     {
-      "name": "Cleanse",
+      "name": "Mend Self",
       "class": "Healer",
       "kind": "n",
-      "level": 6,
-      "power": 0,
+      "level": 1,
+      "power": 0.8,
       "minRange": 0,
-      "maxRange": 3,
+      "maxRange": 0,
       "heal": true,
-      "cleanse": true,
-      "text": "Removes bleed, snare, stun and armor break."
+      "text": "Heals yourself."
+    },
+    {
+      "name": "Divine Grace",
+      "class": "Healer",
+      "kind": "u",
+      "level": 1,
+      "power": 3,
+      "minRange": 0,
+      "maxRange": 99,
+      "heal": true,
+      "lockSelf": true,
+      "text": "Huge heal anywhere on the map, but you cannot move for 2 turns."
     },
     {
       "name": "Radiant Burst",
@@ -335,7 +567,7 @@
       "name": "Blessing",
       "class": "Healer",
       "kind": "n",
-      "level": 4,
+      "level": 6,
       "power": 0,
       "minRange": 0,
       "maxRange": 0,
@@ -348,10 +580,22 @@
       "text": "You and allies within 4 tiles deal 25% more damage for 2 turns."
     },
     {
+      "name": "Cleanse",
+      "class": "Healer",
+      "kind": "n",
+      "level": 9,
+      "power": 0,
+      "minRange": 0,
+      "maxRange": 3,
+      "heal": true,
+      "cleanse": true,
+      "text": "Removes bleed, snare, stun and armor break."
+    },
+    {
       "name": "Holy Siphon",
       "class": "Healer",
       "kind": "n",
-      "level": 8,
+      "level": 12,
       "power": 0.9,
       "minRange": 2,
       "maxRange": 6,
@@ -361,10 +605,23 @@
       "text": "Light damage, then heals your most hurt ally for 100% of the damage dealt."
     },
     {
+      "name": "Mass Heal",
+      "class": "Healer",
+      "kind": "n",
+      "level": 15,
+      "power": 1,
+      "minRange": 1,
+      "maxRange": 4,
+      "cooldown": 3,
+      "area": 2,
+      "heal": true,
+      "text": "Heals the target and every ally within 2 tiles of it."
+    },
+    {
       "name": "Prism Aura",
       "class": "Healer",
       "kind": "n",
-      "level": 12,
+      "level": 18,
       "power": 0,
       "minRange": 0,
       "maxRange": 0,
@@ -377,10 +634,28 @@
       "text": "You and allies within 4 tiles ignore enemy typing: every hit lands with advantage (×1.5) for 2 turns."
     },
     {
+      "name": "Last Light",
+      "class": "Healer",
+      "kind": "u",
+      "level": 20,
+      "power": 0,
+      "minRange": 0,
+      "maxRange": 0,
+      "cooldown": 6,
+      "area": 3,
+      "support": true,
+      "buffs": {
+        "lastlight": 2
+      },
+      "text": "You and allies within 3 tiles are healed 30% and, for 2 turns, a blow that would defeat them leaves them at 1 HP instead.",
+      "aim": "self",
+      "trick": "lastLight"
+    },
+    {
       "name": "Sacred Flame",
       "class": "Healer",
       "kind": "n",
-      "level": 14,
+      "level": 21,
       "power": 1.1,
       "minRange": 2,
       "maxRange": 6,
@@ -390,10 +665,22 @@
       "text": "Holy fire on the target and enemies next to it."
     },
     {
+      "name": "Resurrection",
+      "class": "Healer",
+      "kind": "n",
+      "level": 24,
+      "power": 0,
+      "minRange": 0,
+      "maxRange": 0,
+      "cooldown": 99,
+      "revive": true,
+      "text": "Revives the most recently fallen ally next to you at 40% HP. Once per battle."
+    },
+    {
       "name": "Renewal",
       "class": "Healer",
       "kind": "n",
-      "level": 18,
+      "level": 27,
       "power": 0,
       "minRange": 0,
       "maxRange": 0,
@@ -404,43 +691,6 @@
         "regen": 3
       },
       "text": "You and allies within 4 tiles regenerate 12% HP at the start of each turn for 3 turns."
-    },
-    {
-      "name": "Mass Heal",
-      "class": "Healer",
-      "kind": "n",
-      "level": 10,
-      "power": 1,
-      "minRange": 1,
-      "maxRange": 4,
-      "cooldown": 3,
-      "area": 2,
-      "heal": true,
-      "text": "Heals the target and every ally within 2 tiles of it."
-    },
-    {
-      "name": "Divine Grace",
-      "class": "Healer",
-      "kind": "u",
-      "level": 1,
-      "power": 3,
-      "minRange": 0,
-      "maxRange": 99,
-      "heal": true,
-      "lockSelf": true,
-      "text": "Huge heal anywhere on the map, but you cannot move for 2 turns."
-    },
-    {
-      "name": "Resurrection",
-      "class": "Healer",
-      "kind": "u",
-      "level": 16,
-      "power": 0,
-      "minRange": 0,
-      "maxRange": 0,
-      "cooldown": 99,
-      "revive": true,
-      "text": "Revives the most recently fallen ally next to you at 40% HP. Once per battle."
     },
     {
       "name": "Shot",
@@ -464,6 +714,17 @@
         "snare": 1
       },
       "text": "Snares the target for 1 turn."
+    },
+    {
+      "name": "Power Shot",
+      "class": "Ranger",
+      "kind": "u",
+      "level": 1,
+      "power": 1.6,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 3,
+      "text": "A fully drawn heavy arrow."
     },
     {
       "name": "Multishot",
@@ -493,7 +754,7 @@
       "name": "Pinning Shot",
       "class": "Ranger",
       "kind": "n",
-      "level": 10,
+      "level": 9,
       "power": 0.7,
       "minRange": 2,
       "maxRange": 6,
@@ -507,7 +768,7 @@
       "name": "Piercing Shot",
       "class": "Ranger",
       "kind": "n",
-      "level": 14,
+      "level": 12,
       "power": 1.4,
       "minRange": 2,
       "maxRange": 6,
@@ -516,15 +777,33 @@
       "text": "Passes through and hits the next 2 tiles behind the target."
     },
     {
-      "name": "Power Shot",
+      "name": "Steady Aim",
       "class": "Ranger",
-      "kind": "u",
-      "level": 1,
-      "power": 1.6,
+      "kind": "n",
+      "level": 15,
+      "power": 0,
+      "minRange": 0,
+      "maxRange": 0,
+      "cooldown": 3,
+      "buffs": {
+        "aim": 1
+      },
+      "text": "Stand still this turn: your next shot gets +2 range and cannot miss.",
+      "aim": "self",
+      "free": true,
+      "still": true
+    },
+    {
+      "name": "Disengage",
+      "class": "Ranger",
+      "kind": "n",
+      "level": 18,
+      "power": 0.8,
       "minRange": 2,
       "maxRange": 6,
       "cooldown": 3,
-      "text": "A fully drawn heavy arrow."
+      "text": "Shoot, then leap 2 tiles directly away from the target.",
+      "away": 2
     },
     {
       "name": "Rain of Arrows",
@@ -537,6 +816,49 @@
       "cooldown": 4,
       "area": 2,
       "text": "Arrows rain on everything within 2 tiles of the target."
+    },
+    {
+      "name": "Hunter's Mark",
+      "class": "Ranger",
+      "kind": "n",
+      "level": 21,
+      "power": 0.5,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 3,
+      "effects": {
+        "hmark": 3
+      },
+      "text": "Marks the target for 3 turns: everyone on your side deals it +20% damage."
+    },
+    {
+      "name": "Concussive Arrow",
+      "class": "Ranger",
+      "kind": "n",
+      "level": 24,
+      "power": 0.9,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 2,
+      "text": "Knocks the target 2 tiles back.",
+      "push": 2
+    },
+    {
+      "name": "Flaming Volley",
+      "class": "Ranger",
+      "kind": "n",
+      "level": 27,
+      "power": 0.7,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 3,
+      "element": "fire",
+      "physical": true,
+      "area": 1,
+      "text": "Fire arrows on the target and its neighbors; the ground burns for 2 turns.",
+      "field": "fire",
+      "fieldRange": 1,
+      "fieldTurns": 2
     },
     {
       "name": "Blood Rage",
@@ -797,10 +1119,22 @@
       "text": "Poisoned blade: bleed 3 turns."
     },
     {
+      "name": "Assassinate",
+      "class": "Assassin",
+      "kind": "u",
+      "level": 1,
+      "power": 1.8,
+      "minRange": 1,
+      "maxRange": 1,
+      "cooldown": 3,
+      "execute": true,
+      "text": "A killing strike: +50% damage on enemies under 40% HP."
+    },
+    {
       "name": "Ambush",
       "class": "Assassin",
       "kind": "n",
-      "level": 4,
+      "level": 3,
       "power": 1.2,
       "minRange": 1,
       "maxRange": 1,
@@ -812,7 +1146,7 @@
       "name": "Fan of Knives",
       "class": "Assassin",
       "kind": "n",
-      "level": 8,
+      "level": 6,
       "power": 0.8,
       "minRange": 1,
       "maxRange": 2,
@@ -821,10 +1155,22 @@
       "text": "Knives hit the target and every enemy next to it."
     },
     {
+      "name": "Shadowstep",
+      "class": "Assassin",
+      "kind": "n",
+      "level": 9,
+      "power": 1,
+      "minRange": 1,
+      "maxRange": 4,
+      "cooldown": 3,
+      "text": "Teleport to the far side of an enemy within 4 tiles and stab it in the back.",
+      "behind": true
+    },
+    {
       "name": "Smoke Bomb",
       "class": "Assassin",
       "kind": "n",
-      "level": 14,
+      "level": 12,
       "power": 0,
       "minRange": 0,
       "maxRange": 0,
@@ -837,16 +1183,31 @@
       "text": "Vanish in smoke: 40% less damage taken and +2 Move for 2 turns."
     },
     {
-      "name": "Assassinate",
+      "name": "Garrote",
       "class": "Assassin",
-      "kind": "u",
-      "level": 1,
-      "power": 1.8,
+      "kind": "n",
+      "level": 15,
+      "power": 0.7,
       "minRange": 1,
       "maxRange": 1,
       "cooldown": 3,
-      "execute": true,
-      "text": "A killing strike: +50% damage on enemies under 40% HP."
+      "effects": {
+        "silence": 2
+      },
+      "text": "Silences the target for 2 turns: it can only use its most basic attack."
+    },
+    {
+      "name": "Bait and Switch",
+      "class": "Assassin",
+      "kind": "n",
+      "level": 18,
+      "power": 0,
+      "minRange": 1,
+      "maxRange": 3,
+      "cooldown": 3,
+      "text": "Swap places with any unit, friend or foe, within 3 tiles.",
+      "aim": "any",
+      "trick": "swap"
     },
     {
       "name": "Death Blossom",
@@ -860,6 +1221,45 @@
       "area": 1,
       "hits": 4,
       "text": "Four spinning slashes that also hit enemies next to the target."
+    },
+    {
+      "name": "Crippling Cut",
+      "class": "Assassin",
+      "kind": "n",
+      "level": 21,
+      "power": 0.9,
+      "minRange": 1,
+      "maxRange": 1,
+      "cooldown": 2,
+      "effects": {
+        "bleed": 2,
+        "slow": 2
+      },
+      "text": "Target bleeds 2 turns and loses 2 Move for 2 turns."
+    },
+    {
+      "name": "Open Veins",
+      "class": "Assassin",
+      "kind": "n",
+      "level": 24,
+      "power": 0.6,
+      "minRange": 1,
+      "maxRange": 1,
+      "cooldown": 3,
+      "text": "Every bleed and poison on the target ticks right now, and their turns left double.",
+      "trick": "openVeins"
+    },
+    {
+      "name": "Twin Fangs",
+      "class": "Assassin",
+      "kind": "n",
+      "level": 27,
+      "power": 0.9,
+      "minRange": 1,
+      "maxRange": 1,
+      "cooldown": 2,
+      "extraTargets": 2,
+      "text": "Strike two different enemies next to you."
     },
     {
       "name": "Quick Shot",
@@ -883,44 +1283,6 @@
       "text": "Two quick shots at one target."
     },
     {
-      "name": "Ricochet",
-      "class": "Gunslinger",
-      "kind": "n",
-      "level": 4,
-      "power": 0.8,
-      "minRange": 2,
-      "maxRange": 6,
-      "cooldown": 2,
-      "extraTargets": 2,
-      "text": "The bullet bounces to a second enemy in range."
-    },
-    {
-      "name": "Flash Bang",
-      "class": "Gunslinger",
-      "kind": "n",
-      "level": 8,
-      "power": 0.4,
-      "minRange": 2,
-      "maxRange": 6,
-      "cooldown": 3,
-      "effects": {
-        "stun": 1
-      },
-      "text": "Stuns the target for 1 turn."
-    },
-    {
-      "name": "Scatter Shot",
-      "class": "Gunslinger",
-      "kind": "n",
-      "level": 12,
-      "power": 0.9,
-      "minRange": 1,
-      "maxRange": 3,
-      "cooldown": 2,
-      "area": 1,
-      "text": "Shotgun blast on the target and enemies next to it. Works up close."
-    },
-    {
       "name": "Hollow Point",
       "class": "Gunslinger",
       "kind": "u",
@@ -935,6 +1297,83 @@
       "text": "Heavy round that breaks armor (−30% DEF) for 2 turns."
     },
     {
+      "name": "Ricochet",
+      "class": "Gunslinger",
+      "kind": "n",
+      "level": 3,
+      "power": 0.8,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 2,
+      "extraTargets": 2,
+      "text": "The bullet bounces to a second enemy in range."
+    },
+    {
+      "name": "Flash Bang",
+      "class": "Gunslinger",
+      "kind": "n",
+      "level": 6,
+      "power": 0.4,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 3,
+      "effects": {
+        "stun": 1
+      },
+      "text": "Stuns the target for 1 turn."
+    },
+    {
+      "name": "Scatter Shot",
+      "class": "Gunslinger",
+      "kind": "n",
+      "level": 9,
+      "power": 0.9,
+      "minRange": 1,
+      "maxRange": 3,
+      "cooldown": 2,
+      "area": 1,
+      "text": "Shotgun blast on the target and enemies next to it. Works up close."
+    },
+    {
+      "name": "Boot Shot",
+      "class": "Gunslinger",
+      "kind": "n",
+      "level": 12,
+      "power": 0.9,
+      "minRange": 1,
+      "maxRange": 1,
+      "cooldown": 2,
+      "text": "Kick an enemy next to you 2 tiles away and fire as it flies.",
+      "push": 2
+    },
+    {
+      "name": "Disarming Shot",
+      "class": "Gunslinger",
+      "kind": "n",
+      "level": 15,
+      "power": 0.8,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 3,
+      "effects": {
+        "weak": 2
+      },
+      "text": "Shoots the weapon hand: target deals 30% less damage for 2 turns."
+    },
+    {
+      "name": "Roll Out",
+      "class": "Gunslinger",
+      "kind": "n",
+      "level": 18,
+      "power": 0.9,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 3,
+      "text": "Dive-roll up to 3 tiles, then shoot.",
+      "aim": "rollThenFoe",
+      "dash": 3
+    },
+    {
       "name": "Bullet Hell",
       "class": "Gunslinger",
       "kind": "u",
@@ -945,6 +1384,50 @@
       "cooldown": 4,
       "extraTargets": 6,
       "text": "Unload on up to 6 enemies in range."
+    },
+    {
+      "name": "Powder Keg",
+      "class": "Gunslinger",
+      "kind": "n",
+      "level": 21,
+      "power": 1.6,
+      "minRange": 1,
+      "maxRange": 4,
+      "cooldown": 4,
+      "element": "fire",
+      "physical": true,
+      "area": 1,
+      "text": "Toss a keg on a tile up to 4 away. It blows up at the start of the next enemy turn: fire on everything within 1 tile.",
+      "aim": "tile",
+      "trick": "keg"
+    },
+    {
+      "name": "Lucky Coin",
+      "class": "Gunslinger",
+      "kind": "n",
+      "level": 24,
+      "power": 0,
+      "minRange": 0,
+      "maxRange": 0,
+      "cooldown": 5,
+      "buffs": {
+        "coin": 2
+      },
+      "text": "Your next 2 shots are sure critical hits.",
+      "aim": "self",
+      "free": true
+    },
+    {
+      "name": "High Noon",
+      "class": "Gunslinger",
+      "kind": "n",
+      "level": 27,
+      "power": 1.3,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 3,
+      "text": "+10% damage for every enemy in your range (max +60%).",
+      "trick": "highNoon"
     },
     {
       "name": "Spear Thrust",
@@ -970,10 +1453,22 @@
       "text": "The dragon rakes the target: bleed 2."
     },
     {
+      "name": "Impale",
+      "class": "Dragon Knight",
+      "kind": "u",
+      "level": 1,
+      "power": 1.6,
+      "minRange": 1,
+      "maxRange": 2,
+      "cooldown": 3,
+      "line": 1,
+      "text": "A lance thrust that pierces 1 tile behind the target."
+    },
+    {
       "name": "Dragonfire",
       "class": "Dragon Knight",
       "kind": "n",
-      "level": 4,
+      "level": 3,
       "power": 0.9,
       "minRange": 1,
       "maxRange": 3,
@@ -986,7 +1481,7 @@
       "name": "Wing Gust",
       "class": "Dragon Knight",
       "kind": "n",
-      "level": 8,
+      "level": 6,
       "power": 0.7,
       "minRange": 1,
       "maxRange": 2,
@@ -1001,7 +1496,7 @@
       "name": "Sky Dive",
       "class": "Dragon Knight",
       "kind": "n",
-      "level": 12,
+      "level": 9,
       "power": 1.5,
       "minRange": 2,
       "maxRange": 4,
@@ -1009,16 +1504,53 @@
       "text": "Dive from the sky onto a target 2–4 tiles away."
     },
     {
-      "name": "Impale",
+      "name": "Tail Sweep",
       "class": "Dragon Knight",
-      "kind": "u",
-      "level": 1,
-      "power": 1.6,
-      "minRange": 1,
-      "maxRange": 2,
-      "cooldown": 3,
-      "line": 1,
-      "text": "A lance thrust that pierces 1 tile behind the target."
+      "kind": "n",
+      "level": 12,
+      "power": 0.8,
+      "minRange": 0,
+      "maxRange": 0,
+      "cooldown": 2,
+      "area": 1,
+      "text": "Hits every enemy next to you and shoves each 1 tile away.",
+      "aim": "self",
+      "push": 1,
+      "around": true
+    },
+    {
+      "name": "Dragon Scales",
+      "class": "Dragon Knight",
+      "kind": "n",
+      "level": 15,
+      "power": 0,
+      "minRange": 0,
+      "maxRange": 0,
+      "cooldown": 4,
+      "buffs": {
+        "dscale": 2
+      },
+      "text": "For 2 turns take 30% less spell damage and reflect 20% of melee damage back.",
+      "aim": "self"
+    },
+    {
+      "name": "Wyrm Roar",
+      "class": "Dragon Knight",
+      "kind": "n",
+      "level": 18,
+      "power": 0,
+      "minRange": 0,
+      "maxRange": 0,
+      "cooldown": 4,
+      "effects": {
+        "weak": 2
+      },
+      "area": 2,
+      "text": "Enemies within 2 tiles are pushed 1 tile away and deal 30% less damage for 2 turns.",
+      "aim": "self",
+      "push": 1,
+      "around": true,
+      "noDamage": true
     },
     {
       "name": "Dragon's Fury",
@@ -1032,6 +1564,46 @@
       "element": "fire",
       "area": 2,
       "text": "A firestorm on everything within 2 tiles of the target."
+    },
+    {
+      "name": "Ember Trail",
+      "class": "Dragon Knight",
+      "kind": "n",
+      "level": 21,
+      "power": 0,
+      "minRange": 0,
+      "maxRange": 4,
+      "cooldown": 3,
+      "text": "Fly up to 4 tiles in a line; every tile you pass over burns for 2 turns.",
+      "aim": "line",
+      "trick": "emberTrail"
+    },
+    {
+      "name": "Skewer",
+      "class": "Dragon Knight",
+      "kind": "n",
+      "level": 24,
+      "power": 1.2,
+      "minRange": 2,
+      "maxRange": 2,
+      "cooldown": 3,
+      "text": "Lance a target 2 tiles away and drag it next to you.",
+      "pull": true
+    },
+    {
+      "name": "Wyrmbond",
+      "class": "Dragon Knight",
+      "kind": "n",
+      "level": 27,
+      "power": 0.9,
+      "minRange": 0,
+      "maxRange": 0,
+      "cooldown": 5,
+      "buffs": {
+        "wyrm": 3
+      },
+      "text": "For 3 turns your dragon claws an enemy next to you at the end of each of your turns (power 0.9).",
+      "aim": "self"
     },
     {
       "name": "Phantom Rush",
@@ -1221,54 +1793,6 @@
       "text": "Weakens the target: it deals 30% less damage and loses 30% DEF for 2 turns."
     },
     {
-      "name": "Miasma",
-      "class": "Witch",
-      "kind": "n",
-      "level": 4,
-      "power": 0.7,
-      "minRange": 2,
-      "maxRange": 6,
-      "cooldown": 2,
-      "magic": true,
-      "effects": {
-        "poison": 3
-      },
-      "area": 1,
-      "text": "A poison cloud on the target and enemies next to it."
-    },
-    {
-      "name": "Curse of Frailty",
-      "class": "Witch",
-      "kind": "n",
-      "level": 8,
-      "power": 0.3,
-      "minRange": 2,
-      "maxRange": 6,
-      "cooldown": 3,
-      "magic": true,
-      "effects": {
-        "brk": 3,
-        "weak": 3
-      },
-      "text": "A long curse: −30% DEF and −30% damage for 3 turns."
-    },
-    {
-      "name": "Plague Swarm",
-      "class": "Witch",
-      "kind": "n",
-      "level": 12,
-      "power": 0.9,
-      "minRange": 2,
-      "maxRange": 6,
-      "cooldown": 3,
-      "element": "dark",
-      "effects": {
-        "poison": 2
-      },
-      "extraTargets": 3,
-      "text": "Poison insects attack up to 3 enemies in range."
-    },
-    {
       "name": "Witch's Brew",
       "class": "Witch",
       "kind": "u",
@@ -1286,6 +1810,95 @@
       "text": "A boiling brew: poison and weakness on an area."
     },
     {
+      "name": "Miasma",
+      "class": "Witch",
+      "kind": "n",
+      "level": 3,
+      "power": 0.7,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 2,
+      "magic": true,
+      "effects": {
+        "poison": 3
+      },
+      "area": 1,
+      "text": "A poison cloud on the target and enemies next to it."
+    },
+    {
+      "name": "Curse of Frailty",
+      "class": "Witch",
+      "kind": "n",
+      "level": 6,
+      "power": 0.3,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 3,
+      "magic": true,
+      "effects": {
+        "brk": 3,
+        "weak": 3
+      },
+      "text": "A long curse: −30% DEF and −30% damage for 3 turns."
+    },
+    {
+      "name": "Plague Swarm",
+      "class": "Witch",
+      "kind": "n",
+      "level": 9,
+      "power": 0.9,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 3,
+      "element": "dark",
+      "effects": {
+        "poison": 2
+      },
+      "extraTargets": 3,
+      "text": "Poison insects attack up to 3 enemies in range."
+    },
+    {
+      "name": "Voodoo Link",
+      "class": "Witch",
+      "kind": "n",
+      "level": 12,
+      "power": 0,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 4,
+      "text": "Bind two enemies in range for 3 turns: half of any damage one takes also hits the other.",
+      "aim": "twoFoes",
+      "trick": "link"
+    },
+    {
+      "name": "Wither",
+      "class": "Witch",
+      "kind": "n",
+      "level": 15,
+      "power": 0.6,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 3,
+      "element": "dark",
+      "effects": {
+        "wither": 3
+      },
+      "text": "For 3 turns the target heals only half and can't gain buffs."
+    },
+    {
+      "name": "Puppet Strings",
+      "class": "Witch",
+      "kind": "n",
+      "level": 18,
+      "power": 0,
+      "minRange": 1,
+      "maxRange": 4,
+      "cooldown": 4,
+      "text": "Move an enemy within 4 tiles up to 2 tiles wherever you choose.",
+      "aim": "foeThenTile",
+      "trick": "puppet"
+    },
+    {
       "name": "Hex Storm",
       "class": "Witch",
       "kind": "u",
@@ -1301,6 +1914,47 @@
       },
       "area": 2,
       "text": "A storm of curses within 2 tiles: poison 4 and armor break."
+    },
+    {
+      "name": "Soul Siphon",
+      "class": "Witch",
+      "kind": "n",
+      "level": 21,
+      "power": 1,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 2,
+      "element": "dark",
+      "drain": 0.5,
+      "text": "Dark hit that heals you for half the damage."
+    },
+    {
+      "name": "Contagion",
+      "class": "Witch",
+      "kind": "n",
+      "level": 24,
+      "power": 0,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 3,
+      "text": "Copies every curse and poison on the target onto enemies within 2 tiles of it.",
+      "noDamage": true,
+      "trick": "contagion"
+    },
+    {
+      "name": "Bog of Despair",
+      "class": "Witch",
+      "kind": "n",
+      "level": 27,
+      "power": 0,
+      "minRange": 2,
+      "maxRange": 6,
+      "cooldown": 4,
+      "text": "A swamp 1 tile around a spot for 3 turns: enemies inside are snared and poisoned.",
+      "aim": "tile",
+      "field": "swamp",
+      "fieldRange": 1,
+      "fieldTurns": 3
     },
     {
       "name": "Lance Strike",
@@ -1324,10 +1978,22 @@
       "text": "+12% damage for every tile you moved this turn (max +60%)."
     },
     {
+      "name": "Grand Charge",
+      "class": "Knight",
+      "kind": "u",
+      "level": 1,
+      "power": 1.8,
+      "minRange": 1,
+      "maxRange": 1,
+      "cooldown": 3,
+      "charge": true,
+      "text": "An all-out charge. Gains charge damage."
+    },
+    {
       "name": "Lance Break",
       "class": "Knight",
       "kind": "n",
-      "level": 4,
+      "level": 3,
       "power": 1.3,
       "minRange": 1,
       "maxRange": 1,
@@ -1341,7 +2007,7 @@
       "name": "Running Thrust",
       "class": "Knight",
       "kind": "n",
-      "level": 8,
+      "level": 6,
       "power": 1.5,
       "minRange": 1,
       "maxRange": 2,
@@ -1353,7 +2019,7 @@
       "name": "Valor",
       "class": "Knight",
       "kind": "n",
-      "level": 12,
+      "level": 9,
       "power": 0,
       "minRange": 0,
       "maxRange": 0,
@@ -1366,16 +2032,45 @@
       "text": "Steel yourself: +25% damage and 40% less damage taken for 2 turns."
     },
     {
-      "name": "Grand Charge",
+      "name": "Trample",
       "class": "Knight",
-      "kind": "u",
-      "level": 1,
-      "power": 1.8,
+      "kind": "n",
+      "level": 12,
+      "power": 0.8,
+      "minRange": 0,
+      "maxRange": 4,
+      "cooldown": 3,
+      "text": "Ride straight through up to 3 tiles of enemies to an open tile, hitting each one.",
+      "aim": "line",
+      "trick": "trample"
+    },
+    {
+      "name": "Shield of Faith",
+      "class": "Knight",
+      "kind": "n",
+      "level": 15,
+      "power": 0,
+      "minRange": 1,
+      "maxRange": 3,
+      "cooldown": 3,
+      "text": "Give an ally within 3 tiles a shield worth 20% of your max HP.",
+      "aim": "ally",
+      "shield": 0.2
+    },
+    {
+      "name": "Unhorse",
+      "class": "Knight",
+      "kind": "n",
+      "level": 18,
+      "power": 1.2,
       "minRange": 1,
       "maxRange": 1,
       "cooldown": 3,
-      "charge": true,
-      "text": "An all-out charge. Gains charge damage."
+      "effects": {
+        "snare": 1
+      },
+      "text": "Knocks the target 1 tile back and it can't move next turn.",
+      "push": 1
     },
     {
       "name": "Cavalry Breaker",
@@ -1388,6 +2083,47 @@
       "cooldown": 5,
       "charge": true,
       "text": "A devastating single-target charge."
+    },
+    {
+      "name": "Lance Wall",
+      "class": "Knight",
+      "kind": "n",
+      "level": 21,
+      "power": 0.9,
+      "minRange": 0,
+      "maxRange": 0,
+      "cooldown": 4,
+      "buffs": {
+        "lwall": 2
+      },
+      "text": "Until your next turn, any enemy that steps next to you is struck first (power 0.9).",
+      "aim": "self"
+    },
+    {
+      "name": "Rescue",
+      "class": "Knight",
+      "kind": "n",
+      "level": 24,
+      "power": 0,
+      "minRange": 2,
+      "maxRange": 4,
+      "cooldown": 4,
+      "text": "Pull an ally within 4 tiles to a tile next to you; they take 20% less damage for 1 turn.",
+      "aim": "ally",
+      "trick": "rescue"
+    },
+    {
+      "name": "Relentless Charge",
+      "class": "Knight",
+      "kind": "n",
+      "level": 27,
+      "power": 1.3,
+      "minRange": 1,
+      "maxRange": 1,
+      "cooldown": 3,
+      "charge": true,
+      "text": "A charge (charge damage); afterwards you may keep moving with the Move you have left.",
+      "trick": "relentless"
     },
     {
       "name": "Grand Hex",

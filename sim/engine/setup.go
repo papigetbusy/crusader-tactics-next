@@ -39,6 +39,9 @@ type UnitSetup struct {
 	Element string `json:"element,omitempty"`
 	Boss    bool   `json:"boss,omitempty"`
 	Elite   bool   `json:"elite,omitempty"`
+	// Equipped picks a hero's normal skills (skill test fights); empty means
+	// the usual starting build.
+	Equipped []string `json:"equipped,omitempty"`
 }
 
 // Combat dice come from their own stream of the battle seed, so later
@@ -56,6 +59,9 @@ func NewFight(c *content.Content, s Setup, battleSeed uint64) *Game {
 			Boss: us.Boss, Elite: us.Elite, Status: map[string]int{}}
 		if u.Team == state.Heroes {
 			u.Learned, u.Equipped, u.Ultimate = c.StartingBuild(u.Class, u.Level)
+			if len(us.Equipped) > 0 {
+				u.Equipped = us.Equipped
+			}
 			u.Skills = c.Bar(u.Class, u.Equipped, u.Ultimate)
 			u.Potions = startingPotions
 		} else {

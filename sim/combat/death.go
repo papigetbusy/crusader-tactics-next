@@ -21,6 +21,9 @@ func died(c *content.Content, b *state.Battle, dice rng.Dice, u, v *state.Unit, 
 	if v.Team == state.Heroes && !v.Companion && !v.Summoned && !v.Decoy {
 		b.Fallen = append(b.Fallen, v)
 	}
+	if v.Team == state.Enemies && c.Combat.MonstersRevive && !v.Summoned && !v.Decoy {
+		b.FallenFoes = append(b.FallenFoes, v)
+	}
 	onDeath(c, b, dice, u, v, emit)
 	if u.Team == state.Heroes {
 		u.KilledThisAction = true

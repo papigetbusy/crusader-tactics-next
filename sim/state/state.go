@@ -78,6 +78,15 @@ type Unit struct {
 	HeavyBleedBy     int        // Blood Pact: bleed damage heals this unit (only if HeavyBleed)
 	HeavyBleed       bool
 
+	// What the even-schedule skills leave on a unit.
+	TauntedBy    int    // Taunting Roar: must attack this unit (while "taunted")
+	GuardedBy    int    // Bodyguard: this unit takes the hits (while "guarded")
+	LinkedTo     int    // Voodoo Link: shares damage with this unit (while "link")
+	Quake        int    // Aftershock: damage waiting for the start of this unit's next turn
+	MomentumUsed bool   // Momentum already gave an extra action this turn
+	MoveLeft     int    // Relentless Charge: move budget left (half-steps) for one more walk
+	LastSpell    string // the last spell cast (Echo repeats it)
+
 	Potions int   // potions left this floor (heroes)
 	Undo    *Tile // where the unit stood before its move this turn, while Undo is still allowed
 }
@@ -103,8 +112,16 @@ type Field struct {
 	Range  int
 	Square bool // range counts like a king's move (3x3), not in straight steps
 	Turns  int
-	Kind   string // "fire" or "banner"
+	Kind   string // "fire", "banner", "static" or "swamp"
 	Owner  int
+	Team   int // the side that made it: it works on the other side
+}
+
+// Keg is a Powder Keg waiting to blow up at the start of the other side's turn.
+type Keg struct {
+	X, Y  int
+	Owner int
+	Team  int
 }
 
 // Trap is a hidden Trapper snare (old TRAPS).
@@ -150,6 +167,8 @@ type Battle struct {
 	Raises     []Raise    // skeletons waiting to rise once the current action is over
 	Decisions  []Decision // choices waiting for the player, answered first to last (old EVQ)
 	Fallen     []*Unit    // heroes who died in combat this floor, last one first to be revived
+	FallenFoes []*Unit    // monsters who died, for monster healers' Resurrection (only with MonstersRevive)
+	Kegs       []Keg      // Powder Kegs waiting to blow up
 }
 
 // Decision is a choice the player must make before playing on: a skill

@@ -1,6 +1,8 @@
 package combat
 
 import (
+	"slices"
+
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
 )
@@ -36,6 +38,29 @@ func hidden(v *state.Unit) bool {
 // Targets lists who a unit can use a skill on right now, in board order
 // (old tgt, line 777). Heals pick hurt allies; attacks pick enemies in range.
 func Targets(c *content.Content, b *state.Battle, u *state.Unit, s content.Skill) []*state.Unit {
+	return restrain(b, u, s, targets(c, b, u, s))
+}
+
+// restrain applies Garrote and Taunting Roar: a silenced hero can only use
+// its basic Strike, and a taunted unit's attacks can only go at the unit
+// that taunted it.
+func restrain(b *state.Battle, u *state.Unit, s content.Skill, out []*state.Unit) []*state.Unit {
+	if u.Status["silence"] > 0 && !s.Strike {
+		return nil
+	}
+	if t := b.Unit(u.TauntedBy); u.Status["taunted"] > 0 && t != nil && !s.Friendly() {
+		if slices.Contains(out, t) {
+			return []*state.Unit{t}
+		}
+		return nil
+	}
+	return out
+}
+
+func targets(c *content.Content, b *state.Battle, u *state.Unit, s content.Skill) []*state.Unit {
+	if IsNew(s) {
+		return newTargets(c, b, u, s)
+	}
 	switch {
 	case s.Summon != nil: // one raised monster at a time (old tgt, line 777)
 		if PetOf(b, u) != nil {
@@ -51,7 +76,7 @@ func Targets(c *content.Content, b *state.Battle, u *state.Unit, s content.Skill
 		}
 		return out
 	case s.Revive:
-		if len(b.Fallen) > 0 {
+		if (u.Team == state.Heroes && len(b.Fallen) > 0) || (u.Team != state.Heroes && len(b.FallenFoes) > 0) {
 			return []*state.Unit{u}
 		}
 		return nil
@@ -76,6 +101,9 @@ func Targets(c *content.Content, b *state.Battle, u *state.Unit, s content.Skill
 		}
 		if u.Status["deadeye"] > 0 {
 			hi += 99
+		}
+		if u.Status["aim"] > 0 {
+			hi += 2 // Steady Aim
 		}
 	}
 	var out []*state.Unit

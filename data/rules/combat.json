@@ -38,6 +38,7 @@
   "reviveShare": 0.4,
   "reviveAnyDeath": true,
   "trapsOnPath": true,
+  "monstersRevive": true,
   "rallyAttack": 1.25,
   "weakAttack": 0.7,
   "brokenDefense": 0.7,

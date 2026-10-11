@@ -227,6 +227,11 @@ func (c *Content) SkillFor(team int, class, name string) (s Skill, classBase boo
 					return ls.Skill, false, true
 				}
 			}
+			for _, ls := range cl.Schedule {
+				if ls.Skill.Name == name {
+					return ls.Skill, false, true
+				}
+			}
 		}
 	}
 	s, ok = c.Skills[name]

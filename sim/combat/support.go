@@ -15,16 +15,20 @@ var reviveSpots = [8][2]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {-1, -1}, 
 // with 40% of max HP, no statuses, finished for this turn. With no free
 // spot, nobody comes back.
 func revive(c *content.Content, b *state.Battle, u *state.Unit, emit action.Emit) {
-	if len(b.Fallen) == 0 {
+	fallen := &b.Fallen
+	if u.Team != state.Heroes {
+		fallen = &b.FallenFoes // a monster healer brings back a monster
+	}
+	if len(*fallen) == 0 {
 		return
 	}
-	f := b.Fallen[len(b.Fallen)-1]
+	f := (*fallen)[len(*fallen)-1]
 	for _, d := range reviveSpots {
 		x, y := u.X+d[0], u.Y+d[1]
 		if !b.Inside(x, y) || heightAt(b, x, y) < 0 || b.UnitAt(x, y) != nil {
 			continue
 		}
-		b.Fallen = b.Fallen[:len(b.Fallen)-1]
+		*fallen = (*fallen)[:len(*fallen)-1]
 		f.X, f.Y = x, y
 		f.HP = int(Round(float64(f.MaxHP) * c.Combat.ReviveShare))
 		f.Status = map[string]int{}
@@ -49,7 +53,9 @@ func support(c *content.Content, b *state.Battle, u *state.Unit, s content.Skill
 			continue
 		}
 		for q, n := range s.Buffs {
-			z.Status[q] = max(z.Status[q], n)
+			if z.Status["wither"] <= 0 {
+				z.Status[q] = max(z.Status[q], n)
+			}
 		}
 		if s.ResetCooldown && z != u {
 			for i := range z.Cooldowns {

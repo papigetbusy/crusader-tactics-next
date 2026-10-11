@@ -45,6 +45,55 @@ type Skill struct {
 	Summon        *int           `json:"summon,omitempty"`
 	Visual        string         `json:"visual,omitempty"` // vfx: presentation only
 	Text          string         `json:"text,omitempty"`   // d
+
+	// What the skills of the even skill schedule (approved 2026-10-10) do.
+	Aim        string  `json:"aim,omitempty"`      // how it is aimed (the Aim... names below); "" = a unit, as before
+	Push       int     `json:"push,omitempty"`     // shoves the target this many tiles away
+	Slam       bool    `json:"slam,omitempty"`     // +50% and a 1-turn stun when the shove is blocked
+	Pull       bool    `json:"pull,omitempty"`     // drags the target next to the user
+	Gather     int     `json:"gather,omitempty"`   // pulls enemies within N of the target one step toward it
+	Leap       int     `json:"leap,omitempty"`     // first jumps up to N tiles to land next to the target
+	Behind     bool    `json:"behind,omitempty"`   // first teleports to the tile behind the target
+	Away       int     `json:"away,omitempty"`     // afterwards leaps up to N tiles away from the target
+	Dash       int     `json:"dash,omitempty"`     // AimRoll: how far the roll reaches
+	Around     bool    `json:"around,omitempty"`   // Area counts around the user instead of the target
+	NoDamage   bool    `json:"noDamage,omitempty"` // only statuses and movement; never misses
+	Dispel     bool    `json:"dispel,omitempty"`   // strips the target's buffs and shield
+	Shield     float64 `json:"shield,omitempty"`   // gives a shield worth this share of the user's max HP
+	Free       bool    `json:"free,omitempty"`     // does not use up the turn
+	Still      bool    `json:"still,omitempty"`    // only before moving, and no moving afterwards
+	Field      string  `json:"field,omitempty"`    // leaves ground of this kind: "fire", "static", "swamp"
+	FieldRange int     `json:"fieldRange,omitempty"`
+	FieldTurns int     `json:"fieldTurns,omitempty"`
+	Trick      string  `json:"trick,omitempty"` // a one-off effect, named in the combat package
+}
+
+// How skills are aimed.
+const (
+	AimUnit  = ""            // a unit, as the old game's skills
+	AimAlly  = "ally"        // another unit on your side
+	AimAny   = "any"         // any other unit
+	AimSelf  = "self"        // nobody: it works on or around the user
+	AimTile  = "tile"        // one tile in range
+	AimLine  = "line"        // a tile in a straight line, up to MaxRange away
+	AimRoll  = "rollThenFoe" // a tile to roll to (Dash), then an enemy in range from there
+	AimShove = "foeThenTile" // an enemy, then a tile within 2 of it
+	AimTwo   = "twoFoes"     // two different enemies in range
+	AimEcho  = "echo"        // whoever the user's last spell could hit
+)
+
+// Friendly reports skills that deal no damage to an aimed enemy: heals,
+// buffs, revives, summons, and the new ally, self, tile and line skills
+// without power.
+func (s Skill) Friendly() bool {
+	if s.Heal || s.Support || s.Revive || s.Summon != nil {
+		return true
+	}
+	switch s.Aim {
+	case AimAlly, AimAny, AimSelf, AimTile, AimLine:
+		return s.Power == 0
+	}
+	return false
 }
 
 // IsMagic is the old isMag rule (index.html line 1096) for units with no

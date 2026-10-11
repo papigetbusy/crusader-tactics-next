@@ -27,8 +27,9 @@ type Action struct {
 	Y      int      `json:"y,omitempty"`
 	Skill  int      `json:"skill,omitempty"`  // slot on the unit's skill bar
 	Target int      `json:"target,omitempty"` // unit ID
+	Second int      `json:"second,omitempty"` // a second unit ID (Voodoo Link)
 	Choice string   `json:"choice,omitempty"` // Decide: "ok", "keep", "replace", or an ascension's name
-	Tiles  [][2]int `json:"tiles,omitempty"`  // Ability: the tiles picked, for tile-aimed abilities
+	Tiles  [][2]int `json:"tiles,omitempty"`  // the tiles picked, for tile-aimed abilities and skills
 }
 
 // Event is one fact, in the order it happened. The screen animates events;

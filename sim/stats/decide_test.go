@@ -36,9 +36,9 @@ func TestChoices(t *testing.T) {
 	})
 
 	t.Run("Levelling up to a skill's level offers it to the hero", func(t *testing.T) {
-		b, u := built(c, "Warrior", 3)
-		Gain(c, b, u, 36, none) // 18 XP: level 3 needs 18
-		if u.Level != 4 || len(b.Decisions) != 1 || b.Decisions[0].Skill != "Whirlwind" {
+		b, u := built(c, "Warrior", 2)
+		Gain(c, b, u, 24, none) // 12 XP: level 2 needs 12
+		if u.Level != 3 || len(b.Decisions) != 1 || b.Decisions[0].Skill != "Whirlwind" {
 			t.Fatalf("level %d decisions %v", u.Level, b.Decisions)
 		}
 	})

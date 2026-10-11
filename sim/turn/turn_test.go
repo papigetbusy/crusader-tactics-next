@@ -81,7 +81,7 @@ func TestTurns(t *testing.T) {
 	t.Run("Timed statuses count down by one at the end of their side's turn", func(t *testing.T) {
 		c, b, h, f := field("ggg")
 		h.Status["snare"], f.Status["snare"] = 2, 2
-		End(c, b, state.Heroes, quiet)
+		End(c, b, rng.New(1, 1), state.Heroes, quiet)
 		if h.Status["snare"] != 1 || f.Status["snare"] != 2 {
 			t.Fatalf("hero %v, foe %v", h.Status, f.Status)
 		}

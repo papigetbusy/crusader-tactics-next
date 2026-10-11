@@ -21,13 +21,23 @@ type Plan struct {
 
 // offensive skills are aimed at enemies; heals, buffs and revives at allies.
 func offensive(s content.Skill) bool {
-	return !(s.Heal || s.Support || s.Revive || s.Summon != nil)
+	return !s.Friendly()
+}
+
+// oneTap reports skills used by tapping a single unit (not tiles, lines,
+// two units or a roll).
+func oneTap(s content.Skill) bool {
+	switch s.Aim {
+	case content.AimUnit, content.AimAlly, content.AimAny, content.AimEcho:
+		return true
+	}
+	return false
 }
 
 func (g *Game) firstSkillFor(u, v *state.Unit) int {
 	foe := v.Team != u.Team
 	for i, s := range u.Skills {
-		if u.Cooldowns[i] > 0 || (s.Cloak && u.Status["cloak"] > 0) || offensive(s) != foe {
+		if u.Cooldowns[i] > 0 || (s.Cloak && u.Status["cloak"] > 0) || offensive(s) != foe || !oneTap(s) || s.Free {
 			continue
 		}
 		for _, t := range combat.Targets(g.C, g.B, u, s) {
