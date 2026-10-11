@@ -4,6 +4,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/papigetbusy/crusader-tactics-next/sim/action"
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
 )
@@ -47,6 +48,17 @@ func TestGear(t *testing.T) {
 		UseSet(c, u, 1)
 		if u.Atk != u.BaseAtk+9 || u.Weapon != "axe" {
 			t.Fatalf("set 2: attack %d (base %d), weapon %q", u.Atk, u.BaseAtk, u.Weapon)
+		}
+	})
+
+	t.Run("After a level-up the hero's attack still counts the weapons in hand", func(t *testing.T) {
+		axe := content.Item{Name: "Battle Axe", Slot: "w", Rarity: 1, WeaponType: "axe", Atk: 9}
+		u := geared(c, "Warrior", 10, map[string]content.Item{"w": sword(5), "w2": axe})
+		UseSet(c, u, 1)
+		b := &state.Battle{Units: []*state.Unit{u}}
+		Gain(c, b, u, 1000, func(action.Event) {})
+		if u.Level <= 10 || u.Atk != u.BaseAtk+9 {
+			t.Fatalf("level %d, attack %d (base %d)", u.Level, u.Atk, u.BaseAtk)
 		}
 	})
 

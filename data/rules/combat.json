@@ -39,6 +39,8 @@
   "reviveAnyDeath": true,
   "trapsOnPath": true,
   "unarmedClassWeapon": true,
+  "equipEndsTurn": true,
+  "levelUpKeepsWeapon": true,
   "monstersRevive": true,
   "rallyAttack": 1.25,
   "weakAttack": 0.7,

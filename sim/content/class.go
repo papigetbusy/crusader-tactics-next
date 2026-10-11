@@ -65,6 +65,11 @@ type Combat struct {
 	// UnarmedClassWeapon: a hero with no weapon in hand counts as its class's
 	// first weapon (Warrior sword, Tank axe...) in the weapon triangle.
 	UnarmedClassWeapon bool `json:"unarmedClassWeapon"`
+	// EquipEndsTurn: putting on gear in battle uses up the hero's turn.
+	EquipEndsTurn bool `json:"equipEndsTurn"`
+	// LevelUpKeepsWeapon: after a level-up the hero's attack counts the
+	// weapons in hand (the old game counted weapon set 1's).
+	LevelUpKeepsWeapon bool `json:"levelUpKeepsWeapon"`
 	MonstersRevive     bool `json:"monstersRevive"` // fallen monsters are kept so a monster healer can bring them back
 
 	// Statuses that change damage.

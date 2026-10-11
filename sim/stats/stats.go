@@ -170,6 +170,9 @@ func levelUp(c *content.Content, b *state.Battle, u *state.Unit, emit action.Emi
 	n, base := Geared(c, u.Class, u.Level, u.Ascension, u.Gear)
 	u.HP += n.MaxHP - u.MaxHP
 	u.MaxHP, u.Atk, u.Def, u.Mov, u.BaseAtk = n.MaxHP, n.Atk, n.Def, n.Mov, base
+	if c.Combat.LevelUpKeepsWeapon {
+		UseSet(c, u, u.WeaponSet)
+	}
 }
 
 // Share gives the experience for a kill: the killer keeps most of it and the

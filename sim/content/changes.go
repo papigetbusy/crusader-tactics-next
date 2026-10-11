@@ -52,6 +52,20 @@ func init() {
 	})
 }
 
+func init() {
+	Changes = append(Changes, Change{
+		Date: "2026-10-11",
+		What: "Putting on gear in the middle of a battle uses up the hero's turn. Before, gear could be swapped " +
+			"any number of times for free. Switching weapon sets is still free.",
+		Apply: func(c *Content) { c.Combat.EquipEndsTurn = true },
+	}, Change{
+		Date: "2026-10-11",
+		What: "After a level-up, a hero's attack counts the weapons in hand. Before, it quietly used weapon set 1's " +
+			"weapons until the next set switch, even with set 2 in hand.",
+		Apply: func(c *Content) { c.Combat.LevelUpKeepsWeapon = true },
+	})
+}
+
 // ApplyChanges turns the old game's data into today's data.
 func ApplyChanges(c *Content) {
 	for _, ch := range Changes {

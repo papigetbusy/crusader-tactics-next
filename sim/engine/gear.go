@@ -4,6 +4,7 @@ import (
 	"slices"
 
 	"github.com/papigetbusy/crusader-tactics-next/sim/action"
+	"github.com/papigetbusy/crusader-tactics-next/sim/combat"
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
 	"github.com/papigetbusy/crusader-tactics-next/sim/stats"
@@ -64,6 +65,9 @@ func (g *Game) checkGear(a action.Action) error {
 	if u == nil || u.Team != state.Heroes || u.Companion || u.Decoy || u.Summoned {
 		return no("no-such-hero", "That is not one of your heroes.")
 	}
+	if u.Done && g.C.Combat.EquipEndsTurn {
+		return no("finished", "%s has finished for this turn.", u.Class)
+	}
 	it := b.Bag[a.Item]
 	if ok, why := stats.CanUse(g.C, u.Class, u.Level, it); !ok {
 		return no("cannot-use", "%s", why)
@@ -112,6 +116,11 @@ func (g *Game) equip(a action.Action, emit action.Emit) {
 	u.Gear[sl] = it
 	stats.Refresh(g.C, b, u)
 	emit(action.Event{Kind: action.GearOn, Unit: u.ID, Skill: it.Name})
+	if g.C.Combat.EquipEndsTurn {
+		u.Done = true
+		combat.PairDone(b, u)
+		emit(action.Event{Kind: action.Finished, Unit: u.ID})
+	}
 }
 
 // checkSet is "may this hero take that weapon set in hand?" (the old ⇄

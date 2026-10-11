@@ -36,11 +36,26 @@ func TestEquip(t *testing.T) {
 		if h.Gear["a"].Name != "Plate Armor" || h.Def <= def || len(g.B.Bag) != 1 {
 			t.Fatalf("armor %q, DEF %d (was %d), bag %d", h.Gear["a"].Name, h.Def, def, len(g.B.Bag))
 		}
+		h.Done = false // a new turn
 		if _, err := g.Apply(action.Action{Kind: action.Equip, Unit: 1, Item: 0, Slot: "w"}); err != nil {
 			t.Fatal(err)
 		}
 		if h.Gear["w"].Name != "Steel Sword" || h.Atk != h.BaseAtk+8 || g.B.Bag[0].Name != "Rusty Blade" {
 			t.Fatalf("weapon %q, attack %d (base %d), bag %v", h.Gear["w"].Name, h.Atk, h.BaseAtk, g.B.Bag)
+		}
+	})
+
+	t.Run("Putting on gear in battle uses up the hero's turn", func(t *testing.T) {
+		g := armedDuel("Warrior", nil)
+		g.B.Bag = []content.Item{blade("Steel Sword", 8), blade("Rusty Blade", 3)}
+		if _, err := g.Apply(action.Action{Kind: action.Equip, Unit: 1, Item: 0}); err != nil {
+			t.Fatal(err)
+		}
+		if !g.B.Unit(1).Done {
+			t.Fatal("the hero can still act")
+		}
+		if _, err := g.Apply(action.Action{Kind: action.Equip, Unit: 1, Item: 0}); code(err) != "finished" {
+			t.Fatalf("second swap: %v", err)
 		}
 	})
 

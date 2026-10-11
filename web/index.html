@@ -217,10 +217,11 @@ function gearSheet(u){
   h+=`<h3>Weapon sets</h3><div class="sets">${g.sets.map((s,i)=>`<button data-set="${i+1}" class="${s.inHand?'on':''}" ${s.inHand||u.done||g.sets.length<2?'disabled':''}>Set ${i+1}: ${s.weapons}${s.rank?' ('+s.rank+')':''}${s.inHand?' · in hand':''}</button>`).join('')}</div>`;
   h+=`<h3>Worn</h3>${g.worn.map(it=>itemRow(Object.assign({},it,{kind:it.kind==='Charm'?'Charm':SLOTN[it.slot]+' · '+it.kind}))).join('')||'<div class="muted">Nothing worn.</div>'}`;
   if(g.bonuses)h+=`<div class="muted" style="margin-top:6px">Active bonuses: ${g.bonuses}</div>`;
-  h+=`<h3>Bag</h3>`;
+  h+=`<h3>Bag</h3><div class="muted">Putting something on uses up ${u.class}'s turn.</div>`;
+  const dis=u.done||V.side!==0?'disabled':'';
   h+=(V.bag||[]).map((it,i)=>{let b='';
-    if(it.slot==='w'){const free=g.freeSlots&&g.freeSlots.length;b=free?`<button class="gold" data-equip="${i}">Equip</button>`:g.weaponSlots.map(s=>`<button class="gold" data-equip="${i}" data-slot="${s}">Into ${SLOTN[s]}</button>`).join('')}
-    else b=`<button class="gold" data-equip="${i}">Equip</button>`;
+    if(it.slot==='w'){const free=g.freeSlots&&g.freeSlots.length;b=free?`<button class="gold" data-equip="${i}" ${dis}>Equip</button>`:g.weaponSlots.map(s=>`<button class="gold" data-equip="${i}" data-slot="${s}" ${dis}>Into ${SLOTN[s]}</button>`).join('')}
+    else b=`<button class="gold" data-equip="${i}" ${dis}>Equip</button>`;
     return itemRow(it,b+`<button data-drop="${i}">Drop</button>`)}).join('')||'<div class="muted">The bag is empty.</div>';
   return h+'</div>';
 }

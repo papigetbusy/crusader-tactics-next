@@ -14,13 +14,13 @@ Every place where the new game intentionally behaves differently from the old on
 - Every class learns the same number of skills on one schedule: two normal skills and an ultimate at Lv 1, a normal skill at Lv 3, 6, 9, 12, 15, 18, 21, 24 and 27, a second ultimate at Lv 20 and the ascension ultimate at Lv 30. All skills are learned by Lv 30. In the old game the Healer had 12 skills and most classes 7, with nothing new between Lv 20 and 30. 53 new skills and the Healer's new ultimate Last Light were added; Execution, Fortress Slam and Resurrection became normal skills (Resurrection is still once per battle); the Mage's Thunder moved to Lv 3; most old skills now arrive a little later. The full list is in skill-plan.md. (Approved skill by skill 2026-10-10; in place since Phase 6.)
 - Monster types learn on the same schedule, from the hero skills plus their old monster skills, and fight with their 4 newest normal skills, their newest ultimate and Strike. Elites follow the schedule too; bosses keep their own kits. Monster healers can bring back a fallen monster with Resurrection. In the old game a monster had a fixed list plus 2-3 skills at set levels, and elites got none of the level skills. (Approved 2026-10-10; in place since Phase 6.)
 - A hero with no weapon in hand counts as their class's usual weapon in the weapon triangle (Warrior sword, Tank axe, Knight and Dragon Knight lance), both when attacking and when attacked. The old game skipped the triangle for unarmed heroes. (Approved 2026-10-10; in place since Phase 6.)
+- Putting on gear in the middle of a battle uses up the hero's turn. The old game let you swap gear any number of times for free. Switching weapon sets is still free. (Approved 2026-10-11.)
+- After a level-up, a hero's attack counts the weapons in hand. The old game quietly went back to weapon set 1's weapons until the next set switch. (Approved 2026-10-11.)
 - A Necromancer's Grave Bloom raises the skeleton right after the kill. The old game raised it on a half-second timer, so it could appear in the middle of the enemy turn depending on how fast you played. (The referee has no clock; in place since Phase 6.)
 
 ## Decided, arriving with later phases
 - Team select and deployment: start with 5 hero slots; one more slot at floors 25, 50 and 75 (8 is the most). Before each map you choose who to bring from your whole roster and must fill every slot. Only the heroes who fight on a floor earn its XP. You place them yourself on blue starting tiles, and each map has more blue tiles than heroes, so where you start is a real choice. If you don't choose, the game brings your highest-level heroes. The old game took the whole party into every fight. (Approved 2026-10-10; arrives in Phase 7, screen in Phase 8.)
 
 ## Not changed yet (conscious design calls for later)
-- Gear can be put on or swapped in the middle of a battle, and it costs no turn (as in the old game).
-- After a level-up, a hero's attack uses weapon set 1's weapons until the next set switch, even if set 2 is in hand (as in the old game).
 - Shop floors count as cleared without a fight.
 - A defeat re-runs the same floor with no penalty.
