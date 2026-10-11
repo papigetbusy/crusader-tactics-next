@@ -38,7 +38,7 @@ Every feature of the old game (v0.26.1), and where it lands in the rebuild. Noth
 - ✅ 7c: team select and deployment (approved 2026-10-10): look at the map, pick heroes for every slot, place them on blue starting tiles (more tiles than heroes); only heroes who fight earn XP; if you don't choose, your highest-level heroes go
 - ✅ 7b: **change ascension once per floor**, between battles (the old "re-spec" and "Choose Ascension" buttons)
 - ✅ 7b: floor-clear summary (XP, level-ups, loot, gold), and a defeat summary
-- 🔜 Saves: 3 save slots, autosave at the start of every turn, resume mid-battle, save export and import (copy, download, paste or file); old saves not needed for now (owner, 2026-10-11), Claude makes a playtest save
+- ✅ 7d: saves: 3 save slots, autosave every turn of a climb, resume mid-battle exactly (fresh dice), save export and import (copy, download, paste or file), version stamp; old saves not needed for now (owner, 2026-10-11), Claude makes a playtest save
 - ✅ 7b: defeat re-runs the floor with no penalty (kept on purpose, owner 2026-10-11: getting stuck and farming earlier floors is the game)
 - 🛠 Shops (owner, 2026-10-11): no floor number; every 7 floors the shop comes up between floors, then you fight that floor
 

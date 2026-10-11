@@ -95,6 +95,7 @@ footer{margin-top:16px;color:var(--muted);font-size:13px}
 <div id="wrap" style="overflow:auto"><div id="board"></div></div>
 <div id="banner"></div>
 <div class="card" id="climb" style="display:none"></div>
+<div class="card"><h2>Saves</h2><div id="saves"></div></div>
 <div class="card" id="panel"><div class="muted">Tap one of your heroes (gold) to begin. Gold tiles show where it can walk; red outlines show who its skill can reach.</div></div>
 <div class="card"><h2>Battle log</h2><div id="log"></div></div>
 <div id="choice"><div class="box" id="choicebox"></div></div>
@@ -116,6 +117,7 @@ async function boot(){
   try{r=await WebAssembly.instantiateStreaming(fetch(url),go.importObject)}
   catch(e){const res=await fetch(url);if(!res.ok)return fail('The referee (<code>app.wasm</code>) is missing.');r=await WebAssembly.instantiate(await res.arrayBuffer(),go.importObject)}
   go.run(r.instance);
+  savesCard();
   J(ctPractice()).forEach((n,i)=>{const o=document.createElement('option');o.value=i;o.textContent=n;$('pick').appendChild(o)});
   newFight();
 }
@@ -143,6 +145,27 @@ function startClimb(){
   $('log').innerHTML='';$('banner').className='';logLine('turn','A new climb: look at the map, choose your team and place it on the blue tiles.');render();
 }
 $('climbgo').onclick=startClimb;
+// Saves: three slots, an autosave, export and import. Stored in this browser.
+const SKEY=k=>'ctn-save-'+k;
+function store(k,txt){try{localStorage.setItem(SKEY(k),txt);localStorage.setItem(SKEY(k)+'-info',JSON.stringify({floor:V.climb?V.climb.floor:V.floor,best:V.climb?V.climb.best:0,turn:V.turn,when:new Date().toLocaleString()}));return true}catch(e){logLine('bad','Could not save here: '+e.message);return false}}
+function fetchSave(k){try{return localStorage.getItem(SKEY(k))}catch(e){return null}}
+function infoOf(k){try{return JSON.parse(localStorage.getItem(SKEY(k)+'-info')||'null')}catch(e){return null}}
+function saveTo(k){const t=ctSave();if(t.startsWith('{"error"')){logLine('bad',J(t).error);return}if(store(k,t)&&k!=='auto')logLine('good','Saved to slot '+k+'.');savesCard()}
+function loadText(t,from){if(!t){logLine('bad','That slot is empty.');return}const s=crypto.getRandomValues(new Uint32Array(2)),r=J(ctLoad(t,s[0],s[1]));
+  if(r.error){logLine('bad','Could not load: '+r.error);return}V=r.view;sel=null;aim=null;walk=null;reach=[];targets=[];sk=null;abil=null;
+  $('log').innerHTML='';$('banner').className='';logLine('turn','Loaded '+from+'. The battle goes on from turn '+V.turn+'.');render()}
+let lastAuto='';
+function autosave(){if(!V||!V.climb)return;const k=V.climb.phase+'|'+V.climb.floor+'|'+V.turn+'|'+V.side;if(k===lastAuto)return;lastAuto=k;store('auto',ctSave());savesCard()}
+function savesCard(){
+  const el=$('saves');if(!el)return;const row=(k,lab)=>{const i=infoOf(k);return `<div class="item"><div><b>${lab}</b> <span class="muted">${i?`floor ${i.floor}${i.best?' (best '+i.best+')':''} · turn ${i.turn} · ${i.when}`:'empty'}</span></div><div class="btns">${k==='auto'?'':`<button data-save="${k}">Save</button>`}<button data-load="${k}" ${i?'':'disabled'}>Load</button></div></div>`};
+  el.innerHTML=row('auto','Autosave (every turn of a climb)')+row(1,'Slot 1')+row(2,'Slot 2')+row(3,'Slot 3')+
+    `<div class="acts"><button id="expgo">Export (copy and download)</button><button id="impgo">Import (paste)</button><label class="btn"><input type="file" id="impfile" accept=".json,.txt" style="display:none"><span>Import a file</span></label></div>`;
+  el.querySelectorAll('[data-save]').forEach(b=>b.onclick=()=>saveTo(b.dataset.save));
+  el.querySelectorAll('[data-load]').forEach(b=>b.onclick=()=>loadText(fetchSave(b.dataset.load),b.dataset.load==='auto'?'the autosave':'slot '+b.dataset.load));
+  $('expgo').onclick=()=>{const t=ctSave();try{navigator.clipboard&&navigator.clipboard.writeText(t)}catch(e){}const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'application/json'}));a.download='crusader-tactics-save.json';a.click();logLine('good','Save copied and downloaded.')};
+  $('impgo').onclick=()=>{const t=prompt('Paste a save:');if(t)loadText(t.trim(),'the pasted save')};
+  $('impfile').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>loadText(t.trim(),'the file'))};
+}
 function climbCard(){
   const el=$('climb'),c=V.climb;if(!c){el.style.display='none';return}
   el.style.display='';
@@ -229,7 +252,7 @@ function render(){
   if(V.fallen&&V.fallen.length&&!V.outcome)$('status').textContent+=` · fallen: ${V.fallen.join(', ')}`;
   $('status').textContent+=` · ${V.gold||0} gold`;
   if(V.biome)$('status').textContent+=` · floor ${V.floor}, ${V.biome}${V.reinforce?' · reinforcements on turns 3 and 5':''}`;
-  showChoice();climbCard();
+  showChoice();climbCard();autosave();
   if(V.outcome){$('banner').className=V.outcome;$('banner').textContent=V.outcome==='won'?'Victory: every enemy is gone':'Defeat: every hero has fallen'}
   panel();
 }

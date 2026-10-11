@@ -86,6 +86,24 @@ func main() {
 		game = engine.NewClimb(rules, uint32(a[0].Float()), seed)
 		return text(game.View())
 	}))
+	// ctSave() -> the whole game as a versioned save (text)
+	g.Set("ctSave", fn(func([]js.Value) any {
+		b, err := game.Save()
+		if err != nil {
+			return text(map[string]string{"error": err.Error()})
+		}
+		return string(b)
+	}))
+	// ctLoad(saveText, seedHigh, seedLow) -> {view} or {error}
+	g.Set("ctLoad", fn(func(a []js.Value) any {
+		seed := uint64(uint32(a[1].Float()))<<32 | uint64(uint32(a[2].Float()))
+		loaded, err := engine.Load(rules, []byte(a[0].String()), seed)
+		if err != nil {
+			return text(map[string]string{"error": err.Error()})
+		}
+		game = loaded
+		return text(map[string]any{"view": game.View()})
+	}))
 	// ctApply(actionJSON) -> {events, view} or {refused}
 	g.Set("ctApply", fn(func(a []js.Value) any {
 		var act action.Action
