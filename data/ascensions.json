@@ -1,0 +1,426 @@
+{
+  "_about": "The Lv 30 ascensions: element, stat changes, ultimate, and the numbers their passive uses. From the old game's SPEC and SPECS tables.",
+  "ascensions": [
+    {
+      "name": "Berserker",
+      "class": "Warrior",
+      "element": "fire",
+      "atk": 1.3,
+      "def": 0.8,
+      "ultimate": "Blood Rage",
+      "bonus": "+30% ATK, −20% DEF",
+      "passive": "Bloodlust: +40% damage while below half HP. Kills heal you 15%.",
+      "numbers": {
+        "killHeal": 0.15,
+        "lowHP": 0.5,
+        "lowHPDamage": 1.4
+      }
+    },
+    {
+      "name": "Paladin",
+      "class": "Warrior",
+      "element": "light",
+      "hp": 1.25,
+      "defAdd": 3,
+      "ultimate": "Holy Judgment",
+      "bonus": "+25% HP, +3 DEF",
+      "passive": "Aegis: allies next to you take 20% less damage. Your hits heal you for 20%.",
+      "numbers": {
+        "aegis": 0.8,
+        "lifeSteal": 0.2
+      }
+    },
+    {
+      "name": "Duelist",
+      "class": "Warrior",
+      "element": "elec",
+      "mov": 2,
+      "ultimate": "Thousand Cuts",
+      "bonus": "+2 Move",
+      "passive": "Riposte: when hit in melee, you strike back for 60%.",
+      "numbers": {
+        "riposte": 0.6
+      }
+    },
+    {
+      "name": "Juggernaut",
+      "class": "Tank",
+      "element": "dark",
+      "hp": 1.4,
+      "ultimate": "Earthshatter",
+      "bonus": "+40% HP",
+      "passive": "Unstoppable: immune to stun, snare and armor break."
+    },
+    {
+      "name": "Guardian",
+      "class": "Tank",
+      "element": "ice",
+      "defAdd": 4,
+      "ultimate": "Bulwark",
+      "bonus": "+4 DEF",
+      "passive": "Bodyguard: you take hits aimed at adjacent allies, with 30% less damage.",
+      "numbers": {
+        "bodyguard": 0.7
+      }
+    },
+    {
+      "name": "Warlord",
+      "class": "Tank",
+      "element": "fire",
+      "atk": 1.15,
+      "ultimate": "War Cry",
+      "bonus": "+15% ATK",
+      "passive": "Battle Aura: allies within 2 tiles (and you) deal 15% more damage.",
+      "numbers": {
+        "aura": 1.15,
+        "auraRange": 2
+      }
+    },
+    {
+      "name": "Pyromancer",
+      "class": "Mage",
+      "element": "fire",
+      "atk": 1.1,
+      "ultimate": "Inferno",
+      "bonus": "+10% ATK",
+      "passive": "Fire skills deal 40% more damage and burn (bleed 2).",
+      "numbers": {
+        "fireBleed": 2,
+        "fireDamage": 1.4
+      }
+    },
+    {
+      "name": "Cryomancer",
+      "class": "Mage",
+      "element": "ice",
+      "range": 1,
+      "ultimate": "Absolute Zero",
+      "bonus": "+1 attack range",
+      "passive": "Ice skills always snare. Snared enemies take 25% more damage from you.",
+      "numbers": {
+        "iceSnare": 1,
+        "snaredDamage": 1.25
+      }
+    },
+    {
+      "name": "Stormcaller",
+      "class": "Mage",
+      "element": "elec",
+      "hp": 0.85,
+      "mov": 1,
+      "ultimate": "Thunderstorm",
+      "bonus": "+1 Move, −15% HP",
+      "passive": "Every attack arcs to one more enemy nearby for 50%.",
+      "numbers": {
+        "arc": 0.5,
+        "arcRange": 2
+      }
+    },
+    {
+      "name": "Saint",
+      "class": "Healer",
+      "element": "light",
+      "heal": 1.4,
+      "ultimate": "Sanctuary",
+      "bonus": "+40% healing",
+      "passive": "Overheal: healing beyond max HP becomes a shield.",
+      "numbers": {
+        "choirShield": 2,
+        "choirShieldCap": 1,
+        "shieldCap": 0.5
+      }
+    },
+    {
+      "name": "Oracle",
+      "class": "Healer",
+      "element": "elec",
+      "mov": 1,
+      "ultimate": "Time Warp",
+      "bonus": "+1 Move",
+      "passive": "Foresight: healed allies get Haste (+2 Move). Divine Grace no longer roots you.",
+      "numbers": {
+        "haste": 2
+      }
+    },
+    {
+      "name": "Plague Doctor",
+      "class": "Healer",
+      "element": "dark",
+      "atk": 1.3,
+      "ultimate": "Pandemic",
+      "bonus": "+30% ATK",
+      "passive": "Contagion: your attacks cause bleed and heal your most hurt ally for 50% of the damage.",
+      "numbers": {
+        "bleed": 3,
+        "healShare": 0.5
+      }
+    },
+    {
+      "name": "Sniper",
+      "class": "Ranger",
+      "element": "ice",
+      "range": 2,
+      "ultimate": "Deadeye",
+      "bonus": "+2 attack range",
+      "passive": "Steady Aim: +35% damage if you haven't moved this turn. Ignores 30% DEF.",
+      "numbers": {
+        "defense": 0.7,
+        "stillDamage": 1.35
+      }
+    },
+    {
+      "name": "Trapper",
+      "class": "Ranger",
+      "element": "dark",
+      "ultimate": "Snare Field",
+      "bonus": "Snares last 2 turns",
+      "passive": "Hunter's Mark: snared or stunned enemies take 30% more damage from you.",
+      "numbers": {
+        "markedDamage": 1.3,
+        "snare": 2
+      }
+    },
+    {
+      "name": "Tempest Archer",
+      "class": "Ranger",
+      "element": "elec",
+      "mov": 2,
+      "ultimate": "Gale Volley",
+      "bonus": "+2 Move",
+      "passive": "Hit and Run: you can still move after attacking if you haven't moved yet."
+    },
+    {
+      "name": "Phantom",
+      "class": "Assassin",
+      "element": "dark",
+      "mov": 1,
+      "ultimate": "Phantom Rush",
+      "bonus": "+1 Move",
+      "passive": "Evasion: 30% chance to dodge any attack.",
+      "numbers": {
+        "evasion": 30
+      }
+    },
+    {
+      "name": "Viper",
+      "class": "Assassin",
+      "element": "elec",
+      "atk": 1.15,
+      "ultimate": "Venom Storm",
+      "bonus": "+15% ATK",
+      "passive": "Toxin: every hit causes bleed 3. Bleeding enemies take 30% more damage from you.",
+      "numbers": {
+        "bleed": 3,
+        "bleedingDamage": 1.3
+      }
+    },
+    {
+      "name": "Blade Dancer",
+      "class": "Assassin",
+      "element": "fire",
+      "mov": 2,
+      "ultimate": "Crimson Waltz",
+      "bonus": "+2 Move",
+      "passive": "Dance of Blades: once per turn, a kill lets you act again."
+    },
+    {
+      "name": "Outlaw",
+      "class": "Gunslinger",
+      "element": "fire",
+      "atk": 1.1,
+      "ultimate": "Six Shooter",
+      "bonus": "+10% ATK",
+      "passive": "Fan the Hammer: single-shot skills fire twice at 60% damage.",
+      "numbers": {
+        "shotPower": 0.6,
+        "shots": 2
+      }
+    },
+    {
+      "name": "Bounty Hunter",
+      "class": "Gunslinger",
+      "element": "dark",
+      "range": 1,
+      "ultimate": "Dead or Alive",
+      "bonus": "+1 range",
+      "passive": "Bounty: +50% damage to elites and bosses. Kills give double gold.",
+      "numbers": {
+        "bigDamage": 1.5,
+        "gold": 2
+      }
+    },
+    {
+      "name": "Trickshot",
+      "class": "Gunslinger",
+      "element": "elec",
+      "mov": 1,
+      "ultimate": "Ricochet Storm",
+      "bonus": "+1 Move",
+      "passive": "Ricochet Master: every shot bounces to one more nearby enemy for 60%.",
+      "numbers": {
+        "arc": 0.6,
+        "arcRange": 3
+      }
+    },
+    {
+      "name": "Inferno Rider",
+      "class": "Dragon Knight",
+      "element": "fire",
+      "atk": 1.1,
+      "ultimate": "Hellfire Dive",
+      "bonus": "+10% ATK",
+      "passive": "Fire skills deal 40% more damage and burn (bleed 2).",
+      "numbers": {
+        "fireBleed": 2,
+        "fireDamage": 1.4
+      }
+    },
+    {
+      "name": "Frost Wyrm",
+      "class": "Dragon Knight",
+      "element": "ice",
+      "hp": 1.2,
+      "ultimate": "Glacial Breath",
+      "bonus": "+20% HP",
+      "passive": "Frost Breath: every attack snares. Immune to snare.",
+      "numbers": {
+        "snare": 1
+      }
+    },
+    {
+      "name": "Storm Dragoon",
+      "class": "Dragon Knight",
+      "element": "elec",
+      "mov": 2,
+      "ultimate": "Thunder Lance",
+      "bonus": "+2 Move",
+      "passive": "Sky Dive has no cooldown."
+    },
+    {
+      "name": "Necromancer",
+      "class": "Witch",
+      "element": "dark",
+      "hp": 1.1,
+      "ultimate": "Soul Nova",
+      "bonus": "+10% HP",
+      "passive": "Soul Harvest: each new kind of normal monster you kill can become a Raise skill on one of your 4 skill buttons. A raised monster spawns once per floor; if it moves or attacks you can't, and vice versa."
+    },
+    {
+      "name": "Blood Witch",
+      "class": "Witch",
+      "element": "fire",
+      "atk": 1.2,
+      "ultimate": "Blood Moon",
+      "bonus": "+20% ATK",
+      "passive": "Blood Magic: spells cost 5% HP but deal 40% more and heal you for 20% of the damage.",
+      "numbers": {
+        "damage": 1.4,
+        "hpCost": 0.05,
+        "lifeSteal": 0.2
+      }
+    },
+    {
+      "name": "Hex Queen",
+      "class": "Witch",
+      "element": "ice",
+      "range": 1,
+      "ultimate": "Grand Hex",
+      "bonus": "+1 range",
+      "passive": "Queen of Curses: your debuffs last 1 turn longer, and every enemy with a debuff takes 25% more damage from your whole party.",
+      "numbers": {
+        "cursedDamage": 1.25
+      }
+    },
+    {
+      "name": "Templar",
+      "class": "Knight",
+      "element": "light",
+      "hp": 1.15,
+      "defAdd": 2,
+      "ultimate": "Crusade",
+      "bonus": "+15% HP, +2 DEF",
+      "passive": "Holy Charge: after charging 3+ tiles, your hit heals allies next to the target for 15% of their max HP.",
+      "numbers": {
+        "chargeHeal": 0.15,
+        "chargeTiles": 3
+      }
+    },
+    {
+      "name": "Black Knight",
+      "class": "Knight",
+      "element": "dark",
+      "atk": 1.15,
+      "ultimate": "Doom Lance",
+      "bonus": "+15% ATK",
+      "passive": "Dread: single-target attacks deal 40% more. Your kills terrify (stun) adjacent enemies.",
+      "numbers": {
+        "singleDamage": 1.4
+      }
+    },
+    {
+      "name": "Storm Rider",
+      "class": "Knight",
+      "element": "elec",
+      "mov": 2,
+      "ultimate": "Lightning Charge",
+      "bonus": "+2 Move",
+      "passive": "Thunder Gallop: charge bonus is doubled (+24% per tile, max +120%).",
+      "numbers": {
+        "chargeMax": 1.2,
+        "chargePerTile": 0.24
+      }
+    }
+  ],
+  "choices": {
+    "Assassin": [
+      "Phantom",
+      "Viper",
+      "Blade Dancer"
+    ],
+    "Dragon Knight": [
+      "Inferno Rider",
+      "Frost Wyrm",
+      "Storm Dragoon"
+    ],
+    "Gunslinger": [
+      "Outlaw",
+      "Bounty Hunter",
+      "Trickshot"
+    ],
+    "Healer": [
+      "Saint",
+      "Oracle",
+      "Plague Doctor"
+    ],
+    "Knight": [
+      "Templar",
+      "Black Knight",
+      "Storm Rider"
+    ],
+    "Mage": [
+      "Pyromancer",
+      "Cryomancer",
+      "Stormcaller"
+    ],
+    "Ranger": [
+      "Sniper",
+      "Trapper",
+      "Tempest Archer"
+    ],
+    "Tank": [
+      "Juggernaut",
+      "Guardian",
+      "Warlord"
+    ],
+    "Warrior": [
+      "Berserker",
+      "Paladin",
+      "Duelist"
+    ],
+    "Witch": [
+      "Necromancer",
+      "Blood Witch",
+      "Hex Queen"
+    ]
+  }
+}

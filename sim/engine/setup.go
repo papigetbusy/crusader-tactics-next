@@ -55,7 +55,8 @@ func NewFight(c *content.Content, s Setup, battleSeed uint64) *Game {
 			HP: us.HP, MaxHP: us.HP, Atk: us.Atk, Def: us.Def, Mov: us.Mov, Element: us.Element,
 			Boss: us.Boss, Elite: us.Elite, Status: map[string]int{}}
 		if u.Team == state.Heroes {
-			u.Skills = c.HeroSkills(u.Class, u.Level)
+			u.Learned, u.Equipped, u.Ultimate = c.StartingBuild(u.Class, u.Level)
+			u.Skills = c.Bar(u.Class, u.Equipped, u.Ultimate)
 			u.Potions = startingPotions
 		} else {
 			u.Skills = c.MonsterSkills(u.Class, u.Level, u.Boss || u.Elite)

@@ -167,3 +167,6 @@ func (g *Game) Preview(unit, slot, target int) (Forecast, bool) {
 	f.Also = combat.AlsoHit(g.B, u, s, v)
 	return f, true
 }
+
+// Options lists the answers to the first waiting choice (empty if none).
+func (g *Game) Options() []string { return stats.Options(g.C, g.B) }

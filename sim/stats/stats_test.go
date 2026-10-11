@@ -9,7 +9,7 @@ import (
 )
 
 func hero(c *content.Content, id int, class string, level int) *state.Unit {
-	n := Hero(c, class, level)
+	n := Hero(c, class, level, "")
 	return &state.Unit{ID: id, Team: state.Heroes, Class: class, Level: level, HP: n.MaxHP, MaxHP: n.MaxHP,
 		Atk: n.Atk, Def: n.Def, Mov: n.Mov, Status: map[string]int{}}
 }
@@ -48,7 +48,7 @@ func TestGrowth(t *testing.T) {
 		if u.Level != 3 || u.XP != 0 || len(evs) == 0 || evs[0].Kind != action.LevelUp {
 			t.Fatalf("level %d xp %d events %v", u.Level, u.XP, evs)
 		}
-		if u.HP != 10+u.MaxHP-before || u.MaxHP != Hero(c, "Mage", 3).MaxHP {
+		if u.HP != 10+u.MaxHP-before || u.MaxHP != Hero(c, "Mage", 3, "").MaxHP {
 			t.Fatalf("hp %d of %d (was 10 of %d)", u.HP, u.MaxHP, before)
 		}
 	})
@@ -72,7 +72,7 @@ func TestGrowth(t *testing.T) {
 		for _, e := range evs {
 			evolved = evolved || (e.Kind == action.Evolved && e.Skill == "Vanguard")
 		}
-		if !evolved || Hero(c, "Warrior", 5).Def != Hero(c, "Warrior", 4).Def+1 {
+		if !evolved || Hero(c, "Warrior", 5, "").Def != Hero(c, "Warrior", 4, "").Def+1 {
 			t.Fatalf("events %v", evs)
 		}
 	})

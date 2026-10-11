@@ -42,6 +42,9 @@ func FromOld(tables fs.FS) (*Content, error) {
 	if c.Progress, err = oldProgress(tables); err != nil {
 		return nil, err
 	}
+	if c.Ascensions, c.AscensionChoices, err = oldAscensions(tables); err != nil {
+		return nil, err
+	}
 	return c, c.Check()
 }
 

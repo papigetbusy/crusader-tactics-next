@@ -1,6 +1,7 @@
 package combat
 
 import (
+	"github.com/papigetbusy/crusader-tactics-next/sim/action"
 	"testing"
 
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
@@ -14,7 +15,7 @@ func arena(ground byte) (*content.Content, *state.Battle, *state.Unit, *state.Un
 	row := []byte("ggg")
 	row[1] = ground
 	b := &state.Battle{N: 3, Ground: []string{string(row), "ggg", "ggg"}}
-	hero := &state.Unit{ID: 1, Team: state.Heroes, Class: "Warrior", X: 0, HP: 30, MaxHP: 30, Atk: 20, Def: 4, Status: map[string]int{}}
+	hero := &state.Unit{ID: 1, Team: state.Heroes, Class: "Warrior", Level: 1, X: 0, HP: 30, MaxHP: 30, Atk: 20, Def: 4, Status: map[string]int{}}
 	foe := &state.Unit{ID: 2, Team: state.Enemies, Class: "Warrior", X: 1, HP: 40, MaxHP: 40, Atk: 10, Def: 5, Status: map[string]int{}}
 	b.Units = []*state.Unit{hero, foe}
 	return c, b, hero, foe
@@ -138,11 +139,11 @@ func TestCombat(t *testing.T) {
 	t.Run("A miss uses one roll and a hit uses two", func(t *testing.T) {
 		c, b, h, f := arena('g')
 		miss := rolls(0.99)
-		if r := Hurt(c, b, miss, Attack{By: h, Skill: plain(1), Target: f}, false); !r.Missed || miss.Used() != 1 {
+		if r := Hurt(c, b, miss, Attack{By: h, Skill: plain(1), Target: f}, func(action.Event) {}); !r.Missed || miss.Used() != 1 {
 			t.Fatalf("miss: %+v, rolls %d", r, miss.Used())
 		}
 		hit := rolls(0.0, 0.5)
-		if r := Hurt(c, b, hit, Attack{By: h, Skill: plain(1), Target: f}, false); r.Missed || hit.Used() != 2 || r.Damage != 15 {
+		if r := Hurt(c, b, hit, Attack{By: h, Skill: plain(1), Target: f}, func(action.Event) {}); r.Missed || hit.Used() != 2 || r.Damage != 15 {
 			t.Fatalf("hit: %+v, rolls %d", r, hit.Used())
 		}
 	})
@@ -150,7 +151,7 @@ func TestCombat(t *testing.T) {
 	t.Run("Shields soak damage before HP", func(t *testing.T) {
 		c, b, h, f := arena('g')
 		f.Shield = 10
-		r := Hurt(c, b, rolls(0, 0.5), Attack{By: h, Skill: plain(1), Target: f}, false)
+		r := Hurt(c, b, rolls(0, 0.5), Attack{By: h, Skill: plain(1), Target: f}, func(action.Event) {})
 		if f.Shield != 0 || r.HPAfter != 35 {
 			t.Fatalf("shield %d, hp %d", f.Shield, r.HPAfter)
 		}
@@ -159,7 +160,7 @@ func TestCombat(t *testing.T) {
 	t.Run("A unit brought to 0 HP leaves the board", func(t *testing.T) {
 		c, b, h, f := arena('g')
 		f.HP = 5
-		r := Hurt(c, b, rolls(0, 0.5), Attack{By: h, Skill: plain(1), Target: f}, false)
+		r := Hurt(c, b, rolls(0, 0.5), Attack{By: h, Skill: plain(1), Target: f}, func(action.Event) {})
 		if !r.Killed || b.Unit(f.ID) != nil {
 			t.Fatal("dead unit still on the board")
 		}
@@ -170,7 +171,7 @@ func TestCombat(t *testing.T) {
 		s := plain(0.1)
 		s.Effects = map[string]int{"bleed": 3, "stun": 1}
 		f.Status["bleed"] = 5
-		Hurt(c, b, rolls(0, 0.5), Attack{By: h, Skill: s, Target: f}, false)
+		Hurt(c, b, rolls(0, 0.5), Attack{By: h, Skill: s, Target: f}, func(action.Event) {})
 		if f.Status["bleed"] != 5 || f.Status["stun"] != 1 {
 			t.Fatalf("statuses %v", f.Status)
 		}
@@ -180,7 +181,7 @@ func TestCombat(t *testing.T) {
 		c, b, h, f := arena('g')
 		s := plain(0.1)
 		s.Element = "elec"
-		Hurt(c, b, rolls(0, 0.5), Attack{By: h, Skill: s, Target: f}, false)
+		Hurt(c, b, rolls(0, 0.5), Attack{By: h, Skill: s, Target: f}, func(action.Event) {})
 		if f.Status["shock"] != 1 {
 			t.Fatalf("statuses %v", f.Status)
 		}
@@ -189,9 +190,9 @@ func TestCombat(t *testing.T) {
 	t.Run("The forecast uses the same math as the real hit", func(t *testing.T) {
 		c, b, h, f := arena('g')
 		fc := Preview(c, b, Attack{By: h, Skill: plain(1.3), Target: f})
-		low := Hurt(c, b, rolls(0, 0), Attack{By: h, Skill: plain(1.3), Target: f}, false)
+		low := Hurt(c, b, rolls(0, 0), Attack{By: h, Skill: plain(1.3), Target: f}, func(action.Event) {})
 		f.HP = f.MaxHP
-		high := Hurt(c, b, rolls(0, 0.9999999), Attack{By: h, Skill: plain(1.3), Target: f}, false)
+		high := Hurt(c, b, rolls(0, 0.9999999), Attack{By: h, Skill: plain(1.3), Target: f}, func(action.Event) {})
 		if low.Damage != fc.Low || high.Damage != fc.High {
 			t.Fatalf("forecast %d-%d, real %d and %d", fc.Low, fc.High, low.Damage, high.Damage)
 		}

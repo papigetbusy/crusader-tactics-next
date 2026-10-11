@@ -7,11 +7,12 @@ import (
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
 )
 
-// HitChance is the chance in % that an attack lands (old hitCh, line 1060).
+// HitChance is the chance in % that an attack lands (old hitCh, line 1060):
+// Inner Element and a Wanted Poster never miss; a Phantom is harder to hit.
 func HitChance(c *content.Content, a Attack) int {
 	k := c.Combat
 	u, v, s := a.By, a.Target, a.Skill
-	if s.NoRoll() {
+	if s.NoRoll() || u.Status["inner"] > 0 || (v.Wanted && v.WantedBy == u.ID) {
 		return 100
 	}
 	magic := s.IsMagic()
@@ -39,6 +40,9 @@ func HitChance(c *content.Content, a Attack) int {
 		} else if k.WeaponBeats[v.Weapon] == u.Weapon {
 			h -= k.HitTriangle
 		}
+	}
+	if v.Ascension == "Phantom" {
+		h -= int(c.Ascensions["Phantom"].N("evasion"))
 	}
 	return max(k.HitMin, min(k.HitMax, h))
 }

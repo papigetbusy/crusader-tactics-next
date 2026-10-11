@@ -25,18 +25,26 @@ type Unit struct {
 	XP     int            // heroes: experience toward the next level
 	Status map[string]int // status name -> turns left ("snare": 2)
 
-	Weapon     string // sword, axe, lance... ("" for heroes without a triangle weapon)
-	Element    string // fire, ice, elec, light, dark, or ""
-	Boss       bool
-	Elite      bool
-	Defending  bool           // chose Defend this turn: takes half damage
-	TilesMoved int            // tiles walked this turn (charge skills)
-	RangeBonus int            // extra range (ascensions)
-	Shield     int            // absorbs damage before HP
-	CritChance int            // % (comes from gear; 0 without gear)
-	SkillUses  map[string]int // heroes: uses per skill (skills level up with use)
-	LastSkill  string         // heroes: the skill used last
-	Summoned   bool           // summons and companions do not learn or level
+	Weapon      string // sword, axe, lance... ("" for heroes without a triangle weapon)
+	Element     string // fire, ice, elec, light, dark, or ""
+	Boss        bool
+	Elite       bool
+	Defending   bool           // chose Defend this turn: takes half damage
+	TilesMoved  int            // tiles walked this turn (charge skills)
+	RangeBonus  int            // extra range (ascensions)
+	Shield      int            // absorbs damage before HP
+	CritChance  int            // % (comes from gear; 0 without gear)
+	CritDamage  int            // extra crit damage in % (gear)
+	CooldownCut int            // turns taken off skill cooldowns (gear)
+	SkillUses   map[string]int // heroes: uses per skill (skills level up with use)
+	LastSkill   string         // heroes: the skill used last
+	Summoned    bool           // summons and companions do not learn or level
+
+	// Heroes: what the hero knows (the old hero record's learned, eq, ult, spec).
+	Learned   []string // every skill learned
+	Equipped  []string // up to four skills on the bar
+	Ultimate  string   // the skill in the ultimate slot
+	Ascension string   // chosen at Lv 30 ("" before)
 
 	Skills    []content.Skill // the skill bar, in order
 	Cooldowns []int           // turns until each skill is ready again (0 = ready)
@@ -47,8 +55,65 @@ type Unit struct {
 
 	CloakUsed bool // Cloak was used; its 2-turn cooldown starts when the cloak ends
 
+	// Class abilities and the effects they leave behind (old u.abcd, P2 numbers and flags).
+	AbilityCooldown  int                // turns until the class ability is ready (old abcd)
+	Params           map[string]float64 // numbers the active ability set (old P2: dblN, imhM, inP...); also ivyP on targets
+	Decoy            bool               // a Phantom's shadow clone: no turn of its own, explodes when destroyed
+	Undead           bool               // a raised skeleton: poisons neighbours when destroyed
+	Companion        bool               // acts on its own in the enemy phase (bonded monsters, skeletons)
+	Owner            int                // a clone's hero, or a summon's master (old owner/master)
+	WantedBy         int                // Bounty Hunter's Wanted Poster: the hunter's ID (only if Wanted)
+	Wanted           bool
+	Overwatch        *Overwatch // Trickshot aiming its cone during the enemy turn
+	SkyReady         bool       // Storm Dragoon in the sky: Crash Down replaces the ability
+	UnbrokenUsed     bool       // Juggernaut's one saved killing blow is spent
+	Danced           bool       // Blade Dancer already acted again this turn
+	KilledThisAction bool       // made a kill during the current action (old _kill)
+	ExtraTurn        bool       // Oath of Ruin: a kill earned another full turn (old _ruin)
+	QuickShots       int        // Quick Draw shots fired this turn (old qdShot)
+	QuickUsed        []string   // skills fired this turn with Quick Draw (old qdUsed)
+	HeavyBleedBy     int        // Blood Pact: bleed damage heals this unit (only if HeavyBleed)
+	HeavyBleed       bool
+
 	Potions int   // potions left this floor (heroes)
 	Undo    *Tile // where the unit stood before its move this turn, while Undo is still allowed
+}
+
+// P is one of the numbers the unit's active ability set, or def when it is
+// missing or zero (the old code wrote u.dblN||2).
+func (u *Unit) P(key string, def float64) float64 {
+	if v := u.Params[key]; v != 0 {
+		return v
+	}
+	return def
+}
+
+// Overwatch is a Trickshot's aimed cone: direction and who it already shot.
+type Overwatch struct {
+	DX, DY int
+	Hit    []int
+}
+
+// Field is a burning or bannered area that lasts a few turns (old FIELDS).
+type Field struct {
+	X, Y   int
+	Range  int
+	Square bool // range counts like a king's move (3x3), not in straight steps
+	Turns  int
+	Kind   string // "fire" or "banner"
+	Owner  int
+}
+
+// Trap is a hidden Trapper snare (old TRAPS).
+type Trap struct {
+	X, Y  int
+	Owner int
+}
+
+// Raise is a skeleton a Necromancer raises where a monster died.
+type Raise struct {
+	By   int
+	X, Y int
 }
 
 // Tile is a board position.
@@ -66,18 +131,38 @@ const (
 
 // Battle is everything the referee knows about one fight.
 type Battle struct {
-	N        int      // the map is N x N tiles
-	Ground   []string // one row of terrain letters per y ("ggfr..."); may be short
-	Heights  [][]int  // -2 mountain, -1 water, 0 flat, 1 hill
-	Units    []*Unit  // in turn order; dead units are removed
-	Turn     int
-	Side     int     // whose turn it is: Heroes or Enemies
-	Outcome  string  // Ongoing, Won or Lost
-	NextID   int     // the ID the next new unit gets
-	Throne   *Tile   // seize-the-throne floors: a hero standing here wins the fight
-	LevelCap int     // heroes stop gaining XP at this level (0: no cap); set by the run from the best floor
-	Fallen   []*Unit // heroes who died in combat this floor, last one first to be revived
+	N          int      // the map is N x N tiles
+	Ground     []string // one row of terrain letters per y ("ggfr..."); may be short
+	Heights    [][]int  // -2 mountain, -1 water, 0 flat, 1 hill
+	Units      []*Unit  // in turn order; dead units are removed
+	Turn       int
+	Side       int        // whose turn it is: Heroes or Enemies
+	Outcome    string     // Ongoing, Won or Lost
+	NextID     int        // the ID the next new unit gets
+	Throne     *Tile      // seize-the-throne floors: a hero standing here wins the fight
+	LevelCap   int        // heroes stop gaining XP at this level (0: no cap); set by the run from the best floor
+	Fields     []Field    // burning ground and war banners
+	Traps      []Trap     // hidden snares
+	FloorKills []Tile     // where monsters died this floor (Grave Bloom raises them)
+	Raises     []Raise    // skeletons waiting to rise once the current action is over
+	Decisions  []Decision // choices waiting for the player, answered first to last (old EVQ)
+	Fallen     []*Unit    // heroes who died in combat this floor, last one first to be revived
 }
+
+// Decision is a choice the player must make before playing on: a skill
+// learned at a level-up, an evolution to acknowledge, or the Lv 30 ascension.
+type Decision struct {
+	Kind  string `json:"kind"`            // DecideLearn, DecideEvolve or DecideAscend
+	Unit  int    `json:"unit"`            // the hero it is about
+	Skill string `json:"skill,omitempty"` // the skill learned (DecideLearn)
+}
+
+// Kinds of decisions.
+const (
+	DecideLearn  = "learn"
+	DecideEvolve = "evolve"
+	DecideAscend = "ascend"
+)
 
 // UnitAt returns the unit standing on (x, y), or nil.
 func (b *Battle) UnitAt(x, y int) *Unit {

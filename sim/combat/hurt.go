@@ -3,14 +3,18 @@ package combat
 import (
 	"sort"
 
+	"github.com/papigetbusy/crusader-tactics-next/sim/action"
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
 	"github.com/papigetbusy/crusader-tactics-next/sim/rng"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
+	"github.com/papigetbusy/crusader-tactics-next/sim/stats"
 )
 
 // Result is what one hit did.
 type Result struct {
 	Missed   bool
+	Immune   bool           // Glacial Scales: ranged hits do nothing
+	Target   *state.Unit    // who was really hit (a Guardian can take the hit)
 	Damage   int            // the damage number (before shields)
 	Mult     float64        // above 1: a weak spot; below 1: resisted
 	Crit     bool           // critical hit
@@ -21,92 +25,200 @@ type Result struct {
 
 // Roll labels, so a failed old-game check can say which roll was out of order.
 const (
-	RollHit    = "hit roll"
-	RollDamage = "damage spread"
-	RollCrit   = "crit roll"
+	RollHit       = "hit roll"
+	RollDamage    = "damage spread"
+	RollCrit      = "crit roll"
+	RollBeastBurn = "beast burn roll"
 )
 
-// Hurt performs one hit: the hit roll, the damage roll, shields, healing
-// effects of the skill, statuses and death (old hurt, lines 1687-1710).
-// Rewards for a kill (XP, gold, loot) are handled by the caller.
-func Hurt(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, sure bool) Result {
+// Hurt performs one hit and everything that comes with it (old hurt, lines
+// 1687-1710): a Guardian taking the hit, the hit roll, damage, crits,
+// shields, a Sacred Vow sharing the damage, life steal and healing effects,
+// statuses, death and its triggers, experience, and a Duelist's Riposte.
+func Hurt(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit action.Emit) Result {
 	k := c.Combat
-	u, v, s := a.By, a.Target, a.Skill
-	if !sure {
-		if dice.Roll(RollHit)*100 >= float64(HitChance(c, a)) {
-			return Result{Missed: true, Mult: 1, HPAfter: v.HP}
+	u, s := a.By, a.Skill
+	if a.Target.Team == state.Heroes && a.Target.Ascension != "Guardian" && !a.NoRedirect {
+		for _, z := range b.Units {
+			if z.Team == state.Heroes && z.Ascension == "Guardian" && z != a.Target && Distance(z, a.Target) == 1 {
+				emit(action.Event{Kind: action.Guarded, Unit: z.ID, Target: a.Target.ID})
+				a.Target, a.Extra = z, extraOf(a)*c.Ascensions["Guardian"].N("bodyguard")
+				break
+			}
 		}
 	}
-	roll := k.DamageRollLow + float64(k.DamageRollSpread*dice.Roll(RollDamage))
-	dm, m := Damage(c, b, a, roll)
-	res := Result{Damage: dm, Mult: m}
-	if u.CritChance > 0 && dice.Roll(RollCrit)*100 < float64(u.CritChance) {
-		dm = int(Round(float64(dm) * k.CritDamage))
-		res.Damage, res.Crit = dm, true
+	v := a.Target
+	fixed := a.Fixed > 0
+	if !a.Sure && !fixed && dice.Roll(RollHit)*100 >= float64(HitChance(c, a)) {
+		emit(action.Event{Kind: action.Missed, Unit: u.ID, Target: v.ID})
+		stats.Gain(c, b, u, c.Progress.MissXP, emit)
+		return Result{Missed: true, Target: v, Mult: 1, HPAfter: v.HP}
 	}
+	res := Result{Target: v, Mult: 1, Damage: a.Fixed}
+	if !fixed {
+		roll := k.DamageRollLow + float64(k.DamageRollSpread*dice.Roll(RollDamage))
+		res.Damage, res.Mult = Damage(c, b, a, roll)
+		if v.Status["scales"] > 0 && Distance(u, v) > 1 {
+			emit(action.Event{Kind: action.Immune, Unit: u.ID, Target: v.ID})
+			res.Immune, res.Damage, res.HPAfter = true, 0, v.HP
+			return res
+		}
+	}
+	if cc := critChance(u, a); cc > 0 && dice.Roll(RollCrit)*100 < float64(cc) {
+		res.Damage = int(Round(float64(res.Damage) * critDamage(c, u)))
+		res.Crit = true
+	}
+	dm := res.Damage
 	hp := dm
 	if v.Shield > 0 {
 		absorbed := min(v.Shield, hp)
 		v.Shield -= absorbed
 		hp -= absorbed
 	}
+	if v.Team == state.Heroes && hp > 1 && !a.Counter {
+		for _, z := range b.Units {
+			if z.Team == state.Heroes && z != v && z.Status["svow"] > 0 && Distance(z, v) <= 2 {
+				half := hp / 2
+				hp -= half
+				z.HP = max(1, z.HP-half)
+				emit(action.Event{Kind: action.Shared, Unit: z.ID, Target: v.ID, Amount: half})
+				break
+			}
+		}
+	}
 	v.HP -= hp
+	if v.HP <= 0 && v.Status["unb"] > 0 && !v.UnbrokenUsed {
+		v.HP, v.UnbrokenUsed = 1, true
+		emit(action.Event{Kind: action.Unbroken, Unit: v.ID})
+	}
+	emit(action.Event{Kind: action.Hit, Unit: u.ID, Target: v.ID, Amount: dm, Mult: res.Mult, Crit: res.Crit})
+	if u.Status["beast"] > 0 && !fixed {
+		ex := max(1, int(Round(float64(float64(dm)*u.P("bmF", 0.25))*Multiplier(c, unarmed(u), v, "fire"))))
+		v.HP -= ex
+		emit(action.Event{Kind: action.Hit, Unit: u.ID, Target: v.ID, Amount: ex, Skill: "fire"})
+	}
+	afterHit(c, b, a, v, dm)
 
+	if v.HP > 0 {
+		res.Statuses = applyStatuses(c, b, dice, a, v)
+		if len(res.Statuses) > 0 {
+			emit(action.Event{Kind: action.StatusOn, Target: v.ID, Statuses: res.Statuses})
+		}
+	} else {
+		res.Killed = true
+		died(c, b, dice, u, v, emit)
+	}
+	if !res.Killed && u.Team == state.Heroes {
+		stats.Gain(c, b, u, stats.HitXP(c, dm, len(s.Effects) > 0), emit)
+	}
+	res.HPAfter = v.HP
+	if v.HP > 0 && v.Ascension == "Duelist" && !a.Counter && Distance(u, v) == 1 && b.Unit(u.ID) != nil {
+		riposte := Attack{By: v, Skill: c.Skills["Slash"], Target: u, Counter: true, NoRedirect: true,
+			Extra: c.Ascensions["Duelist"].N("riposte")}
+		emit(action.Event{Kind: action.Riposte, Unit: v.ID, Target: u.ID})
+		Hurt(c, b, dice, riposte, emit)
+		if v.Status["flurry"] > 0 && b.Unit(u.ID) != nil {
+			Hurt(c, b, dice, riposte, emit)
+		}
+	}
+	return res
+}
+
+func extraOf(a Attack) float64 {
+	if a.Extra == 0 {
+		return 1
+	}
+	return a.Extra
+}
+
+// unarmed is the unit without its weapon, for added elemental damage (the
+// old game called mult with w:null).
+func unarmed(u *state.Unit) *state.Unit {
+	cp := *u
+	cp.Weapon = ""
+	return &cp
+}
+
+// critChance is the chance in % of a critical hit: Deadeye always crits;
+// gear, Bloodlust and Flurry of Blades add chance.
+func critChance(u *state.Unit, a Attack) int {
+	if a.Fixed > 0 {
+		return 0
+	}
+	if u.Status["deadeye"] > 0 {
+		return 100
+	}
+	cc := u.CritChance + a.CritBonus
+	if u.Status["blood"] > 0 {
+		cc = u.CritChance + int(u.P("blC", 50)) + a.CritBonus
+	}
+	return cc
+}
+
+// critDamage is how much a critical hit multiplies the damage.
+func critDamage(c *content.Content, u *state.Unit) float64 {
+	if u.Status["deadeye"] > 0 {
+		return 3
+	}
+	m := c.Combat.CritDamage + float64(u.CritDamage)/100
+	if u.Status["blood"] > 0 {
+		m += u.P("blD", 0) / 100
+	}
+	return m
+}
+
+// afterHit is the healing and snaring that follows a hit (old hurt, lines
+// 1697-1700): life steal, a taunting Paladin's heal, Frost Bulwark and
+// Glacial Scales rooting the attacker, drain and siphon skills, and the
+// Paladin, Blood Witch and Plague Doctor passives.
+func afterHit(c *content.Content, b *state.Battle, a Attack, v *state.Unit, dm int) {
+	u, s := a.By, a.Skill
+	if u.Status["frenzy"] > 0 {
+		heal(u, float64(dm)*0.25)
+	}
+	if u.Status["vamp"] > 0 {
+		heal(u, float64(dm)*0.2)
+	}
+	if v.Status["taunt"] > 0 && v.HP > 0 {
+		heal(v, float64(v.MaxHP)*0.1)
+	}
+	if u.Team == state.Enemies && v.Team == state.Heroes && near(b, v, 2, true, func(z *state.Unit) bool { return z.Status["bulwark"] > 0 }) {
+		u.Status["snare"] = max(u.Status["snare"], 1)
+	}
+	if v.Status["scales"] > 0 && Distance(u, v) <= 1 {
+		u.Status["snare"] = max(u.Status["snare"], 2)
+	}
 	if s.Drain > 0 {
 		share := s.Drain
 		if share == 1 {
-			share = k.DrainDefault
+			share = c.Combat.DrainDefault
 		}
 		heal(u, float64(dm)*share)
+	}
+	switch u.Ascension {
+	case "Paladin", "Blood Witch":
+		heal(u, float64(dm)*c.Ascensions[u.Ascension].N("lifeSteal"))
 	}
 	if s.Siphon {
 		if w := mostHurtAlly(b, u.Team); w != nil {
 			heal(w, float64(dm))
 		}
 	}
-
-	if v.HP > 0 {
-		res.Statuses = applyStatuses(c, a)
-	} else {
-		res.Killed = true
-		b.Remove(v.ID)
-		if v.Team == state.Heroes && !v.Summoned {
-			b.Fallen = append(b.Fallen, v) // see also turn.Start: deaths from poison or bleeding
+	if u.Ascension == "Plague Doctor" {
+		if w := mostHurtAlly(b, state.Heroes); w != nil {
+			heal(w, float64(dm)*c.Ascensions["Plague Doctor"].N("healShare"))
 		}
 	}
-	res.HPAfter = v.HP
-	return res
-}
-
-// applyStatuses puts the skill's statuses on a target that survived. Lightning
-// always shocks. A status already there keeps the longer duration.
-func applyStatuses(c *content.Content, a Attack) map[string]int {
-	fx := map[string]int{}
-	for q, n := range a.Skill.Effects {
-		fx[q] = n
-	}
-	el := a.Skill.Element
-	if el == content.UserElement || (el != "" && a.By.Team != state.Heroes && a.ClassBase) {
-		el = a.By.Element
-	}
-	if el == "elec" {
-		fx["shock"] = max(fx["shock"], c.Combat.ElecShockTurns)
-	}
-	if a.Target.Status == nil {
-		a.Target.Status = map[string]int{}
-	}
-	for q, n := range fx {
-		a.Target.Status[q] = max(a.Target.Status[q], n)
-	}
-	return fx
 }
 
 // heal restores up to n HP (rounded), never above max.
-func heal(z *state.Unit, n float64) {
+func heal(z *state.Unit, n float64) int {
 	add := min(z.MaxHP-z.HP, int(Round(n)))
 	if add > 0 {
 		z.HP += add
+		return add
 	}
+	return 0
 }
 
 // mostHurtAlly is the ally with the lowest share of HP who is hurt; ties go
@@ -125,31 +237,4 @@ func mostHurtAlly(b *state.Battle, team int) *state.Unit {
 		return nil
 	}
 	return hurt[0]
-}
-
-// Forecast is what the screen shows before an attack. It runs the same
-// Damage function as a real hit (one math path), at the lowest, middle and
-// highest damage roll.
-type Forecast struct {
-	HitChance  int     `json:"hitChance"`
-	Low        int     `json:"low"`
-	Mid        int     `json:"mid"`
-	High       int     `json:"high"`
-	Mult       float64 `json:"mult"`
-	CritChance int     `json:"critChance,omitempty"`
-	CritLow    int     `json:"critLow,omitempty"`
-	CritHi     int     `json:"critHigh,omitempty"`
-}
-
-// Preview forecasts an attack without changing anything.
-func Preview(c *content.Content, b *state.Battle, a Attack) Forecast {
-	k := c.Combat
-	lo, m := Damage(c, b, a, k.DamageRollLow)
-	mid, _ := Damage(c, b, a, k.DamageRollLow+float64(k.DamageRollSpread*0.5))
-	hi, _ := Damage(c, b, a, k.DamageRollLow+k.DamageRollSpread)
-	f := Forecast{HitChance: HitChance(c, a), Low: lo, Mid: mid, High: hi, Mult: m, CritChance: a.By.CritChance}
-	if f.CritChance > 0 {
-		f.CritLow, f.CritHi = int(Round(float64(lo)*k.CritDamage)), int(Round(float64(hi)*k.CritDamage))
-	}
-	return f
 }

@@ -44,8 +44,21 @@ func TestPracticeFights(t *testing.T) {
 	})
 }
 
+// answerAll answers every waiting choice with its first option, replacing
+// the first skill slot when asked to replace.
+func answerAll(t *testing.T, g *Game) {
+	for len(g.B.Decisions) > 0 {
+		opts := g.Options()
+		if _, err := g.Apply(action.Action{Kind: action.Decide, Choice: opts[0]}); err != nil {
+			t.Fatalf("decide %v: %v", opts, err)
+		}
+	}
+}
+
 func playHeroes(t *testing.T, g *Game) {
+	answerAll(t, g)
 	for _, u := range append([]*state.Unit(nil), g.B.Units...) {
+		answerAll(t, g)
 		if u.Team != state.Heroes || g.B.Unit(u.ID) == nil || g.B.Outcome != state.Ongoing {
 			continue
 		}
@@ -64,6 +77,7 @@ func playHeroes(t *testing.T, g *Game) {
 				if _, err := g.Apply(action.Action{Kind: action.Move, Unit: u.ID, X: best.X, Y: best.Y}); err != nil {
 					t.Fatalf("move: %v", err)
 				}
+				answerAll(t, g)
 				tryAttack(t, g, u)
 			}
 		}

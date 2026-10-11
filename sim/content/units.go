@@ -1,27 +1,39 @@
 package content
 
-// HeroSkills is the skill bar a hero of this class and level starts a fight
-// with (old initP and heroSks, index.html lines 436-439): the first four
-// normal skills learned by this level in table order, the newest ultimate,
-// the basic Strike, and Cloak for Assassins.
-func (c *Content) HeroSkills(class string, level int) []Skill {
-	var normal, ult []Skill
+// StartingBuild is what a new hero of this class and level knows (old
+// initP, index.html line 436): every skill of its class up to its level,
+// the first four normal skills equipped in table order, and the newest
+// ultimate in the ultimate slot.
+func (c *Content) StartingBuild(class string, level int) (learned, equipped []string, ultimate string) {
 	for _, name := range c.SkillOrder {
 		s := c.Skills[name]
 		if s.Class != class || s.Level > level || s.Ascension != "" {
 			continue
 		}
+		learned = append(learned, name)
 		switch s.Kind {
 		case "n":
-			normal = append(normal, s)
+			if len(equipped) < 4 {
+				equipped = append(equipped, name)
+			}
 		case "u":
-			ult = append(ult, s)
+			ultimate = name
 		}
 	}
-	out := normal[:min(4, len(normal))]
-	out = append([]Skill(nil), out...)
-	if len(ult) > 0 {
-		out = append(out, ult[len(ult)-1])
+	return learned, equipped, ultimate
+}
+
+// Bar is a hero's skill bar (old heroSks, index.html line 440): the four
+// equipped skills, the ultimate, the basic Strike, and Cloak for Assassins.
+func (c *Content) Bar(class string, equipped []string, ultimate string) []Skill {
+	var out []Skill
+	for _, n := range equipped {
+		if s, ok := c.Skills[n]; ok {
+			out = append(out, s)
+		}
+	}
+	if s, ok := c.Skills[ultimate]; ok && ultimate != "" {
+		out = append(out, s)
 	}
 	if s, ok := c.Skills["Strike"]; ok {
 		out = append(out, s)
@@ -32,6 +44,12 @@ func (c *Content) HeroSkills(class string, level int) []Skill {
 		}
 	}
 	return out
+}
+
+// HeroSkills is the skill bar of a new hero of this class and level.
+func (c *Content) HeroSkills(class string, level int) []Skill {
+	_, eq, ult := c.StartingBuild(class, level)
+	return c.Bar(class, eq, ult)
 }
 
 // MonsterSkills is the skill bar of a monster (old enemySks, line 438):

@@ -45,6 +45,15 @@ func main() {
 	write("data/rules/turns.json", c.Turns)
 	write("data/rules/ai.json", c.AI)
 	write("data/rules/progress.json", c.Progress)
+	var asc []content.Ascension
+	for _, cl := range []string{"Warrior", "Tank", "Mage", "Healer", "Ranger", "Assassin", "Gunslinger", "Dragon Knight", "Witch", "Knight"} {
+		for _, name := range c.AscensionChoices[cl] {
+			asc = append(asc, c.Ascensions[name])
+		}
+	}
+	write("data/ascensions.json", map[string]any{
+		"_about":     "The Lv 30 ascensions: element, stat changes, ultimate, and the numbers their passive uses. From the old game's SPEC and SPECS tables.",
+		"ascensions": asc, "choices": c.AscensionChoices})
 }
 
 func write(path string, v any) {

@@ -36,6 +36,9 @@ type Content struct {
 	Turns      Turns
 	AI         AI
 	Progress   Progress
+
+	Ascensions       map[string]Ascension // by name
+	AscensionChoices map[string][]string  // class -> its three ascensions, in the order they are offered
 }
 
 // Default loads the live data files built into the program.
@@ -85,9 +88,13 @@ func Load(fsys fs.FS) (*Content, error) {
 	var turns Turns
 	var ai AI
 	var progress Progress
+	var asc struct {
+		Ascensions []Ascension         `json:"ascensions"`
+		Choices    map[string][]string `json:"choices"`
+	}
 	for name, v := range map[string]any{"skills.json": &skills, "classes.json": &classes,
 		"elements.json": &elements, "rules/combat.json": &combat, "rules/turns.json": &turns, "rules/ai.json": &ai,
-		"rules/progress.json": &progress} {
+		"rules/progress.json": &progress, "ascensions.json": &asc} {
 		if err := readJSON(fsys, name, v); err != nil {
 			return nil, err
 		}
@@ -106,6 +113,11 @@ func Load(fsys fs.FS) (*Content, error) {
 		Turns:             turns,
 		AI:                ai,
 		Progress:          progress,
+		Ascensions:        map[string]Ascension{},
+		AscensionChoices:  asc.Choices,
+	}
+	for _, a := range asc.Ascensions {
+		c.Ascensions[a.Name] = a
 	}
 	for _, sk := range skills.Skills {
 		c.Skills[sk.Name] = sk
@@ -153,6 +165,11 @@ func (c *Content) Check() error {
 	}
 	if c.Combat.HitMin < 0 || c.Combat.HitMax > 100 || c.Combat.HitMin > c.Combat.HitMax {
 		return fmt.Errorf("rules/combat.json: hit chance limits must be within 0-100")
+	}
+	for name, a := range c.Ascensions {
+		if _, ok := c.Skills[a.Ultimate]; !ok {
+			return fmt.Errorf("ascensions.json, %s: its ultimate %q is not in skills.json", name, a.Ultimate)
+		}
 	}
 	if err := c.Progress.check(); err != nil {
 		return err

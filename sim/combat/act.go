@@ -8,7 +8,6 @@ import (
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
 	"github.com/papigetbusy/crusader-tactics-next/sim/rng"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
-	"github.com/papigetbusy/crusader-tactics-next/sim/stats"
 )
 
 // RollShuffle labels the rolls of the fair shuffle that picks the extra
@@ -16,16 +15,13 @@ import (
 const RollShuffle = "shuffle"
 
 // UseSkill is one unit using the skill in a slot of its bar on a target:
-// buffs, heals and attacks, including area, multi-target, multi-hit and
-// piercing skills (old act, index.html lines 1711-1734). It assumes the
-// caller already checked the use is allowed.
-//
-// Not yet ported (they arrive with their phases): summons and revives,
-// ascension passives, class-ability statuses, XP, gold and loot.
+// revives, buffs, heals and attacks (old act, index.html lines 1711-1734).
+// It assumes the caller already checked the use is allowed. Summons arrive
+// with the Necromancer in step 6b.
 func UseSkill(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Unit, slot int, v *state.Unit, emit action.Emit) error {
 	s := u.Skills[slot]
 	if s.Summon != nil {
-		return fmt.Errorf("%s: summons arrive with the Necromancer in Phase 6", s.Name)
+		return fmt.Errorf("%s: summons arrive with the Necromancer in step 6b", s.Name)
 	}
 	_, classBase, _ := c.SkillFor(u.Team, u.Class, s.Name)
 	emit(action.Event{Kind: action.SkillUsed, Unit: u.ID, Target: v.ID, Skill: s.Name})
@@ -35,160 +31,157 @@ func UseSkill(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Unit,
 	case s.Support:
 		support(c, b, u, s, emit)
 	case s.Heal:
-		healSkill(c, b, u, s, v, emit)
+		healSkill(c, b, dice, u, s, v, emit)
 	default:
 		attack(c, b, dice, Attack{By: u, Skill: s, ClassBase: classBase, Target: v}, emit)
 	}
-	finishSkill(c, u, slot, s)
+	finishSkill(c, b, u, slot, s, emit)
 	return nil
 }
 
-// reviveSpots are checked in this order around the healer (old act, line 1715).
-var reviveSpots = [8][2]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {-1, -1}, {1, -1}, {-1, 1}}
-
-// revive brings back the hero who fell most recently, next to the healer,
-// with 40% of max HP, no statuses, finished for this turn. With no free
-// spot, nobody comes back.
-func revive(c *content.Content, b *state.Battle, u *state.Unit, emit action.Emit) {
-	if len(b.Fallen) == 0 {
-		return
-	}
-	f := b.Fallen[len(b.Fallen)-1]
-	for _, d := range reviveSpots {
-		x, y := u.X+d[0], u.Y+d[1]
-		if !b.Inside(x, y) || heightAt(b, x, y) < 0 || b.UnitAt(x, y) != nil {
-			continue
-		}
-		b.Fallen = b.Fallen[:len(b.Fallen)-1]
-		f.X, f.Y = x, y
-		f.HP = int(Round(float64(f.MaxHP) * c.Combat.ReviveShare))
-		f.Status = map[string]int{}
-		f.Done = true
-		b.Units = append(b.Units, f)
-		emit(action.Event{Kind: action.Revived, Unit: u.ID, Target: f.ID, Amount: f.HP})
-		return
-	}
-}
-
-// heightAt is the map height (below 0 is water or mountain).
-func heightAt(b *state.Battle, x, y int) int {
-	if y < len(b.Heights) && x < len(b.Heights[y]) {
-		return b.Heights[y][x]
-	}
-	return 0
-}
-
-func support(c *content.Content, b *state.Battle, u *state.Unit, s content.Skill, emit action.Emit) {
-	for _, z := range b.Units {
-		if z.Team != u.Team || Distance(z, u) > s.Area {
-			continue
-		}
-		for q, n := range s.Buffs {
-			z.Status[q] = max(z.Status[q], n)
-		}
-		if s.ResetCooldown && z != u {
-			for i := range z.Cooldowns {
-				z.Cooldowns[i] = 0
-			}
-		}
-		emit(action.Event{Kind: action.StatusOn, Target: z.ID, Statuses: s.Buffs})
-	}
-	stats.Gain(c, b, u, c.Progress.SupportXP, emit) // old act, line 1717
-}
-
-// HealAmount is how much a heal skill restores before the target's room
-// is considered (old healAmt0, line 451, for units without gear).
-func HealAmount(c *content.Content, u *state.Unit, s content.Skill) float64 {
-	skill := 1.0
-	if isHero(u) {
-		skill = 1 + float64(c.Combat.SkillLevelBonus*float64(SkillLevel(c, u, s.Name)-1))
-	}
-	return float64(1*1) * s.Power * float64(6+2*u.Level) * 1 * skill
-}
-
-func healSkill(c *content.Content, b *state.Battle, u *state.Unit, s content.Skill, v *state.Unit, emit action.Emit) {
-	list := []*state.Unit{v}
-	if s.AllAllies || s.Area > 0 {
-		list = nil
-		for _, z := range b.Units {
-			if z.Team == u.Team && (s.AllAllies || Distance(z, v) <= s.Area) {
-				list = append(list, z)
-			}
-		}
-	}
-	healed := 0
-	for _, z := range list {
-		if z.Status["frozen"] > 0 {
-			continue
-		}
-		if s.Cleanse {
-			for _, q := range cleansable {
-				delete(z.Status, q)
-			}
-		}
-		before := z.HP
-		heal(z, HealAmount(c, u, s))
-		healed += z.HP - before
-		emit(action.Event{Kind: action.Healed, Unit: u.ID, Target: z.ID, Amount: z.HP - before})
-	}
-	stats.Gain(c, b, u, stats.HealXP(c, healed), emit) // old act, line 1720
-}
-
+// attack is a damaging skill (old act, lines 1721-1727): breaking a cloak,
+// Blood Magic's HP cost, the targets (multi-target picks, Hunter's Eye,
+// Unbroken Maiden's cleave), the hits (Outlaw's two shots, Double Strike),
+// area, Inner Element and Beast Mode splash, piercing, healing splashes,
+// and the Stormcaller's and Trickshot's arcs.
 func attack(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit action.Emit) {
 	u, s, v := a.By, a.Skill, a.Target
 	if u.Status["cloak"] > 0 { // attacking breaks the cloak
 		u.Status["cloak"] = 0
 		CloakCooldown(u)
 	}
+	if u.Ascension == "Blood Witch" || s.HPCost > 0 {
+		cost := s.HPCost
+		if cost == 0 {
+			cost = c.Ascensions["Blood Witch"].N("hpCost")
+		}
+		u.HP = max(1, u.HP-int(Round(float64(u.MaxHP)*cost)))
+	}
 	targets := []*state.Unit{v}
 	if s.ExtraTargets > 0 {
-		var pool []*state.Unit
+		targets = append(targets, extraTargets(b, dice, u, s, v)...)
+	}
+	if u.Status["heye"] > 0 && s.Kind != "u" && s.Area == 0 && s.Line == 0 && len(targets) < int(u.P("heN", 3)) {
+		reach := s.MaxRange + u.RangeBonus + int(u.P("heR", 3))
 		for _, z := range b.Units {
-			if z.Team != u.Team && z != v && Distance(u, z) <= s.MaxRange+u.RangeBonus {
-				pool = append(pool, z)
+			if len(targets) >= int(u.P("heN", 3)) {
+				break
 			}
-		}
-		if p, ok := dice.(rng.Picker); ok {
-			ids := make([]int, len(pool))
-			for i, z := range pool {
-				ids[i] = z.ID
+			if z.Team != u.Team && !slices.Contains(targets, z) && Distance(u, z) >= s.MinRange && Distance(u, z) <= reach {
+				targets = append(targets, z)
 			}
-			for _, id := range p.PickExtra(ids, s.ExtraTargets-1) {
-				targets = append(targets, b.Unit(id))
-			}
-		} else {
-			rng.Shuffle(dice, RollShuffle, pool)
-			targets = append(targets, pool[:min(len(pool), s.ExtraTargets-1)]...)
 		}
 	}
+	if u.Status["imh"] > 0 && u.P("imhCl", 0) != 0 {
+		for _, z := range b.Units {
+			if z.Team != u.Team && !slices.Contains(targets, z) && Distance(z, u) <= 1 {
+				targets = append(targets, z)
+			}
+		}
+	}
+	outlaw := u.Ascension == "Outlaw" && s.Hits == 0 && s.ExtraTargets == 0
+	double := u.Status["dbl"] > 0 && s.Kind != "u"
 	hits := max(1, s.Hits)
+	if outlaw {
+		hits = int(c.Ascensions["Outlaw"].N("shots"))
+	}
+	if double {
+		hits *= int(u.P("dblN", 2))
+	}
 	for _, z := range targets {
 		for h := 0; h < hits; h++ {
 			if b.Unit(z.ID) == nil {
 				break
 			}
-			strike(c, b, dice, Attack{By: u, Skill: s, ClassBase: a.ClassBase, Target: z}, emit)
+			hit := Attack{By: u, Skill: s, ClassBase: a.ClassBase, Target: z, Extra: 1}
+			if outlaw {
+				hit.Extra = c.Ascensions["Outlaw"].N("shotPower")
+			}
+			if double {
+				if h > 0 {
+					hit.Extra *= 1 + u.P("dblB", 0)
+					hit.Sure = u.P("dblSure", 0) != 0
+				}
+				hit.CritBonus = int(u.P("dblC", 0))
+			}
+			Hurt(c, b, dice, hit, emit)
 		}
 	}
 	if s.Area > 0 {
 		for _, z := range areaOf(b, u, s, v, targets) {
-			strike(c, b, dice, Attack{By: u, Skill: s, ClassBase: a.ClassBase, Target: z}, emit)
+			Hurt(c, b, dice, Attack{By: u, Skill: s, ClassBase: a.ClassBase, Target: z}, emit)
+		}
+	}
+	if (u.Status["inner"] > 0 && u.P("inArea", 0) != 0) || (u.Status["beast"] > 0 && u.P("bmS", 0) != 0) {
+		rr := s.Area + 1
+		mul := u.P("bmS", 0.5)
+		if u.Status["inner"] > 0 && u.P("inArea", 0) != 0 {
+			mul = 1
+		}
+		var ring []*state.Unit
+		for _, z := range b.Units {
+			if z.Team != u.Team && !slices.Contains(targets, z) && Distance(z, v) <= rr && (s.Area == 0 || Distance(z, v) > s.Area) {
+				ring = append(ring, z)
+			}
+		}
+		for _, z := range ring {
+			Hurt(c, b, dice, Attack{By: u, Skill: s, ClassBase: a.ClassBase, Target: z, Extra: mul}, emit)
 		}
 	}
 	if s.Line > 0 {
 		for _, t := range lineOf(u, s, v) {
 			if z := b.UnitAt(t[0], t[1]); z != nil && z.Team != u.Team {
-				strike(c, b, dice, Attack{By: u, Skill: s, ClassBase: a.ClassBase, Target: z}, emit)
+				Hurt(c, b, dice, Attack{By: u, Skill: s, ClassBase: a.ClassBase, Target: z}, emit)
+			}
+		}
+	}
+	if u.Ascension == "Templar" && float64(u.TilesMoved) >= c.Ascensions["Templar"].N("chargeTiles") {
+		for _, z := range members(b, u.Team) {
+			if Distance(z, v) <= 1 && z.Status["frozen"] <= 0 {
+				heal(z, float64(z.MaxHP)*c.Ascensions["Templar"].N("chargeHeal"))
 			}
 		}
 	}
 	if s.Splash > 0 {
-		for _, z := range b.Units {
-			if z.Team == u.Team && Distance(z, u) <= 1 {
+		for _, z := range members(b, u.Team) {
+			if Distance(z, u) <= 1 && z.Status["frozen"] <= 0 {
 				heal(z, float64(z.MaxHP)*s.Splash)
 			}
 		}
 	}
+	if u.Ascension == "Stormcaller" || u.Ascension == "Trickshot" {
+		asc := c.Ascensions[u.Ascension]
+		for _, z := range b.Units {
+			if z.Team != u.Team && !slices.Contains(targets, z) && Distance(z, v) <= int(asc.N("arcRange")) {
+				Hurt(c, b, dice, Attack{By: u, Skill: s, ClassBase: a.ClassBase, Target: z, Extra: asc.N("arc")}, emit)
+				break
+			}
+		}
+	}
+}
+
+// extraTargets picks a multi-target skill's other targets in range: the
+// old game's own picks when replaying it, otherwise the fair shuffle.
+func extraTargets(b *state.Battle, dice rng.Dice, u *state.Unit, s content.Skill, v *state.Unit) []*state.Unit {
+	var pool []*state.Unit
+	for _, z := range b.Units {
+		if z.Team != u.Team && z != v && Distance(u, z) <= s.MaxRange+u.RangeBonus {
+			pool = append(pool, z)
+		}
+	}
+	if p, ok := dice.(rng.Picker); ok {
+		ids := make([]int, len(pool))
+		for i, z := range pool {
+			ids[i] = z.ID
+		}
+		var out []*state.Unit
+		for _, id := range p.PickExtra(ids, s.ExtraTargets-1) {
+			out = append(out, b.Unit(id))
+		}
+		return out
+	}
+	rng.Shuffle(dice, RollShuffle, pool)
+	return pool[:min(len(pool), s.ExtraTargets-1)]
 }
 
 // areaOf are the other enemies caught in an area skill's blast around v.
@@ -232,33 +225,11 @@ func AlsoHit(b *state.Battle, u *state.Unit, s content.Skill, v *state.Unit) []i
 	return out
 }
 
-// strike is one Hurt plus the events that describe it.
-func strike(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit action.Emit) {
-	r := Hurt(c, b, dice, a, false)
-	switch {
-	case r.Missed:
-		emit(action.Event{Kind: action.Missed, Unit: a.By.ID, Target: a.Target.ID})
-		stats.Gain(c, b, a.By, c.Progress.MissXP, emit) // old hurt, line 1689
-		return
-	default:
-		emit(action.Event{Kind: action.Hit, Unit: a.By.ID, Target: a.Target.ID, Amount: r.Damage, Mult: r.Mult, Crit: r.Crit})
-	}
-	if len(r.Statuses) > 0 {
-		emit(action.Event{Kind: action.StatusOn, Target: a.Target.ID, Statuses: r.Statuses})
-	}
-	if r.Killed {
-		emit(action.Event{Kind: action.Died, Unit: a.Target.ID})
-		if a.By.Team == state.Heroes { // old hurt, line 1707
-			stats.Share(c, b, a.By, stats.KillXP(c, a.Target), emit)
-		}
-	} else {
-		stats.Gain(c, b, a.By, stats.HitXP(c, r.Damage, len(a.Skill.Effects) > 0), emit)
-	}
-}
-
-// finishSkill is what every skill use does afterwards: heroes' skills gain
-// uses (2 when switching skills), cooldowns start, the unit is done.
-func finishSkill(c *content.Content, u *state.Unit, slot int, s content.Skill) {
+// finishSkill is what every skill use does afterwards (old act, lines
+// 1728-1733): skill uses (2 when switching skills), Cloak, the one-shot
+// ability statuses wearing off, self-locking skills, the cooldown, then who
+// may act again: Hit and Run, Quick Draw, Oath of Ruin and Blade Dance.
+func finishSkill(c *content.Content, b *state.Battle, u *state.Unit, slot int, s content.Skill, emit action.Emit) {
 	if isHero(u) {
 		if u.SkillUses == nil {
 			u.SkillUses = map[string]int{}
@@ -274,16 +245,67 @@ func finishSkill(c *content.Content, u *state.Unit, slot int, s content.Skill) {
 		u.Status["cloak"] = 3
 		u.CloakUsed = true
 	}
-	if s.LockSelf {
+	offensive := !(s.Heal || s.Support || s.Revive || s.Summon != nil)
+	if offensive {
+		if s.Kind != "u" {
+			u.Status["dbl"] = 0
+			if u.P("heK", 0) == 0 {
+				u.Status["heye"] = 0
+			}
+		}
+		u.Status["imh"] = 0
+		if u.Status["inner"] > 0 {
+			setParam(u, "inN", u.P("inN", 1)-1)
+			if u.Params["inN"] <= 0 {
+				u.Status["inner"] = 0
+			}
+		}
+		u.Status["deadeye"] = 0
+	}
+	if s.LockSelf && u.Ascension != "Oracle" {
 		u.Status["lock"] = 3
 	}
-	if s.Cooldown > 0 {
-		u.Cooldowns[slot] = max(1, s.Cooldown)
+	if s.Cooldown > 0 && !(u.Ascension == "Storm Dragoon" && s.Name == "Sky Dive") {
+		u.Cooldowns[slot] = max(1, s.Cooldown-u.CooldownCut)
 	}
-	u.Done = true
+	if u.Team == state.Heroes && u.Ascension == "Tempest Archer" && !u.Moved && offensive {
+		u.Acted, u.Done = true, false
+		emit(action.Event{Kind: action.ActAgain, Unit: u.ID, Skill: "Hit and Run"})
+	} else {
+		u.Done = true
+	}
 	if s.Cloak {
 		u.Cooldowns[slot] = 99
 	}
+	if u.Team == state.Heroes && u.Status["qd"] > 0 && offensive {
+		u.QuickShots++
+		u.QuickUsed = append(u.QuickUsed, s.Name)
+		if float64(u.QuickShots) < u.P("qdN", 2) {
+			u.Done, u.Moved = false, true
+			emit(action.Event{Kind: action.ActAgain, Unit: u.ID, Skill: "Quick Draw"})
+		} else {
+			u.Status["qd"], u.QuickShots, u.QuickUsed = 0, 0, nil
+		}
+	}
+	if u.ExtraTurn {
+		u.ExtraTurn = false
+		u.Done, u.Moved, u.Acted, u.Undo = false, false, false, nil
+		emit(action.Event{Kind: action.ActAgain, Unit: u.ID, Skill: "Oath of Ruin"})
+	}
+	if u.Team == state.Heroes && u.Ascension == "Blade Dancer" && u.KilledThisAction && !u.Danced {
+		u.Danced = true
+		u.Done, u.Moved, u.Undo = false, false, nil
+		emit(action.Event{Kind: action.ActAgain, Unit: u.ID, Skill: "Blade Dance"})
+	}
+	u.KilledThisAction = false
+}
+
+// setParam sets one of a unit's ability numbers.
+func setParam(u *state.Unit, key string, v float64) {
+	if u.Params == nil {
+		u.Params = map[string]float64{}
+	}
+	u.Params[key] = v
 }
 
 // CloakCooldown starts the Cloak skill's 2-turn cooldown once the cloak is

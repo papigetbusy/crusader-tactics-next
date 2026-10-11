@@ -4,6 +4,7 @@ package stats
 
 import (
 	"math"
+	"slices"
 
 	"github.com/papigetbusy/crusader-tactics-next/sim/action"
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
@@ -25,9 +26,12 @@ type Numbers struct {
 	MaxHP, Atk, Def, Mov int
 }
 
-// Form is which form a hero of this level is in: 0 base, 1 and 2 the
-// evolutions (old initP, index.html line 437). Ascensions arrive in step 6b.
-func Form(c *content.Content, level int) int {
+// Form is which form a hero is in: 0 base, 1 and 2 the evolutions, and the
+// last one once it has ascended (old initP, index.html line 437).
+func Form(c *content.Content, level int, ascension string) int {
+	if ascension != "" {
+		return len(c.Progress.Forms) - 1
+	}
 	f := 0
 	for i, at := range c.Progress.FormLevels {
 		if level >= at {
@@ -40,15 +44,15 @@ func Form(c *content.Content, level int) int {
 // FormName is what a hero of this class and level is called ("Vanguard").
 func FormName(c *content.Content, class string, level int) string {
 	names := c.Progress.FormNames[class]
-	if f := Form(c, level); f < len(names) {
+	if f := Form(c, level, ""); f < len(names) {
 		return names[f]
 	}
 	return class
 }
 
-// Hero is a hero's numbers at a level, without gear (old calc, index.html
-// lines 736-737). Gear and ascensions are added in later steps.
-func Hero(c *content.Content, class string, level int) Numbers {
+// Hero is a hero's numbers at a level, with its ascension, without gear (old
+// calc, index.html lines 736-737). Gear is added in step 6c.
+func Hero(c *content.Content, class string, level int, ascension string) Numbers {
 	p, b := c.Progress, c.Classes[class]
 	lv := float64(level - 1)
 	n := Numbers{
@@ -57,11 +61,24 @@ func Hero(c *content.Content, class string, level int) Numbers {
 		Def:   int(Round(float64(b.Def) + float64(lv*p.GrowthDef))),
 		Mov:   b.Mov,
 	}
-	f := p.Forms[Form(c, level)]
+	f := p.Forms[Form(c, level, ascension)]
 	n.MaxHP = int(Round(float64(n.MaxHP) * f.HP))
 	n.Atk = int(Round(float64(n.Atk) * f.Atk))
 	n.Def += f.Def
 	n.Mov += f.Mov
+	if a, ok := c.Ascensions[ascension]; ok {
+		if a.HP != 0 {
+			n.MaxHP = int(Round(float64(n.MaxHP) * a.HP))
+		}
+		if a.Atk != 0 {
+			n.Atk = int(Round(float64(n.Atk) * a.Atk))
+		}
+		if a.Def != 0 {
+			n.Def = int(Round(float64(n.Def) * a.Def))
+		}
+		n.Def += a.DefAdd
+		n.Mov += a.Mov
+	}
 	return n
 }
 
@@ -81,7 +98,7 @@ func Gain(c *content.Content, b *state.Battle, u *state.Unit, n int, emit action
 	u.XP += max(1, int(Round(float64(n)*c.Progress.XPRate)))
 	for u.XP >= XPToNext(c, u.Level) {
 		u.XP -= XPToNext(c, u.Level)
-		levelUp(c, u, emit)
+		levelUp(c, b, u, emit)
 		if b.LevelCap > 0 && u.Level >= b.LevelCap {
 			u.XP = 0
 			break
@@ -90,15 +107,27 @@ func Gain(c *content.Content, b *state.Battle, u *state.Unit, n int, emit action
 }
 
 // levelUp raises a hero one level: new numbers, the extra max HP is also
-// healed, and at levels 5 and 20 the hero evolves.
-func levelUp(c *content.Content, u *state.Unit, emit action.Emit) {
-	before := Form(c, u.Level)
+// healed, at levels 5 and 20 the hero evolves, and new skills and the
+// ascension wait as decisions (old gain and onLevel, lines 439 and 780).
+func levelUp(c *content.Content, b *state.Battle, u *state.Unit, emit action.Emit) {
+	before := Form(c, u.Level, u.Ascension)
 	u.Level++
 	emit(action.Event{Kind: action.LevelUp, Unit: u.ID, Amount: u.Level})
-	if f := Form(c, u.Level); f != before {
+	if f := Form(c, u.Level, u.Ascension); f != before {
 		emit(action.Event{Kind: action.Evolved, Unit: u.ID, Skill: FormName(c, u.Class, u.Level)})
 	}
-	n := Hero(c, u.Class, u.Level)
+	if slices.Contains(c.Progress.FormLevels[1:], u.Level) {
+		b.Decisions = append(b.Decisions, state.Decision{Kind: state.DecideEvolve, Unit: u.ID})
+	}
+	for _, name := range c.SkillOrder {
+		if s := c.Skills[name]; s.Class == u.Class && s.Level == u.Level && s.Ascension == "" {
+			b.Decisions = append(b.Decisions, state.Decision{Kind: state.DecideLearn, Unit: u.ID, Skill: name})
+		}
+	}
+	if u.Level == c.Progress.AscendAt && u.Ascension == "" {
+		b.Decisions = append(b.Decisions, state.Decision{Kind: state.DecideAscend, Unit: u.ID})
+	}
+	n := Hero(c, u.Class, u.Level, u.Ascension)
 	u.HP += n.MaxHP - u.MaxHP
 	u.MaxHP, u.Atk, u.Def, u.Mov = n.MaxHP, n.Atk, n.Def, n.Mov
 }

@@ -1,6 +1,7 @@
 package oldgame
 
 import (
+	"github.com/papigetbusy/crusader-tactics-next/sim/action"
 	"strings"
 	"testing"
 
@@ -92,7 +93,7 @@ func TestOldGameHits(t *testing.T) {
 					bad.add("%s: %v", where(), r)
 				}
 			}()
-			res = combat.Hurt(c, b, feed, combat.Attack{By: a, Skill: skill, ClassBase: classBase, Target: v}, false)
+			res = combat.Hurt(c, b, feed, combat.Attack{By: a, Skill: skill, ClassBase: classBase, Target: v}, func(action.Event) {})
 		}()
 		checked++
 		rolls += feed.Used()

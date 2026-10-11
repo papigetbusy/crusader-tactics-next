@@ -26,7 +26,8 @@ func goUnit(c *content.Content, su SnapUnit) *state.Unit {
 		u.Status[k] = v
 	}
 	if u.Team == state.Heroes {
-		u.Skills = c.HeroSkills(u.Class, u.Level)
+		u.Learned, u.Equipped, u.Ultimate = c.StartingBuild(u.Class, u.Level)
+		u.Skills = c.Bar(u.Class, u.Equipped, u.Ultimate)
 	} else {
 		u.Skills = c.MonsterSkills(u.Class, u.Level, u.Boss || u.Elite)
 		u.Weapon = c.Classes[u.Class].Weapon
@@ -300,6 +301,10 @@ func replayAll(t *testing.T, file, set string) {
 							enemyTurns++
 						}
 					}
+				}
+				if set != "heroes" {
+					// These recordings dismissed every level-up choice unanswered.
+					g.B.Decisions = nil
 				}
 				if left := feed.leftover(); left != "" {
 					problem = "the old game made a roll Go never made, at " + left

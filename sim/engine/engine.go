@@ -13,6 +13,7 @@ import (
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
 	"github.com/papigetbusy/crusader-tactics-next/sim/rng"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
+	"github.com/papigetbusy/crusader-tactics-next/sim/stats"
 	"github.com/papigetbusy/crusader-tactics-next/sim/turn"
 )
 
@@ -83,6 +84,10 @@ func (g *Game) Apply(a action.Action) ([]action.Event, error) {
 		if err := turn.EndTurn(g.C, b, g.Dice, emit); err != nil {
 			return events, err
 		}
+	case action.Decide:
+		if err := stats.Decide(g.C, b, a.Choice, a.Skill, emit); err != nil {
+			return events, no("bad-choice", "%v", err)
+		}
 	}
 	return events, nil
 }
@@ -105,8 +110,17 @@ func seizeThrone(b *state.Battle, u *state.Unit, emit action.Emit) {
 // check is every "is this allowed?" rule in one place.
 func (g *Game) check(a action.Action) error {
 	b := g.B
+	if a.Kind == action.Decide { // choices can still be answered after the battle
+		if len(b.Decisions) == 0 {
+			return no("no-decision", "There is nothing to decide.")
+		}
+		return nil
+	}
 	if b.Outcome != state.Ongoing {
 		return no("battle-over", "The battle is over.")
+	}
+	if len(b.Decisions) > 0 {
+		return no("decide-first", "Answer the waiting choice first.")
 	}
 	if b.Side != state.Heroes {
 		return no("not-your-turn", "It is not your turn.")
