@@ -62,6 +62,14 @@ Each one is measured with the autoplayer:
 ### 6. Phase 10: online-ready check
 Prove the screen only talks to the referee through `web/game/js/referee.js`, so the same screen can talk to a server.
 
+### Online 1v1 versus (owner, 2026-10-11)
+The owner's order: first iron out every flaw and match the original game as closely as possible, then go online. Online needs:
+- versus rules in the referee (two player sides), tested first as "pass the phone" on one device
+- a small server that runs the referee, with room codes. GitHub Pages can't run a server, so this needs a small host such as Fly.io or Render.
+- a "play online" option on the screen, sending the same actions through `referee.js`
+
+Estimate: about 3 sessions once the game matches the original.
+
 ### 7. After the full build (owner's reminders)
 - More gear: named sets with play styles at every level
 - Better gear sprites
