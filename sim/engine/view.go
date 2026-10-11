@@ -194,12 +194,16 @@ func (g *Game) Reach(unit int) []board.Tile {
 }
 
 // Targets are the unit IDs a hero's skill can be used on now.
-func (g *Game) Targets(unit, slot int) []int {
+func (g *Game) Targets(unit, slot int) []int { return g.TargetsWith(unit, slot, 0) }
+
+// TargetsWith is Targets with weapon set 1-3 in hand (0 = as an attack
+// would choose).
+func (g *Game) TargetsWith(unit, slot, withSet int) []int {
 	u := g.B.Unit(unit)
 	if u == nil || u.Done || slot < 0 || slot >= len(u.Skills) || u.Cooldowns[slot] > 0 {
 		return nil
 	}
-	set, err := g.setFor(u, u.Skills[slot], 0)
+	set, err := g.setFor(u, u.Skills[slot], withSet)
 	if err != nil {
 		return nil
 	}
@@ -235,12 +239,18 @@ func (g *Game) PreviewFrom(unit, slot, target, x, y int) (Forecast, bool) {
 }
 
 // Preview forecasts a skill use without changing anything.
-func (g *Game) Preview(unit, slot, target int) (f Forecast, ok bool) {
+func (g *Game) Preview(unit, slot, target int) (Forecast, bool) {
+	return g.PreviewWith(unit, slot, target, 0)
+}
+
+// PreviewWith is Preview with weapon set 1-3 in hand (0 = as an attack
+// would choose).
+func (g *Game) PreviewWith(unit, slot, target, withSet int) (f Forecast, ok bool) {
 	u, v := g.B.Unit(unit), g.B.Unit(target)
 	if u == nil || v == nil || slot < 0 || slot >= len(u.Skills) {
 		return Forecast{}, false
 	}
-	set, err := g.setFor(u, u.Skills[slot], 0)
+	set, err := g.setFor(u, u.Skills[slot], withSet)
 	if err != nil {
 		return Forecast{}, false
 	}

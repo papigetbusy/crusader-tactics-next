@@ -128,4 +128,17 @@ func TestWeaponSets(t *testing.T) {
 			t.Fatalf("got %v", err)
 		}
 	})
+
+	t.Run("The aim strip can ask for targets and a forecast with each weapon set; a set the skill can't use has none", func(t *testing.T) {
+		g := bowAndSword()
+		if len(g.TargetsWith(1, shot(g), 1)) == 0 || len(g.TargetsWith(1, shot(g), 2)) != 0 {
+			t.Fatal("targets with the bow and the sword")
+		}
+		if _, ok := g.PreviewWith(1, shot(g), 2, 1); !ok {
+			t.Fatal("no forecast with the bow")
+		}
+		if _, ok := g.PreviewWith(1, shot(g), 2, 2); ok {
+			t.Fatal("a forecast with the sword")
+		}
+	})
 }

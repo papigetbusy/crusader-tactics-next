@@ -137,11 +137,11 @@ func main() {
 		}
 		return text(out)
 	}))
-	// ctTargets(unit, slot) -> [unitID,...]
-	g.Set("ctTargets", fn(func(a []js.Value) any { return text(game.Targets(a[0].Int(), a[1].Int())) }))
-	// ctPreview(unit, slot, target) -> forecast or null
+	// ctTargets(unit, slot[, set]) -> [unitID,...]
+	g.Set("ctTargets", fn(func(a []js.Value) any { return text(game.TargetsWith(a[0].Int(), a[1].Int(), optInt(a, 2))) }))
+	// ctPreview(unit, slot, target[, set]) -> forecast or null
 	g.Set("ctPreview", fn(func(a []js.Value) any {
-		f, ok := game.Preview(a[0].Int(), a[1].Int(), a[2].Int())
+		f, ok := game.PreviewWith(a[0].Int(), a[1].Int(), a[2].Int(), optInt(a, 3))
 		if !ok {
 			return "null"
 		}
@@ -178,4 +178,12 @@ func main() {
 		return text(p)
 	}))
 	select {} // keep running so the page can keep asking
+}
+
+// optInt is argument i as a number, or 0 when it was left out.
+func optInt(a []js.Value, i int) int {
+	if i >= len(a) || a[i].IsUndefined() || a[i].IsNull() {
+		return 0
+	}
+	return a[i].Int()
 }
