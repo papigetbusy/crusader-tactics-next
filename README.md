@@ -6,6 +6,7 @@ The clean rebuild of Crusader Tactics. The rules live in Go (the **referee**), t
 - Practice fights: https://papigetbusy.github.io/crusader-tactics-next/
 - Rule Book: https://papigetbusy.github.io/crusader-tactics-next/rules.html
 - Old-Game Match: https://papigetbusy.github.io/crusader-tactics-next/match.html
+- What's left, in order: `docs/next-steps.md` (written for the owner and Grok).
 - The old game stays playable at https://papigetbusy.github.io/crusader-tactics/ until this one matches it.
 
 ## Where things are
