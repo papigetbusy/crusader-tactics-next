@@ -33,4 +33,5 @@ The clean rebuild of Crusader Tactics. The rules live in Go (the **referee**), t
 - Phase 4d: done. A practice fight you can play from the link (six real starting setups from the old game, floors 1 to 20), plus the Rule Book, Old-Game Match, House Rules and Changes pages, rebuilt by the robot after every change.
 - **Phase 4 is complete.**
 - Phase 5a, full-combat recordings: done. 180 more old-game fights recorded with every menu skill, Defend, Potion, Undo, revives and seize-the-throne floors; all 178 usable ones replay in Go with 13,555 of 13,555 steps identical (including 22 revives, 5 throne wins, 512 defends, 515 undos and 86 potions).
+- Phase 6a, levels and experience: done. Heroes earn XP for hits, misses, kills, heals and buffs, level up, grow and evolve at levels 5 and 20, exactly as in the old game: all 24 recorded level-ups and every hero's XP after every step now come from Go, not from the recordings.
 - Phase 5b–5d: Defend, Potion, Undo and tap-to-attack (the hero walks closer if needed, with a forecast first) on the practice page; forecasts for heals, revives and area attacks; enraged bosses glow red.

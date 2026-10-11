@@ -45,7 +45,7 @@ func goUnit(c *content.Content, su SnapUnit) *state.Unit {
 
 // resync makes Go's board equal to a recorded moment, keeping what the
 // recording does not store (tiles walked this turn, skill uses).
-func resync(c *content.Content, f *Fight, g *engine.Game, s Snap) {
+func resync(c *content.Content, f *Fight, g *engine.Game, s Snap, party []int) {
 	old := map[int]*state.Unit{}
 	b := f.Battle(Snap{Turn: s.Turn})
 	if g.B != nil {
@@ -75,7 +75,13 @@ func resync(c *content.Content, f *Fight, g *engine.Game, s Snap) {
 			}
 		}
 	}
+	b.LevelCap = levelCap(c, f.Init.Snap)
 	g.B = b
+	for i, id := range party {
+		if u := heroOf(b, id); u != nil && i < len(s.XP) {
+			u.XP = s.XP[i][1]
+		}
+	}
 }
 
 // actionsFor turns one recorded player input into referee actions.
@@ -141,8 +147,14 @@ func arrivals(c *content.Content, g *engine.Game, prev Snap, step Step) int {
 }
 
 // differences describes how Go's board differs from a recorded moment.
-func differences(g *engine.Game, s Snap) []string {
+func differences(g *engine.Game, s Snap, party []int) []string {
 	var out []string
+	for i, id := range party {
+		if u := heroOf(g.B, id); u != nil && i < len(s.XP) && (u.Level != s.XP[i][0] || u.XP != s.XP[i][1]) {
+			out = append(out, fmt.Sprintf("%s %d is level %d with %d XP in Go but level %d with %d XP in the old game",
+				u.Class, id, u.Level, u.XP, s.XP[i][0], s.XP[i][1]))
+		}
+	}
 	rec := map[int]SnapUnit{}
 	for _, su := range s.Units {
 		rec[su.ID] = su
@@ -153,6 +165,10 @@ func differences(g *engine.Game, s Snap) []string {
 		}
 		if u.X != su.X || u.Y != su.Y {
 			out = append(out, fmt.Sprintf("%s %d stands at %d,%d in Go but %d,%d in the old game", su.Class, su.ID, u.X, u.Y, su.X, su.Y))
+		}
+		if u.MaxHP != su.MaxHP || u.Atk != su.Atk || u.Def != su.Def || u.Mov != su.Mov {
+			out = append(out, fmt.Sprintf("%s %d has max HP %d, attack %d, defense %d, move %d in Go but %d, %d, %d, %d in the old game",
+				su.Class, su.ID, u.MaxHP, u.Atk, u.Def, u.Mov, su.MaxHP, su.Atk, su.Def, su.Mov))
 		}
 		if u.HP != su.HP {
 			out = append(out, fmt.Sprintf("%s %d has %d HP in Go but %d in the old game", su.Class, su.ID, u.HP, su.HP))
@@ -242,7 +258,8 @@ func replayAll(t *testing.T, file, set string) {
 		}
 		usable++
 		g := &engine.Game{C: c}
-		resync(c, f, g, f.Init.Snap)
+		party := partyOf(f.Init.Snap)
+		resync(c, f, g, f.Init.Snap, party)
 		clean := true
 		prev := f.Init.Snap
 		fr := fightResult{Fight: fi + 1, Floor: f.Cfg.Floor, Steps: len(f.Steps)}
@@ -276,6 +293,9 @@ func replayAll(t *testing.T, file, set string) {
 						return
 					}
 					for _, e := range evs {
+						if e.Kind == action.LevelUp {
+							levelUps++
+						}
 						if e.Kind == action.SkillUsed && g.B.Unit(e.Unit) != nil && g.B.Unit(e.Unit).Team == state.Enemies {
 							enemyTurns++
 						}
@@ -286,13 +306,6 @@ func replayAll(t *testing.T, file, set string) {
 				}
 			}()
 			rolls += feed.used
-			// Experience and levels arrive in Phase 6: take level-ups from the recording.
-			for _, su := range step.Snap.Units {
-				if u := g.B.Unit(su.ID); u != nil && u.Team == state.Heroes && u.Level != su.Lv {
-					u.Level, u.Atk, u.Def, u.MaxHP, u.Mov, u.HP = su.Lv, su.Atk, su.Def, su.MaxHP, su.Mov, su.HP
-					levelUps++
-				}
-			}
 			if restart {
 				// The old game ended the battle in this step and started the floor
 				// again (a defeat re-runs the floor). Go must agree the battle ended.
@@ -312,7 +325,7 @@ func replayAll(t *testing.T, file, set string) {
 				break
 			}
 			if problem == "" {
-				if d := differences(g, step.Snap); len(d) > 0 {
+				if d := differences(g, step.Snap, party); len(d) > 0 {
 					problem = d[0]
 					if len(d) > 1 {
 						problem += fmt.Sprintf(" (and %d more differences)", len(d)-1)
@@ -325,7 +338,7 @@ func replayAll(t *testing.T, file, set string) {
 					fr.First = fmt.Sprintf("step %d (%s): %s", si+1, step.Kind, problem)
 				}
 				clean = false
-				resync(c, f, g, step.Snap)
+				resync(c, f, g, step.Snap, party)
 			} else {
 				matched++
 				fr.Matched++
@@ -343,7 +356,7 @@ func replayAll(t *testing.T, file, set string) {
 			t.Fatal(err)
 		}
 	}
-	t.Logf("%d of %d fights replayed perfectly; %d of %d steps matched; %d monster skill uses decided by Go; %d dice used; %d battles ended with the same result in Go; %d level-ups and %d reinforcements taken from the recording",
+	t.Logf("%d of %d fights replayed perfectly; %d of %d steps matched; %d monster skill uses decided by Go; %d dice used; %d battles ended with the same result in Go; %d level-ups worked out by Go; %d reinforcements taken from the recording",
 		perfect, usable, matched, steps, enemyTurns, rolls, ended, levelUps, reinforced)
 	for _, p := range bad {
 		t.Error(p)

@@ -65,7 +65,29 @@ func NewFight(c *content.Content, s Setup, battleSeed uint64) *Game {
 		b.Units = append(b.Units, u)
 	}
 	b.NextID = len(s.Units) + 1
+	b.LevelCap = levelCap(c, b)
 	b.Throne = s.Throne
 	turn.Check(b, func(e action.Event) {})
 	return &Game{C: c, B: b, Dice: rng.New(battleSeed, streamCombat)}
+}
+
+// levelCap is the level heroes stop at: the floor's monster level plus the
+// gap (old capLv, index.html line 1462). Normal monsters and elites have the
+// floor's level; a boss is one higher. The run will set this from the best
+// floor reached once floors arrive (Phase 7).
+func levelCap(c *content.Content, b *state.Battle) int {
+	low, boss := 0, 0
+	for _, u := range b.Units {
+		switch {
+		case u.Team != state.Enemies:
+		case u.Boss:
+			boss = u.Level - 1
+		case low == 0 || u.Level < low:
+			low = u.Level
+		}
+	}
+	if low == 0 {
+		low = boss
+	}
+	return low + c.Progress.CapAboveFloor
 }

@@ -44,6 +44,7 @@ button:disabled{opacity:.4;cursor:default}
 .u i{display:block;width:80%;height:3px;background:#000;margin-top:2px;border-radius:2px;overflow:hidden}
 .u i b{display:block;height:100%;background:var(--ok)}
 .u.e i b{background:var(--blood2)}
+.xpbar{height:5px;background:#000;border-radius:3px;overflow:hidden;margin:4px 0 2px}.xpbar b{display:block;height:100%;background:var(--gold)}
 .mark{position:absolute;top:-2px;right:1px;font-size:9px;color:var(--gold2)}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-top:10px}
 .card h2{font:700 16px Cinzel,serif;margin:0 0 4px;color:var(--gold2)}
@@ -74,7 +75,7 @@ footer{margin-top:16px;color:var(--muted);font-size:13px}
 <div id="banner"></div>
 <div class="card" id="panel"><div class="muted">Tap one of your heroes (gold) to begin. Gold tiles show where it can walk; red outlines show who its skill can reach.</div></div>
 <div class="card"><h2>Battle log</h2><div id="log"></div></div>
-<footer>Phase 5 practice fight: the real rules, plain looks. Tap a monster to attack it (the hero walks closer if needed); tap again to confirm. Your art and menus come in Phase 8. Build: __BUILD__</footer>
+<footer>Phase 6 practice fight: the real rules, plain looks. Tap a monster to attack it (the hero walks closer if needed); tap again to confirm. Your art and menus come in Phase 8. Build: __BUILD__</footer>
 <script src="wasm_exec.js?v=__BUILD__"></script>
 <script>
 const $=id=>document.getElementById(id), J=s=>JSON.parse(s);
@@ -132,7 +133,8 @@ function panel(){
   const p=$('panel'),u=sel!=null?unit(sel):null;
   if(!u){p.innerHTML=`<div class="muted">Tap one of your heroes (gold) to begin. Tap an enemy to see its numbers.</div>${endBtn()}`;bindEnd();return}
   const st=Object.entries(u.statuses||{}).map(([k,v])=>`${k} ${v}`).join(', ');
-  let h=`<h2>${u.class}${u.element?' '+ICON[u.element]:''} <span class="muted">level ${u.level}</span></h2>
+  let h=`<h2>${u.form&&u.form!==u.class?u.form+' <span class="muted">('+u.class+')</span>':u.class}${u.element?' '+ICON[u.element]:''} <span class="muted">level ${u.level}</span></h2>
+  ${u.team===0&&u.xpNext?`<div class="xpbar"><b style="width:${Math.min(100,100*u.xp/u.xpNext)}%"></b></div><div class="muted">XP ${u.xp}/${u.xpNext}${V.levelCap&&u.level>=V.levelCap?' · level cap reached on this floor':''}</div>`:''}
   <div class="muted">HP ${u.hp}/${u.maxHp} · Attack ${u.atk} · Defense ${u.def} · Move ${u.mov}${u.team===0?' · Potions '+u.potions:''}${st?' · '+st:''}${u.enraged?' · <span style="color:var(--blood2)">Enraged: hits 30% harder</span>':''}</div>`;
   if(u.team===0){
     h+=`<div class="skills">${u.skills.map((s,i)=>`<button data-i="${i}" class="${i===slot?'on':''}" ${s.wait?'disabled':''} title="${(s.text||'').replace(/"/g,'')}">${s.name}${s.wait?' ('+s.wait+')':''}</button>`).join('')}</div>`;
@@ -219,6 +221,8 @@ function say(e){
     case 'undone':logLine('',`${n(e.unit)} steps back.`);break;
     case 'revived':logLine('good',`${n(e.target)} is brought back with ${e.amount} HP!`);break;
     case 'seized':logLine('good',`${n(e.unit)} seizes the throne! The enemies flee.`);break;
+    case 'level-up':logLine('good',`★ ${n(e.unit)} reaches level ${e.amount}!`);break;
+    case 'evolved':logLine('good',`✦ ${n(e.unit)} evolves into ${e.skill}!`);break;
     case 'won':logLine('good','Victory!');break;
     case 'lost':logLine('bad','Defeat.');break;
   }

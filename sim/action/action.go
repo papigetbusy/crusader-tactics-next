@@ -61,6 +61,8 @@ const (
 	Undone    = "undone"     // Unit stepped back along Path
 	Revived   = "revived"    // Target came back to life with Amount HP
 	Seized    = "seized"     // Unit seized the throne: the enemies flee
+	LevelUp   = "level-up"   // Unit reached level Amount
+	Evolved   = "evolved"    // Unit evolved into the form named Skill (at levels 5 and 20)
 	Won       = "won"        // every enemy is gone
 	Lost      = "lost"       // every hero is gone
 )

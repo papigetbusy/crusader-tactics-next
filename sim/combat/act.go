@@ -8,6 +8,7 @@ import (
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
 	"github.com/papigetbusy/crusader-tactics-next/sim/rng"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
+	"github.com/papigetbusy/crusader-tactics-next/sim/stats"
 )
 
 // RollShuffle labels the rolls of the fair shuffle that picks the extra
@@ -32,7 +33,7 @@ func UseSkill(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Unit,
 	case s.Revive:
 		revive(c, b, u, emit)
 	case s.Support:
-		support(b, u, s, emit)
+		support(c, b, u, s, emit)
 	case s.Heal:
 		healSkill(c, b, u, s, v, emit)
 	default:
@@ -77,7 +78,7 @@ func heightAt(b *state.Battle, x, y int) int {
 	return 0
 }
 
-func support(b *state.Battle, u *state.Unit, s content.Skill, emit action.Emit) {
+func support(c *content.Content, b *state.Battle, u *state.Unit, s content.Skill, emit action.Emit) {
 	for _, z := range b.Units {
 		if z.Team != u.Team || Distance(z, u) > s.Area {
 			continue
@@ -92,6 +93,7 @@ func support(b *state.Battle, u *state.Unit, s content.Skill, emit action.Emit) 
 		}
 		emit(action.Event{Kind: action.StatusOn, Target: z.ID, Statuses: s.Buffs})
 	}
+	stats.Gain(c, b, u, c.Progress.SupportXP, emit) // old act, line 1717
 }
 
 // HealAmount is how much a heal skill restores before the target's room
@@ -114,6 +116,7 @@ func healSkill(c *content.Content, b *state.Battle, u *state.Unit, s content.Ski
 			}
 		}
 	}
+	healed := 0
 	for _, z := range list {
 		if z.Status["frozen"] > 0 {
 			continue
@@ -125,8 +128,10 @@ func healSkill(c *content.Content, b *state.Battle, u *state.Unit, s content.Ski
 		}
 		before := z.HP
 		heal(z, HealAmount(c, u, s))
+		healed += z.HP - before
 		emit(action.Event{Kind: action.Healed, Unit: u.ID, Target: z.ID, Amount: z.HP - before})
 	}
+	stats.Gain(c, b, u, stats.HealXP(c, healed), emit) // old act, line 1720
 }
 
 func attack(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit action.Emit) {
@@ -233,6 +238,7 @@ func strike(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit a
 	switch {
 	case r.Missed:
 		emit(action.Event{Kind: action.Missed, Unit: a.By.ID, Target: a.Target.ID})
+		stats.Gain(c, b, a.By, c.Progress.MissXP, emit) // old hurt, line 1689
 		return
 	default:
 		emit(action.Event{Kind: action.Hit, Unit: a.By.ID, Target: a.Target.ID, Amount: r.Damage, Mult: r.Mult, Crit: r.Crit})
@@ -242,6 +248,11 @@ func strike(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit a
 	}
 	if r.Killed {
 		emit(action.Event{Kind: action.Died, Unit: a.Target.ID})
+		if a.By.Team == state.Heroes { // old hurt, line 1707
+			stats.Share(c, b, a.By, stats.KillXP(c, a.Target), emit)
+		}
+	} else {
+		stats.Gain(c, b, a.By, stats.HitXP(c, r.Damage, len(a.Skill.Effects) > 0), emit)
 	}
 }
 

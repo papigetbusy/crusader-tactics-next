@@ -44,6 +44,7 @@ func main() {
 	write("data/rules/combat.json", c.Combat)
 	write("data/rules/turns.json", c.Turns)
 	write("data/rules/ai.json", c.AI)
+	write("data/rules/progress.json", c.Progress)
 }
 
 func write(path string, v any) {

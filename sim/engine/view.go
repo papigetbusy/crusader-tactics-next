@@ -4,19 +4,21 @@ import (
 	"github.com/papigetbusy/crusader-tactics-next/sim/board"
 	"github.com/papigetbusy/crusader-tactics-next/sim/combat"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
+	"github.com/papigetbusy/crusader-tactics-next/sim/stats"
 )
 
 // View is the board as the screen sees it: a read-only copy, so the screen
 // can never change a rule by accident.
 type View struct {
-	N       int         `json:"n"`
-	Ground  []string    `json:"ground"`
-	Turn    int         `json:"turn"`
-	Side    int         `json:"side"`
-	Outcome string      `json:"outcome"`
-	Units   []UnitView  `json:"units"`
-	Throne  *state.Tile `json:"throne,omitempty"`
-	Fallen  []string    `json:"fallen,omitempty"` // classes of fallen heroes, last to fall at the end
+	N        int         `json:"n"`
+	Ground   []string    `json:"ground"`
+	Turn     int         `json:"turn"`
+	Side     int         `json:"side"`
+	Outcome  string      `json:"outcome"`
+	Units    []UnitView  `json:"units"`
+	Throne   *state.Tile `json:"throne,omitempty"`
+	LevelCap int         `json:"levelCap,omitempty"`
+	Fallen   []string    `json:"fallen,omitempty"` // classes of fallen heroes, last to fall at the end
 }
 
 // UnitView is one unit as the screen sees it.
@@ -32,6 +34,9 @@ type UnitView struct {
 	Def      int            `json:"def"`
 	Mov      int            `json:"mov"`
 	Level    int            `json:"level"`
+	XP       int            `json:"xp,omitempty"`     // heroes: experience toward the next level
+	XPNext   int            `json:"xpNext,omitempty"` // heroes: experience the next level needs
+	Form     string         `json:"form,omitempty"`   // heroes: the form's name ("Vanguard")
 	Element  string         `json:"element,omitempty"`
 	Boss     bool           `json:"boss,omitempty"`
 	Elite    bool           `json:"elite,omitempty"`
@@ -62,7 +67,7 @@ type SkillView struct {
 // View returns the current board.
 func (g *Game) View() View {
 	b := g.B
-	v := View{N: b.N, Ground: make([]string, b.N), Turn: b.Turn, Side: b.Side, Outcome: b.Outcome, Throne: b.Throne}
+	v := View{N: b.N, Ground: make([]string, b.N), Turn: b.Turn, Side: b.Side, Outcome: b.Outcome, Throne: b.Throne, LevelCap: b.LevelCap}
 	for _, f := range b.Fallen {
 		v.Fallen = append(v.Fallen, f.Class)
 	}
@@ -78,6 +83,9 @@ func (g *Game) View() View {
 			Atk: u.Atk, Def: u.Def, Mov: u.Mov, Level: u.Level, Element: u.Element, Boss: u.Boss, Elite: u.Elite,
 			Enraged: combat.Enraged(g.C, u), Potions: u.Potions, CanUndo: u.Undo != nil && !u.Done,
 			Done: u.Done, CanMove: !u.Done && board.CanMove(u), Statuses: map[string]int{}}
+		if u.Team == state.Heroes && !u.Summoned {
+			uv.XP, uv.XPNext, uv.Form = u.XP, stats.XPToNext(g.C, u.Level), stats.FormName(g.C, u.Class, u.Level)
+		}
 		for k, n := range u.Status {
 			if n > 0 {
 				uv.Statuses[k] = n

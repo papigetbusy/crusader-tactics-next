@@ -22,6 +22,7 @@ type Unit struct {
 	Def    int            // defense
 	Mov    int            // move points
 	Level  int            // level
+	XP     int            // heroes: experience toward the next level
 	Status map[string]int // status name -> turns left ("snare": 2)
 
 	Weapon     string // sword, axe, lance... ("" for heroes without a triangle weapon)
@@ -65,16 +66,17 @@ const (
 
 // Battle is everything the referee knows about one fight.
 type Battle struct {
-	N       int      // the map is N x N tiles
-	Ground  []string // one row of terrain letters per y ("ggfr..."); may be short
-	Heights [][]int  // -2 mountain, -1 water, 0 flat, 1 hill
-	Units   []*Unit  // in turn order; dead units are removed
-	Turn    int
-	Side    int     // whose turn it is: Heroes or Enemies
-	Outcome string  // Ongoing, Won or Lost
-	NextID  int     // the ID the next new unit gets
-	Throne  *Tile   // seize-the-throne floors: a hero standing here wins the fight
-	Fallen  []*Unit // heroes who died in combat this floor, last one first to be revived
+	N        int      // the map is N x N tiles
+	Ground   []string // one row of terrain letters per y ("ggfr..."); may be short
+	Heights  [][]int  // -2 mountain, -1 water, 0 flat, 1 hill
+	Units    []*Unit  // in turn order; dead units are removed
+	Turn     int
+	Side     int     // whose turn it is: Heroes or Enemies
+	Outcome  string  // Ongoing, Won or Lost
+	NextID   int     // the ID the next new unit gets
+	Throne   *Tile   // seize-the-throne floors: a hero standing here wins the fight
+	LevelCap int     // heroes stop gaining XP at this level (0: no cap); set by the run from the best floor
+	Fallen   []*Unit // heroes who died in combat this floor, last one first to be revived
 }
 
 // UnitAt returns the unit standing on (x, y), or nil.

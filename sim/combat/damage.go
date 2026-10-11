@@ -17,6 +17,7 @@ import (
 	"github.com/papigetbusy/crusader-tactics-next/sim/board"
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
+	"github.com/papigetbusy/crusader-tactics-next/sim/stats"
 )
 
 // Attack bundles who hits whom with what.
@@ -32,13 +33,7 @@ type Attack struct {
 
 // Round is JavaScript's Math.round: halves round up (toward +infinity).
 // Go's math.Round rounds halves away from zero, which differs for negatives.
-func Round(x float64) float64 {
-	f := math.Floor(x)
-	if x-f >= 0.5 {
-		return f + 1
-	}
-	return f
-}
+func Round(x float64) float64 { return stats.Round(x) }
 
 // SkillLevel is a hero's level in a skill: it rises with uses (old SKL).
 func SkillLevel(c *content.Content, u *state.Unit, skill string) int {

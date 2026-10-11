@@ -1,0 +1,105 @@
+{
+  "xpRate": 0.5,
+  "xpPerLevel": 6,
+  "killShare": 0.4,
+  "killBase": 3,
+  "killBoss": 4,
+  "killElite": 2,
+  "missXP": 1,
+  "hitBase": 2,
+  "hitPerDamage": 12,
+  "hitStatusBonus": 2,
+  "supportXP": 4,
+  "healBase": 2,
+  "healPer": 8,
+  "healMax": 8,
+  "capAboveFloor": 5,
+  "growthHP": 3,
+  "growthAtk": 1,
+  "growthDef": 0.25,
+  "atkBonus": 1,
+  "formLevels": [
+    1,
+    5,
+    20
+  ],
+  "forms": [
+    {
+      "hp": 1,
+      "atk": 1,
+      "def": 0,
+      "mov": 0
+    },
+    {
+      "hp": 1.08,
+      "atk": 1.08,
+      "def": 1,
+      "mov": 0
+    },
+    {
+      "hp": 1.18,
+      "atk": 1.18,
+      "def": 2,
+      "mov": 1
+    },
+    {
+      "hp": 1.25,
+      "atk": 1.25,
+      "def": 3,
+      "mov": 1
+    }
+  ],
+  "ascendAt": 30,
+  "formNames": {
+    "Assassin": [
+      "Assassin",
+      "Shadow",
+      "Nightblade"
+    ],
+    "Dragon Knight": [
+      "Dragon Knight",
+      "Wyvern Knight",
+      "Dragoon"
+    ],
+    "Gunslinger": [
+      "Gunslinger",
+      "Desperado",
+      "Gunmaster"
+    ],
+    "Healer": [
+      "Healer",
+      "Cleric",
+      "High Priest"
+    ],
+    "Knight": [
+      "Knight",
+      "Cavalier",
+      "Knight Commander"
+    ],
+    "Mage": [
+      "Mage",
+      "Sorcerer",
+      "Archmage"
+    ],
+    "Ranger": [
+      "Ranger",
+      "Hunter",
+      "Sharpshooter"
+    ],
+    "Tank": [
+      "Tank",
+      "Ironclad",
+      "Bastion"
+    ],
+    "Warrior": [
+      "Warrior",
+      "Vanguard",
+      "Champion"
+    ],
+    "Witch": [
+      "Witch",
+      "Hexer",
+      "Coven Mistress"
+    ]
+  }
+}

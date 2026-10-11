@@ -39,6 +39,9 @@ func FromOld(tables fs.FS) (*Content, error) {
 	if err := oldSkillsAndClasses(tables, c); err != nil {
 		return nil, err
 	}
+	if c.Progress, err = oldProgress(tables); err != nil {
+		return nil, err
+	}
 	return c, c.Check()
 }
 

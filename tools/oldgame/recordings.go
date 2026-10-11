@@ -96,6 +96,7 @@ type Snap struct {
 	Units  []SnapUnit `json:"u"`
 	Fallen []int      `json:"fallen"` // heroes who can be revived, oldest first (Phase 5 recordings)
 	Seized []int      `json:"seized"` // the throne tile on seize-the-throne floors (Phase 5 recordings)
+	XP     [][2]int   `json:"xp"`     // each party member's [level, XP], in party order, alive or not
 }
 
 // SnapUnit is one unit in a Snap.

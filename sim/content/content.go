@@ -35,6 +35,7 @@ type Content struct {
 	Combat     Combat
 	Turns      Turns
 	AI         AI
+	Progress   Progress
 }
 
 // Default loads the live data files built into the program.
@@ -83,8 +84,10 @@ func Load(fsys fs.FS) (*Content, error) {
 	var combat Combat
 	var turns Turns
 	var ai AI
+	var progress Progress
 	for name, v := range map[string]any{"skills.json": &skills, "classes.json": &classes,
-		"elements.json": &elements, "rules/combat.json": &combat, "rules/turns.json": &turns, "rules/ai.json": &ai} {
+		"elements.json": &elements, "rules/combat.json": &combat, "rules/turns.json": &turns, "rules/ai.json": &ai,
+		"rules/progress.json": &progress} {
 		if err := readJSON(fsys, name, v); err != nil {
 			return nil, err
 		}
@@ -102,6 +105,7 @@ func Load(fsys fs.FS) (*Content, error) {
 		Combat:            combat,
 		Turns:             turns,
 		AI:                ai,
+		Progress:          progress,
 	}
 	for _, sk := range skills.Skills {
 		c.Skills[sk.Name] = sk
@@ -149,6 +153,9 @@ func (c *Content) Check() error {
 	}
 	if c.Combat.HitMin < 0 || c.Combat.HitMax > 100 || c.Combat.HitMin > c.Combat.HitMax {
 		return fmt.Errorf("rules/combat.json: hit chance limits must be within 0-100")
+	}
+	if err := c.Progress.check(); err != nil {
+		return err
 	}
 	if len(c.Combat.SkillLevelUses) == 0 {
 		return fmt.Errorf("rules/combat.json: skillLevelUses needs at least one entry")
