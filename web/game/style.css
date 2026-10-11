@@ -78,17 +78,17 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
 }
 
 /* ---------- battle panels ---------- */
-#menu {
+#menu, #sub {
   right: 10px; top: 40%; min-width: 150px; max-width: 220px; padding: 2px 0; z-index: 7;
   border: 13px solid transparent; border-image: url(../assets/ui/wood.png) 64 fill / 13px stretch; background: none; box-shadow: none;
   filter: drop-shadow(0 6px 10px rgba(0,0,0,.55));
 }
-#menu .row {
+#menu .row, #sub .row {
   display: block; width: 100%; height: 34px; padding: 0 8px 0 19px; border: 0; background: none; text-align: left;
   font: 600 14px 'EB Garamond', Georgia, serif; color: #fff1d6; text-shadow: 0 2px 0 #2a0e04; white-space: nowrap;
 }
-#menu .row:active { border: 7px solid transparent; border-image: url(../assets/ui/btnt.png) 48 fill / 7px stretch; color: #2a1606; text-shadow: 0 1px 0 #ffe6a8; }
-#menu .row:disabled { opacity: .45; }
+#menu .row:active, #menu .row.on, #sub .row:active { border: 7px solid transparent; border-image: url(../assets/ui/btnt.png) 48 fill / 7px stretch; color: #2a1606; text-shadow: 0 1px 0 #ffe6a8; }
+#menu .row:disabled, #sub .row:disabled { opacity: .45; }
 #forecast, #aimPanel {
   left: 8px; right: 8px; bottom: calc(var(--safe-b) + 8px); padding: 8px 10px; z-index: 5; font-size: 14px; line-height: 19px;
 }
@@ -100,7 +100,7 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
 #forecast .fs, #aimPanel .fs { font-size: 12px; color: #c9b89a; line-height: 15px; margin-top: 2px; }
 #forecast .fr, #aimPanel .fr { display: flex; gap: 6px; margin-top: 6px; }
 #forecast .fr .b, #aimPanel .fr .b { flex: 1; min-height: 46px; }
-#forecast .fr .red { flex: 2.2; }
+
 #prepare { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(14px + var(--safe-b)); z-index: 4; display: flex; gap: 8px; white-space: nowrap; }
 #prepare .b { min-height: 52px; padding: 0 22px; font-size: 18px; }
 .cover { position: fixed; inset: 0; z-index: 12; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; }
@@ -183,3 +183,30 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
 .pick input { transform: scale(1.3); margin-right: 8px; }
 
 #aimPanel .fh { color: #ffd77a; }
+#menu .abl { color: #ffd77a; }
+#menu, #sub { min-width: 112px; max-width: 190px; }
+/* monster info and terrain boxes, top left [old einfo, terr] */
+#einfo { left: 8px; top: calc(8px + var(--safe-t)); width: min(270px, 64vw); padding: 8px 10px; font-size: 13px; line-height: 17px; }
+.ei-top { display: flex; gap: 8px; }
+.ei-por { width: 52px; height: 52px; flex: none; border: 1px solid #6a4a1a; background: #14070a center / contain no-repeat; image-rendering: pixelated; }
+.ei-mid { flex: 1; min-width: 0; }
+.ei-nm { font: 700 14px 'EB Garamond', Georgia, serif; letter-spacing: .06em; color: #ff9a8a; text-transform: uppercase; }
+.ei-hb { height: 7px; background: #2a0a0e; border: 1px solid #6a4a1a; margin: 4px 0; }
+.ei-hb i { display: block; height: 100%; }
+.ei-wk { font-size: 12px; color: #ffb36a; margin-top: 4px; }
+.ei-sk { font-size: 11px; color: #c9b89a; margin-top: 4px; }
+.pills { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+.pill { font: 700 10px system-ui, sans-serif; padding: 2px 6px; border-radius: 9px; border: 1px solid rgba(255,255,255,.3); }
+.pill.d { background: #5a1018; color: #ffd0d0; } .pill.b { background: #10305a; color: #cfe4ff; }
+#terr { left: 8px; top: calc(8px + var(--safe-t)); padding: 5px 10px; font-size: 12px; line-height: 15px; }
+#terr .tn { font: 700 12px 'EB Garamond', Georgia, serif; letter-spacing: .14em; text-transform: uppercase; color: #e9cf8a; }
+#forecast .af { color: #ff8a7a; } #forecast .dim { color: #b89a8a; } #forecast b { color: #fff3dc; }
+#forecast .fd, #forecast b.fd { color: #ffd77a; } #forecast .weak { color: #f2c14e; } #forecast .resist { color: #9aa6c8; }
+#forecast .ko { color: #fff; background: #a4202c; padding: 0 4px; font-size: 10px; border-radius: 3px; }
+#forecast .you { font-size: 11px; color: #8fc8ff; margin-top: 1px; }
+#forecast .skills { display: flex; gap: 6px; overflow-x: auto; margin: 6px 0; scrollbar-width: none; }
+#forecast .skills::-webkit-scrollbar { display: none; }
+#forecast .skills button { flex: 0 0 auto; min-height: 40px; padding: 4px 12px; border: 1px solid rgba(201,162,74,.45); background: rgba(40,10,14,.65); color: #efe3c8; font: 600 14px 'EB Garamond', Georgia, serif; border-radius: 4px; }
+#forecast .skills button.on { background: linear-gradient(#6a1a22, #3a0c12); border-color: #d9c27a; color: #ffe6a8; }
+#forecast .fr .b { flex: 1 1 0; }
+#forecast .fr .go { flex: 2.2 1 0; }

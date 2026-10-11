@@ -41,6 +41,7 @@ function loop() {
   if (now > wake && !moving() && now - (loop.last || 0) < 120) return;
   loop.last = now;
   scene.draw($('map'), st);
+  if (!$('menu').hidden) battle.placeMenu();
   minimap.draw($('mini'), st, st.opt.minimap && !document.body.classList.contains('aim'));
 }
 

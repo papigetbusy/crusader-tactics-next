@@ -2,7 +2,10 @@
 // View) and what the player is pointing at; every move, attack and turn is
 // an action sent to the referee, and its answer is drawn.
 import * as referee from './referee.js';
-import { tileAt, unitAt, closeUp, focusOn } from './camera.js';
+import { tileAt, unitAt, closeUp, focusOn, lookAt, cam, safeTop } from './camera.js';
+import { TS } from './look.js';
+import { active, label, STATUS } from './statuses.js';
+import { picture } from './units.js';
 import { feet } from './board.js';
 import * as team from './team.js';
 import * as shop from './shop.js';
@@ -11,7 +14,9 @@ import { autosave } from './sysmenu.js';
 
 const $ = (id) => document.getElementById(id);
 let screen = null; // { st, show, kick, log }
-let seen = ''; // which floor and step the screen last showed (to frame a new floor once)
+let seen = '';
+let rules = null; // the fixed rules guide (terrain, element wheel, weapon triangle), for words on screen
+let lastReady = 0; // ready heroes last time, to move the camera on after one acts // which floor and step the screen last showed (to frame a new floor once)
 
 export function wire(s) {
   screen = s;
@@ -21,6 +26,7 @@ export function wire(s) {
   $('startBattle').onclick = () => send({ kind: 'start' }, 'Your turn. Tap a hero.');
   $('summaryGo').onclick = () => send({ kind: 'continue' }, '', autosave);
   $('skip').onclick = () => { playback.skip(); $('skip').hidden = true; };
+  rules = referee.guide();
   $('teamButton').onclick = () => team.open(view(), (v) => { clear(); screen.show(v); after(); }, screen.log);
 }
 
@@ -66,6 +72,7 @@ function clear() {
   s.look = null;
   s.aim = null;
   s.skill = -1;
+  s.set = 0;
   s.reach = new Set();
   s.targets = new Set();
   s.zone = null;
@@ -73,6 +80,10 @@ function clear() {
   s.picking = null;
   $('aimPanel').hidden = true;
   $('menu').hidden = true;
+  $('sub').hidden = true;
+  $('einfo').hidden = true;
+  $('terr').hidden = true;
+  if (view()) $('endTurn').hidden = phase() !== 'battle' || !!view().outcome || playback.playing();
   $('forecast').hidden = true;
 }
 
@@ -90,6 +101,10 @@ export function after() {
     const f = feet((Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2);
     requestAnimationFrame(() => focusOn(f.x, f.y - 40, $('prepare').getBoundingClientRect().top - 20));
   }
+  if (p === 'battle' && seen.startsWith('prepare')) {
+    const foes = st().units.filter((u) => u.team === 1), lv = Math.max(...foes.map((u) => u.level), 1);
+    screen.log(`${v.throne ? 'Seize the throne or defeat every enemy' : 'Defeat every enemy'} to climb. ${foes.length} enemies · Lv ${lv} · ${v.n}×${v.n} ${v.biome || ''}${(v.chests || []).length ? ` · ${v.chests.length} chest${v.chests.length > 1 ? 's' : ''} on the map: walk onto them!` : ''}`);
+  }
   seen = here;
   $('endTurn').hidden = p !== 'battle' || !!v.outcome;
   decision();
@@ -97,6 +112,13 @@ export function after() {
   if (p === 'prepare') screen.log(`Floor ${v.climb.floor}: look at the map, tap Team to choose heroes, tap a hero then a blue tile to place them, then Start battle.`);
   if (p === 'shop' && $('shopWin').hidden) shop.open();
   const readyHeroes = st().units.filter(ready);
+  if (p === 'battle' && !v.outcome && lastReady > readyHeroes.length && readyHeroes.length && !s.sel) {
+    const h = readyHeroes[0];
+    const f = feet(h.x, h.y);
+    lookAt(f.x, f.y - 40);
+    screen.log(`Next: ${h.class}. Tap them to give orders.`);
+  }
+  lastReady = readyHeroes.length;
   $('endTurn').classList.toggle('pulse', p === 'battle' && !readyHeroes.length);
   // the danger zone: every tile a monster could walk to next turn
   s.danger = s.opt.danger && p === 'battle' && !v.outcome
@@ -131,9 +153,16 @@ function tap(e) {
   if (sel && t && s.reach.has(key(t[0], t[1])) && !u) {
     return send({ kind: 'move', unit: sel.id, x: t[0], y: t[1] }, '', () => reselect(sel.id));
   }
-  if (sel && u && u.team !== sel.team) {
-    const slot = sel.skills.findIndex((sk, i) => !sk.wait && !sk.heal && !sk.support && !sk.revive && referee.targets(sel.id, i).includes(u.id));
-    if (slot >= 0) return aimWith(slot, u);
+  if (sel && u && u.team !== sel.team && !u.ally) {
+    const plan = referee.plan(sel.id, u.id);
+    if (plan && plan.walk) {
+      const id = sel.id, foe = u.id;
+      return send({ kind: 'move', unit: id, x: plan.walk.x, y: plan.walk.y }, '', () => {
+        const me = st().units.find((x) => x.id === id), them = st().units.find((x) => x.id === foe);
+        if (me && them) { st().sel = me; aimWith(plan.slot, them); }
+      });
+    }
+    if (plan) return aimWith(plan.slot, u);
   }
   if (u && u === sel) return menu();
   if (ready(u)) return select(u);
@@ -146,9 +175,11 @@ function select(u) {
   clear();
   const s = st();
   s.sel = u;
+  $('endTurn').hidden = true; // as in the old game, End Turn hides while a hero is chosen
   s.reach = new Set((u.canMove ? referee.reach(u.id) : []).map(([x, y]) => key(x, y)));
   screen.log(u.canMove ? 'Tap a blue tile to move, tap an enemy to attack, or tap the hero again for commands.' : 'Choose a command.');
   if (!u.canMove) menu();
+  terrainBox(u);
   closeUp(u.x, u.y);
   screen.kick();
 }
@@ -162,12 +193,36 @@ function reselect(id) {
   screen.kick();
 }
 
-// look shows where a monster can walk next turn (the referee's answer).
+// look shows a monster's info window and where it can walk next turn
+// (purple) [old einfo L1521-1522].
 function look(u) {
   const s = st();
   s.look = u;
   s.zone = { walk: new Set(referee.threat(u.id).map(([x, y]) => key(x, y))), hit: new Set() };
-  screen.log(`${u.kind || u.class} · Lv ${u.level} · HP ${u.hp}/${u.maxHp} · ATK ${u.atk} · DEF ${u.def} · MOV ${u.mov}`);
+  const hp = u.team && !u.ally ? '#e5484d' : '#4cd97b', im = picture(u);
+  const src = im ? (im.toDataURL ? im.toDataURL() : im.src) : '';
+  const E = { fire: 'Fire', ice: 'Ice', elec: 'Thunder', light: 'Light', dark: 'Dark' }, W = { sword: 'Sword', axe: 'Axe', lance: 'Lance' };
+  const weak = [];
+  const by = (m, x) => Object.keys(m).find((k) => m[k] === x);
+  if (u.element && rules) weak.push(`${E[u.element]} type (weak to ${E[by(rules.beats, u.element)] || '?'})`);
+  if (u.weapon && W[u.weapon] && rules) weak.push(`${W[u.weapon]} (weak to ${W[by(rules.weaponBeats, u.weapon)] || '?'})`);
+  const st2 = active(u);
+  $('einfo').innerHTML = `<div class="ei-top"><div class="ei-por" style="background-image:url(${src})"></div><div class="ei-mid">
+    <div class="ei-nm">${u.kind || u.class} · Lv ${u.level}${u.boss ? ' · BOSS' : u.elite ? ' · ELITE' : ''}</div>
+    <div class="ei-hb"><i style="width:${(100 * u.hp) / u.maxHp}%;background:${hp}"></i></div>
+    <div>HP ${u.hp}/${u.maxHp} · ATK ${u.atk} · DEF ${u.def} · MOV ${u.mov}</div></div></div>
+    ${weak.length ? `<div class="ei-wk">${weak.join(' · ')}</div>` : ''}
+    ${st2.length ? `<div class="pills">${st2.map((q) => `<span class="pill ${STATUS[q].bad ? 'd' : 'b'}">${label(u, q)} · ${u.statuses[q]}</span>`).join('')}</div>` : ''}
+    ${u.team ? `<div class="ei-sk">${(u.skills || []).map((k) => k.name).join(' · ')}</div>` : ''}`;
+  $('einfo').hidden = false;
+}
+
+// terrainBox shows what the ground under the chosen hero does [old terr L1523-1524].
+function terrainBox(u) {
+  const g = (view().ground[u.y] || '')[u.x] || 'g', T = rules && rules.terrain.find((t) => t.letter === g);
+  if (!T) return;
+  $('terr').innerHTML = `<div class="tn">${T.name}</div><div>${T.damageTaken < 1 ? 'DMG −' + Math.round((1 - T.damageTaken) * 100) + '%' : 'No bonus'}${T.heal ? ' · heals' : ''}</div>`;
+  $('terr').hidden = false;
 }
 
 function place(t, u) {
@@ -190,38 +245,73 @@ function place(t, u) {
 // ---------- the command menu ----------
 
 function menu() {
-  const s = st(), u = s.sel, m = $('menu');
+  const s = st(), u = s.sel, m = $('menu'), sub = $('sub');
   if (!u) return;
+  $('endTurn').hidden = true;
   m.innerHTML = '';
-  const row = (text, f, off) => {
+  sub.innerHTML = '';
+  const row = (box, text, f, off, cls) => {
     const b = document.createElement('button');
-    b.className = 'row';
+    b.className = 'row' + (cls ? ' ' + cls : '');
     b.textContent = text;
     b.disabled = !!off;
-    b.onclick = (e) => { e.stopPropagation(); f(); };
-    m.append(b);
+    b.onclick = (e) => { e.stopPropagation(); f(b); };
+    box.append(b);
+    return b;
   };
-  if (u.ability) {
-    const ab = u.ability;
-    row('✦ ' + ab.name + (ab.wait ? ` (${ab.wait})` : ''), () => ability(u), ab.wait > 0);
-  }
+  // [old dAbuild L1513-1518]: Attack, Skills ▸, ✦ ability, Item, Move, Undo Move, Defend, Wait, Cancel
   if (!u.acted) {
     u.skills.forEach((sk, i) => {
       const multi = MULTI.has(sk.aim);
-      const ask = multi ? referee.skillAim(u.id, i, {}) : null;
+      const ask = multi && !sk.wait ? referee.skillAim(u.id, i, {}) : null;
       const n = sk.wait ? 0 : multi ? (ask.units || []).length + (ask.tiles || []).length : referee.targets(u.id, i).length;
-      const name = (sk.ultimate ? '★ ' : '') + (sk.name === 'Strike' ? 'Attack' : sk.name);
-      row(name + (sk.wait ? ` (${sk.wait})` : ''), () => (multi ? pick(u, sk.name, sk.text, { kind: 'attack', unit: u.id, skill: i, tiles: [] }, (a) => referee.skillAim(u.id, i, a)) : aimWith(i)), !n);
+      const go = () => (multi ? pick(u, sk.name, sk.text, { kind: 'attack', unit: u.id, skill: i, tiles: [] }, (a) => referee.skillAim(u.id, i, a)) : aimWith(i));
+      if (sk.name === 'Strike') return row(m, 'Attack', go, !n);
+      row(sub, (sk.ultimate ? '★ ' : '') + sk.name + (sk.wait ? ` (${sk.wait})` : ''), go, !n);
     });
-    if (u.potions > 0 && u.hp < u.maxHp) row(`Item: Potion ×${u.potions}`, () => send({ kind: 'potion', unit: u.id }));
+    if (sub.children.length) row(m, 'Skills ▸', (b) => { sub.hidden = !sub.hidden; b.classList.toggle('on', !sub.hidden); place2(); });
   }
-  if (u.canUndo) row('Undo Move', () => send({ kind: 'undo', unit: u.id }, '', () => select(st().units.find((x) => x.id === u.id))));
-  if (!u.acted) row('Defend', () => send({ kind: 'defend', unit: u.id }));
-  row('Wait', () => send({ kind: 'wait', unit: u.id }));
-  row('Cancel', () => { clear(); screen.kick(); });
+  if (u.ability) row(m, '✦ ' + u.ability.name + (u.ability.wait ? ` (${u.ability.wait})` : ''), () => ability(u), u.ability.wait > 0, 'abl');
+  if (!u.acted && u.potions > 0 && u.hp < u.maxHp) row(m, `Item: Potion ×${u.potions}`, () => send({ kind: 'potion', unit: u.id }));
+  if (u.canMove && !s.reach.size) row(m, 'Move', () => select(u));
+  if (u.canUndo) row(m, 'Undo Move', () => send({ kind: 'undo', unit: u.id }, '', () => select(st().units.find((x) => x.id === u.id))));
+  if (!u.acted) row(m, 'Defend', () => send({ kind: 'defend', unit: u.id }));
+  row(m, 'Wait', () => send({ kind: 'wait', unit: u.id }));
+  row(m, 'Cancel', () => { clear(); screen.kick(); });
   m.hidden = false;
+  sub.hidden = true;
+  s.reach = new Set();
+  place2();
   screen.kick();
 }
+
+// place2 puts the menu beside the hero, and the skills on the other side
+// [old dApos L1528-1530].
+function place2() {
+  const s = st(), m = $('menu'), sub = $('sub');
+  if (!s.sel || m.hidden) return;
+  const b = feet(s.sel.x, s.sel.y), x = cam.offX + b.x * cam.k, y = cam.offY + b.y * cam.k;
+  const W = innerWidth, H = innerHeight, w = m.offsetWidth || 150, h = m.offsetHeight || 200, off = TS * cam.k * 0.62, top0 = safeTop() + 52;
+  let left = x + off, side = 1, top;
+  if (left + w > W - 6) { left = x - off - w; side = -1; }
+  if (left < 6) {
+    side = 0;
+    left = Math.max(6, Math.min(W - w - 6, x - w / 2));
+    top = y - TS * cam.k * 1.15 - h - 6;
+    if (top < top0) top = y + TS * cam.k * 0.15 + 6;
+  } else top = y - TS * cam.k * 0.5 - h / 2;
+  top = Math.max(top0, Math.min(H - h - 8, top));
+  m.style.left = left + 'px';
+  m.style.top = top + 'px';
+  if (!sub.hidden) {
+    const w2 = sub.offsetWidth || 170, h2 = sub.offsetHeight || 200;
+    let l2 = side > 0 ? left + w + 6 : side < 0 ? left - w2 - 6 : left + w + 6 + w2 <= W - 6 ? left + w + 6 : left - w2 - 6;
+    if (l2 + w2 > W - 6 || l2 < 6) l2 = side > 0 ? Math.max(6, left - w2 - 6) : Math.min(W - w2 - 6, left + w + 6);
+    sub.style.left = l2 + 'px';
+    sub.style.top = Math.max(top0, Math.min(H - h2 - 8, top)) + 'px';
+  }
+}
+export const placeMenu = place2;
 
 // ---------- aiming in several taps ----------
 
@@ -285,43 +375,83 @@ function tapPick(t, u) {
 
 function aimWith(slot, target) {
   const s = st(), u = s.sel;
-  const ids = referee.targets(u.id, slot);
+  const ids = referee.targets(u.id, slot, s.set || 0).length ? referee.targets(u.id, slot, s.set || 0) : referee.targets(u.id, slot);
   if (!ids.length) return screen.log('No target in reach.');
+  if (!referee.targets(u.id, slot, s.set || 0).length) s.set = 0;
   s.skill = slot;
   s.reach = new Set();
+  $('sub').hidden = true;
   s.targets = new Set(ids);
-  s.aim = target || s.units.find((x) => x.id === ids[0]);
+  s.aim = (target && ids.includes(target.id) && target) || s.units.find((x) => x.id === ids[0]);
   $('menu').hidden = true;
   forecast();
 }
 
-// forecast shows what the attack will do, from the referee's preview.
+// forecast shows what the attack will do, from the referee's preview: the
+// target before → after, damage, hit chance, a skill switcher, ◀ ▶ to change
+// target, ⇄ to change weapon set [old dAforecast L1532-1549, v24strip L2081].
 function forecast() {
   const s = st(), u = s.sel, v = s.aim, sk = u.skills[s.skill], F = $('forecast');
-  const f = referee.preview(u.id, s.skill, v.id);
-  const name = v.kind || v.class;
-  let line = '—';
-  if (f) {
-    if (sk.heal) line = `Heal +${f.heal || f.mid}`;
-    else {
-      const dmg = f.low === f.high ? f.mid : `${f.low}–${f.high}`;
-      line = `Damage ${dmg} · Hit ${f.hitChance}%${f.mult > 1 ? ' · WEAK' : f.mult < 1 ? ' · RESIST' : ''}`;
+  const ids = [...s.targets], idx = ids.indexOf(v.id);
+  const f = referee.preview(u.id, s.skill, v.id, s.set || 0);
+  const foe = v.team !== u.team, dmg = !(sk.heal || sk.support || sk.revive);
+  let after = '', line = '—';
+  if (f && dmg) {
+    const lo = Math.max(0, v.hp - f.high), hi = Math.max(0, v.hp - f.low);
+    after = lo === hi ? '' + lo : lo + '–' + hi;
+    line = `Dmg <b class="fd">${f.low === f.high ? f.mid : f.low + '–' + f.high}</b> · Hit <b>${f.hitChance}%</b> ${f.mult > 1 ? '<b class="weak">WEAK</b>' : f.mult < 1 ? '<b class="resist">RESIST</b>' : ''}`;
+  } else if (f) line = `${sk.heal ? 'Heal' : 'Effect'} <b class="fd">${sk.heal ? '+' + (f.heal || f.mid) : sk.name}</b>`;
+  const ko = after && /^0(–|$)/.test(after) ? '<b class="ko">KO</b>' : '';
+  const sets = (u.gear && u.gear.sets) || [], hand = sets.findIndex((x) => x.inHand), set = s.set || hand + 1;
+  const weapons = sets.length ? (sets[set - 1] || sets[0]).weapons : '';
+  const pills = active(v).map((q) => `<span class="pill ${STATUS[q].bad ? 'd' : 'b'}">${label(v, q)} · ${v.statuses[q]}</span>`).join('');
+  F.className = 'panel ' + (foe ? 'red' : 'green');
+  F.innerHTML = `<div class="fh">${v.kind || v.class} · Lv ${v.level}${v.boss ? ' · Boss' : v.elite ? ' · Elite' : ''}</div>
+    <div>HP <b>${v.hp}</b>${after ? ` → <b class="af">${after}</b>` : ''} ${ko}<span class="dim"> · DEF ${v.def}</span></div>
+    <div>${line}</div><div class="fs">${sk.ultimate ? '★ ' : ''}${sk.name === 'Strike' ? 'Attack' : sk.name}${weapons ? ' · ' + weapons : ''}${sk.text ? ' · ' + sk.text : ''}</div>
+    <div class="you">${u.class} · HP ${u.hp}/${u.maxHp}</div>${pills ? `<div class="pills">${pills}</div>` : ''}
+    <div class="skills" id="fSkills"></div><div class="fr" id="fRow"></div>`;
+  const sw = $('fSkills');
+  u.skills.forEach((k, i) => {
+    if (k.wait || MULTI.has(k.aim) || !(foe ? !(k.heal || k.support || k.revive) : k.heal || k.support || k.revive)) return;
+    if (!referee.targets(u.id, i).length) return;
+    const b = document.createElement('button');
+    b.textContent = (k.ultimate ? '★ ' : '') + (k.name === 'Strike' ? 'Attack' : k.name);
+    b.className = i === s.skill ? 'on' : '';
+    b.onclick = () => { if (i !== s.skill) aimWith(i, v); };
+    sw.append(b);
+  });
+  const row = $('fRow'), btn = (t, fn, cls, off) => {
+    const b = document.createElement('button');
+    b.className = 'b' + (cls ? ' ' + cls : '');
+    b.innerHTML = t;
+    b.disabled = !!off;
+    b.onclick = fn;
+    row.append(b);
+  };
+  const cycle = (d) => { s.aim = st().units.find((x) => x.id === ids[(idx + d + ids.length) % ids.length]); const p = feet(s.aim.x, s.aim.y); lookAt(p.x, p.y - 40); forecast(); };
+  if (ids.length > 1) { btn('◀', () => cycle(-1)); btn('▶', () => cycle(1)); }
+  if (dmg && sets.length > 1) btn('⇄' + set, () => {
+    for (let k = 1; k <= sets.length; k++) {
+      const n = ((set - 1 + k) % sets.length) + 1;
+      if (referee.targets(u.id, s.skill, n).length) { s.set = n; break; }
     }
-  }
-  F.className = 'panel ' + (v.team !== u.team ? 'red' : 'green');
-  F.innerHTML = `<div class="fh">${name} · Lv ${v.level}</div><div>HP <b>${v.hp}</b>/${v.maxHp} · DEF ${v.def}</div><div class="fd">${line}</div>
-    <div class="fs">${sk.ultimate ? '★ ' : ''}${sk.name}${sk.text ? ' · ' + sk.text : ''}</div>
-    <div class="fr"><button class="b" id="fNo">✕</button><button class="b red" id="fGo">${sk.heal ? '✚ Heal' : v.team !== u.team ? '⚔ Attack' : '✦ Cast'}</button></div>`;
+    s.targets = new Set(referee.targets(u.id, s.skill, s.set));
+    if (!s.targets.has(s.aim.id)) s.aim = st().units.find((x) => s.targets.has(x.id));
+    forecast();
+  });
+  btn('✕', () => { clear(); screen.kick(); });
+  btn(sk.heal ? '✚ Heal' : sk.support ? '✦ Cast' : sk.revive ? '✦ Revive' : '⚔ Attack', attack, 'red go');
   F.hidden = false;
-  $('fNo').onclick = () => { clear(); screen.kick(); };
-  $('fGo').onclick = attack;
-  screen.log('Tap the target again or press the button.');
+  const a = feet(u.x, u.y), b = feet(v.x, v.y);
+  requestAnimationFrame(() => focusOn((a.x + b.x) / 2, (a.y + b.y) / 2 - 40, F.getBoundingClientRect().top));
+  screen.log('Tap the target again or press ⚔ Attack.');
   screen.kick();
 }
 
 function attack() {
   const s = st();
-  send({ kind: 'attack', unit: s.sel.id, skill: s.skill, target: s.aim.id });
+  send({ kind: 'attack', unit: s.sel.id, skill: s.skill, target: s.aim.id, set: s.set || 0 });
 }
 
 export function endTurn() {

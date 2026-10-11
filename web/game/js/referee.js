@@ -75,5 +75,7 @@ export const previewFrom = (unit, slot, target, x, y) => json(window.ctPreviewFr
 export const abilityAim = (unit) => json(window.ctAim(unit)) || {};
 export const skillAim = (unit, slot, picks) => json(window.ctSkillAim(unit, slot, JSON.stringify(picks))) || {};
 export const info = () => json(window.ctInfo());
+// plan is which skill a tap on an enemy uses, and where to walk first: {slot, walk} or null.
+export const plan = (unit, target) => json(window.ctPlan(unit, target));
 // guide is the fixed rules described in words (terrain, element wheel, weapon triangle).
 export const guide = () => json(window.ctGuide());
