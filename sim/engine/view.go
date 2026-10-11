@@ -24,6 +24,7 @@ type View struct {
 	Kegs     []state.Keg   `json:"kegs,omitempty"`   // Powder Kegs waiting to blow up
 	Traps    int           `json:"traps,omitempty"`  // how many hidden traps (where is a secret only to monsters)
 	Fallen   []string      `json:"fallen,omitempty"` // classes of fallen heroes, last to fall at the end
+	Bag      []ItemView    `json:"bag,omitempty"`    // items carried but not worn
 }
 
 // UnitView is one unit as the screen sees it.
@@ -57,6 +58,7 @@ type UnitView struct {
 	Done      bool           `json:"done"`
 	CanMove   bool           `json:"canMove"`
 	Skills    []SkillView    `json:"skills"`
+	Gear      *GearView      `json:"gear,omitempty"` // heroes: what they wear
 }
 
 // AbilityView is a hero's class ability as the screen shows it.
@@ -111,6 +113,7 @@ func (g *Game) View() View {
 	}
 	v.Fields, v.Kegs, v.Traps = b.Fields, b.Kegs, len(b.Traps)
 	v.Decision = g.decisionView()
+	v.Bag = g.bagView()
 	for y := 0; y < b.N; y++ {
 		row := make([]byte, b.N)
 		for x := range row {
@@ -128,6 +131,7 @@ func (g *Game) View() View {
 			if u.Ascension != "" {
 				uv.Form = u.Ascension
 			}
+			uv.Gear = g.gearView(u)
 			if ab, ok := combat.AbilityOf(g.C, u); ok {
 				wait := u.AbilityCooldown
 				if ab.Free {
@@ -166,10 +170,16 @@ func (g *Game) Targets(unit, slot int) []int {
 	if u == nil || u.Done || slot < 0 || slot >= len(u.Skills) || u.Cooldowns[slot] > 0 {
 		return nil
 	}
-	var out []int
-	for _, t := range combat.Targets(g.C, g.B, u, u.Skills[slot]) {
-		out = append(out, t.ID)
+	set, err := g.setFor(u, u.Skills[slot], 0)
+	if err != nil {
+		return nil
 	}
+	var out []int
+	g.inSet(u, set, func() {
+		for _, t := range combat.Targets(g.C, g.B, u, u.Skills[slot]) {
+			out = append(out, t.ID)
+		}
+	})
 	return out
 }
 
@@ -196,11 +206,20 @@ func (g *Game) PreviewFrom(unit, slot, target, x, y int) (Forecast, bool) {
 }
 
 // Preview forecasts a skill use without changing anything.
-func (g *Game) Preview(unit, slot, target int) (Forecast, bool) {
+func (g *Game) Preview(unit, slot, target int) (f Forecast, ok bool) {
 	u, v := g.B.Unit(unit), g.B.Unit(target)
 	if u == nil || v == nil || slot < 0 || slot >= len(u.Skills) {
 		return Forecast{}, false
 	}
+	set, err := g.setFor(u, u.Skills[slot], 0)
+	if err != nil {
+		return Forecast{}, false
+	}
+	g.inSet(u, set, func() { f, ok = g.preview(u, v, slot) })
+	return f, ok
+}
+
+func (g *Game) preview(u, v *state.Unit, slot int) (Forecast, bool) {
 	s := u.Skills[slot]
 	if s.Heal {
 		h := int(combat.Round(combat.HealAmount(g.C, u, s)))

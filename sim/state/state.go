@@ -27,20 +27,28 @@ type Unit struct {
 	XP     int            // heroes: experience toward the next level
 	Status map[string]int // status name -> turns left ("snare": 2)
 
-	Weapon      string // sword, axe, lance... ("" for heroes without a triangle weapon)
-	Element     string // fire, ice, elec, light, dark, or ""
-	Boss        bool
-	Elite       bool
-	Defending   bool           // chose Defend this turn: takes half damage
-	TilesMoved  int            // tiles walked this turn (charge skills)
-	RangeBonus  int            // extra range (ascensions)
-	Shield      int            // absorbs damage before HP
-	CritChance  int            // % (comes from gear; 0 without gear)
-	CritDamage  int            // extra crit damage in % (gear)
-	CooldownCut int            // turns taken off skill cooldowns (gear)
-	SkillUses   map[string]int // heroes: uses per skill (skills level up with use)
-	LastSkill   string         // heroes: the skill used last
-	Summoned    bool           // summons and companions do not learn or level
+	Weapon     string // sword, axe, lance... ("" for heroes without a triangle weapon)
+	Element    string // fire, ice, elec, light, dark, or ""
+	Boss       bool
+	Elite      bool
+	Defending  bool // chose Defend this turn: takes half damage
+	TilesMoved int  // tiles walked this turn (charge skills)
+	RangeBonus int  // extra range (ascensions)
+	Shield     int  // absorbs damage before HP
+
+	// Gear (heroes). Gear holds the items by slot (w, w2, w3, h, a, b, c).
+	// WeaponSet is the set in hand; Affix is every bonus active right now
+	// (armor, charm, set bonuses and the weapons in hand, old u.af); BaseAtk
+	// is attack without weapons (old atk0). Armed is a hero that carries
+	// weapon sets (old u.sets); clones, pets and monsters do not.
+	Gear      map[string]content.Item
+	WeaponSet int
+	Affix     map[string]int
+	BaseAtk   int
+	Armed     bool
+	SkillUses map[string]int // heroes: uses per skill (skills level up with use)
+	LastSkill string         // heroes: the skill used last
+	Summoned  bool           // summons and companions do not learn or level
 
 	// Heroes: what the hero knows (the old hero record's learned, eq, ult, spec).
 	Learned   []string // every skill learned
@@ -156,19 +164,20 @@ type Battle struct {
 	Heights    [][]int  // -2 mountain, -1 water, 0 flat, 1 hill
 	Units      []*Unit  // in turn order; dead units are removed
 	Turn       int
-	Side       int        // whose turn it is: Heroes or Enemies
-	Outcome    string     // Ongoing, Won or Lost
-	NextID     int        // the ID the next new unit gets
-	Throne     *Tile      // seize-the-throne floors: a hero standing here wins the fight
-	LevelCap   int        // heroes stop gaining XP at this level (0: no cap); set by the run from the best floor
-	Fields     []Field    // burning ground and war banners
-	Traps      []Trap     // hidden snares
-	FloorKills []Tile     // where monsters died this floor (Grave Bloom raises them)
-	Raises     []Raise    // skeletons waiting to rise once the current action is over
-	Decisions  []Decision // choices waiting for the player, answered first to last (old EVQ)
-	Fallen     []*Unit    // heroes who died in combat this floor, last one first to be revived
-	FallenFoes []*Unit    // monsters who died, for monster healers' Resurrection (only with MonstersRevive)
-	Kegs       []Keg      // Powder Kegs waiting to blow up
+	Side       int            // whose turn it is: Heroes or Enemies
+	Outcome    string         // Ongoing, Won or Lost
+	NextID     int            // the ID the next new unit gets
+	Throne     *Tile          // seize-the-throne floors: a hero standing here wins the fight
+	LevelCap   int            // heroes stop gaining XP at this level (0: no cap); set by the run from the best floor
+	Fields     []Field        // burning ground and war banners
+	Traps      []Trap         // hidden snares
+	FloorKills []Tile         // where monsters died this floor (Grave Bloom raises them)
+	Raises     []Raise        // skeletons waiting to rise once the current action is over
+	Decisions  []Decision     // choices waiting for the player, answered first to last (old EVQ)
+	Fallen     []*Unit        // heroes who died in combat this floor, last one first to be revived
+	FallenFoes []*Unit        // monsters who died, for monster healers' Resurrection (only with MonstersRevive)
+	Kegs       []Keg          // Powder Kegs waiting to blow up
+	Bag        []content.Item // items carried but not worn (the run will own this from Phase 7)
 }
 
 // Decision is a choice the player must make before playing on: a skill
@@ -219,3 +228,6 @@ func (b *Battle) Remove(id int) {
 
 // Inside reports whether (x, y) is on the map.
 func (b *Battle) Inside(x, y int) bool { return x >= 0 && y >= 0 && x < b.N && y < b.N }
+
+// Af is one active gear bonus (0 when the unit has none).
+func (u *Unit) Af(key string) int { return u.Affix[key] }

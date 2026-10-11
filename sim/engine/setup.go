@@ -5,6 +5,7 @@ import (
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
 	"github.com/papigetbusy/crusader-tactics-next/sim/rng"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
+	"github.com/papigetbusy/crusader-tactics-next/sim/stats"
 	"github.com/papigetbusy/crusader-tactics-next/sim/turn"
 )
 
@@ -12,13 +13,14 @@ import (
 // the floor builder arrives (Phase 7), practice fights use starting setups
 // recorded from the old game.
 type Setup struct {
-	Name    string      `json:"name"`
-	Floor   int         `json:"floor"`
-	N       int         `json:"n"`
-	Ground  []string    `json:"ground"`
-	Heights [][]int     `json:"heights"`
-	Units   []UnitSetup `json:"units"`
-	Throne  *state.Tile `json:"throne,omitempty"` // seize-the-throne floors only
+	Name    string         `json:"name"`
+	Floor   int            `json:"floor"`
+	N       int            `json:"n"`
+	Ground  []string       `json:"ground"`
+	Heights [][]int        `json:"heights"`
+	Units   []UnitSetup    `json:"units"`
+	Throne  *state.Tile    `json:"throne,omitempty"` // seize-the-throne floors only
+	Bag     []content.Item `json:"bag,omitempty"`    // items carried but not worn
 }
 
 // startingPotions is what every new hero carries (old recruit and new run,
@@ -42,6 +44,9 @@ type UnitSetup struct {
 	// Equipped picks a hero's normal skills (skill test fights); empty means
 	// the usual starting build.
 	Equipped []string `json:"equipped,omitempty"`
+	// Gear is what a hero wears, by slot (w, w2, w3, h, a, b, c). With gear,
+	// the hero's numbers are worked out from its class, level and gear.
+	Gear map[string]content.Item `json:"gear,omitempty"`
 }
 
 // Combat dice come from their own stream of the battle seed, so later
@@ -64,6 +69,12 @@ func NewFight(c *content.Content, s Setup, battleSeed uint64) *Game {
 			}
 			u.Skills = c.Bar(u.Class, u.Equipped, u.Ultimate)
 			u.Potions = startingPotions
+			u.Gear, u.BaseAtk = us.Gear, u.Atk
+			if len(us.Gear) > 0 {
+				n, base := stats.Geared(c, u.Class, u.Level, "", us.Gear)
+				u.HP, u.MaxHP, u.Atk, u.Def, u.Mov, u.BaseAtk = n.MaxHP, n.MaxHP, n.Atk, n.Def, n.Mov, base
+			}
+			stats.InitSets(c, u)
 		} else {
 			u.Skills = c.MonsterSkills(u.Class, u.Level, u.Boss || u.Elite)
 			u.Weapon = c.Classes[u.Class].Weapon
@@ -74,6 +85,7 @@ func NewFight(c *content.Content, s Setup, battleSeed uint64) *Game {
 	b.NextID = len(s.Units) + 1
 	b.LevelCap = levelCap(c, b)
 	b.Throne = s.Throne
+	b.Bag = append([]content.Item(nil), s.Bag...)
 	turn.Check(b, func(e action.Event) {})
 	return &Game{C: c, B: b, Dice: rng.New(battleSeed, streamCombat)}
 }

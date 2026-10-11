@@ -74,6 +74,10 @@ func (g *Game) Apply(a action.Action) ([]action.Event, error) {
 		u.Moved, u.TilesMoved = false, 0
 	case action.Attack:
 		u := b.Unit(a.Unit)
+		if set, _ := g.setFor(u, u.Skills[a.Skill], a.Set); set != u.WeaponSet {
+			stats.UseSet(g.C, u, set)
+			emit(action.Event{Kind: action.SetSwitched, Unit: u.ID, Amount: set + 1})
+		}
 		if err := combat.UseAimed(g.C, b, g.Dice, u, a.Skill, g.pick(a), emit); err != nil {
 			return events, err
 		}
@@ -96,6 +100,14 @@ func (g *Game) Apply(a action.Action) ([]action.Event, error) {
 			return events, err
 		}
 		turn.Check(b, emit)
+	case action.Equip:
+		g.equip(a, emit)
+	case action.UseSet:
+		stats.UseSet(g.C, b.Unit(a.Unit), a.Set-1)
+		emit(action.Event{Kind: action.SetSwitched, Unit: a.Unit, Amount: a.Set})
+	case action.Drop:
+		emit(action.Event{Kind: action.GearDropped, Skill: b.Bag[a.Item].Name})
+		b.Bag = append(b.Bag[:a.Item:a.Item], b.Bag[a.Item+1:]...)
 	case action.Decide:
 		if err := stats.Decide(g.C, b, a.Choice, a.Skill, emit); err != nil {
 			return events, no("bad-choice", "%v", err)
@@ -141,6 +153,12 @@ func (g *Game) check(a action.Action) error {
 	if a.Kind == action.EndTurn {
 		return nil
 	}
+	if a.Kind == action.Equip || a.Kind == action.Drop {
+		return g.checkGear(a)
+	}
+	if a.Kind == action.UseSet {
+		return g.checkSet(a)
+	}
 	u := b.Unit(a.Unit)
 	if u == nil || u.Team != state.Heroes || u.Companion || u.Decoy {
 		return no("no-such-hero", "That is not one of your heroes.")
@@ -169,17 +187,12 @@ func (g *Game) check(a action.Action) error {
 		if err := skillReady(u, a.Skill); err != nil {
 			return err
 		}
-		if s := u.Skills[a.Skill]; combat.IsNew(s) {
-			return g.checkNew(u, s, a)
+		set, err := g.setFor(u, u.Skills[a.Skill], a.Set)
+		if err != nil {
+			return err
 		}
-		v := b.Unit(a.Target)
-		ok := false
-		for _, t := range combat.Targets(g.C, b, u, u.Skills[a.Skill]) {
-			ok = ok || t == v
-		}
-		if !ok {
-			return no("bad-target", "%s cannot reach that target.", u.Skills[a.Skill].Name)
-		}
+		g.inSet(u, set, func() { err = g.checkAim(u, a) })
+		return err
 	case action.Wait, action.Defend:
 	case action.Potion:
 		if u.Potions <= 0 {
@@ -199,4 +212,20 @@ func (g *Game) check(a action.Action) error {
 		return no("unknown", "Unknown action %q.", a.Kind)
 	}
 	return nil
+}
+
+// checkAim is "can this skill be aimed like that?", with the weapon set it
+// will use in hand.
+func (g *Game) checkAim(u *state.Unit, a action.Action) error {
+	s := u.Skills[a.Skill]
+	if combat.IsNew(s) {
+		return g.checkNew(u, s, a)
+	}
+	v := g.B.Unit(a.Target)
+	for _, t := range combat.Targets(g.C, g.B, u, s) {
+		if t == v {
+			return nil
+		}
+	}
+	return no("bad-target", "%s cannot reach that target.", s.Name)
 }

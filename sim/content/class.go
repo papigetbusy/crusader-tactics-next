@@ -62,7 +62,10 @@ type Combat struct {
 	ReviveShare    float64 `json:"reviveShare"`    // a revived hero comes back with this share of max HP
 	ReviveAnyDeath bool    `json:"reviveAnyDeath"` // heroes killed by poison or bleeding can be revived too
 	TrapsOnPath    bool    `json:"trapsOnPath"`    // traps spring anywhere along a monster's walk, not only where it stops
-	MonstersRevive bool    `json:"monstersRevive"` // fallen monsters are kept so a monster healer can bring them back
+	// UnarmedClassWeapon: a hero with no weapon in hand counts as its class's
+	// first weapon (Warrior sword, Tank axe...) in the weapon triangle.
+	UnarmedClassWeapon bool `json:"unarmedClassWeapon"`
+	MonstersRevive     bool `json:"monstersRevive"` // fallen monsters are kept so a monster healer can bring them back
 
 	// Statuses that change damage.
 	RallyAttack   float64 `json:"rallyAttack"`   // rally: attacker hits this much harder

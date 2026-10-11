@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/papigetbusy/crusader-tactics-next/sim/content"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
 )
 
@@ -50,6 +51,37 @@ type Step struct {
 	S       string          `json:"s"`      // decide: the skill offered, when known
 	Title   string          `json:"title"`  // decide: the popup's title
 	Choice  string          `json:"choice"` // decide: the button pressed
+
+	// Phase 6c recordings.
+	Ws   *int     `json:"ws"`   // skill: the weapon set in hand when it was used
+	Item *RecItem `json:"item"` // equip: the item put on
+	Slot string   `json:"slot"` // equip: the slot it went in
+}
+
+// RecItem is a piece of gear as recorded.
+type RecItem struct {
+	Sl  string  `json:"sl"`
+	R   int     `json:"r"`
+	N   string  `json:"n"`
+	Wt  *string `json:"wt"`
+	At  *string `json:"at"`
+	Atk int     `json:"atk"`
+	Def int     `json:"def"`
+	HP  int     `json:"hp"`
+	Mov int     `json:"mov"`
+	Af  [][]any `json:"af"`
+	Set *string `json:"set"`
+	Uq  int     `json:"uq"`
+}
+
+// Item turns a recorded item into a referee item.
+func (r RecItem) Item() content.Item {
+	it := content.Item{Name: r.N, Slot: r.Sl, Rarity: r.R, WeaponType: deref(r.Wt), Weight: deref(r.At),
+		Atk: r.Atk, Def: r.Def, HP: r.HP, Mov: r.Mov, Set: deref(r.Set), Unique: r.Uq != 0}
+	for _, a := range r.Af {
+		it.Affixes = append(it.Affixes, content.Affix{Key: a[0].(string), Value: int(a[1].(float64))})
+	}
+	return it
 }
 
 // Event is one thing the old game reported happening.
@@ -111,6 +143,9 @@ type Snap struct {
 	Party    []PartySnap `json:"party"`    // each party member's build, in party order
 	FieldsAt [][]any     `json:"fieldsAt"` // x, y, range, turns, kind, square
 	TrapsAt  [][2]int    `json:"trapsAt"`
+
+	// Phase 6c recordings.
+	Inv []RecItem `json:"inv"` // the bag
 }
 
 // SnapUnit is one unit in a Snap.
@@ -149,15 +184,21 @@ type SnapUnit struct {
 	Ow []int    `json:"ow"` // overwatch direction
 	M  *int     `json:"m"`  // monsters: which kind (index into the monster list), when recorded
 	Al int      `json:"al"` // a monster that can bond as a companion
+
+	// Phase 6c recordings.
+	Ws int            `json:"ws"` // the weapon set in hand
+	W  *string        `json:"w"`  // the weapon it counts as in the triangle
+	Af map[string]int `json:"af"` // its active gear bonuses
 }
 
 // PartySnap is a party member's build at a recorded moment.
 type PartySnap struct {
-	Eq      []string       `json:"eq"`
-	Ult     *string        `json:"ult"`
-	Spec    *string        `json:"spec"`
-	Learned []string       `json:"learned"`
-	Su      map[string]int `json:"su"`
+	Eq      []string           `json:"eq"`
+	Ult     *string            `json:"ult"`
+	Spec    *string            `json:"spec"`
+	Learned []string           `json:"learned"`
+	Su      map[string]int     `json:"su"`
+	Gear    map[string]RecItem `json:"gear"` // Phase 6c recordings
 }
 
 // Load reads the recorded fights file.
@@ -202,4 +243,12 @@ func (f *Fight) Battle(s Snap) *state.Battle {
 		})
 	}
 	return b
+}
+
+// deref is a recorded optional text, or "".
+func deref(s *string) string {
+	if s == nil {
+		return ""
+	}
+	return *s
 }

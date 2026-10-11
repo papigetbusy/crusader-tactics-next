@@ -2,6 +2,7 @@ package oldgame
 
 import (
 	"encoding/json"
+	"reflect"
 	"slices"
 	"strings"
 
@@ -20,6 +21,7 @@ func goUnit(c *content.Content, su SnapUnit) *state.Unit {
 		Element: su.Elem, Boss: su.Boss != 0, Elite: su.Elite != 0, Defending: su.Def2 != 0, Shield: su.Sh,
 		Moved: su.Moved != 0, Acted: su.Acted != 0, Done: su.Done != 0, Status: map[string]int{},
 		AbilityCooldown: su.Ab, Decoy: su.Dc != 0, Companion: su.Cp != 0, Summoned: su.Sm != 0,
+		WeaponSet: su.Ws,
 	}
 	// In these recordings every companion and raised monster is undead (Grave
 	// Bloom skeletons and Raise skills); bonded companions join later floors.
@@ -143,15 +145,27 @@ func resync(c *content.Content, f *Fight, g *engine.Game, s Snap, party []int) {
 			if len(p.Su) > 0 && u.SkillUses == nil {
 				u.SkillUses = p.Su
 			}
+			if p.Gear != nil {
+				u.Gear = map[string]content.Item{}
+				for sl, it := range p.Gear {
+					u.Gear[sl] = it.Item()
+				}
+			}
 		}
+		u.BaseAtk = u.Atk - stats.SetAtk(c, u.Class, u.Gear, u.WeaponSet)
+		stats.InitSets(c, u)
 	}
+	b.Bag = bagOf(s)
 }
 
-func deref(s *string) string {
-	if s == nil {
-		return ""
+// bagOf is the bag at a recorded moment. Loot drops are ported in 6d; until
+// then the bag is taken from the recording.
+func bagOf(s Snap) []content.Item {
+	var out []content.Item
+	for _, it := range s.Inv {
+		out = append(out, it.Item())
 	}
-	return *s
+	return out
 }
 
 // actionsFor turns one recorded player input into referee actions.
@@ -177,6 +191,22 @@ func actionsFor(step Step, b *state.Battle) []action.Action {
 			a.Tiles = tiles
 		}
 		return []action.Action{a}
+	case "equip":
+		if step.Item == nil {
+			return nil
+		}
+		want := step.Item.Item()
+		a := action.Action{Kind: action.Equip, Unit: step.ID, Item: -1}
+		for i, it := range b.Bag {
+			if reflect.DeepEqual(it, want) {
+				a.Item = i
+				break
+			}
+		}
+		if want.Slot == content.SlotWeapon {
+			a.Slot = step.Slot
+		}
+		return []action.Action{a}
 	case "move", "attack", "skill":
 		var out []action.Action
 		for _, e := range step.Ev {
@@ -189,7 +219,11 @@ func actionsFor(step Step, b *state.Battle) []action.Action {
 				if u != nil {
 					slot = slices.IndexFunc(u.Skills, func(s content.Skill) bool { return s.Name == e.S })
 				}
-				out = append(out, action.Action{Kind: action.Attack, Unit: e.ID, Skill: slot, Target: e.V})
+				a := action.Action{Kind: action.Attack, Unit: e.ID, Skill: slot, Target: e.V}
+				if step.Ws != nil {
+					a.Set = *step.Ws + 1
+				}
+				out = append(out, a)
 			}
 		}
 		return out

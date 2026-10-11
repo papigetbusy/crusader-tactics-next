@@ -49,6 +49,9 @@ func FromOld(tables fs.FS) (*Content, error) {
 	if c.Monsters, err = oldMonsters(tables); err != nil {
 		return nil, err
 	}
+	if c.Gear, err = oldGear(tables); err != nil {
+		return nil, err
+	}
 	return c, c.Check()
 }
 

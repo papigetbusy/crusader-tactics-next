@@ -68,9 +68,10 @@ func support(c *content.Content, b *state.Battle, u *state.Unit, s content.Skill
 }
 
 // HealAmount is how much a heal skill restores before the target's room
-// is considered (old healAmt and healAmt0, lines 451-452; gear arrives in
-// step 6c): skill power, the healer's level, the Saint's bonus, the skill's
-// level, and Enlightenment.
+// is considered (old healAmt and healAmt0, lines 451-452): half the attack
+// of a staff or wand in hand plus its rank, gear's healing bonus, skill
+// power, the healer's level, the Saint's bonus, the skill's level, and
+// Enlightenment.
 func HealAmount(c *content.Content, u *state.Unit, s content.Skill) float64 {
 	saint := 1.0
 	if a, ok := c.Ascensions[u.Ascension]; ok && a.Heal != 0 {
@@ -80,7 +81,14 @@ func HealAmount(c *content.Content, u *state.Unit, s content.Skill) float64 {
 	if isHero(u) {
 		skill = 1 + float64(c.Combat.SkillLevelBonus*float64(SkillLevel(c, u, s.Name)-1))
 	}
-	amt := 0 + float64(1*1)*s.Power*float64(6+2*u.Level)*saint*skill
+	wa, wb := 0.0, 1.0
+	if items := stats.SetItems(c, u.Class, u.Gear, u.WeaponSet); u.Armed && len(items) > 0 && c.Gear.Category(items[0].WeaponType) == "g" {
+		wa = float64(items[0].Atk) * c.Gear.StaffHeal
+		if rk := stats.SetRank(c, u); rk >= 0 {
+			wb = c.Gear.RankDamage[rk]
+		}
+	}
+	amt := wa + float64(float64(wb*(1+float64(u.Af("healPct"))/100))*s.Power*float64(6+2*u.Level)*saint*skill)
 	if u.Status["enl"] > 0 {
 		amt *= 1 + u.P("enlP", 0.3)
 	}

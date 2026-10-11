@@ -90,9 +90,7 @@ func targets(c *content.Content, b *state.Battle, u *state.Unit, s content.Skill
 	}
 	lo, hi := s.MinRange, s.MaxRange
 	if s.Strike {
-		// The basic Strike without a ranged weapon set is a melee hit
-		// (weapon sets arrive with gear in Phase 6).
-		lo, hi = 1, 1
+		lo, hi = strikeRange(c, u)
 	}
 	if !s.Heal {
 		hi += u.RangeBonus

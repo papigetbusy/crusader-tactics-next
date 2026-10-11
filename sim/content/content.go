@@ -43,6 +43,7 @@ type Content struct {
 	Abilities map[string]ClassAbility // class abilities by class
 	CrashDown Ability                 // the Storm Dragoon's landing from Sky Lord
 	Monsters  []Monster               // normal monster kinds, in the old game's order
+	Gear      Gear                    // weapons, armor, ranks, affixes and sets
 }
 
 // Default loads the live data files built into the program.
@@ -96,6 +97,7 @@ func Load(fsys fs.FS) (*Content, error) {
 		Classes   map[string]ClassAbility `json:"classes"`
 		CrashDown Ability                 `json:"crashDown"`
 	}
+	var gear Gear
 	var mons struct {
 		Monsters []Monster `json:"monsters"`
 	}
@@ -105,7 +107,7 @@ func Load(fsys fs.FS) (*Content, error) {
 	}
 	for name, v := range map[string]any{"skills.json": &skills, "classes.json": &classes,
 		"elements.json": &elements, "rules/combat.json": &combat, "rules/turns.json": &turns, "rules/ai.json": &ai,
-		"rules/progress.json": &progress, "ascensions.json": &asc, "abilities.json": &abil, "monsters.json": &mons} {
+		"rules/progress.json": &progress, "ascensions.json": &asc, "abilities.json": &abil, "monsters.json": &mons, "gear.json": &gear} {
 		if err := readJSON(fsys, name, v); err != nil {
 			return nil, err
 		}
@@ -129,6 +131,7 @@ func Load(fsys fs.FS) (*Content, error) {
 		Abilities:         abil.Classes,
 		CrashDown:         abil.CrashDown,
 		Monsters:          mons.Monsters,
+		Gear:              gear,
 	}
 	for _, a := range asc.Ascensions {
 		c.Ascensions[a.Name] = a
@@ -189,6 +192,9 @@ func (c *Content) Check() error {
 		if len(ca.Tiers) != len(abilityTierLevels) {
 			return fmt.Errorf("abilities.json, %s: needs one ability per tier (%d)", class, len(abilityTierLevels))
 		}
+	}
+	if err := c.Gear.check(); err != nil {
+		return err
 	}
 	if err := c.Progress.check(); err != nil {
 		return err

@@ -139,6 +139,7 @@ func attack(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit a
 			Hurt(c, b, dice, hit, emit)
 		}
 	}
+	doubleStrike(c, b, dice, a, v, emit)
 	if s.Area > 0 {
 		for _, z := range areaOf(b, u, s, v, targets) {
 			Hurt(c, b, dice, Attack{By: u, Skill: s, ClassBase: a.ClassBase, Target: z}, emit)
@@ -304,7 +305,7 @@ func finishSkill(c *content.Content, b *state.Battle, u *state.Unit, slot int, s
 		u.Status["lock"] = 3
 	}
 	if s.Cooldown > 0 && !(u.Ascension == "Storm Dragoon" && s.Name == "Sky Dive") {
-		u.Cooldowns[slot] = max(1, s.Cooldown-u.CooldownCut)
+		u.Cooldowns[slot] = max(1, s.Cooldown-u.Af("cdr"))
 	}
 	if u.Team == state.Heroes && u.Ascension == "Tempest Archer" && !u.Moved && offensive {
 		u.Acted, u.Done = true, false

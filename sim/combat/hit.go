@@ -5,6 +5,7 @@ import (
 
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
+	"github.com/papigetbusy/crusader-tactics-next/sim/stats"
 )
 
 // HitChance is the chance in % that an attack lands (old hitCh, line 1060):
@@ -15,19 +16,25 @@ func HitChance(c *content.Content, a Attack) int {
 	if s.NoRoll() || u.Status["inner"] > 0 || (v.Wanted && v.WantedBy == u.ID) {
 		return 100
 	}
-	magic := s.IsMagic()
+	magic := isMagic(c, u, s)
 	h := k.HitMelee
 	switch {
 	case magic:
 		h = k.HitMagic
 	case s.Strike:
-		// The basic Strike is melee without a ranged weapon set equipped
-		// (weapon sets arrive with gear in Phase 6).
+		if stats.HandCategory(c, u) == "r" {
+			h = k.HitRanged
+		}
 	case s.MinRange >= 2:
 		h = k.HitRanged
 	}
 	if u.Team == state.Heroes {
 		h += k.HitHeroBonus
+	}
+	if u.Team == state.Heroes && u.Armed {
+		if rk := stats.SetRank(c, u); rk >= 0 {
+			h += c.Gear.RankHit[rk]
+		}
 	} else if u.Boss {
 		h += k.HitBossBonus
 	} else if u.Elite {
@@ -41,6 +48,7 @@ func HitChance(c *content.Content, a Attack) int {
 			h -= k.HitTriangle
 		}
 	}
+	h += u.Af("hit") - v.Af("evade")
 	if v.Ascension == "Phantom" {
 		h -= int(c.Ascensions["Phantom"].N("evasion"))
 	}

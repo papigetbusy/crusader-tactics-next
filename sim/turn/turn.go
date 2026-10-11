@@ -79,6 +79,9 @@ func Start(c *content.Content, b *state.Battle, dice rng.Dice, side int, emit ac
 		if tr, ok := c.Terrain[board.GroundAt(b, u.X, u.Y)]; ok && tr.Heal > 0 && u.HP > 0 && u.HP < u.MaxHP {
 			u.HP = min(u.MaxHP, u.HP+int(combat.Round(float64(u.MaxHP)*tr.Heal)))
 		}
+		if u.Af("regen") != 0 && u.HP > 0 {
+			u.HP = min(u.MaxHP, u.HP+int(combat.Round(float64(u.MaxHP)*float64(u.Af("regen"))/100)))
+		}
 		if u.Status["regen"] > 0 && u.HP > 0 {
 			u.HP = min(u.MaxHP, u.HP+int(combat.Round(float64(u.MaxHP)*t.RegenShare)))
 		}

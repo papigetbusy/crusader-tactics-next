@@ -89,6 +89,14 @@ func differences(g *engine.Game, s Snap, party []int, seen int) []string {
 				out = append(out, fmt.Sprintf("%s %d skill bar: Go %v, old game %v", su.Class, su.ID, bar, su.Sk))
 			}
 		}
+		if s.Inv != nil && su.Team == state.Heroes {
+			if u.Weapon != deref(su.W) || u.WeaponSet != su.Ws {
+				out = append(out, fmt.Sprintf("%s %d holds set %d (%q) in Go but set %d (%q) in the old game", su.Class, su.ID, u.WeaponSet+1, u.Weapon, su.Ws+1, deref(su.W)))
+			}
+			if a, b := statusText(u.Affix), statusText(su.Af); a != b {
+				out = append(out, fmt.Sprintf("%s %d gear bonuses: Go %s, old game %s", su.Class, su.ID, a, b))
+			}
+		}
 		if u.Done != (su.Done != 0) {
 			out = append(out, fmt.Sprintf("%s %d finished-for-the-turn: Go %v, old game %v", su.Class, su.ID, u.Done, su.Done != 0))
 		}
@@ -137,6 +145,12 @@ func TestOldGameCombat(t *testing.T) { replayAll(t, combatRecordings, "combat") 
 // TestOldGameHeroes replays the Phase 6 recordings: high-level parties with
 // ascensions, every class ability, and the choices made at level-ups.
 func TestOldGameHeroes(t *testing.T) { replayAll(t, heroesRecordings, "heroes") }
+
+// TestOldGameGear replays fights with geared heroes: weapons, armor, charms,
+// sets and legendaries, weapon set choices and equipping mid-battle.
+func TestOldGameGear(t *testing.T) { replayAll(t, gearRecordings, "gear") }
+
+const gearRecordings = "../../testdata/oldgame/recordings/gear6-recordings.json.gz"
 
 const heroesRecordings = "../../testdata/oldgame/recordings/heroes6-recordings.json.gz"
 
@@ -191,7 +205,11 @@ func replayAll(t *testing.T, file, set string) {
 			if step.Kind == "endturn" && !restart {
 				reinforced += arrivals(c, g, prev, step)
 			}
+			if prev.Inv != nil {
+				g.B.Bag = bagOf(prev) // loot is ported in 6d
+			}
 			var problem string
+			over := false
 			func() {
 				defer func() {
 					if r := recover(); r != nil {
@@ -211,8 +229,12 @@ func replayAll(t *testing.T, file, set string) {
 				for _, a := range acts {
 					evs, err := g.Apply(a)
 					debugStep(set, fi, si, step, evs)
-					if err != nil && a.Kind == action.Ability {
-						continue // the old game also refuses some uses; the board comparison tells
+					if r, ok := err.(*engine.Refused); ok && r.Code == "battle-over" && noFoes(step.Snap) {
+						over = true // the battle was won; the recorder kept clicking until the next floor
+						return
+					}
+					if err != nil && (a.Kind == action.Ability || a.Kind == action.Undo) {
+						continue // the old game also refuses some uses (quietly); the board comparison tells
 					}
 					if err != nil {
 						problem = fmt.Sprintf("Go refused %s: %v", a.Kind, err)
@@ -234,7 +256,7 @@ func replayAll(t *testing.T, file, set string) {
 						u.ID, clones = 1_000_000+clones, clones+1
 					}
 				}
-				if set != "heroes" {
+				if set != "heroes" && set != "gear" {
 					// These recordings dismissed every level-up choice unanswered.
 					g.B.Decisions = nil
 				}
@@ -242,6 +264,13 @@ func replayAll(t *testing.T, file, set string) {
 					problem = "the old game made a roll Go never made, at " + left
 				}
 			}()
+			if over {
+				matched++
+				fr.Matched++
+				ended++
+				fr.Steps = si + 1
+				break
+			}
 			rolls += feed.used
 			raised += skeletonsFromRecording(c, g, step.Snap, seen)
 			if restart {
@@ -329,4 +358,14 @@ func maxID(s Snap, seen int) int {
 		seen = max(seen, id)
 	}
 	return seen
+}
+
+// noFoes reports a recorded moment with no monsters left.
+func noFoes(s Snap) bool {
+	for _, u := range s.Units {
+		if u.Team == state.Enemies {
+			return false
+		}
+	}
+	return true
 }

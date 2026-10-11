@@ -17,6 +17,9 @@ const (
 	EndTurn Kind = "endturn" // the player's side is done; the enemies act
 	Ability Kind = "ability" // Unit uses its class ability, aimed at Target (a unit) or Tiles, if it is aimed
 	Decide  Kind = "decide"  // answers the first waiting decision with Choice (and Skill = slot to replace)
+	Equip   Kind = "equip"   // Unit puts on bag item Item (a weapon goes in Slot: w, w2 or w3; empty = a free one)
+	Drop    Kind = "drop"    // throws bag item Item away for good
+	UseSet  Kind = "set"     // Unit takes weapon set Set (1-3) in hand; it does not use up the turn
 )
 
 // Action is one request.
@@ -30,6 +33,9 @@ type Action struct {
 	Second int      `json:"second,omitempty"` // a second unit ID (Voodoo Link)
 	Choice string   `json:"choice,omitempty"` // Decide: "ok", "keep", "replace", or an ascension's name
 	Tiles  [][2]int `json:"tiles,omitempty"`  // the tiles picked, for tile-aimed abilities and skills
+	Set    int      `json:"set,omitempty"`    // Attack: weapon set 1-3 to use (0 = the one in hand, or the first that fits the skill)
+	Item   int      `json:"item,omitempty"`   // Equip, Drop: index in the bag
+	Slot   string   `json:"slot,omitempty"`   // Equip: weapon slot for a weapon
 }
 
 // Event is one fact, in the order it happened. The screen animates events;
@@ -67,6 +73,9 @@ const (
 	Revived       = "revived"    // Target came back to life with Amount HP
 	Seized        = "seized"     // Unit seized the throne: the enemies flee
 	LevelUp       = "level-up"   // Unit reached level Amount
+	GearOn        = "equipped"   // Unit put on item Skill (the old one went to the bag)
+	GearDropped   = "dropped"    // item Skill was thrown away
+	SetSwitched   = "set"        // Unit took weapon set Amount (1-3) in hand
 	Evolved       = "evolved"    // Unit evolved into the form named Skill (at levels 5 and 20)
 	Guarded       = "guarded"    // Unit (a Guardian) takes the hit aimed at Target
 	Immune        = "immune"     // Target's Glacial Scales stop Unit's ranged hit

@@ -11,13 +11,15 @@ import (
 // whereRolled maps each kind of Go roll to the old game's code line that
 // made the same roll.
 var whereRolled = map[string]string{
-	combat.RollHit:       "hurt:1689",
-	combat.RollDamage:    "hurt:1690",
-	combat.RollCrit:      "hurt:1690",
-	combat.RollBeastBurn: "hurt:1702",
-	ai.RollPick:          "aiTurn:",
-	ai.RollSpecial:       "aiTurn:",
-	combat.RollShuffle:   "act:",
+	combat.RollHit:          "hurt:1689",
+	combat.RollDamage:       "hurt:1690",
+	combat.RollCrit:         "hurt:1690",
+	combat.RollBeastBurn:    "hurt:1702",
+	combat.RollStatusChance: "hurt:1702",
+	combat.RollDouble:       "act:1722",
+	ai.RollPick:             "aiTurn:",
+	ai.RollSpecial:          "aiTurn:",
+	combat.RollShuffle:      "act:",
 }
 
 // notPortedYet are old-game rolls for rules that arrive later (loot, chests,

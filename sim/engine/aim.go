@@ -44,6 +44,15 @@ func (g *Game) SkillAim(unit, slot int, so action.Action) (units []int, tiles []
 	if u == nil || slot < 0 || slot >= len(u.Skills) || u.Cooldowns[slot] > 0 {
 		return nil, nil
 	}
+	set, err := g.setFor(u, u.Skills[slot], so.Set)
+	if err != nil {
+		return nil, nil
+	}
+	g.inSet(u, set, func() { units, tiles = g.skillAim(u, slot, so) })
+	return units, tiles
+}
+
+func (g *Game) skillAim(u *state.Unit, slot int, so action.Action) (units []int, tiles [][2]int) {
 	s, p := u.Skills[slot], g.pick(so)
 	ids := func(zs []*state.Unit) []int {
 		var out []int

@@ -2979,7 +2979,96 @@
       "Sunder",
       "Battle Trance",
       "Momentum"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Full Plate",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "H",
+       "def": 32,
+       "hp": 43,
+       "affixes": [
+        {
+         "key": "dmg",
+         "value": 13
+        }
+       ]
+      },
+      "b": {
+       "name": "Plate Sabatons",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "H",
+       "def": 16,
+       "affixes": [
+        {
+         "key": "evade",
+         "value": 5
+        }
+       ]
+      },
+      "c": {
+       "name": "Bone Charm",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "dmg",
+         "value": 8
+        }
+       ]
+      },
+      "h": {
+       "name": "Steel Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "H",
+       "def": 16,
+       "hp": 22,
+       "affixes": [
+        {
+         "key": "thorns",
+         "value": 14
+        }
+       ]
+      },
+      "w": {
+       "name": "Mythril Blade",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "sword",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "fire",
+         "value": 18
+        },
+        {
+         "key": "phys",
+         "value": 15
+        }
+       ]
+      },
+      "w2": {
+       "name": "Battle Axe",
+       "slot": "w",
+       "rarity": 1,
+       "weaponType": "axe",
+       "atk": 12,
+       "affixes": [
+        {
+         "key": "light",
+         "value": 11
+        },
+        {
+         "key": "crit",
+         "value": 5
+        }
+       ]
+      }
+     }
     },
     {
      "team": 0,
@@ -2996,7 +3085,96 @@
       "Taunting Roar",
       "Aftershock",
       "Unstoppable"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Full Plate",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "H",
+       "def": 32,
+       "hp": 43,
+       "affixes": [
+        {
+         "key": "dr",
+         "value": 5
+        }
+       ]
+      },
+      "b": {
+       "name": "Plate Sabatons",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "H",
+       "def": 16,
+       "affixes": [
+        {
+         "key": "hpPct",
+         "value": 12
+        }
+       ]
+      },
+      "c": {
+       "name": "Lucky Coin",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "elec",
+         "value": 11
+        }
+       ]
+      },
+      "h": {
+       "name": "Steel Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "H",
+       "def": 16,
+       "hp": 22,
+       "affixes": [
+        {
+         "key": "defPct",
+         "value": 18
+        }
+       ]
+      },
+      "w": {
+       "name": "Frostbite Axe",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "axe",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "light",
+         "value": 18
+        },
+        {
+         "key": "crit",
+         "value": 9
+        }
+       ]
+      },
+      "w2": {
+       "name": "Steel Lance",
+       "slot": "w",
+       "rarity": 1,
+       "weaponType": "lance",
+       "atk": 12,
+       "affixes": [
+        {
+         "key": "addFire",
+         "value": 6
+        },
+        {
+         "key": "healPct",
+         "value": 11
+        }
+       ]
+      }
+     }
     },
     {
      "team": 0,
@@ -3013,7 +3191,96 @@
       "Static Field",
       "Gravity Well",
       "Echo"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Scale Mail",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "M",
+       "def": 24,
+       "hp": 48,
+       "affixes": [
+        {
+         "key": "dmg",
+         "value": 13
+        }
+       ]
+      },
+      "b": {
+       "name": "Scale Greaves",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "affixes": [
+        {
+         "key": "hit",
+         "value": 10
+        }
+       ]
+      },
+      "c": {
+       "name": "Wolf Fang",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "addFire",
+         "value": 6
+        }
+       ]
+      },
+      "h": {
+       "name": "Scale Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "hp": 24,
+       "affixes": [
+        {
+         "key": "hit",
+         "value": 10
+        }
+       ]
+      },
+      "w": {
+       "name": "Runic Wand",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "wand",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "addFire",
+         "value": 11
+        },
+        {
+         "key": "healPct",
+         "value": 18
+        }
+       ]
+      },
+      "w2": {
+       "name": "Ash Staff",
+       "slot": "w",
+       "rarity": 1,
+       "weaponType": "staff",
+       "atk": 12,
+       "affixes": [
+        {
+         "key": "critDmg",
+         "value": 15
+        },
+        {
+         "key": "poisonCh",
+         "value": 8
+        }
+       ]
+      }
+     }
     },
     {
      "team": 0,
@@ -3030,7 +3297,96 @@
       "Sacred Flame",
       "Resurrection",
       "Renewal"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Scale Mail",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "M",
+       "def": 24,
+       "hp": 48,
+       "affixes": [
+        {
+         "key": "dr",
+         "value": 5
+        }
+       ]
+      },
+      "b": {
+       "name": "Scale Greaves",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "affixes": [
+        {
+         "key": "defPct",
+         "value": 18
+        }
+       ]
+      },
+      "c": {
+       "name": "Bone Charm",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "critDmg",
+         "value": 15
+        }
+       ]
+      },
+      "h": {
+       "name": "Scale Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "hp": 24,
+       "affixes": [
+        {
+         "key": "dr",
+         "value": 5
+        }
+       ]
+      },
+      "w": {
+       "name": "Emberwood Staff",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "staff",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "critDmg",
+         "value": 27
+        },
+        {
+         "key": "poisonCh",
+         "value": 13
+        }
+       ]
+      },
+      "w2": {
+       "name": "Crystal Wand",
+       "slot": "w",
+       "rarity": 1,
+       "weaponType": "wand",
+       "atk": 12,
+       "affixes": [
+        {
+         "key": "bossDmg",
+         "value": 11
+        },
+        {
+         "key": "fire",
+         "value": 11
+        }
+       ]
+      }
+     }
     },
     {
      "team": 0,
@@ -3047,7 +3403,96 @@
       "Hunter's Mark",
       "Concussive Arrow",
       "Flaming Volley"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Scale Mail",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "M",
+       "def": 24,
+       "hp": 48,
+       "affixes": [
+        {
+         "key": "dmg",
+         "value": 13
+        }
+       ]
+      },
+      "b": {
+       "name": "Scale Greaves",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "affixes": [
+        {
+         "key": "crit",
+         "value": 9
+        }
+       ]
+      },
+      "c": {
+       "name": "Lucky Coin",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "leech",
+         "value": 3
+        }
+       ]
+      },
+      "h": {
+       "name": "Scale Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "hp": 24,
+       "affixes": [
+        {
+         "key": "hpPct",
+         "value": 12
+        }
+       ]
+      },
+      "w": {
+       "name": "Elven Longbow",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "bow",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "bossDmg",
+         "value": 19
+        },
+        {
+         "key": "fire",
+         "value": 18
+        }
+       ]
+      },
+      "w2": {
+       "name": "Steel Sword",
+       "slot": "w",
+       "rarity": 1,
+       "weaponType": "sword",
+       "atk": 12,
+       "affixes": [
+        {
+         "key": "hit",
+         "value": 6
+        },
+        {
+         "key": "light",
+         "value": 11
+        }
+       ]
+      }
+     }
     },
     {
      "team": 1,
@@ -3143,6 +3588,146 @@
      "atk": 37,
      "def": 10,
      "mov": 4
+    }
+   ],
+   "bag": [
+    {
+     "name": "Stormweave Coif",
+     "slot": "h",
+     "rarity": 3,
+     "weight": "M",
+     "def": 30,
+     "hp": 60,
+     "affixes": [
+      {
+       "key": "crit",
+       "value": 8
+      },
+      {
+       "key": "elec",
+       "value": 15
+      }
+     ],
+     "set": "M",
+     "unique": true
+    },
+    {
+     "name": "Stormweave Mail",
+     "slot": "a",
+     "rarity": 3,
+     "weight": "M",
+     "def": 60,
+     "hp": 120,
+     "affixes": [
+      {
+       "key": "hpPct",
+       "value": 12
+      },
+      {
+       "key": "dr",
+       "value": 6
+      },
+      {
+       "key": "elec",
+       "value": 15
+      }
+     ],
+     "set": "M",
+     "unique": true
+    },
+    {
+     "name": "Stormweave Treads",
+     "slot": "b",
+     "rarity": 3,
+     "weight": "M",
+     "def": 30,
+     "affixes": [
+      {
+       "key": "evade",
+       "value": 6
+      },
+      {
+       "key": "movA",
+       "value": 1
+      }
+     ],
+     "set": "M",
+     "unique": true
+    },
+    {
+     "name": "Phoenix Feather",
+     "slot": "c",
+     "rarity": 3,
+     "hp": 180,
+     "affixes": [
+      {
+       "key": "leech",
+       "value": 8
+      },
+      {
+       "key": "healPct",
+       "value": 25
+      },
+      {
+       "key": "regen",
+       "value": 4
+      }
+     ],
+     "unique": true
+    },
+    {
+     "name": "Dawnguard Helm",
+     "slot": "h",
+     "rarity": 3,
+     "weight": "H",
+     "def": 41,
+     "hp": 54,
+     "affixes": [
+      {
+       "key": "hpPct",
+       "value": 15
+      },
+      {
+       "key": "defPct",
+       "value": 20
+      }
+     ],
+     "set": "H",
+     "unique": true
+    },
+    {
+     "name": "Mythril Blade",
+     "slot": "w",
+     "rarity": 2,
+     "weaponType": "sword",
+     "atk": 24,
+     "affixes": [
+      {
+       "key": "crit",
+       "value": 9
+      },
+      {
+       "key": "leech",
+       "value": 5
+      }
+     ]
+    },
+    {
+     "name": "Emberwood Staff",
+     "slot": "w",
+     "rarity": 2,
+     "weaponType": "staff",
+     "atk": 24,
+     "affixes": [
+      {
+       "key": "healPct",
+       "value": 18
+      },
+      {
+       "key": "addElec",
+       "value": 11
+      }
+     ]
     }
    ]
   },
@@ -3548,7 +4133,96 @@
       "Crippling Cut",
       "Open Veins",
       "Twin Fangs"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Scale Mail",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "M",
+       "def": 24,
+       "hp": 48,
+       "affixes": [
+        {
+         "key": "dr",
+         "value": 5
+        }
+       ]
+      },
+      "b": {
+       "name": "Scale Greaves",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "affixes": [
+        {
+         "key": "hpPct",
+         "value": 12
+        }
+       ]
+      },
+      "c": {
+       "name": "Bone Charm",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "dmg",
+         "value": 8
+        }
+       ]
+      },
+      "h": {
+       "name": "Scale Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "hp": 24,
+       "affixes": [
+        {
+         "key": "defPct",
+         "value": 18
+        }
+       ]
+      },
+      "w": {
+       "name": "Shadow Kris",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "dagger",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "light",
+         "value": 18
+        },
+        {
+         "key": "crit",
+         "value": 9
+        }
+       ]
+      },
+      "w2": {
+       "name": "Shadow Kris",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "dagger",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "addFire",
+         "value": 11
+        },
+        {
+         "key": "healPct",
+         "value": 18
+        }
+       ]
+      }
+     }
     },
     {
      "team": 0,
@@ -3565,7 +4239,96 @@
       "Powder Keg",
       "Lucky Coin",
       "High Noon"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Scale Mail",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "M",
+       "def": 24,
+       "hp": 48,
+       "affixes": [
+        {
+         "key": "dmg",
+         "value": 13
+        }
+       ]
+      },
+      "b": {
+       "name": "Scale Greaves",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "affixes": [
+        {
+         "key": "hit",
+         "value": 10
+        }
+       ]
+      },
+      "c": {
+       "name": "Lucky Coin",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "elec",
+         "value": 11
+        }
+       ]
+      },
+      "h": {
+       "name": "Scale Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "hp": 24,
+       "affixes": [
+        {
+         "key": "hit",
+         "value": 10
+        }
+       ]
+      },
+      "w": {
+       "name": "Silver Six",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "gun",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "addFire",
+         "value": 11
+        },
+        {
+         "key": "healPct",
+         "value": 18
+        }
+       ]
+      },
+      "w2": {
+       "name": "Silver Six",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "gun",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "critDmg",
+         "value": 27
+        },
+        {
+         "key": "poisonCh",
+         "value": 13
+        }
+       ]
+      }
+     }
     },
     {
      "team": 0,
@@ -3582,7 +4345,96 @@
       "Lance Wall",
       "Rescue",
       "Relentless Charge"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Full Plate",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "H",
+       "def": 32,
+       "hp": 43,
+       "affixes": [
+        {
+         "key": "dr",
+         "value": 5
+        }
+       ]
+      },
+      "b": {
+       "name": "Plate Sabatons",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "H",
+       "def": 16,
+       "affixes": [
+        {
+         "key": "defPct",
+         "value": 18
+        }
+       ]
+      },
+      "c": {
+       "name": "Wolf Fang",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "addFire",
+         "value": 6
+        }
+       ]
+      },
+      "h": {
+       "name": "Steel Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "H",
+       "def": 16,
+       "hp": 22,
+       "affixes": [
+        {
+         "key": "dr",
+         "value": 5
+        }
+       ]
+      },
+      "w": {
+       "name": "Silver Lance",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "lance",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "critDmg",
+         "value": 27
+        },
+        {
+         "key": "poisonCh",
+         "value": 13
+        }
+       ]
+      },
+      "w2": {
+       "name": "Steel Sword",
+       "slot": "w",
+       "rarity": 1,
+       "weaponType": "sword",
+       "atk": 12,
+       "affixes": [
+        {
+         "key": "bossDmg",
+         "value": 11
+        },
+        {
+         "key": "fire",
+         "value": 11
+        }
+       ]
+      }
+     }
     },
     {
      "team": 0,
@@ -3599,7 +4451,113 @@
       "Ember Trail",
       "Skewer",
       "Wyrmbond"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Full Plate",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "H",
+       "def": 32,
+       "hp": 43,
+       "affixes": [
+        {
+         "key": "dmg",
+         "value": 13
+        }
+       ]
+      },
+      "b": {
+       "name": "Plate Sabatons",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "H",
+       "def": 16,
+       "affixes": [
+        {
+         "key": "crit",
+         "value": 9
+        }
+       ]
+      },
+      "c": {
+       "name": "Bone Charm",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "critDmg",
+         "value": 15
+        }
+       ]
+      },
+      "h": {
+       "name": "Steel Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "H",
+       "def": 16,
+       "hp": 22,
+       "affixes": [
+        {
+         "key": "hpPct",
+         "value": 12
+        }
+       ]
+      },
+      "w": {
+       "name": "Silver Lance",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "lance",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "bossDmg",
+         "value": 19
+        },
+        {
+         "key": "fire",
+         "value": 18
+        }
+       ]
+      },
+      "w2": {
+       "name": "Battle Axe",
+       "slot": "w",
+       "rarity": 1,
+       "weaponType": "axe",
+       "atk": 12,
+       "affixes": [
+        {
+         "key": "hit",
+         "value": 6
+        },
+        {
+         "key": "light",
+         "value": 11
+        }
+       ]
+      },
+      "w3": {
+       "name": "Steel Sword",
+       "slot": "w",
+       "rarity": 1,
+       "weaponType": "sword",
+       "atk": 12,
+       "affixes": [
+        {
+         "key": "ice",
+         "value": 11
+        },
+        {
+         "key": "addFire",
+         "value": 6
+        }
+       ]
+      }
+     }
     },
     {
      "team": 0,
@@ -3616,7 +4574,96 @@
       "Soul Siphon",
       "Contagion",
       "Bog of Despair"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Scale Mail",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "M",
+       "def": 24,
+       "hp": 48,
+       "affixes": [
+        {
+         "key": "dr",
+         "value": 5
+        }
+       ]
+      },
+      "b": {
+       "name": "Scale Greaves",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "affixes": [
+        {
+         "key": "evade",
+         "value": 5
+        }
+       ]
+      },
+      "c": {
+       "name": "Lucky Coin",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "leech",
+         "value": 3
+        }
+       ]
+      },
+      "h": {
+       "name": "Scale Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "hp": 24,
+       "affixes": [
+        {
+         "key": "thorns",
+         "value": 14
+        }
+       ]
+      },
+      "w": {
+       "name": "Emberwood Staff",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "staff",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "hit",
+         "value": 10
+        },
+        {
+         "key": "light",
+         "value": 18
+        }
+       ]
+      },
+      "w2": {
+       "name": "Steel Dagger",
+       "slot": "w",
+       "rarity": 1,
+       "weaponType": "dagger",
+       "atk": 12,
+       "affixes": [
+        {
+         "key": "ice",
+         "value": 11
+        },
+        {
+         "key": "addFire",
+         "value": 6
+        }
+       ]
+      }
+     }
     },
     {
      "team": 1,
@@ -3712,6 +4759,146 @@
      "atk": 37,
      "def": 10,
      "mov": 4
+    }
+   ],
+   "bag": [
+    {
+     "name": "Stormweave Coif",
+     "slot": "h",
+     "rarity": 3,
+     "weight": "M",
+     "def": 30,
+     "hp": 60,
+     "affixes": [
+      {
+       "key": "crit",
+       "value": 8
+      },
+      {
+       "key": "elec",
+       "value": 15
+      }
+     ],
+     "set": "M",
+     "unique": true
+    },
+    {
+     "name": "Stormweave Mail",
+     "slot": "a",
+     "rarity": 3,
+     "weight": "M",
+     "def": 60,
+     "hp": 120,
+     "affixes": [
+      {
+       "key": "hpPct",
+       "value": 12
+      },
+      {
+       "key": "dr",
+       "value": 6
+      },
+      {
+       "key": "elec",
+       "value": 15
+      }
+     ],
+     "set": "M",
+     "unique": true
+    },
+    {
+     "name": "Stormweave Treads",
+     "slot": "b",
+     "rarity": 3,
+     "weight": "M",
+     "def": 30,
+     "affixes": [
+      {
+       "key": "evade",
+       "value": 6
+      },
+      {
+       "key": "movA",
+       "value": 1
+      }
+     ],
+     "set": "M",
+     "unique": true
+    },
+    {
+     "name": "Phoenix Feather",
+     "slot": "c",
+     "rarity": 3,
+     "hp": 180,
+     "affixes": [
+      {
+       "key": "leech",
+       "value": 8
+      },
+      {
+       "key": "healPct",
+       "value": 25
+      },
+      {
+       "key": "regen",
+       "value": 4
+      }
+     ],
+     "unique": true
+    },
+    {
+     "name": "Dawnguard Helm",
+     "slot": "h",
+     "rarity": 3,
+     "weight": "H",
+     "def": 41,
+     "hp": 54,
+     "affixes": [
+      {
+       "key": "hpPct",
+       "value": 15
+      },
+      {
+       "key": "defPct",
+       "value": 20
+      }
+     ],
+     "set": "H",
+     "unique": true
+    },
+    {
+     "name": "Mythril Blade",
+     "slot": "w",
+     "rarity": 2,
+     "weaponType": "sword",
+     "atk": 24,
+     "affixes": [
+      {
+       "key": "crit",
+       "value": 9
+      },
+      {
+       "key": "leech",
+       "value": 5
+      }
+     ]
+    },
+    {
+     "name": "Emberwood Staff",
+     "slot": "w",
+     "rarity": 2,
+     "weaponType": "staff",
+     "atk": 24,
+     "affixes": [
+      {
+       "key": "healPct",
+       "value": 18
+      },
+      {
+       "key": "addElec",
+       "value": 11
+      }
+     ]
     }
    ]
   },
@@ -4117,7 +5304,96 @@
       "Shoulder Check",
       "Execution",
       "Riposte Stance"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Full Plate",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "H",
+       "def": 32,
+       "hp": 43,
+       "affixes": [
+        {
+         "key": "dmg",
+         "value": 13
+        }
+       ]
+      },
+      "b": {
+       "name": "Plate Sabatons",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "H",
+       "def": 16,
+       "affixes": [
+        {
+         "key": "hit",
+         "value": 10
+        }
+       ]
+      },
+      "c": {
+       "name": "Bone Charm",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "dmg",
+         "value": 8
+        }
+       ]
+      },
+      "h": {
+       "name": "Steel Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "H",
+       "def": 16,
+       "hp": 22,
+       "affixes": [
+        {
+         "key": "hit",
+         "value": 10
+        }
+       ]
+      },
+      "w": {
+       "name": "Mythril Blade",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "sword",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "addFire",
+         "value": 11
+        },
+        {
+         "key": "healPct",
+         "value": 18
+        }
+       ]
+      },
+      "w2": {
+       "name": "Battle Axe",
+       "slot": "w",
+       "rarity": 1,
+       "weaponType": "axe",
+       "atk": 12,
+       "affixes": [
+        {
+         "key": "critDmg",
+         "value": 15
+        },
+        {
+         "key": "poisonCh",
+         "value": 8
+        }
+       ]
+      }
+     }
     },
     {
      "team": 0,
@@ -4134,7 +5410,96 @@
       "Hook Chain",
       "Bodyguard",
       "Fortress Slam"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Full Plate",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "H",
+       "def": 32,
+       "hp": 43,
+       "affixes": [
+        {
+         "key": "dr",
+         "value": 5
+        }
+       ]
+      },
+      "b": {
+       "name": "Plate Sabatons",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "H",
+       "def": 16,
+       "affixes": [
+        {
+         "key": "defPct",
+         "value": 18
+        }
+       ]
+      },
+      "c": {
+       "name": "Lucky Coin",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "elec",
+         "value": 11
+        }
+       ]
+      },
+      "h": {
+       "name": "Steel Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "H",
+       "def": 16,
+       "hp": 22,
+       "affixes": [
+        {
+         "key": "dr",
+         "value": 5
+        }
+       ]
+      },
+      "w": {
+       "name": "Frostbite Axe",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "axe",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "critDmg",
+         "value": 27
+        },
+        {
+         "key": "poisonCh",
+         "value": 13
+        }
+       ]
+      },
+      "w2": {
+       "name": "Steel Lance",
+       "slot": "w",
+       "rarity": 1,
+       "weaponType": "lance",
+       "atk": 12,
+       "affixes": [
+        {
+         "key": "bossDmg",
+         "value": 11
+        },
+        {
+         "key": "fire",
+         "value": 11
+        }
+       ]
+      }
+     }
     },
     {
      "team": 0,
@@ -4151,7 +5516,96 @@
       "Chain Lightning",
       "Blizzard",
       "Blink"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Scale Mail",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "M",
+       "def": 24,
+       "hp": 48,
+       "affixes": [
+        {
+         "key": "dmg",
+         "value": 13
+        }
+       ]
+      },
+      "b": {
+       "name": "Scale Greaves",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "affixes": [
+        {
+         "key": "crit",
+         "value": 9
+        }
+       ]
+      },
+      "c": {
+       "name": "Wolf Fang",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "addFire",
+         "value": 6
+        }
+       ]
+      },
+      "h": {
+       "name": "Scale Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "hp": 24,
+       "affixes": [
+        {
+         "key": "hpPct",
+         "value": 12
+        }
+       ]
+      },
+      "w": {
+       "name": "Runic Wand",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "wand",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "bossDmg",
+         "value": 19
+        },
+        {
+         "key": "fire",
+         "value": 18
+        }
+       ]
+      },
+      "w2": {
+       "name": "Ash Staff",
+       "slot": "w",
+       "rarity": 1,
+       "weaponType": "staff",
+       "atk": 12,
+       "affixes": [
+        {
+         "key": "hit",
+         "value": 6
+        },
+        {
+         "key": "light",
+         "value": 11
+        }
+       ]
+      }
+     }
     },
     {
      "team": 0,
@@ -4168,7 +5622,96 @@
       "Cleanse",
       "Holy Siphon",
       "Mass Heal"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Scale Mail",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "M",
+       "def": 24,
+       "hp": 48,
+       "affixes": [
+        {
+         "key": "dr",
+         "value": 5
+        }
+       ]
+      },
+      "b": {
+       "name": "Scale Greaves",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "affixes": [
+        {
+         "key": "evade",
+         "value": 5
+        }
+       ]
+      },
+      "c": {
+       "name": "Bone Charm",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "critDmg",
+         "value": 15
+        }
+       ]
+      },
+      "h": {
+       "name": "Scale Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "hp": 24,
+       "affixes": [
+        {
+         "key": "thorns",
+         "value": 14
+        }
+       ]
+      },
+      "w": {
+       "name": "Emberwood Staff",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "staff",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "hit",
+         "value": 10
+        },
+        {
+         "key": "light",
+         "value": 18
+        }
+       ]
+      },
+      "w2": {
+       "name": "Crystal Wand",
+       "slot": "w",
+       "rarity": 1,
+       "weaponType": "wand",
+       "atk": 12,
+       "affixes": [
+        {
+         "key": "ice",
+         "value": 11
+        },
+        {
+         "key": "addFire",
+         "value": 6
+        }
+       ]
+      }
+     }
     },
     {
      "team": 0,
@@ -4185,7 +5728,96 @@
       "Pinning Shot",
       "Piercing Shot",
       "Steady Aim"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Scale Mail",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "M",
+       "def": 24,
+       "hp": 48,
+       "affixes": [
+        {
+         "key": "dmg",
+         "value": 13
+        }
+       ]
+      },
+      "b": {
+       "name": "Scale Greaves",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "affixes": [
+        {
+         "key": "hpPct",
+         "value": 12
+        }
+       ]
+      },
+      "c": {
+       "name": "Lucky Coin",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "leech",
+         "value": 3
+        }
+       ]
+      },
+      "h": {
+       "name": "Scale Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "hp": 24,
+       "affixes": [
+        {
+         "key": "defPct",
+         "value": 18
+        }
+       ]
+      },
+      "w": {
+       "name": "Elven Longbow",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "bow",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "ice",
+         "value": 18
+        },
+        {
+         "key": "addFire",
+         "value": 11
+        }
+       ]
+      },
+      "w2": {
+       "name": "Steel Sword",
+       "slot": "w",
+       "rarity": 1,
+       "weaponType": "sword",
+       "atk": 12,
+       "affixes": [
+        {
+         "key": "dark",
+         "value": 11
+        },
+        {
+         "key": "critDmg",
+         "value": 15
+        }
+       ]
+      }
+     }
     },
     {
      "team": 1,
@@ -4281,6 +5913,146 @@
      "atk": 37,
      "def": 10,
      "mov": 4
+    }
+   ],
+   "bag": [
+    {
+     "name": "Stormweave Coif",
+     "slot": "h",
+     "rarity": 3,
+     "weight": "M",
+     "def": 30,
+     "hp": 60,
+     "affixes": [
+      {
+       "key": "crit",
+       "value": 8
+      },
+      {
+       "key": "elec",
+       "value": 15
+      }
+     ],
+     "set": "M",
+     "unique": true
+    },
+    {
+     "name": "Stormweave Mail",
+     "slot": "a",
+     "rarity": 3,
+     "weight": "M",
+     "def": 60,
+     "hp": 120,
+     "affixes": [
+      {
+       "key": "hpPct",
+       "value": 12
+      },
+      {
+       "key": "dr",
+       "value": 6
+      },
+      {
+       "key": "elec",
+       "value": 15
+      }
+     ],
+     "set": "M",
+     "unique": true
+    },
+    {
+     "name": "Stormweave Treads",
+     "slot": "b",
+     "rarity": 3,
+     "weight": "M",
+     "def": 30,
+     "affixes": [
+      {
+       "key": "evade",
+       "value": 6
+      },
+      {
+       "key": "movA",
+       "value": 1
+      }
+     ],
+     "set": "M",
+     "unique": true
+    },
+    {
+     "name": "Phoenix Feather",
+     "slot": "c",
+     "rarity": 3,
+     "hp": 180,
+     "affixes": [
+      {
+       "key": "leech",
+       "value": 8
+      },
+      {
+       "key": "healPct",
+       "value": 25
+      },
+      {
+       "key": "regen",
+       "value": 4
+      }
+     ],
+     "unique": true
+    },
+    {
+     "name": "Dawnguard Helm",
+     "slot": "h",
+     "rarity": 3,
+     "weight": "H",
+     "def": 41,
+     "hp": 54,
+     "affixes": [
+      {
+       "key": "hpPct",
+       "value": 15
+      },
+      {
+       "key": "defPct",
+       "value": 20
+      }
+     ],
+     "set": "H",
+     "unique": true
+    },
+    {
+     "name": "Mythril Blade",
+     "slot": "w",
+     "rarity": 2,
+     "weaponType": "sword",
+     "atk": 24,
+     "affixes": [
+      {
+       "key": "crit",
+       "value": 9
+      },
+      {
+       "key": "leech",
+       "value": 5
+      }
+     ]
+    },
+    {
+     "name": "Emberwood Staff",
+     "slot": "w",
+     "rarity": 2,
+     "weaponType": "staff",
+     "atk": 24,
+     "affixes": [
+      {
+       "key": "healPct",
+       "value": 18
+      },
+      {
+       "key": "addElec",
+       "value": 11
+      }
+     ]
     }
    ]
   },
@@ -4686,7 +6458,96 @@
       "Shadowstep",
       "Smoke Bomb",
       "Garrote"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Scale Mail",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "M",
+       "def": 24,
+       "hp": 48,
+       "affixes": [
+        {
+         "key": "dr",
+         "value": 5
+        }
+       ]
+      },
+      "b": {
+       "name": "Scale Greaves",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "affixes": [
+        {
+         "key": "defPct",
+         "value": 18
+        }
+       ]
+      },
+      "c": {
+       "name": "Bone Charm",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "dmg",
+         "value": 8
+        }
+       ]
+      },
+      "h": {
+       "name": "Scale Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "hp": 24,
+       "affixes": [
+        {
+         "key": "dr",
+         "value": 5
+        }
+       ]
+      },
+      "w": {
+       "name": "Shadow Kris",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "dagger",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "critDmg",
+         "value": 27
+        },
+        {
+         "key": "poisonCh",
+         "value": 13
+        }
+       ]
+      },
+      "w2": {
+       "name": "Shadow Kris",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "dagger",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "bossDmg",
+         "value": 19
+        },
+        {
+         "key": "fire",
+         "value": 18
+        }
+       ]
+      }
+     }
     },
     {
      "team": 0,
@@ -4703,7 +6564,96 @@
       "Scatter Shot",
       "Boot Shot",
       "Disarming Shot"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Scale Mail",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "M",
+       "def": 24,
+       "hp": 48,
+       "affixes": [
+        {
+         "key": "dmg",
+         "value": 13
+        }
+       ]
+      },
+      "b": {
+       "name": "Scale Greaves",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "affixes": [
+        {
+         "key": "crit",
+         "value": 9
+        }
+       ]
+      },
+      "c": {
+       "name": "Lucky Coin",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "elec",
+         "value": 11
+        }
+       ]
+      },
+      "h": {
+       "name": "Scale Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "hp": 24,
+       "affixes": [
+        {
+         "key": "hpPct",
+         "value": 12
+        }
+       ]
+      },
+      "w": {
+       "name": "Silver Six",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "gun",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "bossDmg",
+         "value": 19
+        },
+        {
+         "key": "fire",
+         "value": 18
+        }
+       ]
+      },
+      "w2": {
+       "name": "Silver Six",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "gun",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "hit",
+         "value": 10
+        },
+        {
+         "key": "light",
+         "value": 18
+        }
+       ]
+      }
+     }
     },
     {
      "team": 0,
@@ -4720,7 +6670,96 @@
       "Valor",
       "Trample",
       "Shield of Faith"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Full Plate",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "H",
+       "def": 32,
+       "hp": 43,
+       "affixes": [
+        {
+         "key": "dr",
+         "value": 5
+        }
+       ]
+      },
+      "b": {
+       "name": "Plate Sabatons",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "H",
+       "def": 16,
+       "affixes": [
+        {
+         "key": "evade",
+         "value": 5
+        }
+       ]
+      },
+      "c": {
+       "name": "Wolf Fang",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "addFire",
+         "value": 6
+        }
+       ]
+      },
+      "h": {
+       "name": "Steel Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "H",
+       "def": 16,
+       "hp": 22,
+       "affixes": [
+        {
+         "key": "thorns",
+         "value": 14
+        }
+       ]
+      },
+      "w": {
+       "name": "Silver Lance",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "lance",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "hit",
+         "value": 10
+        },
+        {
+         "key": "light",
+         "value": 18
+        }
+       ]
+      },
+      "w2": {
+       "name": "Steel Sword",
+       "slot": "w",
+       "rarity": 1,
+       "weaponType": "sword",
+       "atk": 12,
+       "affixes": [
+        {
+         "key": "ice",
+         "value": 11
+        },
+        {
+         "key": "addFire",
+         "value": 6
+        }
+       ]
+      }
+     }
     },
     {
      "team": 0,
@@ -4737,7 +6776,113 @@
       "Sky Dive",
       "Tail Sweep",
       "Dragon Scales"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Full Plate",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "H",
+       "def": 32,
+       "hp": 43,
+       "affixes": [
+        {
+         "key": "dmg",
+         "value": 13
+        }
+       ]
+      },
+      "b": {
+       "name": "Plate Sabatons",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "H",
+       "def": 16,
+       "affixes": [
+        {
+         "key": "hpPct",
+         "value": 12
+        }
+       ]
+      },
+      "c": {
+       "name": "Bone Charm",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "critDmg",
+         "value": 15
+        }
+       ]
+      },
+      "h": {
+       "name": "Steel Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "H",
+       "def": 16,
+       "hp": 22,
+       "affixes": [
+        {
+         "key": "defPct",
+         "value": 18
+        }
+       ]
+      },
+      "w": {
+       "name": "Silver Lance",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "lance",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "ice",
+         "value": 18
+        },
+        {
+         "key": "addFire",
+         "value": 11
+        }
+       ]
+      },
+      "w2": {
+       "name": "Battle Axe",
+       "slot": "w",
+       "rarity": 1,
+       "weaponType": "axe",
+       "atk": 12,
+       "affixes": [
+        {
+         "key": "dark",
+         "value": 11
+        },
+        {
+         "key": "critDmg",
+         "value": 15
+        }
+       ]
+      },
+      "w3": {
+       "name": "Steel Sword",
+       "slot": "w",
+       "rarity": 1,
+       "weaponType": "sword",
+       "atk": 12,
+       "affixes": [
+        {
+         "key": "addElec",
+         "value": 6
+        },
+        {
+         "key": "bossDmg",
+         "value": 11
+        }
+       ]
+      }
+     }
     },
     {
      "team": 0,
@@ -4754,7 +6899,96 @@
       "Plague Swarm",
       "Voodoo Link",
       "Wither"
-     ]
+     ],
+     "gear": {
+      "a": {
+       "name": "Scale Mail",
+       "slot": "a",
+       "rarity": 2,
+       "weight": "M",
+       "def": 24,
+       "hp": 48,
+       "affixes": [
+        {
+         "key": "dr",
+         "value": 5
+        }
+       ]
+      },
+      "b": {
+       "name": "Scale Greaves",
+       "slot": "b",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "affixes": [
+        {
+         "key": "hit",
+         "value": 10
+        }
+       ]
+      },
+      "c": {
+       "name": "Lucky Coin",
+       "slot": "c",
+       "rarity": 1,
+       "hp": 36,
+       "affixes": [
+        {
+         "key": "leech",
+         "value": 3
+        }
+       ]
+      },
+      "h": {
+       "name": "Scale Helm",
+       "slot": "h",
+       "rarity": 2,
+       "weight": "M",
+       "def": 12,
+       "hp": 24,
+       "affixes": [
+        {
+         "key": "hit",
+         "value": 10
+        }
+       ]
+      },
+      "w": {
+       "name": "Emberwood Staff",
+       "slot": "w",
+       "rarity": 2,
+       "weaponType": "staff",
+       "atk": 24,
+       "affixes": [
+        {
+         "key": "dark",
+         "value": 18
+        },
+        {
+         "key": "critDmg",
+         "value": 27
+        }
+       ]
+      },
+      "w2": {
+       "name": "Steel Dagger",
+       "slot": "w",
+       "rarity": 1,
+       "weaponType": "dagger",
+       "atk": 12,
+       "affixes": [
+        {
+         "key": "addElec",
+         "value": 6
+        },
+        {
+         "key": "bossDmg",
+         "value": 11
+        }
+       ]
+      }
+     }
     },
     {
      "team": 1,
@@ -4850,6 +7084,146 @@
      "atk": 37,
      "def": 10,
      "mov": 4
+    }
+   ],
+   "bag": [
+    {
+     "name": "Stormweave Coif",
+     "slot": "h",
+     "rarity": 3,
+     "weight": "M",
+     "def": 30,
+     "hp": 60,
+     "affixes": [
+      {
+       "key": "crit",
+       "value": 8
+      },
+      {
+       "key": "elec",
+       "value": 15
+      }
+     ],
+     "set": "M",
+     "unique": true
+    },
+    {
+     "name": "Stormweave Mail",
+     "slot": "a",
+     "rarity": 3,
+     "weight": "M",
+     "def": 60,
+     "hp": 120,
+     "affixes": [
+      {
+       "key": "hpPct",
+       "value": 12
+      },
+      {
+       "key": "dr",
+       "value": 6
+      },
+      {
+       "key": "elec",
+       "value": 15
+      }
+     ],
+     "set": "M",
+     "unique": true
+    },
+    {
+     "name": "Stormweave Treads",
+     "slot": "b",
+     "rarity": 3,
+     "weight": "M",
+     "def": 30,
+     "affixes": [
+      {
+       "key": "evade",
+       "value": 6
+      },
+      {
+       "key": "movA",
+       "value": 1
+      }
+     ],
+     "set": "M",
+     "unique": true
+    },
+    {
+     "name": "Phoenix Feather",
+     "slot": "c",
+     "rarity": 3,
+     "hp": 180,
+     "affixes": [
+      {
+       "key": "leech",
+       "value": 8
+      },
+      {
+       "key": "healPct",
+       "value": 25
+      },
+      {
+       "key": "regen",
+       "value": 4
+      }
+     ],
+     "unique": true
+    },
+    {
+     "name": "Dawnguard Helm",
+     "slot": "h",
+     "rarity": 3,
+     "weight": "H",
+     "def": 41,
+     "hp": 54,
+     "affixes": [
+      {
+       "key": "hpPct",
+       "value": 15
+      },
+      {
+       "key": "defPct",
+       "value": 20
+      }
+     ],
+     "set": "H",
+     "unique": true
+    },
+    {
+     "name": "Mythril Blade",
+     "slot": "w",
+     "rarity": 2,
+     "weaponType": "sword",
+     "atk": 24,
+     "affixes": [
+      {
+       "key": "crit",
+       "value": 9
+      },
+      {
+       "key": "leech",
+       "value": 5
+      }
+     ]
+    },
+    {
+     "name": "Emberwood Staff",
+     "slot": "w",
+     "rarity": 2,
+     "weaponType": "staff",
+     "atk": 24,
+     "affixes": [
+      {
+       "key": "healPct",
+       "value": 18
+      },
+      {
+       "key": "addElec",
+       "value": 11
+      }
+     ]
     }
    ]
   }

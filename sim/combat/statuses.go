@@ -71,6 +71,7 @@ func applyStatuses(c *content.Content, b *state.Battle, dice rng.Dice, a Attack,
 		}
 		setIvy(v, u.P("ivP", 0.3))
 	}
+	gearStatuses(c, dice, u, fx)
 	asc := c.Ascensions[u.Ascension]
 	switch u.Ascension {
 	case "Pyromancer", "Inferno Rider":

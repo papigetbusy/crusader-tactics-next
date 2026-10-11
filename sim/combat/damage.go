@@ -104,6 +104,9 @@ func Damage(c *content.Content, b *state.Battle, a Attack, roll float64) (int, f
 	m := Multiplier(c, u, v, el)
 	atk := float64(u.Atk) * s.Power
 	def := float64(v.Def)
+	if u.Armed {
+		atk *= rankDamage(c, u)
+	}
 	if Enraged(c, u) {
 		atk *= k.BossEnrage
 	}
@@ -190,7 +193,7 @@ func Damage(c *content.Content, b *state.Battle, a Attack, roll float64) (int, f
 	if s.IgnoreDefense {
 		def = 0
 	}
-	if s.IsMagic() {
+	if isMagic(c, u, s) {
 		def *= k.MagicDefense
 	}
 	if v.Status["ivy"] > 0 {
@@ -229,6 +232,9 @@ func Damage(c *content.Content, b *state.Battle, a Attack, roll float64) (int, f
 	}
 	if v.Status["scales"] > 0 && Distance(u, v) <= 1 {
 		r *= 0.6
+	}
+	if dr := v.Af("dr"); dr != 0 {
+		r *= 1 - float64(min(c.Gear.MaxReduction, dr))/100
 	}
 	if v.Team == state.Heroes && paladinNext(b, v) {
 		r *= c.Ascensions["Paladin"].N("aegis")
@@ -284,7 +290,7 @@ func ascensionDamage(c *content.Content, b *state.Battle, a Attack, el string, a
 	if near(b, u, int(w.N("auraRange")), true, func(z *state.Unit) bool { return z.Ascension == "Warlord" }) {
 		atk *= w.N("aura")
 	}
-	return atk
+	return gearDamage(c, a, el, atk)
 }
 
 // chargeBonus is the charge skills' extra damage for tiles walked this turn

@@ -54,6 +54,11 @@ button:disabled{opacity:.4;cursor:default}
 .skills button.on{border-color:var(--gold);color:var(--gold2);background:#33270f}
 #fc{margin:6px 0;font-size:16px}
 .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.sheet{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}.sheet h3{font-size:16px;margin:8px 0 4px;color:var(--gold2)}
+.item{display:flex;gap:8px;align-items:flex-start;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--line)}
+.item b{font-weight:700}.item small{display:block;color:var(--muted);font-size:13px}.item .btns{display:flex;flex-direction:column;gap:4px;flex:none}
+.item .btns button{font-size:13px;padding:4px 8px}.sets{display:flex;flex-wrap:wrap;gap:6px}.sets button{font-size:13px;padding:5px 8px;text-align:left}
+.sets button.on{border-color:var(--gold);color:var(--gold2);background:#33270f}
 #log{max-height:220px;overflow:auto;font-size:15px}
 #log div{padding:2px 0;border-bottom:1px solid #241b19}
 #log .turn{color:var(--gold);font-family:Cinzel,serif;font-size:13px;margin-top:4px}
@@ -93,7 +98,7 @@ footer{margin-top:16px;color:var(--muted);font-size:13px}
 <script>
 const $=id=>document.getElementById(id), J=s=>JSON.parse(s);
 const ICON={fire:'🔥',ice:'❄',elec:'⚡',light:'☀',dark:'☾'};
-let V=null, sel=null, slot=0, aim=null, walk=null, reach=[], targets=[], names={}, abil=null, sk=null;
+let V=null, sel=null, slot=0, aim=null, walk=null, reach=[], targets=[], names={}, abil=null, sk=null, gearOpen=false;
 // Skills aimed in more than one tap: what each tap picks, in order.
 const STEPS={tile:['tile'],line:['tile'],rollThenFoe:['tile','unit'],foeThenTile:['unit','tile'],twoFoes:['unit','unit']};
 const STEP_TEXT={tile:'Tap a highlighted tile.',unit:'Tap a highlighted unit.'};
@@ -186,11 +191,16 @@ function panel(){
       if(u.canUndo)h+=`<button id="undo">Undo move</button>`;
       h+=`<button id="wait">Wait</button>`;
     }
-    h+=`</div>${endBtn()}`;
+    if(u.gear)h+=`<button id="gearb">${gearOpen?'Hide gear':'Gear'}</button>`;
+    h+=`</div>${gearOpen&&u.gear?gearSheet(u):''}${endBtn()}`;
   } else h+=`<div class="muted">Skills: ${u.skills.map(s=>s.name).join(', ')}</div>${endBtn()}`;
   p.innerHTML=h;
   p.querySelectorAll('.skills button').forEach(bt=>bt.onclick=()=>chooseSkill(+bt.dataset.i));
   if($('skx'))$('skx').onclick=()=>{sk=null;refreshAim();render()};
+  if($('gearb'))$('gearb').onclick=()=>{gearOpen=!gearOpen;render()};
+  p.querySelectorAll('[data-set]').forEach(b=>b.onclick=()=>apply({kind:'set',unit:sel,set:+b.dataset.set}));
+  p.querySelectorAll('[data-equip]').forEach(b=>b.onclick=()=>apply({kind:'equip',unit:sel,item:+b.dataset.equip,slot:b.dataset.slot||''}));
+  p.querySelectorAll('[data-drop]').forEach(b=>b.onclick=()=>{const it=V.bag[+b.dataset.drop];if(confirm(`Drop ${it.name}? It will be gone for good.`))apply({kind:'drop',item:+b.dataset.drop})});
   if($('go'))$('go').onclick=strikeAim;
   if($('def'))$('def').onclick=()=>apply({kind:'defend',unit:sel});
   if($('abl'))$('abl').onclick=startAbility;
@@ -199,6 +209,20 @@ function panel(){
   if($('undo'))$('undo').onclick=()=>apply({kind:'undo',unit:sel});
   if($('wait'))$('wait').onclick=()=>apply({kind:'wait',unit:sel});
   bindEnd();
+}
+const SLOTN={w:'Set 1',w2:'Set 2',w3:'Set 3',h:'Helm',a:'Armor',b:'Boots',c:'Charm'};
+function itemRow(it,btns){return `<div class="item"><div><b style="color:${it.color}">${it.name}</b> <span class="muted">(${it.kind})</span><small>${it.text||'no bonuses'}</small>${it.lore?`<small><i>${it.lore}</i></small>`:''}</div>${btns?`<div class="btns">${btns}</div>`:''}</div>`}
+function gearSheet(u){
+  const g=u.gear;let h=`<div class="sheet"><div class="muted">${g.weapons}</div>`;
+  h+=`<h3>Weapon sets</h3><div class="sets">${g.sets.map((s,i)=>`<button data-set="${i+1}" class="${s.inHand?'on':''}" ${s.inHand||u.done||g.sets.length<2?'disabled':''}>Set ${i+1}: ${s.weapons}${s.rank?' ('+s.rank+')':''}${s.inHand?' · in hand':''}</button>`).join('')}</div>`;
+  h+=`<h3>Worn</h3>${g.worn.map(it=>itemRow(Object.assign({},it,{kind:it.kind==='Charm'?'Charm':SLOTN[it.slot]+' · '+it.kind}))).join('')||'<div class="muted">Nothing worn.</div>'}`;
+  if(g.bonuses)h+=`<div class="muted" style="margin-top:6px">Active bonuses: ${g.bonuses}</div>`;
+  h+=`<h3>Bag</h3>`;
+  h+=(V.bag||[]).map((it,i)=>{let b='';
+    if(it.slot==='w'){const free=g.freeSlots&&g.freeSlots.length;b=free?`<button class="gold" data-equip="${i}">Equip</button>`:g.weaponSlots.map(s=>`<button class="gold" data-equip="${i}" data-slot="${s}">Into ${SLOTN[s]}</button>`).join('')}
+    else b=`<button class="gold" data-equip="${i}">Equip</button>`;
+    return itemRow(it,b+`<button data-drop="${i}">Drop</button>`)}).join('')||'<div class="muted">The bag is empty.</div>';
+  return h+'</div>';
 }
 function endBtn(){return V.outcome||V.side!==0?'':`<div class="acts"><button class="gold" id="end">End turn</button></div>`}
 function bindEnd(){if($('end'))$('end').onclick=()=>{sel=null;aim=null;sk=null;apply({kind:'endturn'})}}
@@ -314,6 +338,9 @@ function say(e){
     case 'immune':logLine('',`The scales stop the shot.`);break;
     case 'exploded':logLine('',`${n(e.unit)} bursts!`);break;
     case 'ascended':logLine('good',`★ ${n(e.unit)} ascends: ${e.skill}!`);break;
+    case 'equipped':logLine('good',`${n(e.unit)} puts on ${e.skill}.`);break;
+    case 'dropped':logLine('',`${e.skill} is thrown away.`);break;
+    case 'set':logLine('',`${n(e.unit)} takes weapon set ${e.amount} in hand.`);break;
     case 'learned':logLine('good',`${n(e.unit)} learns ${e.skill}.`);break;
     case 'won':logLine('good','Victory!');break;
     case 'lost':logLine('bad','Defeat.');break;

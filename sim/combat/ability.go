@@ -192,7 +192,7 @@ func makeClones(b *state.Battle, u *state.Unit, emit action.Emit) {
 		cl.Status = map[string]int{"clone": 3}
 		cl.Skills, cl.Cooldowns, cl.Params = nil, nil, maps.Clone(u.Params)
 		cl.Done, cl.Moved, cl.AbilityCooldown = true, true, 0
-		cl.CritChance, cl.CritDamage, cl.CooldownCut = 0, 0, 0
+		cl.Affix, cl.Gear, cl.Armed = nil, nil, false
 		cl.Learned, cl.Equipped, cl.SkillUses = nil, nil, nil
 		b.Units = append(b.Units, &cl)
 		emit(action.Event{Kind: action.Summoned, Unit: u.ID, Target: cl.ID})

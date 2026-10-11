@@ -43,6 +43,15 @@ func init() {
 	})
 }
 
+func init() {
+	Changes = append(Changes, Change{
+		Date: "2026-10-10",
+		What: "A hero with no weapon in hand counts as its class's usual weapon (Warrior sword, Tank axe, Knight lance...) " +
+			"in the weapon triangle, both when attacking and when attacked. Before, unarmed heroes skipped the triangle.",
+		Apply: func(c *Content) { c.Combat.UnarmedClassWeapon = true },
+	})
+}
+
 // ApplyChanges turns the old game's data into today's data.
 func ApplyChanges(c *Content) {
 	for _, ch := range Changes {

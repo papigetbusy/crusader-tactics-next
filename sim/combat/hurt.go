@@ -109,12 +109,13 @@ func Hurt(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit act
 		emit(action.Event{Kind: action.Unbroken, Unit: v.ID})
 	}
 	emit(action.Event{Kind: action.Hit, Unit: u.ID, Target: v.ID, Amount: dm, Mult: res.Mult, Crit: res.Crit})
+	addedElements(c, a, v, dm, emit)
 	if u.Status["beast"] > 0 && !fixed {
 		ex := max(1, int(Round(float64(float64(dm)*u.P("bmF", 0.25))*Multiplier(c, unarmed(u), v, "fire"))))
 		v.HP -= ex
 		emit(action.Event{Kind: action.Hit, Unit: u.ID, Target: v.ID, Amount: ex, Skill: "fire"})
 	}
-	afterHit(c, b, a, v, dm)
+	afterHit(c, b, a, v, dm, emit)
 
 	if v.HP > 0 {
 		res.Statuses = applyStatuses(c, b, dice, a, v)
@@ -166,9 +167,9 @@ func critChance(u *state.Unit, a Attack) int {
 	if u.Status["deadeye"] > 0 {
 		return 100
 	}
-	cc := u.CritChance + a.CritBonus
+	cc := u.Af("crit") + a.CritBonus
 	if u.Status["blood"] > 0 {
-		cc = u.CritChance + int(u.P("blC", 50)) + a.CritBonus
+		cc = u.Af("crit") + int(u.P("blC", 50)) + a.CritBonus
 	}
 	return cc
 }
@@ -178,7 +179,7 @@ func critDamage(c *content.Content, u *state.Unit) float64 {
 	if u.Status["deadeye"] > 0 {
 		return 3
 	}
-	m := c.Combat.CritDamage + float64(u.CritDamage)/100
+	m := c.Combat.CritDamage + float64(u.Af("critDmg"))/100
 	if u.Status["blood"] > 0 {
 		m += u.P("blD", 0) / 100
 	}
@@ -189,8 +190,11 @@ func critDamage(c *content.Content, u *state.Unit) float64 {
 // 1697-1700): life steal, a taunting Paladin's heal, Frost Bulwark and
 // Glacial Scales rooting the attacker, drain and siphon skills, and the
 // Paladin, Blood Witch and Plague Doctor passives.
-func afterHit(c *content.Content, b *state.Battle, a Attack, v *state.Unit, dm int) {
+func afterHit(c *content.Content, b *state.Battle, a Attack, v *state.Unit, dm int, emit action.Emit) {
 	u, s := a.By, a.Skill
+	if u.Af("leech") != 0 {
+		heal(u, float64(dm)*float64(u.Af("leech"))/100)
+	}
 	if u.Status["frenzy"] > 0 {
 		heal(u, float64(dm)*0.25)
 	}
@@ -206,6 +210,7 @@ func afterHit(c *content.Content, b *state.Battle, a Attack, v *state.Unit, dm i
 	if v.Status["scales"] > 0 && Distance(u, v) <= 1 {
 		u.Status["snare"] = max(u.Status["snare"], 2)
 	}
+	thorns(b, u, v, dm, emit)
 	if s.Drain > 0 {
 		share := s.Drain
 		if share == 1 {

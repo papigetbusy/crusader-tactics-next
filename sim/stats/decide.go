@@ -108,12 +108,14 @@ func Refresh(c *content.Content, b *state.Battle, u *state.Unit) {
 	for i, s := range u.Skills {
 		u.Cooldowns[i] = cd[s.Name]
 	}
-	n := Hero(c, u.Class, u.Level, u.Ascension)
+	n, base := Geared(c, u.Class, u.Level, u.Ascension, u.Gear)
 	d := n.MaxHP - u.MaxHP
-	u.MaxHP, u.Atk, u.Def, u.Mov = n.MaxHP, n.Atk, n.Def, n.Mov
+	u.MaxHP, u.Atk, u.Def, u.Mov, u.BaseAtk = n.MaxHP, n.Atk, n.Def, n.Mov, base
 	u.HP = max(1, min(u.HP+max(0, d), u.MaxHP))
+	u.Affix = AffixSum(c, u.Gear)
 	a := c.Ascensions[u.Ascension]
 	u.Element, u.RangeBonus = a.Element, a.Range
+	InitSets(c, u)
 }
 
 // heroOf finds a hero on the board or among the fallen.

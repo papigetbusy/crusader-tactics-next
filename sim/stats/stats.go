@@ -65,10 +65,27 @@ func Plain(c *content.Content, class string, level int) Numbers {
 }
 
 // Hero is a hero's numbers at a level, with its ascension, without gear (old
-// calc, index.html lines 736-737). Gear is added in step 6c.
+// calc, index.html lines 736-737).
 func Hero(c *content.Content, class string, level int, ascension string) Numbers {
+	n, _ := Geared(c, class, level, ascension, nil)
+	return n
+}
+
+// Geared is a hero's numbers with its gear (old calc, lines 736-737): armor
+// and charm numbers are added before the form multiplies them, then the
+// gear's % bonuses of weapon set 1, then set 1's weapon attack. It also
+// returns the attack without weapons (old atk0).
+func Geared(c *content.Content, class string, level int, ascension string, gear map[string]content.Item) (Numbers, int) {
 	p := c.Progress
 	n := Plain(c, class, level)
+	for sl, it := range gear {
+		if !slices.Contains(content.WeaponSlots, sl) {
+			n.MaxHP += it.HP
+			n.Atk += it.Atk
+			n.Def += it.Def
+			n.Mov += it.Mov
+		}
+	}
 	f := p.Forms[Form(c, level, ascension)]
 	n.MaxHP = int(Round(float64(n.MaxHP) * f.HP))
 	n.Atk = int(Round(float64(n.Atk) * f.Atk))
@@ -87,7 +104,17 @@ func Hero(c *content.Content, class string, level int, ascension string) Numbers
 		n.Def += a.DefAdd
 		n.Mov += a.Mov
 	}
-	return n
+	af := SetAffixes(c, class, gear, 0)
+	if v := af["hpPct"]; v != 0 {
+		n.MaxHP = int(Round(float64(n.MaxHP) * (1 + float64(v)/100)))
+	}
+	if v := af["defPct"]; v != 0 {
+		n.Def = int(Round(float64(n.Def) * (1 + float64(v)/100)))
+	}
+	n.Mov += af["movA"]
+	base := n.Atk
+	n.Atk += SetAtk(c, class, gear, 0)
+	return n, base
 }
 
 // XPToNext is the experience a hero needs to leave this level.
@@ -138,9 +165,11 @@ func levelUp(c *content.Content, b *state.Battle, u *state.Unit, emit action.Emi
 	if u.Level == c.Progress.AscendAt && u.Ascension == "" {
 		b.Decisions = append(b.Decisions, state.Decision{Kind: state.DecideAscend, Unit: u.ID})
 	}
-	n := Hero(c, u.Class, u.Level, u.Ascension)
+	// The old game took the new numbers with weapon set 1's attack, whatever
+	// set was in hand, until the next set switch (old gain, line 1964).
+	n, base := Geared(c, u.Class, u.Level, u.Ascension, u.Gear)
 	u.HP += n.MaxHP - u.MaxHP
-	u.MaxHP, u.Atk, u.Def, u.Mov = n.MaxHP, n.Atk, n.Def, n.Mov
+	u.MaxHP, u.Atk, u.Def, u.Mov, u.BaseAtk = n.MaxHP, n.Atk, n.Def, n.Mov, base
 }
 
 // Share gives the experience for a kill: the killer keeps most of it and the
