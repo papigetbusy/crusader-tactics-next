@@ -22,10 +22,11 @@ type View struct {
 	LevelCap  int           `json:"levelCap,omitempty"`
 	Decision  *DecisionView `json:"decision,omitempty"` // the first waiting choice
 	Fields    []state.Field `json:"fields,omitempty"`
-	Kegs      []state.Keg   `json:"kegs,omitempty"`   // Powder Kegs waiting to blow up
-	Traps     int           `json:"traps,omitempty"`  // how many hidden traps (where is a secret only to monsters)
-	Fallen    []string      `json:"fallen,omitempty"` // classes of fallen heroes, last to fall at the end
-	Bag       []ItemView    `json:"bag,omitempty"`    // items carried but not worn
+	Kegs      []state.Keg   `json:"kegs,omitempty"`      // Powder Kegs waiting to blow up
+	Traps     int           `json:"traps,omitempty"`     // how many hidden traps (where is a secret only to monsters)
+	TrapTiles []state.Tile  `json:"trapTiles,omitempty"` // where the heroes' snares are (the player set them)
+	Fallen    []string      `json:"fallen,omitempty"`    // classes of fallen heroes, last to fall at the end
+	Bag       []ItemView    `json:"bag,omitempty"`       // items carried but not worn
 	Gold      int           `json:"gold"`
 	Chests    []state.Chest `json:"chests,omitempty"`
 	Floor     int           `json:"floor,omitempty"`
@@ -133,6 +134,9 @@ func (g *Game) View() View {
 		v.Fallen = append(v.Fallen, f.Class)
 	}
 	v.Fields, v.Kegs, v.Traps = b.Fields, b.Kegs, len(b.Traps)
+	for _, t := range b.Traps {
+		v.TrapTiles = append(v.TrapTiles, state.Tile{X: t.X, Y: t.Y})
+	}
 	v.Decision = g.decisionView()
 	v.Bag, v.Gold, v.Chests = g.bagView(), b.Gold, b.Chests
 	v.Floor, v.Biome, v.Reinforce, v.Starts = b.Floor, b.Biome, b.Reinforce, b.Starts

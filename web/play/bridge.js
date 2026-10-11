@@ -63,7 +63,9 @@
     BIO = BIOMES.find((b) => b.n === V.biome) || BIOMES[0];
     CHS = (V.chests || []).map((c) => ({ x: c.x, y: c.y, t: c.kind }));
     FIELDS = (V.fields || []).map((f) => ({ x: f.X, y: f.Y, r: f.Range, turns: f.Turns, kind: f.Kind, sq: f.Square }));
-    TRAPS = []; OBJ = null; TURN = V.turn;
+    TRAPS = (V.trapTiles || []).map((t) => ({ x: t.x, y: t.y }));
+    OBJ = V.throne && !V.outcome ? { type: 'seize', x: V.throne.x, y: V.throne.y } : null;
+    TURN = V.turn;
     const c = V.climb;
     floor = c ? c.floor : V.floor || 1; best = c ? c.best : floor; gold = c ? c.gold : V.gold || 0;
     const seen = new Set(), list = [];
@@ -220,6 +222,7 @@
     if (!evs) return;
     playNow(evs);
     sync();
+    if (evs.some((e) => e.kind === 'seized')) OBJ = null; // the referee already ended the fight; the old tap code must not seize again
   };
   window.undoMove = function () {
     MENUON = false; SUBOPEN = false;
@@ -341,6 +344,7 @@
       mkb(b, '⚔ Start battle', () => { const evs = act({ kind: 'start' }); if (!evs) return; CT.objs.clear(); sync(); bar(); log('Your turn. Drag a hero to a blue tile, or tap it.'); ui(); draw(); }).classList.add('gold');
     }
     b.hidden = p !== 'prepare';
+    document.body.classList.toggle('ct-prep', p === 'prepare'); // no End Turn before the battle starts
   }
   CT.bar = bar;
   function teamUI() {
@@ -364,6 +368,17 @@
     };
   }
 
+  // ---------- Powder Kegs, drawn over the old map ----------
+  const oldDraw = window.draw;
+  window.draw = function () {
+    oldDraw();
+    const kegs = (CT.V && CT.V.kegs) || [];
+    if (!kegs.length || !M || !U) return;
+    g.setTransform(DPR * K, 0, 0, DPR * K, DPR * OFx, DPR * OFy);
+    g.font = 'bold 20px sans-serif'; g.textAlign = 'center';
+    for (const k of kegs) { if (!M[k.Y]) continue; const p = spos({ x: k.X, y: k.Y }); g.fillText('💣', p.x, p.y - 8); }
+  };
+
   // ---------- the title screen: a new climb, or load ----------
   window.newFloor = () => arrive();
   window.showEv = () => {};
@@ -383,6 +398,6 @@
   // ---------- look ----------
   const css = document.createElement('style');
   css.textContent = `#ctbar{position:fixed;top:calc(env(safe-area-inset-top) + 56px);left:50%;transform:translateX(-50%);z-index:30;display:flex;gap:6px}
-  #ctbar .b{padding:8px 14px}.ctrow{display:block;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.08)}.ctrow input{transform:scale(1.3);margin-right:8px}`;
+  #ctbar .b{padding:8px 14px}.ct-prep #end,.ct-prep #dAend{display:none!important}.ctrow{display:block;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.08)}.ctrow input{transform:scale(1.3);margin-right:8px}`;
   document.head.append(css);
 })();
