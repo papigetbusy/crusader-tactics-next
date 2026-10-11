@@ -53,6 +53,7 @@ type Unit struct {
 	// Heroes: what the hero knows (the old hero record's learned, eq, ult, spec).
 	Learned   []string // every skill learned
 	Equipped  []string // up to four skills on the bar
+	Swapped   bool     // has changed its skills on this floor (once per floor)
 	Ultimate  string   // the skill in the ultimate slot
 	Ascension string   // chosen at Lv 30 ("" before)
 	Souls     []string // Necromancer: monster kinds whose raise skill it learned

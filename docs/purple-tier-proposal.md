@@ -150,7 +150,7 @@ These are single pieces, not sets. The new named sets with their own play styles
 ## 8. What else changes
 
 - **The shop (Phase 7):** combining two rares makes a purple; combining two purples makes a legendary, only once a hero is Lv 30. Today two rares make a legendary.
-- **Saves:** old saves keep loading; their legendary items stay legendary.
+- **Saves:** old saves are not needed for now (owner, 2026-10-11).
 - **Old-game checks:** they keep using the old game's four tiers, so they stay green.
 - **Changes page:** purple gets listed as an approved difference from the old game.
 

@@ -24,7 +24,7 @@ Paste this at the top of every big prompt. Decisions confirmed by the owner on 2
 ## Confirmed decisions (2026-10-09)
 1. **Match level:** the Go version matches the old game's combat numbers exactly (checked against recorded fights). Exact floor layouts are not required to match, because the old floor generator is not reproducible across browsers.
 2. **Fight seeds and saves:** a fresh combat seed is rolled whenever a saved game loads.
-3. **Old saves:** existing saves keep working, through a loader that reads today's save format.
+3. **Old saves:** not needed for now (owner, 2026-10-11): he starts a fresh game, and Claude makes a save for playtesting when we get there. (Was: existing saves keep working through a loader.)
 4. **Fair shuffle:** the old game's four live random-comparator shuffles (enemy start slots, item combining, affix picks, multi-target extra targets) are replaced by one fair shuffle on the sim's seeded random. Listed as an intentional difference from the old game.
 
 ## Confirmed decisions (2026-10-10)

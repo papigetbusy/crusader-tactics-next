@@ -22,7 +22,7 @@ Every feature of the old game (v0.26.1), and where it lands in the rebuild. Noth
 - ✅ Loot drops, chests (wood, silver, gold), gold, loot that targets gear your party can use
 - ✅ Companion spirits (rare blue-glowing monsters that bond with the hero who defeats them; the blue glow comes with the new sprites in Phase 8)
 - ✅ **Unequip** (take an item off into the bag; the old gear sheet allowed it by tapping a slot)
-- ✅ Skill library: choose which learned skills each hero brings (before the battle starts; between floors in Phase 7)
+- ✅ Skill library: change a hero's skills (any number at once) once per floor (owner's rule, 2026-10-11)
 - ✅ The purple (epic) tier, new (approved 2026-10-11): 8 weapons, 9 armor pieces, 3 charms, 14 purple bonuses
 
 ## 2. The run (Phase 7)
@@ -37,8 +37,9 @@ Every feature of the old game (v0.26.1), and where it lands in the rebuild. Noth
 - 🔜 Team select and deployment (approved 2026-10-10): look at the map, pick heroes for every slot, place them on blue starting tiles (more tiles than heroes); only heroes who fight earn XP; if you don't choose, your highest-level heroes go
 - ➕ **Change ascension once per floor** from the gear sheet (the old "re-spec" and "Choose Ascension" buttons)
 - 🔜 Floor-clear summary (XP, level-ups, loot, gold)
-- 🔜 Saves: 3 save slots, autosave at the start of every turn, resume mid-battle, save export and import (copy, download, paste or file), existing saves keep loading
-- 🔜 Defeat re-runs the floor; shop floors count as cleared (both flagged for a design call)
+- 🔜 Saves: 3 save slots, autosave at the start of every turn, resume mid-battle, save export and import (copy, download, paste or file); old saves not needed for now (owner, 2026-10-11), Claude makes a playtest save
+- 🔜 Defeat re-runs the floor with no penalty (kept on purpose, owner 2026-10-11: getting stuck and farming earlier floors is the game)
+- 🛠 Shops (owner, 2026-10-11): no floor number; every 7 floors the shop comes up between floors, then you fight that floor
 
 ## 3. Screen and controls (Phase 8)
 

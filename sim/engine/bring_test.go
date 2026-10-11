@@ -18,64 +18,70 @@ func prepared() *Game {
 	return g
 }
 
+// spare is the hero's first learned normal skill and ultimate not carried.
+func spare(g *Game) (normal, ult string) {
+	for _, s := range g.library(g.B.Unit(1)) {
+		if s.Ultimate && ult == "" {
+			ult = s.Name
+		} else if !s.Ultimate && normal == "" {
+			normal = s.Name
+		}
+	}
+	return
+}
+
 func TestBringSkills(t *testing.T) {
-	t.Run("Before the battle starts a hero can put a learned skill on the bar in place of another", func(t *testing.T) {
+	t.Run("A hero can change any number of its skills, and its ultimate, in one go", func(t *testing.T) {
 		g := prepared()
 		h := g.B.Unit(1)
-		lib := g.library(h)
-		if len(lib) == 0 {
-			t.Fatal("nothing in the library")
-		}
-		pick := ""
-		for _, s := range lib {
-			if !s.Ultimate {
-				pick = s.Name
-				break
-			}
-		}
-		if _, err := g.Apply(action.Action{Kind: action.Bring, Unit: 1, Choice: pick, Slot: "2"}); err != nil {
+		n, u := spare(g)
+		bar := []string{h.Equipped[0], n, h.Equipped[2]}
+		if _, err := g.Apply(action.Action{Kind: action.Bring, Unit: 1, Bar: bar, Choice: u}); err != nil {
 			t.Fatal(err)
 		}
-		if h.Equipped[1] != pick || h.Skills[1].Name != pick || len(h.Cooldowns) != len(h.Skills) {
-			t.Fatalf("bar %v", h.Equipped)
+		if len(h.Equipped) != 3 || h.Equipped[1] != n || h.Ultimate != u || h.Skills[1].Name != n || h.Done {
+			t.Fatalf("bar %v, ultimate %s, done %v", h.Equipped, h.Ultimate, h.Done)
 		}
 	})
 
-	t.Run("A learned ultimate takes the ultimate slot", func(t *testing.T) {
+	t.Run("Skills can be changed only once per floor", func(t *testing.T) {
 		g := prepared()
 		h := g.B.Unit(1)
-		for _, s := range g.library(h) {
-			if s.Ultimate {
-				if _, err := g.Apply(action.Action{Kind: action.Bring, Unit: 1, Choice: s.Name}); err != nil {
-					t.Fatal(err)
-				}
-				if h.Ultimate != s.Name {
-					t.Fatalf("ultimate %s", h.Ultimate)
-				}
-				return
-			}
+		n, _ := spare(g)
+		if _, err := g.Apply(action.Action{Kind: action.Bring, Unit: 1, Bar: []string{n}}); err != nil {
+			t.Fatal(err)
 		}
-		t.Fatal("no second ultimate learned by Lv 27")
+		if _, err := g.Apply(action.Action{Kind: action.Bring, Unit: 1, Bar: []string{h.Learned[0]}}); code(err) != "swapped" {
+			t.Fatalf("second change: %v", err)
+		}
 	})
 
-	t.Run("Skills can't be changed once the battle has started, or to a skill not learned, or with the bar full and no slot named", func(t *testing.T) {
+	t.Run("A skill kept on the bar keeps its cooldown; a skill brought in starts ready", func(t *testing.T) {
 		g := prepared()
 		h := g.B.Unit(1)
-		pick := ""
-		for _, s := range g.library(h) {
-			if !s.Ultimate {
-				pick = s.Name
+		h.Cooldowns[0], h.Cooldowns[1] = 2, 3
+		n, _ := spare(g)
+		if _, err := g.Apply(action.Action{Kind: action.Bring, Unit: 1, Bar: []string{h.Equipped[0], n}}); err != nil {
+			t.Fatal(err)
+		}
+		if h.Cooldowns[0] != 2 || h.Cooldowns[1] != 0 {
+			t.Fatalf("cooldowns %v", h.Cooldowns)
+		}
+	})
+
+	t.Run("Only learned skills can be brought: 1 to 4 normal skills, and an ultimate only in the ultimate slot", func(t *testing.T) {
+		g := prepared()
+		h := g.B.Unit(1)
+		_, u := spare(g)
+		for want, bar := range map[string][]string{
+			"not-learned": {"Fireball"},
+			"ultimate":    {u},
+			"bar-size":    {h.Learned[0], h.Learned[1], h.Learned[3], h.Learned[4], h.Learned[5]},
+			"twice":       {h.Equipped[0], h.Equipped[0]},
+		} {
+			if _, err := g.Apply(action.Action{Kind: action.Bring, Unit: 1, Bar: bar}); code(err) != want {
+				t.Errorf("%v: %v, want %s", bar, err, want)
 			}
-		}
-		if _, err := g.Apply(action.Action{Kind: action.Bring, Unit: 1, Choice: pick}); code(err) != "bar-full" {
-			t.Fatalf("full bar: %v", err)
-		}
-		if _, err := g.Apply(action.Action{Kind: action.Bring, Unit: 1, Choice: "Fireball", Slot: "1"}); code(err) != "not-learned" {
-			t.Fatalf("not learned: %v", err)
-		}
-		h.Moved = true
-		if _, err := g.Apply(action.Action{Kind: action.Bring, Unit: 1, Choice: pick, Slot: "1"}); code(err) != "battle-started" {
-			t.Fatalf("after moving: %v", err)
 		}
 	})
 }

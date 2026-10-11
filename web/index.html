@@ -194,15 +194,19 @@ function panel(){
       h+=`<button id="wait">Wait</button>`;
     }
     if(u.gear)h+=`<button id="gearb">${gearOpen?'Hide gear':'Gear'}</button>`;
-    if(V.preparing&&u.library&&u.library.length)h+=`<button id="skb">${skOpen?'Hide skills':'Skills'}</button>`;
-    h+=`</div>${skOpen&&V.preparing?skillSheet(u):''}${gearOpen&&u.gear?gearSheet(u):''}${endBtn()}`;
+    const canSk=!u.done&&!u.swapped&&V.side===0&&u.library&&u.library.length;
+    if(canSk)h+=`<button id="skb">${skOpen?'Hide skills':'Skills'}</button>`;
+    h+=`</div>${skOpen&&canSk?skillSheet(u):''}${gearOpen&&u.gear?gearSheet(u):''}${endBtn()}`;
   } else h+=`<div class="muted">Skills: ${u.skills.map(s=>s.name).join(', ')}</div>${endBtn()}`;
   p.innerHTML=h;
   p.querySelectorAll('.skills button').forEach(bt=>bt.onclick=()=>chooseSkill(+bt.dataset.i));
   if($('skx'))$('skx').onclick=()=>{sk=null;refreshAim();render()};
   if($('gearb'))$('gearb').onclick=()=>{gearOpen=!gearOpen;render()};
   if($('skb'))$('skb').onclick=()=>{skOpen=!skOpen;render()};
-  p.querySelectorAll('[data-bring]').forEach(b=>b.onclick=()=>apply({kind:'bring',unit:sel,choice:b.dataset.bring,slot:b.dataset.slot||''}));
+  p.querySelectorAll('.skpick').forEach(c=>c.onchange=()=>{if(p.querySelectorAll('.skpick:checked').length>4)c.checked=false});
+  if($('skgo'))$('skgo').onclick=()=>{const bar=[...p.querySelectorAll('.skpick:checked')].map(c=>c.value),ult=(p.querySelector('[name=ultpick]:checked')||{}).value||'';
+    if(!bar.length){alert('Pick at least one skill.');return}
+    if(confirm('Change skills now? You can only do this once on this floor.')){skOpen=false;apply({kind:'bring',unit:sel,bar,choice:ult})}};
   p.querySelectorAll('[data-set]').forEach(b=>b.onclick=()=>apply({kind:'set',unit:sel,set:+b.dataset.set}));
   p.querySelectorAll('[data-equip]').forEach(b=>b.onclick=()=>apply({kind:'equip',unit:sel,item:+b.dataset.equip,slot:b.dataset.slot||''}));
   p.querySelectorAll('[data-off]').forEach(b=>b.onclick=()=>apply({kind:'unequip',unit:sel,slot:b.dataset.off}));
@@ -216,17 +220,15 @@ function panel(){
   if($('wait'))$('wait').onclick=()=>apply({kind:'wait',unit:sel});
   bindEnd();
 }
-// skillSheet: before the battle starts, choose which learned skills to bring.
+// skillSheet: change which learned skills a hero carries, once per floor.
 function skillSheet(u){
   const bar=u.skills.filter(s=>s.name!=='Strike'&&!s.ultimate),ult=u.skills.find(s=>s.ultimate);
-  let h=`<div class="sheet"><h3>Skills you bring</h3><div class="muted">Change them before anyone moves; once the battle starts they are fixed.</div>`;
-  h+=bar.map((s,i)=>itemRow({name:`${i+1}. ${s.name}`,color:'#e8e2d0',kind:'skill',text:s.text})).join('');
-  if(ult)h+=itemRow({name:`★ ${ult.name}`,color:'#f2b84b',kind:'ultimate',text:ult.text});
-  h+=`<h3>Learned, left behind</h3>`;
-  h+=u.library.map(s=>{const b=s.ultimate?`<button class="gold" data-bring="${s.name}">Make ultimate</button>`:
-    bar.length<4?`<button class="gold" data-bring="${s.name}">Bring</button>`:bar.map((x,i)=>`<button class="gold" data-bring="${s.name}" data-slot="${i+1}">For ${x.name}</button>`).join('');
-    return itemRow({name:(s.ultimate?'★ ':'')+s.name,color:s.ultimate?'#f2b84b':'#e8e2d0',kind:s.ultimate?'ultimate':'skill',text:s.text},b)}).join('');
-  return h+'</div>';
+  const normals=bar.map(s=>({name:s.name,text:s.text,on:1})).concat(u.library.filter(s=>!s.ultimate));
+  const ults=(ult?[{name:ult.name,text:ult.text,on:1}]:[]).concat(u.library.filter(s=>s.ultimate));
+  let h=`<div class="sheet"><h3>Change skills</h3><div class="muted">Pick up to 4 skills and 1 ultimate. You can change skills once per floor; after that they stay until the next floor.</div>`;
+  h+=normals.map(s=>`<label class="item"><div><b>${s.name}</b><small>${s.text||''}</small></div><input type="checkbox" class="skpick" value="${s.name}" ${s.on?'checked':''}></label>`).join('');
+  h+=`<h3>Ultimate</h3>`+ults.map(s=>`<label class="item"><div><b style="color:#f2b84b">★ ${s.name}</b><small>${s.text||''}</small></div><input type="radio" name="ultpick" value="${s.name}" ${s.on?'checked':''}></label>`).join('');
+  return h+`<div class="acts"><button class="gold" id="skgo">Change skills</button></div></div>`;
 }
 const SLOTN={w:'Set 1',w2:'Set 2',w3:'Set 3',h:'Helm',a:'Armor',b:'Boots',c:'Charm'};
 function itemRow(it,btns){return `<div class="item"><div><b style="color:${it.color}">${it.name}</b> <span class="muted">(${it.kind})</span><small>${it.text||'no bonuses'}</small>${it.lore?`<small><i>${it.lore}</i></small>`:''}</div>${btns?`<div class="btns">${btns}</div>`:''}</div>`}
@@ -365,7 +367,7 @@ function say(e){
     case 'equipped':logLine('good',`${n(e.unit)} puts on ${e.skill}.`);break;
     case 'dropped':logLine('',`${e.skill} is thrown away.`);break;
     case 'set':logLine('',`${n(e.unit)} takes weapon set ${e.amount} in hand.`);break;
-    case 'brought':logLine('',`${n(e.unit)} will bring ${e.skill}.`);break;
+    case 'brought':logLine('',`${n(e.unit)} changes skills for this floor.`);break;
     case 'learned':logLine('good',`${n(e.unit)} learns ${e.skill}.`);break;
     case 'won':logLine('good','Victory!');break;
     case 'lost':logLine('bad','Defeat.');break;

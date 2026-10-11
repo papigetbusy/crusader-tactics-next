@@ -11,23 +11,22 @@ import (
 // View is the board as the screen sees it: a read-only copy, so the screen
 // can never change a rule by accident.
 type View struct {
-	N         int           `json:"n"`
-	Ground    []string      `json:"ground"`
-	Turn      int           `json:"turn"`
-	Side      int           `json:"side"`
-	Outcome   string        `json:"outcome"`
-	Units     []UnitView    `json:"units"`
-	Throne    *state.Tile   `json:"throne,omitempty"`
-	LevelCap  int           `json:"levelCap,omitempty"`
-	Decision  *DecisionView `json:"decision,omitempty"` // the first waiting choice
-	Fields    []state.Field `json:"fields,omitempty"`
-	Kegs      []state.Keg   `json:"kegs,omitempty"`   // Powder Kegs waiting to blow up
-	Traps     int           `json:"traps,omitempty"`  // how many hidden traps (where is a secret only to monsters)
-	Fallen    []string      `json:"fallen,omitempty"` // classes of fallen heroes, last to fall at the end
-	Bag       []ItemView    `json:"bag,omitempty"`    // items carried but not worn
-	Gold      int           `json:"gold"`
-	Chests    []state.Chest `json:"chests,omitempty"`
-	Preparing bool          `json:"preparing,omitempty"` // before the battle starts: skills can still be changed
+	N        int           `json:"n"`
+	Ground   []string      `json:"ground"`
+	Turn     int           `json:"turn"`
+	Side     int           `json:"side"`
+	Outcome  string        `json:"outcome"`
+	Units    []UnitView    `json:"units"`
+	Throne   *state.Tile   `json:"throne,omitempty"`
+	LevelCap int           `json:"levelCap,omitempty"`
+	Decision *DecisionView `json:"decision,omitempty"` // the first waiting choice
+	Fields   []state.Field `json:"fields,omitempty"`
+	Kegs     []state.Keg   `json:"kegs,omitempty"`   // Powder Kegs waiting to blow up
+	Traps    int           `json:"traps,omitempty"`  // how many hidden traps (where is a secret only to monsters)
+	Fallen   []string      `json:"fallen,omitempty"` // classes of fallen heroes, last to fall at the end
+	Bag      []ItemView    `json:"bag,omitempty"`    // items carried but not worn
+	Gold     int           `json:"gold"`
+	Chests   []state.Chest `json:"chests,omitempty"`
 }
 
 // UnitView is one unit as the screen sees it.
@@ -65,6 +64,7 @@ type UnitView struct {
 	Bond      *state.Bond    `json:"bond,omitempty"`    // heroes: their companion spirit
 	Kind      string         `json:"kind,omitempty"`    // monsters: what kind (Goblin, Slime...)
 	Library   []LibraryView  `json:"library,omitempty"` // heroes: learned skills not on the bar
+	Swapped   bool           `json:"swapped,omitempty"` // heroes: skills already changed on this floor
 }
 
 // LibraryView is a learned skill a hero could bring instead.
@@ -127,7 +127,7 @@ func (g *Game) View() View {
 	}
 	v.Fields, v.Kegs, v.Traps = b.Fields, b.Kegs, len(b.Traps)
 	v.Decision = g.decisionView()
-	v.Bag, v.Gold, v.Chests, v.Preparing = g.bagView(), b.Gold, b.Chests, g.Preparing()
+	v.Bag, v.Gold, v.Chests = g.bagView(), b.Gold, b.Chests
 	for y := 0; y < b.N; y++ {
 		row := make([]byte, b.N)
 		for x := range row {
@@ -145,7 +145,7 @@ func (g *Game) View() View {
 			if u.Ascension != "" {
 				uv.Form = u.Ascension
 			}
-			uv.Gear, uv.Bond, uv.Library = g.gearView(u), u.Bond, g.library(u)
+			uv.Gear, uv.Bond, uv.Library, uv.Swapped = g.gearView(u), u.Bond, g.library(u), u.Swapped
 			if ab, ok := combat.AbilityOf(g.C, u); ok {
 				wait := u.AbilityCooldown
 				if ab.Free {
