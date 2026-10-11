@@ -2,11 +2,13 @@
 // View) and what the player is pointing at; every move, attack and turn is
 // an action sent to the referee, and its answer is drawn.
 import * as referee from './referee.js';
-import { tileAt, unitAt, closeUp } from './camera.js';
+import { tileAt, unitAt, closeUp, focusOn } from './camera.js';
 import { feet } from './board.js';
+import * as team from './team.js';
 
 const $ = (id) => document.getElementById(id);
 let screen = null; // { st, show, kick, log }
+let seen = ''; // which floor and step the screen last showed (to frame a new floor once)
 
 export function wire(s) {
   screen = s;
@@ -15,6 +17,7 @@ export function wire(s) {
   $('endTurn').onclick = endTurn;
   $('startBattle').onclick = () => send({ kind: 'start' }, 'Your turn. Tap a hero.');
   $('summaryGo').onclick = () => send({ kind: 'continue' });
+  $('teamButton').onclick = () => team.open(view(), (v) => { clear(); screen.show(v); after(); }, screen.log);
 }
 
 const st = () => screen.st;
@@ -62,10 +65,18 @@ export function after() {
   const s = st();
   s.starts = p === 'prepare' ? new Set((v.starts || []).map((t) => key(t.x, t.y))) : null;
   $('prepare').hidden = p !== 'prepare';
+  // a new floor: show the blue starting tiles above the buttons
+  const here = p + ':' + (v.climb ? v.climb.floor + ':' + v.turn : '');
+  if (p === 'prepare' && seen !== here && (v.starts || []).length) {
+    const xs = v.starts.map((t) => t.x), ys = v.starts.map((t) => t.y);
+    const f = feet((Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2);
+    requestAnimationFrame(() => focusOn(f.x, f.y - 40, $('prepare').getBoundingClientRect().top - 20));
+  }
+  seen = here;
   $('endTurn').hidden = p !== 'battle' || !!v.outcome;
   decision();
   summary();
-  if (p === 'prepare') screen.log(`Floor ${v.climb.floor}: tap a hero, then a blue tile to place them. Tap Start battle when ready.`);
+  if (p === 'prepare') screen.log(`Floor ${v.climb.floor}: look at the map, tap Team to choose heroes, tap a hero then a blue tile to place them, then Start battle.`);
   if (p === 'shop') send({ kind: 'continue' }, 'The shop is not on this screen yet: on to the floor.');
   const readyHeroes = st().units.filter(ready);
   $('endTurn').classList.toggle('pulse', p === 'battle' && !readyHeroes.length);

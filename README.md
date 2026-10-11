@@ -2,7 +2,8 @@
 
 The clean rebuild of Crusader Tactics. The rules live in Go (the **referee**), the browser page only draws and asks questions (the **screen**).
 
-- Play: https://papigetbusy.github.io/crusader-tactics-next/ (practice fight)
+- Play the game: https://papigetbusy.github.io/crusader-tactics-next/play.html
+- Practice fights: https://papigetbusy.github.io/crusader-tactics-next/
 - Rule Book: https://papigetbusy.github.io/crusader-tactics-next/rules.html
 - Old-Game Match: https://papigetbusy.github.io/crusader-tactics-next/match.html
 - The old game stays playable at https://papigetbusy.github.io/crusader-tactics/ until this one matches it.
@@ -21,7 +22,10 @@ The clean rebuild of Crusader Tactics. The rules live in Go (the **referee**), t
 | `tools/practice/` | Makes the practice fights from recorded starting setups |
 | `tools/report/` | Turns test results into the Rule Book, Old-Game Match, House Rules and Changes pages |
 | `adapters/wasm/` | The bridge the browser page calls |
-| `web/` | The page itself |
+| `web/` | The practice page |
+| `web/game/` | The game screen (Play): draws the referee's answers and sends actions; it keeps no rules or game state |
+| `web/assets/` | Pictures (from the old game for now; the owner's new art replaces them), with `manifest.json` naming each one |
+| `tools/art/` | One-time tool that saved the old game's pictures as named files |
 | `.github/workflows/` | The build robot: tests, builds and publishes on every change |
 
 ## Status
@@ -36,7 +40,10 @@ The clean rebuild of Crusader Tactics. The rules live in Go (the **referee**), t
 - Phase 6a, levels and experience: done. Heroes earn XP for hits, misses, kills, heals and buffs, level up, grow and evolve at levels 5 and 20, exactly as in the old game: all 24 recorded level-ups and every hero's XP after every step now come from Go, not from the recordings.
 - Phase 6b, skills, abilities and ascensions: the old rules are done. Heroes carry their learned skills and bar; level-ups offer skills (fill a slot, replace one, or keep); Lv 30 offers three ascensions; all 30 class abilities and 30 ascension abilities work, with every ascension passive. 176 new high-level old-game fights replay exactly (14,289 of 14,289 steps), using all 61 abilities 1,054 times. The new even skill list (approved 2026-10-10) is in too: 53 new skills plus Last Light, every class on one schedule, monsters on the same schedule, each new skill with its own rule test, and four Lv 27 skill test fights on the practice page. The old-game match checks still use the old lists and stay fully green.
 - Phase 6c, gear: done. Weapons, armor, charms, rarities and all 27 item bonuses, weapon ranks E-S, weapon sets (switching sets, dual wielding), the 3 armor sets, the 19 legendaries, and equipping and dropping items. A hero with no weapon counts as its class's usual weapon in the weapon triangle (approved change). 179 new old-game fights with geared parties replay exactly (14,994 of 14,994 steps), including 342 times a hero changed gear mid-battle. The practice page has a gear sheet: what each hero wears, its weapon sets, and a bag to equip from. Two old-game oversights are fixed (approved): putting on gear in battle uses up the hero's turn, and a level-up no longer drops the weapons in hand from the hero's attack.
-- Phase 8, the real screen (in progress): play.html is the old game's own screen and art, now run by the new referee. Every move, attack and enemy turn is decided by Go; the old screen only draws it. Done so far: the climb from the title screen, the map with the old art and camera, choosing and placing the team, moving (tap or drag), attacking with the old effects, the enemy turn, and the floor summary.
+- Phase 8, the real screen (in progress): a new game screen written from scratch, using only the old game's pictures (none of its code; owner's rule 2026-10-11). It only draws the referee's answers and sends actions, so online play stays possible. Done so far:
+  - 8a: the title, the map with the old textures, trees, water and buildings, units with health bars, the camera (drag, pinch, zoom), the minimap, moving, attacking with a forecast, Defend, Wait, Potion, Undo, End Turn, the enemy turn and the floor summary.
+  - 8b: the team picker (cards for all ten heroes, like the old "Choose 5 heroes" screen) and placing heroes on the blue tiles.
+  - Next: walking and attack animations, the ☰ menu (gear, skills, saves, settings, floor list), the shop, and skills aimed in several taps.
 - Phase 7d, saves: done. Three save slots and an autosave on every turn of a climb, kept in the browser; a saved battle resumes exactly where it was, mid-fight (only the dice are fresh); saves can be exported (copied and downloaded) and imported (pasted or from a file); every save carries a version stamp so later versions can read it.
 - Phase 7b and 7c, the climb: done. "Start a climb" on the practice page plays the real run from floor 1 with all ten heroes: look at the map, choose a hero for each slot (5, then one more at floors 25, 50 and 75), place them on the blue tiles, fight. Only the heroes who fight gain XP. A floor-clear summary follows each win; a defeat keeps everything earned and the floor is fought again. The shop comes up before every 7th floor (buy, sell, combine two copies into one a rarity higher). The floor list travels back to any floor reached; floors keep their map, monster level, opened chests and shop stock, and replays pay half gold. Every 100th floor gives a free legendary; a Lv 30 hero can change ascension once per floor.
 - Phase 7a, floors: done. The floor builder makes every floor of the climb from the run's seed: map size, ground (ridges with passes, rivers with bridges, forests, hills, lakes, forts, a road along a guaranteed route), biome, monsters and their level (from the floor and the team's strength), bosses, elites, throne and reinforcement floors, chests and companion spirits, plus the new blue starting tiles. 1,500 floors recorded from the old game are built again exactly in Go, and Go now brings in reinforcements in every old fight (732 arrivals, all matching). Shops no longer take a floor (owner's rule). The practice page has "Climb: floor" to build and play any floor.

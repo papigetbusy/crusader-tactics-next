@@ -228,4 +228,12 @@ func TestClimb(t *testing.T) {
 			t.Fatalf("level %d, first %d", g.climb.fl.Level, first)
 		}
 	})
+
+	t.Run("The team picker shows each hero's numbers, what it can use and its class ability", func(t *testing.T) {
+		for _, h := range climbGame().View().Climb.Heroes {
+			if h.HP <= 0 || h.Atk <= 0 || h.Mov <= 0 || h.Weapons == "" || h.Ability == "" {
+				t.Fatalf("%+v", h)
+			}
+		}
+	})
 }

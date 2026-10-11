@@ -96,7 +96,7 @@ func (g *Game) itemView(slot string, it content.Item) ItemView {
 // gearView is a hero's gear sheet.
 func (g *Game) gearView(u *state.Unit) *GearView {
 	c := g.C
-	cg, ok := c.Gear.Classes[u.Class]
+	_, ok := c.Gear.Classes[u.Class]
 	if !ok || !u.Armed {
 		return nil
 	}
@@ -132,19 +132,7 @@ func (g *Game) gearView(u *state.Unit) *GearView {
 		bon = append(bon, g.affixText(k, u.Affix[k]))
 	}
 	gv.Bonuses = strings.Join(bon, " · ")
-	var prof []string
-	seen := map[string]bool{}
-	for _, w := range cg.Weapons {
-		if !seen[w.Type] {
-			seen[w.Type] = true
-			prof = append(prof, c.Gear.WeaponNames[w.Type]+" "+c.Gear.Ranks[stats.RankFor(c, u.Class, u.Level, w.Type)])
-		}
-	}
-	var arm []string
-	for _, a := range cg.Armor {
-		arm = append(arm, map[string]string{"L": "Light", "M": "Medium", "H": "Heavy"}[a])
-	}
-	gv.Weapons = strings.Join(prof, " · ") + " · " + strings.Join(arm, " and ") + " armor"
+	gv.Weapons = g.weaponsText(u.Class, u.Level)
 	return gv
 }
 
@@ -155,4 +143,24 @@ func (g *Game) bagView() []ItemView {
 		out = append(out, g.itemView(it.Slot, it))
 	}
 	return out
+}
+
+// weaponsText is what a class can use at a level: "Sword C · Axe D · Medium
+// and Heavy armor".
+func (g *Game) weaponsText(class string, level int) string {
+	c := g.C
+	cg := c.Gear.Classes[class]
+	var prof []string
+	seen := map[string]bool{}
+	for _, w := range cg.Weapons {
+		if !seen[w.Type] {
+			seen[w.Type] = true
+			prof = append(prof, c.Gear.WeaponNames[w.Type]+" "+c.Gear.Ranks[stats.RankFor(c, class, level, w.Type)])
+		}
+	}
+	var arm []string
+	for _, a := range cg.Armor {
+		arm = append(arm, map[string]string{"L": "Light", "M": "Medium", "H": "Heavy"}[a])
+	}
+	return strings.Join(prof, " · ") + " · " + strings.Join(arm, " and ") + " armor"
 }

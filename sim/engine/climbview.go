@@ -35,6 +35,16 @@ type HeroRow struct {
 	InTeam     bool     `json:"inTeam,omitempty"`
 	CanAscend  []string `json:"canAscend,omitempty"` // other ascensions it may switch to now
 	SkillsUsed bool     `json:"skillsUsed,omitempty"`
+	// For the team picker: the hero's picture stage, numbers with its gear,
+	// what it can use, and its class ability.
+	Stage       int    `json:"stage,omitempty"`
+	HP          int    `json:"hp"`
+	Atk         int    `json:"atk"`
+	Def         int    `json:"def"`
+	Mov         int    `json:"mov"`
+	Weapons     string `json:"weapons"`
+	Ability     string `json:"ability,omitempty"`
+	AbilityText string `json:"abilityText,omitempty"`
 }
 
 // FloorRow is one line of the floor travel list.
@@ -67,7 +77,12 @@ func (g *Game) climbView() *ClimbView {
 	for _, h := range r.Heroes {
 		row := HeroRow{Class: h.Class, Form: stats.FormName(g.C, h.Class, h.Level), Level: h.Level, XP: h.XP,
 			XPNext: stats.XPToNext(g.C, h.Level), Ascension: h.Ascension, InTeam: slices.Contains(cl.team, h.Class),
-			SkillsUsed: h.SkillsVisit == r.Visit}
+			SkillsUsed: h.SkillsVisit == r.Visit, Stage: stats.Form(g.C, h.Level, h.Ascension), Weapons: g.weaponsText(h.Class, h.Level)}
+		n, _ := stats.Geared(g.C, h.Class, h.Level, h.Ascension, h.Gear)
+		row.HP, row.Atk, row.Def, row.Mov = n.MaxHP, n.Atk, n.Def, n.Mov
+		if ab, ok := g.C.AbilityFor(h.Class, h.Level, h.Ascension, false); ok {
+			row.Ability, row.AbilityText = ab.Name, ab.Text
+		}
 		if h.Ascension != "" && h.AscensionVisit != r.Visit && cl.phase != PhaseBattle {
 			for _, a := range g.C.AscensionChoices[h.Class] {
 				if a != h.Ascension {
