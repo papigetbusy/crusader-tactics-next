@@ -66,14 +66,28 @@ export function play(units, events, speed, done, onEnemyTurn) {
   const spot = new Map(); // where each unit stands on screen now (it may have walked)
   const at = (id) => spot.get(id) || (byId.get(id) ? [byId.get(id).x, byId.get(id).y] : null);
   const items = [];
-  let t = 0;
+  let t = 0, busyUntil = 0, actor = null;
+  // A new unit starts acting: wait until the last animation has finished,
+  // then move the camera to it, then act (the camera never jumps away
+  // mid-animation; owner's request, decision 10).
+  const turnTo = (who) => {
+    if (!who || who.id === actor) return;
+    if (actor !== null) t = Math.max(t, busyUntil);
+    if (who.team === 1) {
+      items.push({ t, kind: 'cam', at: at(who.id) });
+      t += 350;
+    }
+    actor = who.id;
+  };
   for (const e of events) {
     const who = e.unit ? byId.get(e.unit) : null, target = e.target ? byId.get(e.target) : who;
+    if (e.kind === 'moved' || e.kind === 'skill' || e.kind === 'ability') turnTo(who);
     switch (e.kind) {
       case 'moved': case 'undone': {
         if (!who || !e.path || e.path.length < 2) break;
         const dur = Math.min(1500, 150 * (e.path.length - 1));
         items.push({ t, kind: 'walk', id: who.id, path: e.path, dur, from: at(who.id) });
+        busyUntil = Math.max(busyUntil, t + dur);
         spot.set(who.id, e.path[e.path.length - 1]);
         t += dur;
         break;
@@ -83,6 +97,7 @@ export function play(units, events, speed, done, onEnemyTurn) {
         const tg = target || who;
         const skill = (who.skills || []).find((s) => s.name === e.skill);
         items.push({ t, kind: 'lunge', id: who.id, to: e.target ? at(e.target) : null, from: at(who.id), cast: !e.target || (skill && (skill.heal || skill.support)) });
+        busyUntil = Math.max(busyUntil, t + (e.target && !(skill && (skill.heal || skill.support)) ? 420 : 720), t + 160 + 650);
         for (const [code, where] of effectsFor(e.skill, skill)) {
           items.push({ t: t + (where === 'c' ? 0 : 160), kind: 'fx', sheet: FX[code], at: where === 'c' ? at(who.id) : at(tg.id), big: code === 'E2' ? 1.5 : code === 'E15' ? 0.7 : 1 });
         }
@@ -132,8 +147,8 @@ function step(now) {
       const f = feet(...i.at);
       fx.push({ sheet: i.sheet, x: f.x, y: f.y - 30, t0: now, d: 650 / Math.min(run.k(), 6), size: TS * 1.5 * i.big });
     }
-    if ((i.kind === 'walk' || i.kind === 'lunge') && i.from && run.units.get(i.id).team === 1) {
-      const f = feet(...i.from);
+    if (i.kind === 'cam' && i.at) {
+      const f = feet(...i.at);
       lookAt(f.x, f.y - 40);
     }
     if (i.kind === 'enemy' && run.onEnemyTurn) run.onEnemyTurn();

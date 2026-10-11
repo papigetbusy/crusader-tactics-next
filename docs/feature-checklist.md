@@ -57,7 +57,7 @@ The old screen is carried over and wired to the referee; each of these gets tick
 - ✅ Minimap you can tap to jump, with your view box drawn on it (8a)
 - ✅ Units turn into simple markers only when zoomed far out (8a)
 - ✅ Flat (Fire Emblem) view and isometric view with rotate (flat is the main view) (new screen, 8g)
-- 🔜 The camera waits for each animation to finish before moving on (your request)
+- ✅ The camera waits for each animation to finish before moving on (your request) (8j)
 
 **Moving and acting**
 - ✅ (8i) **Drag a hero to a blue tile to move** (press, drag, release), with a preview line and target tile; the map scrolls when you drag near the screen edge; a short tap after a drag is ignored so it doesn't misfire; dropping on an unreachable tile says so
