@@ -1,11 +1,13 @@
 package oldgame
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 
 	"github.com/papigetbusy/crusader-tactics-next/sim/ai"
 	"github.com/papigetbusy/crusader-tactics-next/sim/combat"
+	"github.com/papigetbusy/crusader-tactics-next/sim/items"
 )
 
 // whereRolled maps each kind of Go roll to the old game's code line that
@@ -20,15 +22,30 @@ var whereRolled = map[string]string{
 	ai.RollPick:             "aiTurn:",
 	ai.RollSpecial:          "aiTurn:",
 	combat.RollShuffle:      "act:",
+	items.RollDrop:          "drop:",
+	items.RollBand:          "bandRoll:",
+	items.RollOwner:         "lootFor:",
+	items.RollSlot:          "lootPick:",
+	items.RollItem:          "genItem:",
+	items.RollBonus:         "rollAffixes:",
+	items.RollChest:         "openChest:",
 }
 
 // notPortedYet are old-game rolls for rules that arrive later (loot, chests,
 // where reinforcements appear). The feed steps over them.
-var notPortedYet = []string{"drop:", "bandRoll:", "lootPick:", "lootFor:", "genItem:", "rollAffixes:",
-	"anon:1203", "file:1203", "openChest:", "reinforce:",
+var notPortedYet = []string{
+	"anon:1203", "file:1203", // the old biased sort of an item's bonuses; the picks are served by PickAffixes
+	"reinforce:",
 	"file:1721", "act:1721"} // the old multi-target shuffle, replaced by the approved fair shuffle
 
-func skippable(site string) bool {
+func (sf *siteFeed) skippable(site string) bool {
+	if sf.noChests {
+		for _, p := range lootSites {
+			if strings.HasPrefix(site, p) {
+				return true
+			}
+		}
+	}
 	for _, p := range notPortedYet {
 		if strings.HasPrefix(site, p) {
 			return true
@@ -42,12 +59,17 @@ func skippable(site string) bool {
 // stepped over. Anything else is a mismatch, reported in plain words.
 type siteFeed struct {
 	step    *Step
-	picks   int // multi-target picks served so far
-	vals    []uint32
-	sites   []string
-	pos     int
-	used    int
-	skipped int
+	newLoot [][]string // the bonuses of each new non-legendary item in this step, in order (nil: not recorded)
+	// noChests: a step where a hero opened a chest in a recording that did
+	// not store where chests were; that step's loot rolls are stepped over.
+	noChests bool
+	served   int
+	picks    int // multi-target picks served so far
+	vals     []uint32
+	sites    []string
+	pos      int
+	used     int
+	skipped  int
 }
 
 func newSiteFeed(f *Fight, s *Step) *siteFeed {
@@ -71,7 +93,7 @@ func (sf *siteFeed) Roll(label string) float64 {
 			sf.used++
 			return float64(v) / 4294967296.0
 		}
-		if !skippable(site) {
+		if !sf.skippable(site) {
 			panic(fmt.Sprintf("Go rolled a %q, but the old game's next roll was at %s", label, site))
 		}
 		sf.pos++
@@ -83,7 +105,7 @@ func (sf *siteFeed) Roll(label string) float64 {
 // leftover reports old-game rolls Go never made.
 func (sf *siteFeed) leftover() string {
 	for ; sf.pos < len(sf.vals); sf.pos++ {
-		if !skippable(sf.sites[sf.pos]) {
+		if !sf.skippable(sf.sites[sf.pos]) {
 			return sf.sites[sf.pos]
 		}
 		sf.skipped++
@@ -126,4 +148,57 @@ func (sf *siteFeed) PickExtra(pool []int, n int) []int {
 	}
 	sf.picks++
 	return nil
+}
+
+// PickAffixes serves the bonuses the old game gave the next new item in
+// this step (read from the bag before and after). Older recordings did not
+// store the bag; then any pick will do, since the bag is not compared.
+func (sf *siteFeed) PickAffixes(cands []string, n int) ([]string, bool) {
+	if sf.newLoot == nil {
+		return cands[:n], true
+	}
+	if sf.served >= len(sf.newLoot) {
+		return nil, false
+	}
+	sf.served++
+	return sf.newLoot[sf.served-1], true
+}
+
+// newItems are the items in the bag after a step that were not there before,
+// in bag order: the bonus keys of each one that is not a legendary.
+func newItems(prev, now []RecItem) [][]string {
+	had := map[string]int{}
+	key := func(it RecItem) string { b, _ := json.Marshal(it); return string(b) }
+	for _, it := range prev {
+		had[key(it)]++
+	}
+	out := [][]string{}
+	for _, it := range now {
+		if k := key(it); had[k] > 0 {
+			had[k]--
+			continue
+		}
+		if it.R >= 3 {
+			continue
+		}
+		keys := []string{}
+		for _, a := range it.Af {
+			keys = append(keys, a[0].(string))
+		}
+		out = append(out, keys)
+	}
+	return out
+}
+
+// lootSites are the old game's loot rolls.
+var lootSites = []string{"openChest:", "lootFor:", "lootPick:", "genItem:", "rollAffixes:"}
+
+// opensChest reports a recorded step in which the old game opened a chest.
+func opensChest(f *Fight, s *Step) bool {
+	for _, i := range s.Dice.S {
+		if strings.HasPrefix(f.Sites[i], "openChest:") {
+			return true
+		}
+	}
+	return false
 }

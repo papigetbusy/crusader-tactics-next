@@ -14,6 +14,7 @@ const (
 	ChooseOK      = "ok"      // accept (an evolution, or a skill that goes in by itself)
 	ChooseKeep    = "keep"    // keep the current skills; the new one stays in the library
 	ChooseReplace = "replace" // replace the skill in slot Slot (0-3), or the ultimate
+	ChooseTake    = "take"    // take the new companion spirit instead (the old one leaves)
 )
 
 // Options lists what a player may answer to the first waiting decision
@@ -31,6 +32,8 @@ func Options(c *content.Content, b *state.Battle) []string {
 	switch d.Kind {
 	case state.DecideAscend:
 		return c.AscensionChoices[u.Class]
+	case state.DecideSwap:
+		return []string{ChooseKeep, ChooseTake}
 	case state.DecideLearn:
 		s, _ := c.SkillNamed(d.Skill)
 		switch {
@@ -84,6 +87,11 @@ func Decide(c *content.Content, b *state.Battle, choice string, slot int, emit a
 			u.Equipped[slot] = s.Name
 		}
 		emit(action.Event{Kind: action.Learned, Unit: u.ID, Skill: s.Name})
+	case state.DecideSwap:
+		if choice == ChooseTake {
+			u.Bond = &state.Bond{Kind: d.Skill, Element: d.Element}
+			emit(action.Event{Kind: action.Bonded, Unit: u.ID, Skill: d.Skill})
+		}
 	}
 	Refresh(c, b, u)
 	return nil

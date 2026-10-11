@@ -25,6 +25,8 @@ type View struct {
 	Traps    int           `json:"traps,omitempty"`  // how many hidden traps (where is a secret only to monsters)
 	Fallen   []string      `json:"fallen,omitempty"` // classes of fallen heroes, last to fall at the end
 	Bag      []ItemView    `json:"bag,omitempty"`    // items carried but not worn
+	Gold     int           `json:"gold"`
+	Chests   []state.Chest `json:"chests,omitempty"`
 }
 
 // UnitView is one unit as the screen sees it.
@@ -59,6 +61,8 @@ type UnitView struct {
 	CanMove   bool           `json:"canMove"`
 	Skills    []SkillView    `json:"skills"`
 	Gear      *GearView      `json:"gear,omitempty"` // heroes: what they wear
+	Bond      *state.Bond    `json:"bond,omitempty"` // heroes: their companion spirit
+	Kind      string         `json:"kind,omitempty"` // monsters: what kind (Goblin, Slime...)
 }
 
 // AbilityView is a hero's class ability as the screen shows it.
@@ -113,7 +117,7 @@ func (g *Game) View() View {
 	}
 	v.Fields, v.Kegs, v.Traps = b.Fields, b.Kegs, len(b.Traps)
 	v.Decision = g.decisionView()
-	v.Bag = g.bagView()
+	v.Bag, v.Gold, v.Chests = g.bagView(), b.Gold, b.Chests
 	for y := 0; y < b.N; y++ {
 		row := make([]byte, b.N)
 		for x := range row {
@@ -131,7 +135,7 @@ func (g *Game) View() View {
 			if u.Ascension != "" {
 				uv.Form = u.Ascension
 			}
-			uv.Gear = g.gearView(u)
+			uv.Gear, uv.Bond = g.gearView(u), u.Bond
 			if ab, ok := combat.AbilityOf(g.C, u); ok {
 				wait := u.AbilityCooldown
 				if ab.Free {
@@ -140,7 +144,7 @@ func (g *Game) View() View {
 				uv.Ability = &AbilityView{Name: ab.Name, Text: ab.Text, Wait: wait, Free: ab.Free, Target: ab.Target}
 			}
 		}
-		uv.Ascension, uv.Decoy, uv.Companion, uv.Pet = u.Ascension, u.Decoy, u.Companion, u.Summoned
+		uv.Ascension, uv.Decoy, uv.Companion, uv.Pet, uv.Kind = u.Ascension, u.Decoy, u.Companion, u.Summoned, u.Kind
 		for k, n := range u.Status {
 			if n > 0 {
 				uv.Statuses[k] = n
@@ -251,6 +255,12 @@ func (g *Game) decisionView() *DecisionView {
 	if s, ok := g.C.SkillNamed(d.Skill); ok {
 		dv.Text = s.Text
 	}
+	switch d.Kind {
+	case state.DecideBond:
+		dv.Text = "It joins every battle next to its hero and acts on its own. If it dies, it is gone for good."
+	case state.DecideSwap:
+		dv.Text = "A hero can only keep one companion spirit."
+	}
 	u := g.B.Unit(d.Unit)
 	for _, o := range g.Options() {
 		switch {
@@ -265,6 +275,10 @@ func (g *Game) decisionView() *DecisionView {
 			for i, n := range u.Equipped {
 				dv.Options = append(dv.Options, OptionView{Choice: o, Slot: i, Label: "Replace " + n})
 			}
+		case d.Kind == state.DecideSwap && o == stats.ChooseKeep && u != nil && u.Bond != nil:
+			dv.Options = append(dv.Options, OptionView{Choice: o, Label: "Keep the " + u.Bond.Kind})
+		case d.Kind == state.DecideSwap && o == stats.ChooseTake:
+			dv.Options = append(dv.Options, OptionView{Choice: o, Label: "Take the " + d.Skill})
 		case o == stats.ChooseKeep:
 			dv.Options = append(dv.Options, OptionView{Choice: o, Label: "Keep current skills"})
 		default:

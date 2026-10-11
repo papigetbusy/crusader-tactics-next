@@ -51,6 +51,17 @@ func oldGear(tables fs.FS) (Gear, error) {
 		CharmNames:   []string{"Bone Charm", "Lucky Coin", "Wolf Fang"},                    // NM.c, line 843
 		ArmorWeights: map[string]ArmorWeight{"H": {1.35, .9}, "L": {.7, 1.2}, "M": {1, 1}}, // genItem, lines 1064, 1067
 		Sets:         map[string]GearSet{},
+		Loot: Loot{
+			Power:      .8,                                                                          // TUNE.loot, line 845
+			Bands:      []LootBand{{10, .7, 0, 1}, {30, .7, 1, 2}, {60, .93, 2, 3}, {0, .75, 2, 3}}, // bandRoll, line 1005
+			DropChance: .6, BossLegendary: .25, EliteBetter: .3,                                     // drop, line 784
+			ForKiller: .5,                  // lootFor, line 1074
+			EmptySlot: .75, MainWeapon: .6, // lootPick, lines 1071-1072
+			Chests:       map[string][2]int{"wood": {0, 1}, "silver": {1, 2}, "gold": {2, 3}},                            // CHT, line 999
+			ChestUsual:   .7,                                                                                             // openChest, line 1003
+			ClassAffixes: oldClassAffixes,                                                                                // CAF, lines 1197-1201
+			GoldBase:     2, GoldPerLevel: .6, GoldBoss: 8, GoldElite: 3, GoldBounty: 2, GoldWanted: 3, GoldReplayed: .5, // hurt, line 1707; gmul, line 1460
+		},
 	}
 	for name, v := range map[string]any{"WPN.json": &wpn, "AFX.json": &afx, "SETS.json": &sets, "UNQ.json": &unq,
 		"RANKS.json": &g.Ranks, "RREQ.json": &g.RarityRank, "WTN.json": &g.WeaponNames} {
@@ -109,4 +120,19 @@ var oldClassGear = map[string]ClassGear{
 	"Witch":         {Weapons: []WeaponSkill{{"staff", "P"}, {"dagger", "S"}}, Armor: []string{"L", "M"}},
 	"Knight":        {Weapons: []WeaponSkill{{"lance", "P"}, {"sword", "S"}}, Armor: []string{"M", "H"}},
 	"Dragon Knight": {Weapons: []WeaponSkill{{"lance", "P"}, {"axe", "P2"}, {"sword", "S"}}, Armor: []string{"M", "H"}},
+}
+
+// oldClassAffixes is CAF (index.html lines 1197-1201): the bonuses loot for
+// each class can roll.
+var oldClassAffixes = map[string][]string{
+	"Warrior":       {"dmg", "phys", "crit", "critDmg", "leech", "bleedCh", "bossDmg", "hit", "hpPct", "defPct", "dr", "thorns", "regen", "fire", "light", "elec"},
+	"Tank":          {"dmg", "phys", "crit", "hpPct", "defPct", "dr", "thorns", "regen", "leech", "hit", "bossDmg", "dark", "ice", "fire"},
+	"Knight":        {"dmg", "phys", "crit", "critDmg", "leech", "bossDmg", "hit", "hpPct", "defPct", "dr", "thorns", "light", "dark", "elec"},
+	"Dragon Knight": {"dmg", "phys", "crit", "critDmg", "leech", "bossDmg", "hit", "addFire", "fire", "ice", "elec", "hpPct", "defPct", "dr", "thorns"},
+	"Mage":          {"dmg", "fire", "ice", "elec", "addFire", "addElec", "crit", "critDmg", "hit", "hpPct", "evade", "dr", "regen"},
+	"Healer":        {"healPct", "regen", "light", "elec", "dark", "dmg", "hpPct", "defPct", "dr", "evade", "hit"},
+	"Witch":         {"dmg", "dark", "poisonCh", "fire", "ice", "crit", "critDmg", "hit", "hpPct", "evade", "dr", "regen", "leech"},
+	"Ranger":        {"dmg", "phys", "crit", "critDmg", "hit", "bossDmg", "bleedCh", "poisonCh", "addElec", "ice", "dark", "elec", "evade", "hpPct", "dr"},
+	"Assassin":      {"dmg", "phys", "crit", "critDmg", "hit", "poisonCh", "bleedCh", "leech", "evade", "dark", "elec", "fire", "hpPct", "bossDmg"},
+	"Gunslinger":    {"dmg", "phys", "crit", "critDmg", "hit", "bossDmg", "addFire", "addElec", "bleedCh", "fire", "dark", "elec", "evade", "hpPct", "dr"},
 }

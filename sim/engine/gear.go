@@ -55,7 +55,7 @@ func (g *Game) inSet(u *state.Unit, i int, fn func()) {
 // dropped?" (old equip and the drop button, index.html lines 1786 and 1657).
 func (g *Game) checkGear(a action.Action) error {
 	b := g.B
-	if a.Item < 0 || a.Item >= len(b.Bag) {
+	if a.Kind != action.Unequip && (a.Item < 0 || a.Item >= len(b.Bag)) {
 		return no("no-such-item", "There is no such item in the bag.")
 	}
 	if a.Kind == action.Drop {
@@ -64,6 +64,15 @@ func (g *Game) checkGear(a action.Action) error {
 	u := b.Unit(a.Unit)
 	if u == nil || u.Team != state.Heroes || u.Companion || u.Decoy || u.Summoned {
 		return no("no-such-hero", "That is not one of your heroes.")
+	}
+	if a.Kind == action.Unequip {
+		if _, ok := u.Gear[a.Slot]; !ok {
+			return no("empty-slot", "%s wears nothing there.", u.Class)
+		}
+		if u.Done && g.C.Combat.EquipEndsTurn {
+			return no("finished", "%s has finished for this turn.", u.Class)
+		}
+		return nil
 	}
 	if u.Done && g.C.Combat.EquipEndsTurn {
 		return no("finished", "%s has finished for this turn.", u.Class)
@@ -138,4 +147,22 @@ func (g *Game) checkSet(a action.Action) error {
 		return no("no-such-set", "%s has no weapon set %d.", u.Class, a.Set)
 	}
 	return nil
+}
+
+// unequip takes an item off into the bag and works out the hero's numbers
+// again (the old gear sheet's slot button, index.html line 1813); like
+// putting gear on, in battle it uses up the hero's turn.
+func (g *Game) unequip(a action.Action, emit action.Emit) {
+	b := g.B
+	u := b.Unit(a.Unit)
+	it := u.Gear[a.Slot]
+	delete(u.Gear, a.Slot)
+	b.Bag = append(b.Bag, it)
+	stats.Refresh(g.C, b, u)
+	emit(action.Event{Kind: action.GearOff, Unit: u.ID, Skill: it.Name})
+	if g.C.Combat.EquipEndsTurn {
+		u.Done = true
+		combat.PairDone(b, u)
+		emit(action.Event{Kind: action.Finished, Unit: u.ID})
+	}
 }

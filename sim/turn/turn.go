@@ -111,6 +111,8 @@ func Start(c *content.Content, b *state.Battle, dice rng.Dice, side int, emit ac
 			b.Remove(u.ID)
 			if c.Combat.ReviveAnyDeath && u.Team == state.Heroes && !u.Summoned {
 				b.Fallen = append(b.Fallen, u)
+			} else if slices.Contains(b.Party, u.ID) {
+				b.Lost = append(b.Lost, u)
 			}
 			if c.Combat.MonstersRevive && u.Team == state.Enemies && !u.Summoned {
 				b.FallenFoes = append(b.FallenFoes, u)

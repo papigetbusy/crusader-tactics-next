@@ -119,6 +119,7 @@ func resync(c *content.Content, f *Fight, g *engine.Game, s Snap, party []int) {
 				b.Fallen = append(b.Fallen, u)
 			}
 		}
+		b.Lost = g.B.Lost
 	}
 	for _, fa := range s.FieldsAt {
 		num := func(i int) int { v, _ := fa[i].(float64); return int(v) }
@@ -148,14 +149,42 @@ func resync(c *content.Content, f *Fight, g *engine.Game, s Snap, party []int) {
 			if p.Gear != nil {
 				u.Gear = map[string]content.Item{}
 				for sl, it := range p.Gear {
+					if it.N == "" {
+						continue // a slot emptied by taking its item off
+					}
 					u.Gear[sl] = it.Item()
 				}
 			}
 		}
 		u.BaseAtk = u.Atk - stats.SetAtk(c, u.Class, u.Gear, u.WeaponSet)
 		stats.InitSets(c, u)
+		if i < len(s.Party) && s.Party[i].Comp != nil && s.Party[i].Comp.M < len(c.Monsters) {
+			u.Bond = &state.Bond{Kind: c.Monsters[s.Party[i].Comp.M].Name, Element: s.Party[i].Comp.E}
+			bondedCompanion(b, u)
+		}
 	}
 	b.Bag = bagOf(s)
+	b.Floor, b.Gold, b.Party = f.Cfg.Floor, s.Gold, party
+	b.BossLegendary, b.Replayed = s.Bl != 0, s.Cleared != 0
+	b.Chests = nil
+	for _, ch := range s.ChestsAt {
+		x, _ := ch[0].(float64)
+		y, _ := ch[1].(float64)
+		k, _ := ch[2].(string)
+		b.Chests = append(b.Chests, state.Chest{X: int(x), Y: int(y), Kind: k})
+	}
+}
+
+// bondedCompanion finds the companion spirit fighting beside hero u (the
+// recordings do not say whose a companion is): a living, non-undead
+// companion of the bonded kind.
+func bondedCompanion(b *state.Battle, u *state.Unit) {
+	for _, z := range b.Units {
+		if z.Companion && z.Kind == u.Bond.Kind && (z.Owner == 0 || z.Owner == u.ID) && !z.Summoned {
+			z.Undead, z.Owner = false, u.ID
+			return
+		}
+	}
 }
 
 // bagOf is the bag at a recorded moment. Loot drops are ported in 6d; until
@@ -191,6 +220,8 @@ func actionsFor(step Step, b *state.Battle) []action.Action {
 			a.Tiles = tiles
 		}
 		return []action.Action{a}
+	case "unequip":
+		return []action.Action{{Kind: action.Unequip, Unit: step.ID, Slot: step.Slot}}
 	case "equip":
 		if step.Item == nil {
 			return nil
@@ -198,9 +229,8 @@ func actionsFor(step Step, b *state.Battle) []action.Action {
 		want := step.Item.Item()
 		a := action.Action{Kind: action.Equip, Unit: step.ID, Item: -1}
 		for i, it := range b.Bag {
-			if reflect.DeepEqual(it, want) {
-				a.Item = i
-				break
+			if reflect.DeepEqual(it, want) && (a.Item < 0 || leftAfter(b.Bag, i, step.Snap.Inv)) {
+				a.Item = i // with two identical items, the one whose removal leaves the recorded bag
 			}
 		}
 		if want.Slot == content.SlotWeapon {
@@ -247,6 +277,11 @@ func decision(c *content.Content, g *engine.Game, step Step, party []int) (actio
 		if i := slices.Index(party, d.Unit); i >= 0 && i < len(step.Snap.Party) {
 			a.Choice = deref(step.Snap.Party[i].Spec)
 		}
+	case state.DecideSwap:
+		a.Choice = stats.ChooseKeep
+		if strings.HasPrefix(step.Choice, "Take") {
+			a.Choice = stats.ChooseTake
+		}
 	case state.DecideLearn:
 		switch {
 		case strings.HasPrefix(step.Choice, "Keep"):
@@ -288,4 +323,16 @@ func arrivals(c *content.Content, g *engine.Game, prev Snap, step Step) int {
 		n++
 	}
 	return n
+}
+
+// leftAfter says whether taking bag item i out leaves the bag the recording
+// shows next (anything the hero took off goes on the end).
+func leftAfter(bag []content.Item, i int, inv []RecItem) bool {
+	rest := append(bag[:i:i], bag[i+1:]...)
+	for k, it := range rest {
+		if k >= len(inv) || !reflect.DeepEqual(it, inv[k].Item()) {
+			return false
+		}
+	}
+	return true
 }

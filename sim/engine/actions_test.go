@@ -182,7 +182,7 @@ func TestScreenInfo(t *testing.T) {
 		g := duel()
 		for _, s := range practiceSetups(t) {
 			for _, u := range NewFight(g.C, s, 1).B.Units {
-				if u.Team == state.Heroes && u.Potions != 3 {
+				if u.Team == state.Heroes && !u.Companion && u.Potions != 3 {
 					t.Fatalf("%s has %d potions", u.Class, u.Potions)
 				}
 			}

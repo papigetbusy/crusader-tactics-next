@@ -60,6 +60,13 @@ type Picker interface {
 	PickExtra(pool []int, n int) []int
 }
 
+// AffixPicker lets the old-game check replay the bonuses the old game picked
+// for a new item (its biased sort cannot be repeated exactly). ok is false
+// when it has nothing to say. Real dice never implement it.
+type AffixPicker interface {
+	PickAffixes(candidates []string, n int) (picked []string, ok bool)
+}
+
 // Shuffle puts a list in a fair random order (the standard Fisher-Yates
 // method). It replaces the old game's biased sort-based shuffles; this
 // difference was approved by the owner on 2026-10-09.

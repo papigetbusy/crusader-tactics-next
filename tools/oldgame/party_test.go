@@ -11,7 +11,7 @@ import (
 func partyOf(s Snap) []int {
 	var ids []int
 	for _, u := range s.Units {
-		if u.Team == state.Heroes {
+		if u.Team == state.Heroes && u.Cp == 0 && u.M == nil { // not a companion or a monster ally
 			ids = append(ids, u.ID)
 		}
 	}

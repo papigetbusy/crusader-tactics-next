@@ -156,6 +156,7 @@ function render(){
     else if(sk&&sk.steps[sk.n]==='tile'&&sk.tiles.some(t=>t[0]===x&&t[1]===y))d.classList.add('aim');
     (V.fields||[]).forEach(f=>{const dd=f.Square?Math.max(Math.abs(x-f.X),Math.abs(y-f.Y)):Math.abs(x-f.X)+Math.abs(y-f.Y);if(dd<=f.Range)d.classList.add(['banner','static','swamp'].includes(f.Kind)?f.Kind:'fire')});
     if((V.kegs||[]).some(k=>k.X===x&&k.Y===y))d.innerHTML+='<span class=keg title="Powder Keg">💣</span>';
+    {const ch=(V.chests||[]).find(c=>c.x===x&&c.y===y);if(ch)d.innerHTML+=`<span class=keg title="${ch.kind} chest">${ch.kind==='gold'?'🟨':ch.kind==='silver'?'⬜':'🟫'}</span>`}
     const u=at(x,y);
     if(u){const e=document.createElement('div');
       e.className='u '+(u.team===0?'h':'e')+(u.done&&u.team===0?' done':'')+(u.id===sel?' sel':'')+(targets.includes(u.id)?' tg':'')+(u.id===aim?(walk?' walk':' aim'):'')+(u.enraged?' rage':'')+(u.decoy?' decoy':'')+(u.companion||u.pet?' comp':'');
@@ -165,6 +166,7 @@ function render(){
   const side=V.outcome?'':V.side===0?' · your move':' · enemy turn';
   $('status').textContent=`Turn ${V.turn}${side}`;
   if(V.fallen&&V.fallen.length&&!V.outcome)$('status').textContent+=` · fallen: ${V.fallen.join(', ')}`;
+  $('status').textContent+=` · ${V.gold||0} gold`;
   showChoice();
   if(V.outcome){$('banner').className=V.outcome;$('banner').textContent=V.outcome==='won'?'Victory: every enemy is gone':'Defeat: every hero has fallen'}
   panel();
@@ -200,6 +202,7 @@ function panel(){
   if($('gearb'))$('gearb').onclick=()=>{gearOpen=!gearOpen;render()};
   p.querySelectorAll('[data-set]').forEach(b=>b.onclick=()=>apply({kind:'set',unit:sel,set:+b.dataset.set}));
   p.querySelectorAll('[data-equip]').forEach(b=>b.onclick=()=>apply({kind:'equip',unit:sel,item:+b.dataset.equip,slot:b.dataset.slot||''}));
+  p.querySelectorAll('[data-off]').forEach(b=>b.onclick=()=>apply({kind:'unequip',unit:sel,slot:b.dataset.off}));
   p.querySelectorAll('[data-drop]').forEach(b=>b.onclick=()=>{const it=V.bag[+b.dataset.drop];if(confirm(`Drop ${it.name}? It will be gone for good.`))apply({kind:'drop',item:+b.dataset.drop})});
   if($('go'))$('go').onclick=strikeAim;
   if($('def'))$('def').onclick=()=>apply({kind:'defend',unit:sel});
@@ -215,9 +218,10 @@ function itemRow(it,btns){return `<div class="item"><div><b style="color:${it.co
 function gearSheet(u){
   const g=u.gear;let h=`<div class="sheet"><div class="muted">${g.weapons}</div>`;
   h+=`<h3>Weapon sets</h3><div class="sets">${g.sets.map((s,i)=>`<button data-set="${i+1}" class="${s.inHand?'on':''}" ${s.inHand||u.done||g.sets.length<2?'disabled':''}>Set ${i+1}: ${s.weapons}${s.rank?' ('+s.rank+')':''}${s.inHand?' · in hand':''}</button>`).join('')}</div>`;
-  h+=`<h3>Worn</h3>${g.worn.map(it=>itemRow(Object.assign({},it,{kind:it.kind==='Charm'?'Charm':SLOTN[it.slot]+' · '+it.kind}))).join('')||'<div class="muted">Nothing worn.</div>'}`;
+  h+=`<h3>Worn</h3>${g.worn.map(it=>itemRow(Object.assign({},it,{kind:it.kind==='Charm'?'Charm':SLOTN[it.slot]+' · '+it.kind}),`<button data-off="${it.slot}" ${u.done||V.side!==0?'disabled':''}>Take off</button>`)).join('')||'<div class="muted">Nothing worn.</div>'}`;
+  if(u.bond)h+=`<div class="muted" style="margin-top:6px">Companion spirit: ${u.bond.kind}</div>`;
   if(g.bonuses)h+=`<div class="muted" style="margin-top:6px">Active bonuses: ${g.bonuses}</div>`;
-  h+=`<h3>Bag</h3><div class="muted">Putting something on uses up ${u.class}'s turn.</div>`;
+  h+=`<h3>Bag</h3><div class="muted">Putting something on or taking it off uses up ${u.class}'s turn.</div>`;
   const dis=u.done||V.side!==0?'disabled':'';
   h+=(V.bag||[]).map((it,i)=>{let b='';
     if(it.slot==='w'){const free=g.freeSlots&&g.freeSlots.length;b=free?`<button class="gold" data-equip="${i}" ${dis}>Equip</button>`:g.weaponSlots.map(s=>`<button class="gold" data-equip="${i}" data-slot="${s}" ${dis}>Into ${SLOTN[s]}</button>`).join('')}
@@ -292,7 +296,7 @@ function showChoice(){
   const d=V.decision,box=$('choice');
   if(!d){box.className='';return}
   const who=nameOf(unit(d.unit)||{class:'A fallen hero',team:0});
-  const title=d.kind==='ascend'?`${who} reached level 30. Choose an ascension:`:d.kind==='evolve'?`${who} evolved!`:`${who} learned ${d.skill}!`;
+  const title=d.kind==='ascend'?`${who} reached level 30. Choose an ascension:`:d.kind==='evolve'?`${who} evolved!`:d.kind==='bond'?`${who} bonded with a ${d.skill}!`:d.kind==='bondSwap'?`${who} can bond with a ${d.skill}`:`${who} learned ${d.skill}!`;
   let h=`<h2>${title}</h2>${d.text?`<div class="muted">${d.text}</div>`:''}`;
   d.options.forEach((o,i)=>h+=`<button class="opt ${i?'':'gold'}" data-i="${i}">${o.label}${o.text?`<small>${o.text}</small>`:''}</button>`);
   $('choicebox').innerHTML=h;box.className='on';
@@ -339,6 +343,10 @@ function say(e){
     case 'immune':logLine('',`The scales stop the shot.`);break;
     case 'exploded':logLine('',`${n(e.unit)} bursts!`);break;
     case 'ascended':logLine('good',`★ ${n(e.unit)} ascends: ${e.skill}!`);break;
+    case 'loot':logLine('good',`Loot: ${e.skill} (${['common','uncommon','rare','legendary'][e.amount||0]}).`);break;
+    case 'gold':logLine('',`+${e.amount} gold.`);break;
+    case 'unequipped':logLine('',`${n(e.unit)} takes off ${e.skill}.`);break;
+    case 'bonded':logLine('good',`${n(e.unit)} bonds with a ${e.skill}.`);break;
     case 'equipped':logLine('good',`${n(e.unit)} puts on ${e.skill}.`);break;
     case 'dropped':logLine('',`${e.skill} is thrown away.`);break;
     case 'set':logLine('',`${n(e.unit)} takes weapon set ${e.amount} in hand.`);break;

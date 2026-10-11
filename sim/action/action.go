@@ -19,6 +19,7 @@ const (
 	Decide  Kind = "decide"  // answers the first waiting decision with Choice (and Skill = slot to replace)
 	Equip   Kind = "equip"   // Unit puts on bag item Item (a weapon goes in Slot: w, w2 or w3; empty = a free one)
 	Drop    Kind = "drop"    // throws bag item Item away for good
+	Unequip Kind = "unequip" // Unit takes off the item in Slot, into the bag
 	UseSet  Kind = "set"     // Unit takes weapon set Set (1-3) in hand; it does not use up the turn
 )
 
@@ -74,6 +75,10 @@ const (
 	Seized        = "seized"     // Unit seized the throne: the enemies flee
 	LevelUp       = "level-up"   // Unit reached level Amount
 	GearOn        = "equipped"   // Unit put on item Skill (the old one went to the bag)
+	Looted        = "loot"       // item Skill (rarity Amount) went into the bag
+	GoldGained    = "gold"       // Amount gold
+	GearOff       = "unequipped" // Unit took item Skill off into the bag
+	Bonded        = "bonded"     // Unit bonded with a companion spirit of kind Skill
 	GearDropped   = "dropped"    // item Skill was thrown away
 	SetSwitched   = "set"        // Unit took weapon set Amount (1-3) in hand
 	Evolved       = "evolved"    // Unit evolved into the form named Skill (at levels 5 and 20)

@@ -25,11 +25,16 @@ func plain(power float64) content.Skill {
 	return content.Skill{Name: "Test Cut", Power: power, MinRange: 1, MaxRange: 1}
 }
 
-// rolls makes dice that return exactly these fractions.
+// rolls makes dice that return exactly these fractions, then high rolls
+// for anything after (a kill's loot rolls: high means no drop).
 func rolls(fs ...float64) *rng.Feed {
 	var v []uint32
 	for _, f := range fs {
 		v = append(v, uint32(f*4294967296.0))
+	}
+	high := 0.99
+	for range 40 {
+		v = append(v, uint32(high*4294967296.0))
 	}
 	return rng.NewFeed(v)
 }

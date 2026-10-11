@@ -2,6 +2,7 @@ package engine
 
 import (
 	"github.com/papigetbusy/crusader-tactics-next/sim/action"
+	"github.com/papigetbusy/crusader-tactics-next/sim/combat"
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
 	"github.com/papigetbusy/crusader-tactics-next/sim/rng"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
@@ -21,6 +22,7 @@ type Setup struct {
 	Units   []UnitSetup    `json:"units"`
 	Throne  *state.Tile    `json:"throne,omitempty"` // seize-the-throne floors only
 	Bag     []content.Item `json:"bag,omitempty"`    // items carried but not worn
+	Chests  []state.Chest  `json:"chests,omitempty"` // unopened chests on the map
 }
 
 // startingPotions is what every new hero carries (old recruit and new run,
@@ -47,6 +49,9 @@ type UnitSetup struct {
 	// Gear is what a hero wears, by slot (w, w2, w3, h, a, b, c). With gear,
 	// the hero's numbers are worked out from its class, level and gear.
 	Gear map[string]content.Item `json:"gear,omitempty"`
+	// Bond is a hero's companion spirit (a monster kind and element); it
+	// starts the fight beside the hero.
+	Bond *state.Bond `json:"bond,omitempty"`
 }
 
 // Combat dice come from their own stream of the battle seed, so later
@@ -75,6 +80,7 @@ func NewFight(c *content.Content, s Setup, battleSeed uint64) *Game {
 				u.HP, u.MaxHP, u.Atk, u.Def, u.Mov, u.BaseAtk = n.MaxHP, n.MaxHP, n.Atk, n.Def, n.Mov, base
 			}
 			stats.InitSets(c, u)
+			u.Bond = us.Bond
 		} else {
 			u.Skills = c.MonsterSkills(u.Class, u.Level, u.Boss || u.Elite)
 			u.Weapon = c.Classes[u.Class].Weapon
@@ -83,9 +89,19 @@ func NewFight(c *content.Content, s Setup, battleSeed uint64) *Game {
 		b.Units = append(b.Units, u)
 	}
 	b.NextID = len(s.Units) + 1
+	for _, u := range b.Units {
+		if u.Team == state.Heroes {
+			b.Party = append(b.Party, u.ID)
+		}
+	}
+	b.Floor = s.Floor
+	for _, id := range b.Party {
+		combat.SpawnCompanion(c, b, b.Unit(id))
+	}
 	b.LevelCap = levelCap(c, b)
 	b.Throne = s.Throne
 	b.Bag = append([]content.Item(nil), s.Bag...)
+	b.Chests = append([]state.Chest(nil), s.Chests...)
 	turn.Check(b, func(e action.Event) {})
 	return &Game{C: c, B: b, Dice: rng.New(battleSeed, streamCombat)}
 }

@@ -11,6 +11,7 @@ import (
 	"github.com/papigetbusy/crusader-tactics-next/sim/board"
 	"github.com/papigetbusy/crusader-tactics-next/sim/combat"
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
+	"github.com/papigetbusy/crusader-tactics-next/sim/items"
 	"github.com/papigetbusy/crusader-tactics-next/sim/rng"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
 	"github.com/papigetbusy/crusader-tactics-next/sim/stats"
@@ -54,6 +55,7 @@ func (g *Game) Apply(a action.Action) ([]action.Event, error) {
 			u.Done, u.Undo = true, nil
 		}
 		combat.PairDone(b, u) // a hero and its raised monster share one turn
+		items.OpenChest(g.C, b, g.Dice, u, emit)
 		seizeThrone(b, u, emit)
 	case action.Defend:
 		u := b.Unit(a.Unit)
@@ -102,6 +104,8 @@ func (g *Game) Apply(a action.Action) ([]action.Event, error) {
 		turn.Check(b, emit)
 	case action.Equip:
 		g.equip(a, emit)
+	case action.Unequip:
+		g.unequip(a, emit)
 	case action.UseSet:
 		stats.UseSet(g.C, b.Unit(a.Unit), a.Set-1)
 		emit(action.Event{Kind: action.SetSwitched, Unit: a.Unit, Amount: a.Set})
@@ -153,7 +157,7 @@ func (g *Game) check(a action.Action) error {
 	if a.Kind == action.EndTurn {
 		return nil
 	}
-	if a.Kind == action.Equip || a.Kind == action.Drop {
+	if a.Kind == action.Equip || a.Kind == action.Drop || a.Kind == action.Unequip {
 		return g.checkGear(a)
 	}
 	if a.Kind == action.UseSet {

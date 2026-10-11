@@ -262,3 +262,26 @@ func PairDone(b *state.Battle, u *state.Unit) {
 		}
 	}
 }
+
+// SpawnCompanion puts a hero's bonded companion spirit next to it at the
+// start of a fight (old newFloor0, index.html line 747): two levels below
+// the hero, on the first open tile above or beside it.
+func SpawnCompanion(c *content.Content, b *state.Battle, h *state.Unit) {
+	if h.Bond == nil {
+		return
+	}
+	m, _, ok := c.MonsterNamed(h.Bond.Kind)
+	if !ok {
+		return
+	}
+	for _, d := range [][2]int{{0, -1}, {1, -1}, {-1, -1}, {1, 0}, {-1, 0}} {
+		x, y := h.X+d[0], h.Y+d[1]
+		if b.Inside(x, y) && heightAt(b, x, y) >= 0 && b.UnitAt(x, y) == nil {
+			z := monsterUnit(c, b, m, max(1, h.Level-2), h.Bond.Element, state.Heroes, state.Tile{X: x, Y: y})
+			z.Element, z.Kind = h.Bond.Element, m.Name
+			z.Companion, z.Owner = true, h.ID
+			b.Units = append(b.Units, z)
+			return
+		}
+	}
+}

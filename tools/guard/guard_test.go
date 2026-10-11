@@ -18,8 +18,8 @@ const module = "github.com/papigetbusy/crusader-tactics-next/"
 
 // layers is the order of the referee's folders. A folder may only use folders
 // that come before it in this list (see docs/skeleton-design.md, section 1.4).
-var layers = []string{"rng", "content", "state", "action", "board", "stats", "combat",
-	"items", "floor", "save", "ai", "turn", "run", "engine"}
+var layers = []string{"rng", "content", "state", "action", "board", "stats", "items",
+	"combat", "floor", "save", "ai", "turn", "run", "engine"}
 
 // forbidden are things the referee must never touch: the browser, the clock,
 // the network, files, or Go's own unseeded random numbers.

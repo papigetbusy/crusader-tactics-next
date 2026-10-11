@@ -66,6 +66,15 @@ func init() {
 	})
 }
 
+func init() {
+	Changes = append(Changes, Change{
+		Date: "2026-10-11",
+		What: "Legendaries only drop once a hero has reached Lv 30; until then a legendary roll gives a rare item. " +
+			"Before, bosses could drop legendaries on any floor.",
+		Apply: func(c *Content) { c.Gear.Loot.LegendaryFromLevel = 30 },
+	})
+}
+
 // ApplyChanges turns the old game's data into today's data.
 func ApplyChanges(c *Content) {
 	for _, ch := range Changes {

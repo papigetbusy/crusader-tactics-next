@@ -59,7 +59,7 @@ func playHeroes(t *testing.T, g *Game) {
 	answerAll(t, g)
 	for _, u := range append([]*state.Unit(nil), g.B.Units...) {
 		answerAll(t, g)
-		if u.Team != state.Heroes || g.B.Unit(u.ID) == nil || g.B.Outcome != state.Ongoing {
+		if u.Team != state.Heroes || u.Companion || g.B.Unit(u.ID) == nil || g.B.Outcome != state.Ongoing {
 			continue
 		}
 		if !tryAttack(t, g, u) {

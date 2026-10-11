@@ -81,7 +81,7 @@ func TestOldGameHits(t *testing.T) {
 
 		var values []uint32
 		for i := e.G0; i < e.G1 && i < len(m.S.Dice.G); i++ {
-			if strings.HasPrefix(m.F.Sites[m.S.Dice.S[i]], "hurt:") {
+			if site := m.F.Sites[m.S.Dice.S[i]]; strings.HasPrefix(site, "hurt:") || strings.HasPrefix(site, "drop:") || strings.HasPrefix(site, "bandRoll:") {
 				values = append(values, m.S.Dice.G[i])
 			}
 		}

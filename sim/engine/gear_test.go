@@ -75,6 +75,17 @@ func TestEquip(t *testing.T) {
 		}
 	})
 
+	t.Run("Taking an item off puts it in the bag and works out the hero's numbers again", func(t *testing.T) {
+		g := armedDuel("Warrior", map[string]content.Item{"w": blade("Steel Sword", 8)})
+		h := g.B.Unit(1)
+		if _, err := g.Apply(action.Action{Kind: action.Unequip, Unit: 1, Slot: "w"}); err != nil {
+			t.Fatal(err)
+		}
+		if _, worn := h.Gear["w"]; worn || len(g.B.Bag) != 1 || h.Atk != h.BaseAtk || !h.Done {
+			t.Fatalf("gear %v bag %d attack %d (base %d) done %v", h.Gear, len(g.B.Bag), h.Atk, h.BaseAtk, h.Done)
+		}
+	})
+
 	t.Run("Dropping an item throws it away for good", func(t *testing.T) {
 		g := duel()
 		g.B.Bag = []content.Item{blade("Rusty Blade", 3)}

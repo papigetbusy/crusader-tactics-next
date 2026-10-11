@@ -1585,5 +1585,225 @@
       "def": 1,
       "hp": 1
     }
+  },
+  "loot": {
+    "power": 0.8,
+    "bands": [
+      {
+        "upToFloor": 10,
+        "lowChance": 0.7,
+        "low": 0,
+        "high": 1
+      },
+      {
+        "upToFloor": 30,
+        "lowChance": 0.7,
+        "low": 1,
+        "high": 2
+      },
+      {
+        "upToFloor": 60,
+        "lowChance": 0.93,
+        "low": 2,
+        "high": 3
+      },
+      {
+        "upToFloor": 0,
+        "lowChance": 0.75,
+        "low": 2,
+        "high": 3
+      }
+    ],
+    "dropChance": 0.6,
+    "bossLegendary": 0.25,
+    "eliteBetter": 0.3,
+    "forKiller": 0.5,
+    "emptySlot": 0.75,
+    "mainWeapon": 0.6,
+    "chests": {
+      "gold": [
+        2,
+        3
+      ],
+      "silver": [
+        1,
+        2
+      ],
+      "wood": [
+        0,
+        1
+      ]
+    },
+    "chestUsual": 0.7,
+    "classAffixes": {
+      "Assassin": [
+        "dmg",
+        "phys",
+        "crit",
+        "critDmg",
+        "hit",
+        "poisonCh",
+        "bleedCh",
+        "leech",
+        "evade",
+        "dark",
+        "elec",
+        "fire",
+        "hpPct",
+        "bossDmg"
+      ],
+      "Dragon Knight": [
+        "dmg",
+        "phys",
+        "crit",
+        "critDmg",
+        "leech",
+        "bossDmg",
+        "hit",
+        "addFire",
+        "fire",
+        "ice",
+        "elec",
+        "hpPct",
+        "defPct",
+        "dr",
+        "thorns"
+      ],
+      "Gunslinger": [
+        "dmg",
+        "phys",
+        "crit",
+        "critDmg",
+        "hit",
+        "bossDmg",
+        "addFire",
+        "addElec",
+        "bleedCh",
+        "fire",
+        "dark",
+        "elec",
+        "evade",
+        "hpPct",
+        "dr"
+      ],
+      "Healer": [
+        "healPct",
+        "regen",
+        "light",
+        "elec",
+        "dark",
+        "dmg",
+        "hpPct",
+        "defPct",
+        "dr",
+        "evade",
+        "hit"
+      ],
+      "Knight": [
+        "dmg",
+        "phys",
+        "crit",
+        "critDmg",
+        "leech",
+        "bossDmg",
+        "hit",
+        "hpPct",
+        "defPct",
+        "dr",
+        "thorns",
+        "light",
+        "dark",
+        "elec"
+      ],
+      "Mage": [
+        "dmg",
+        "fire",
+        "ice",
+        "elec",
+        "addFire",
+        "addElec",
+        "crit",
+        "critDmg",
+        "hit",
+        "hpPct",
+        "evade",
+        "dr",
+        "regen"
+      ],
+      "Ranger": [
+        "dmg",
+        "phys",
+        "crit",
+        "critDmg",
+        "hit",
+        "bossDmg",
+        "bleedCh",
+        "poisonCh",
+        "addElec",
+        "ice",
+        "dark",
+        "elec",
+        "evade",
+        "hpPct",
+        "dr"
+      ],
+      "Tank": [
+        "dmg",
+        "phys",
+        "crit",
+        "hpPct",
+        "defPct",
+        "dr",
+        "thorns",
+        "regen",
+        "leech",
+        "hit",
+        "bossDmg",
+        "dark",
+        "ice",
+        "fire"
+      ],
+      "Warrior": [
+        "dmg",
+        "phys",
+        "crit",
+        "critDmg",
+        "leech",
+        "bleedCh",
+        "bossDmg",
+        "hit",
+        "hpPct",
+        "defPct",
+        "dr",
+        "thorns",
+        "regen",
+        "fire",
+        "light",
+        "elec"
+      ],
+      "Witch": [
+        "dmg",
+        "dark",
+        "poisonCh",
+        "fire",
+        "ice",
+        "crit",
+        "critDmg",
+        "hit",
+        "hpPct",
+        "evade",
+        "dr",
+        "regen",
+        "leech"
+      ]
+    },
+    "legendaryFromLevel": 30,
+    "goldBase": 2,
+    "goldPerLevel": 0.6,
+    "goldBoss": 8,
+    "goldElite": 3,
+    "goldBounty": 2,
+    "goldWanted": 3,
+    "goldReplayed": 0.5
   }
 }

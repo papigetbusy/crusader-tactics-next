@@ -56,6 +56,7 @@ type Unit struct {
 	Ultimate  string   // the skill in the ultimate slot
 	Ascension string   // chosen at Lv 30 ("" before)
 	Souls     []string // Necromancer: monster kinds whose raise skill it learned
+	Bond      *Bond    // heroes: a bonded companion spirit (nil: none)
 
 	Skills    []content.Skill // the skill bar, in order
 	Cooldowns []int           // turns until each skill is ready again (0 = ready)
@@ -175,17 +176,41 @@ type Battle struct {
 	Raises     []Raise        // skeletons waiting to rise once the current action is over
 	Decisions  []Decision     // choices waiting for the player, answered first to last (old EVQ)
 	Fallen     []*Unit        // heroes who died in combat this floor, last one first to be revived
+	Lost       []*Unit        // party heroes who died where no revive reaches them (they still share the loot)
 	FallenFoes []*Unit        // monsters who died, for monster healers' Resurrection (only with MonstersRevive)
 	Kegs       []Keg          // Powder Kegs waiting to blow up
 	Bag        []content.Item // items carried but not worn (the run will own this from Phase 7)
+
+	// Loot and the run's numbers this fight needs (the run sets them from Phase 7).
+	Floor         int     // which floor: loot gets stronger deeper down
+	Gold          int     // gold carried
+	Party         []int   // the heroes' IDs in party order, alive or fallen (loot goes to the least geared)
+	Chests        []Chest // unopened chests on the map
+	BossLegendary bool    // this floor's boss already gave a legendary
+	Replayed      bool    // this floor was cleared before (half gold)
+}
+
+// Chest is a chest on the map: wood, silver or gold.
+type Chest struct {
+	X    int    `json:"x"`
+	Y    int    `json:"y"`
+	Kind string `json:"kind"`
+}
+
+// Bond is a hero's companion spirit: the monster kind and its element. It
+// joins the hero in battle and acts on its own; if it dies it is gone.
+type Bond struct {
+	Kind    string `json:"kind"`
+	Element string `json:"element,omitempty"`
 }
 
 // Decision is a choice the player must make before playing on: a skill
 // learned at a level-up, an evolution to acknowledge, or the Lv 30 ascension.
 type Decision struct {
-	Kind  string `json:"kind"`            // DecideLearn, DecideEvolve or DecideAscend
-	Unit  int    `json:"unit"`            // the hero it is about
-	Skill string `json:"skill,omitempty"` // the skill learned (DecideLearn)
+	Kind    string `json:"kind"`              // DecideLearn, DecideEvolve or DecideAscend
+	Unit    int    `json:"unit"`              // the hero it is about
+	Skill   string `json:"skill,omitempty"`   // the skill learned (DecideLearn)
+	Element string `json:"element,omitempty"` // DecideSwap: the new companion's element
 }
 
 // Kinds of decisions.
@@ -193,6 +218,8 @@ const (
 	DecideLearn  = "learn"
 	DecideEvolve = "evolve"
 	DecideAscend = "ascend"
+	DecideBond   = "bond"     // a hero bonded with a companion spirit (acknowledge)
+	DecideSwap   = "bondSwap" // a hero with a companion met another: keep or take the new one
 )
 
 // UnitAt returns the unit standing on (x, y), or nil.

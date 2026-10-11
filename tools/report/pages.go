@@ -118,6 +118,7 @@ var matchSets = []struct{ file, title string }{
 	{"combat", "Fight by fight: full combat"},
 	{"heroes", "Fight by fight: abilities and ascensions"},
 	{"gear", "Fight by fight: gear"},
+	{"loot", "Fight by fight: loot"},
 }
 
 func matchPage(results []*result, matchDir, build string) string {
@@ -128,6 +129,7 @@ func matchPage(results []*result, matchDir, build string) string {
 		"TestOldGameCombat":    "Full-combat fights: defend, potions, undo, revives and the throne",
 		"TestOldGameHeroes":    "High-level fights: every class ability, all 30 ascensions, level-up choices",
 		"TestOldGameGear":      "Geared fights: weapons, armor, sets, legendaries, weapon sets and equipping mid-battle",
+		"TestOldGameLoot":      "Loot fights: drops, chests, gold, bounties, companion spirits and taking gear off",
 		"TestOldGameMoves":     "Every move is legal in Go",
 		"TestOldGameHits":      "Every hit and miss gives the same result",
 		"TestOldGameSkillBars": "Every skill used is on the right skill bar",

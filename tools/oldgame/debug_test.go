@@ -88,3 +88,21 @@ func skeletonsFromRecording(c *content.Content, g *engine.Game, s Snap, seen int
 	}
 	return n
 }
+
+// timerRaised reports a step in which the old game's monsters hit a hero-side
+// unit that did not exist when the step began: a Grave Bloom skeleton its
+// half-second timer raised in the middle of the enemy turn (Go raises it at
+// the kill, an approved change). Go can't follow that step, so the check
+// takes the step's result from the recording.
+func timerRaised(prev Snap, step Step) bool {
+	had := map[int]bool{}
+	for _, u := range prev.Units {
+		had[u.ID] = true
+	}
+	for _, e := range step.Ev {
+		if e.K == "hit" && e.B != nil && e.B.Team == state.Heroes && !had[e.B.ID] {
+			return true
+		}
+	}
+	return false
+}

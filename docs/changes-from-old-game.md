@@ -16,13 +16,14 @@ Every place where the new game intentionally behaves differently from the old on
 - A hero with no weapon in hand counts as their class's usual weapon in the weapon triangle (Warrior sword, Tank axe, Knight and Dragon Knight lance), both when attacking and when attacked. The old game skipped the triangle for unarmed heroes. (Approved 2026-10-10; in place since Phase 6.)
 - Putting on gear in the middle of a battle uses up the hero's turn. The old game let you swap gear any number of times for free. Switching weapon sets is still free. (Approved 2026-10-11.)
 - After a level-up, a hero's attack counts the weapons in hand. The old game quietly went back to weapon set 1's weapons until the next set switch. (Approved 2026-10-11.)
+- Legendaries only drop once any one hero reaches Lv 30; before that, a roll that would give a legendary gives a rare item. Legendary weapons a hero can't use yet still turn into legendary armor or charms, as in the old game. The old game dropped legendaries from bosses and gold chests at any floor. (Approved 2026-10-11; in place since 6d.)
 - A Necromancer's Grave Bloom raises the skeleton right after the kill. The old game raised it on a half-second timer, so it could appear in the middle of the enemy turn depending on how fast you played. (The referee has no clock; in place since Phase 6.)
 
 ## Decided, arriving with later phases
 - Team select and deployment: start with 5 hero slots; one more slot at floors 25, 50 and 75 (8 is the most). Before each map you choose who to bring from your whole roster and must fill every slot. Only the heroes who fight on a floor earn its XP. You place them yourself on blue starting tiles, and each map has more blue tiles than heroes, so where you start is a real choice. If you don't choose, the game brings your highest-level heroes. The old game took the whole party into every fight. (Approved 2026-10-10; arrives in Phase 7, screen in Phase 8.)
 
-- Legendaries only drop once any one hero reaches Lv 30, and only ones a hero can use, and a new purple (epic) tier sits between rare and legendary for the middle levels. The old game dropped legendaries from bosses at any floor. (Approved 2026-10-11; arrives in 6d, items approved one by one.)
-- A battle ends the moment it is won (the old game let heroes keep acting until the next floor loaded), and an undo that can't happen says why. (Approved 2026-10-11.)
+- A new purple (epic) tier sits between rare and legendary for the middle levels, with its own weapons, armor, charms and bonuses. (Approved 2026-10-11; arrives in 6d, items approved one by one.)
+- A battle ends the moment it is won (the old game let heroes keep acting until the next floor loaded), and an undo that can't happen says why. (Approved 2026-10-11; both already work this way in the new referee.)
 
 ## Not changed yet (conscious design calls for later)
 - Shop floors count as cleared without a fight.

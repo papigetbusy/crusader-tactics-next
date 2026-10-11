@@ -146,6 +146,12 @@ type Snap struct {
 
 	// Phase 6c recordings.
 	Inv []RecItem `json:"inv"` // the bag
+
+	// Phase 6d recordings.
+	Gold     int     `json:"gold"`
+	ChestsAt [][]any `json:"chestsAt"` // x, y, kind
+	Bl       int     `json:"bl"`       // the floor's boss already gave a legendary
+	Cleared  int     `json:"cleared"`  // the floor was cleared before
 }
 
 // SnapUnit is one unit in a Snap.
@@ -199,6 +205,10 @@ type PartySnap struct {
 	Learned []string           `json:"learned"`
 	Su      map[string]int     `json:"su"`
 	Gear    map[string]RecItem `json:"gear"` // Phase 6c recordings
+	Comp    *struct {
+		M int    `json:"m"`
+		E string `json:"e"`
+	} `json:"comp"` // Phase 6d recordings: the bonded companion spirit
 }
 
 // Load reads the recorded fights file.

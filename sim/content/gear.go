@@ -129,6 +129,7 @@ type Gear struct {
 	Uniques      []Unique                        `json:"uniques"`
 	Sets         map[string]GearSet              `json:"sets"`
 	ArmorWeights map[string]ArmorWeight          `json:"armorWeights"`
+	Loot         Loot                            `json:"loot"`
 }
 
 // ArmorWeight scales a piece of armor's DEF and HP by its weight.
@@ -178,4 +179,40 @@ func (g Gear) check() error {
 		}
 	}
 	return nil
+}
+
+// LootBand is the rarity range loot rolls in up to a floor: Low with
+// chance LowChance, else High (old bandRoll).
+type LootBand struct {
+	UpToFloor int     `json:"upToFloor"` // 0: every floor after the bands before
+	LowChance float64 `json:"lowChance"`
+	Low       int     `json:"low"`
+	High      int     `json:"high"`
+}
+
+// Loot is how items drop: from monsters, chests and bounties (old drop,
+// lootFor, lootPick, genItem, rollAffixes, openChest).
+type Loot struct {
+	Power         float64             `json:"power"` // item power per floor (old TUNE.loot)
+	Bands         []LootBand          `json:"bands"`
+	DropChance    float64             `json:"dropChance"`    // a normal monster drops something
+	BossLegendary float64             `json:"bossLegendary"` // a boss drops a legendary (once per floor)
+	EliteBetter   float64             `json:"eliteBetter"`   // an elite's drop is one rarity higher
+	ForKiller     float64             `json:"forKiller"`     // loot is for the hero who made the kill (else the least geared hero)
+	EmptySlot     float64             `json:"emptySlot"`     // loot fills an empty slot
+	MainWeapon    float64             `json:"mainWeapon"`    // a weapon is of the class's first weapon type
+	Chests        map[string][2]int   `json:"chests"`        // chest kind -> rarity [usual, lucky]
+	ChestUsual    float64             `json:"chestUsual"`    // chance of the usual rarity
+	ClassAffixes  map[string][]string `json:"classAffixes"`  // the bonuses each class's loot can roll
+	// LegendaryFromLevel: legendaries only drop once a hero has reached this
+	// level (0: any time). Until then a legendary roll gives a rare item.
+	LegendaryFromLevel int `json:"legendaryFromLevel"`
+
+	GoldBase     float64 `json:"goldBase"`
+	GoldPerLevel float64 `json:"goldPerLevel"`
+	GoldBoss     float64 `json:"goldBoss"`
+	GoldElite    float64 `json:"goldElite"`
+	GoldBounty   float64 `json:"goldBounty"`   // Bounty Hunter
+	GoldWanted   int     `json:"goldWanted"`   // a Wanted Poster target
+	GoldReplayed float64 `json:"goldReplayed"` // a floor cleared before
 }

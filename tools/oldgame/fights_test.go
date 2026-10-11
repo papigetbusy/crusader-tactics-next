@@ -113,6 +113,7 @@ func differences(g *engine.Game, s Snap, party []int, seen int) []string {
 	if s.FieldsAt != nil && (len(g.B.Fields) != len(s.FieldsAt) || len(g.B.Traps) != len(s.TrapsAt)) {
 		out = append(out, fmt.Sprintf("Go has %d fields and %d traps, the old game %d and %d", len(g.B.Fields), len(g.B.Traps), len(s.FieldsAt), len(s.TrapsAt)))
 	}
+	out = append(out, lootDifferences(g, s)...)
 	for _, u := range g.B.Units {
 		if _, ok := rec[u.ID]; !ok && !u.Decoy {
 			out = append(out, fmt.Sprintf("%s %d is alive in Go but gone in the old game", u.Class, u.ID))
@@ -149,6 +150,12 @@ func TestOldGameHeroes(t *testing.T) { replayAll(t, heroesRecordings, "heroes") 
 // TestOldGameGear replays fights with geared heroes: weapons, armor, charms,
 // sets and legendaries, weapon set choices and equipping mid-battle.
 func TestOldGameGear(t *testing.T) { replayAll(t, gearRecordings, "gear") }
+
+// TestOldGameLoot replays fights with loot: drops, chests, gold, bounties,
+// companion spirits and taking gear off.
+func TestOldGameLoot(t *testing.T) { replayAll(t, lootRecordings, "loot") }
+
+const lootRecordings = "../../testdata/oldgame/recordings/loot6-recordings.json.gz"
 
 const gearRecordings = "../../testdata/oldgame/recordings/gear6-recordings.json.gz"
 
@@ -199,6 +206,10 @@ func replayAll(t *testing.T, file, set string) {
 			step := f.Steps[si]
 			steps++
 			feed := newSiteFeed(f, &step)
+			feed.noChests = prev.ChestsAt == nil && opensChest(f, &step)
+			if prev.Inv != nil && step.Snap.Inv != nil {
+				feed.newLoot = newItems(prev.Inv, step.Snap.Inv)
+			}
 			g.Dice = feed
 			g.B.NextID = seen + 1 // units Go creates get the IDs the recorder gave them
 			restart := restarted(prev, step.Snap)
@@ -256,7 +267,7 @@ func replayAll(t *testing.T, file, set string) {
 						u.ID, clones = 1_000_000+clones, clones+1
 					}
 				}
-				if set != "heroes" && set != "gear" {
+				if set != "heroes" && set != "gear" && set != "loot" {
 					// These recordings dismissed every level-up choice unanswered.
 					g.B.Decisions = nil
 				}
@@ -270,6 +281,9 @@ func replayAll(t *testing.T, file, set string) {
 				ended++
 				fr.Steps = si + 1
 				break
+			}
+			if feed.noChests && step.Snap.Inv != nil {
+				g.B.Bag = bagOf(step.Snap) // the chest's item, from the recording (it did not store chests)
 			}
 			rolls += feed.used
 			raised += skeletonsFromRecording(c, g, step.Snap, seen)
@@ -298,6 +312,14 @@ func replayAll(t *testing.T, file, set string) {
 						problem += fmt.Sprintf(" (and %d more differences)", len(d)-1)
 					}
 				}
+			}
+			if problem != "" && timerRaised(prev, step) {
+				raised++ // a Grave Bloom skeleton the old game raised on its timer mid-turn
+				resync(c, f, g, step.Snap, party)
+				if step.Kind == "endturn" {
+					g.B.Side = state.Heroes // Go's enemy turn stopped part-way; the old one finished
+				}
+				problem = ""
 			}
 			if problem != "" {
 				if clean {

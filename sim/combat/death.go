@@ -5,6 +5,7 @@ import (
 
 	"github.com/papigetbusy/crusader-tactics-next/sim/action"
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
+	"github.com/papigetbusy/crusader-tactics-next/sim/items"
 	"github.com/papigetbusy/crusader-tactics-next/sim/rng"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
 	"github.com/papigetbusy/crusader-tactics-next/sim/stats"
@@ -25,8 +26,16 @@ func died(c *content.Content, b *state.Battle, dice rng.Dice, u, v *state.Unit, 
 		b.FallenFoes = append(b.FallenFoes, v)
 	}
 	onDeath(c, b, dice, u, v, emit)
+	if v.Companion && !v.Undead {
+		if o := b.Unit(v.Owner); o != nil && o.Team == state.Heroes {
+			o.Bond = nil // a fallen companion spirit is gone for good
+		}
+	}
 	if u.Team == state.Heroes {
 		u.KilledThisAction = true
+	}
+	if v.Team == state.Enemies && v.Ally && partyHero(u) {
+		bond(b, u, v)
 	}
 	if v.Team == state.Enemies && isHero(u) && u.Ascension == "Necromancer" && v.Kind != "" && !v.Ally && !slices.Contains(u.Souls, v.Kind) {
 		// Soul Harvest: each new kind of monster becomes a raise skill (old hurt, line 1706).
@@ -40,8 +49,14 @@ func died(c *content.Content, b *state.Battle, dice rng.Dice, u, v *state.Unit, 
 			}
 		}
 	}
-	if v.Team == state.Enemies && u.Team == state.Heroes && v.Wanted && v.WantedBy == u.ID {
-		u.AbilityCooldown = 0 // the guaranteed item arrives with loot (step 6d)
+	if v.Team == state.Enemies && u.Team == state.Heroes {
+		g := items.Gold(c, b, u, v)
+		b.Gold += g
+		emit(action.Event{Kind: action.GoldGained, Unit: u.ID, Amount: g})
+		if v.Wanted && v.WantedBy == u.ID {
+			u.AbilityCooldown = 0
+			items.Bounty(c, b, dice, u, emit)
+		}
 	}
 	if u.Team == state.Heroes {
 		stats.Share(c, b, u, stats.KillXP(c, v), emit)
@@ -49,6 +64,26 @@ func died(c *content.Content, b *state.Battle, dice rng.Dice, u, v *state.Unit, 
 			heal(u, float64(u.MaxHP)*c.Ascensions["Berserker"].N("killHeal"))
 		}
 	}
+	if v.Team == state.Enemies {
+		items.Drop(c, b, dice, v, u, emit)
+	}
+}
+
+// partyHero is one of the player's own heroes (not a pet, companion or clone).
+func partyHero(u *state.Unit) bool {
+	return u.Team == state.Heroes && !u.Summoned && !u.Companion && !u.Decoy
+}
+
+// bond is a hero defeating a companion spirit (old bondComp, index.html line
+// 645): with no companion yet it bonds at once; otherwise the player chooses
+// which one to keep.
+func bond(b *state.Battle, u, v *state.Unit) {
+	if u.Bond != nil {
+		b.Decisions = append(b.Decisions, state.Decision{Kind: state.DecideSwap, Unit: u.ID, Skill: v.Kind, Element: v.Element})
+		return
+	}
+	u.Bond = &state.Bond{Kind: v.Kind, Element: v.Element}
+	b.Decisions = append(b.Decisions, state.Decision{Kind: state.DecideBond, Unit: u.ID, Skill: v.Kind})
 }
 
 // onDeath is the old onDeath (index.html line 1208).
