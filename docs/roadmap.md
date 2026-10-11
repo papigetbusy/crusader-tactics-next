@@ -18,7 +18,7 @@ Related docs: `feature-checklist.md` (every old-game feature and the phase it la
 - **Phase 4: done (2026-10-10).** Core fight in Go, checked against every recording.
 - **Phase 5: done (2026-10-10).** Full combat, checked against 180 new recordings.
 - **Phase 6: done (2026-10-11).** 6a, 6b, 6c and 6d all green (6d: loot d5aad27, purple tier 5d3b8d4, skill changes once per floor).
-- **Phase 7: in progress.** 7a floors done (2026-10-11): 1,500 old floors rebuilt exactly; reinforcements by Go in every old fight; blue starting tiles; "Climb: floor" on the practice page. 7b between floors and 7c team select done (2026-10-11): "Start a climb" on the practice page. 7d saves done (2026-10-11). **Phase 7 is done. Next: the balance autoplayer.**
+- **Phase 7: done (2026-10-11).** 7a floors done (2026-10-11): 1,500 old floors rebuilt exactly; reinforcements by Go in every old fight; blue starting tiles; "Climb: floor" on the practice page. 7b between floors and 7c team select done (2026-10-11): "Start a climb" on the practice page. 7d saves done (2026-10-11). All 11 Phase 7 calls approved by the owner. The balance autoplayer now comes **after the whole build** (owner, 2026-10-11).
 
 ## Phase 6 (heroes and gear), done
 - **6a Levels and XP:** XP, level-ups and stat growth; evolutions at Lv 5 and 20; level cap tied to the best floor; only heroes who fought earn XP. All 24 recorded level-ups worked out by Go.
@@ -59,7 +59,7 @@ Related docs: `feature-checklist.md` (every old-game feature and the phase it la
 
 ## Order of everything still to do
 1. **Phase 7, the run:** 7a floors, 7b between floors, 7c team select and blue starting tiles, 7d saves.
-2. **Balance autoplayer:** the old game's skilled bot rebuilt in Go; first tuning pass on the new skills, the purple tier and legendary power; report how often runs get stuck.
+2. **Balance autoplayer (moved by the owner to after the whole build):** the old game's skilled bot rebuilt in Go; first tuning pass on the new skills, the purple tier and legendary power; report how often runs get stuck.
 3. **Phase 8, the real screen**, with the owner's new sprites and animations.
 4. **Phase 9, new systems**, each measured with the autoplayer.
 5. **Phase 10, online-ready check.**
