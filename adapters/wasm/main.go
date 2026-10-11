@@ -129,6 +129,14 @@ func main() {
 		}
 		return text(out)
 	}))
+	// ctThreat(unit) -> [[x,y],...]: where a unit could walk next turn
+	g.Set("ctThreat", fn(func(a []js.Value) any {
+		var out [][2]int
+		for _, t := range game.Threat(a[0].Int()) {
+			out = append(out, [2]int{t.X, t.Y})
+		}
+		return text(out)
+	}))
 	// ctTargets(unit, slot) -> [unitID,...]
 	g.Set("ctTargets", fn(func(a []js.Value) any { return text(game.Targets(a[0].Int(), a[1].Int())) }))
 	// ctPreview(unit, slot, target) -> forecast or null

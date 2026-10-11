@@ -187,6 +187,7 @@
   window.bfs = function (u) {
     if (!u || !CT.V) return [];
     if (phase() === 'prepare') return (CT.V.starts || []).map((t) => [t.x, t.y]).filter(([x, y]) => !at(x, y) || at(x, y) === u);
+    if (u.team !== 0) return J(ctThreat(u.id)) || []; // a monster's range: the danger zone
     return J(ctReach(u.id)) || [];
   };
   window.bfsPath = (u, x, y) => [[u.x, u.y], [x, y]];

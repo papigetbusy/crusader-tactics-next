@@ -134,6 +134,10 @@
     } catch (e) { log('Could not save: ' + e.message); return false; }
   }
   window.slotData = (n) => info(n);
+  // the title's Continue button: on when any slot or the autosave holds a game
+  const anySaved = () => ['auto', 1, 2, 3].some((k) => get(k));
+  $('tstartb').onclick = () => { showPanel('tmenu'); $('tcont').disabled = !anySaved(); };
+  $('tcont').onclick = () => { if (anySaved()) window.openSlots('load'); };
   window.save = () => {};
   CT.autosave = () => { if (CT.V && CT.V.climb) put('auto'); };
   function load(text, from) {
@@ -176,6 +180,6 @@
   window.savTab = function (B) { B.innerHTML = '<p>Saves have their own window.</p>'; const b = mkb(B, 'Open saves', () => window.openSlots('save')); b.style.margin = '6px'; };
 
   const css = document.createElement('style');
-  css.textContent = '.ct-tabs{display:flex;gap:6px;margin:8px 0}.ct-shopl{max-height:55vh;overflow:auto}.srow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.08)}';
+  css.textContent = '#slw{z-index:25}.ct-tabs{display:flex;gap:6px;margin:8px 0}.ct-shopl{max-height:55vh;overflow:auto}.srow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.08)}';
   document.head.append(css);
 })();
