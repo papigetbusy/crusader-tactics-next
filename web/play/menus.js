@@ -11,7 +11,8 @@
   // pick runs an aimed ability or a skill aimed in several taps: it asks the
   // referee what can be picked next, lets the player tap it, and sends the
   // action when nothing more is needed.
-  function pick(u, a, ask) {
+  function pick(u, a, ask, title, text) {
+    const info = { n: title || 'Aim', d: text || '' };
     const next = () => {
       const o = ask(a);
       const units = o.units || [], tiles = o.tiles || [];
@@ -19,11 +20,12 @@
       mode = 'abil'; reach = []; tg = []; MENUON = false;
       if (units.length) {
         tg = units.map(obj).filter(Boolean);
-        ABT = { kind: 'unit', u, fin: (v) => { if (a.target == null) a.target = v.id; else a.second = v.id; step(); } };
+        ABT = { kind: 'unit', u, A: info, n: 1, range: 0, picked: [], fin: (v) => { if (a.target == null) a.target = v.id; else a.second = v.id; step(); } };
         log('Tap a highlighted unit.');
       } else {
         reach = tiles.slice();
-        ABT = { kind: 'tile', u, range: 99, min: 0, n: 1, empty: false, picked: [], fin: (pk) => {
+        const far = tiles.map((q) => Math.abs(q[0] - u.x) + Math.abs(q[1] - u.y));
+        ABT = { kind: 'tile', u, A: info, range: Math.max(...far), min: Math.min(...far), n: 1, empty: false, picked: [], fin: (pk) => {
           const t = pk[0];
           if (!tiles.some((q) => q[0] === t[0] && q[1] === t[1])) { ABT.picked = []; log('Not there: tap a blue tile.'); return; }
           a.tiles = (a.tiles || []).concat([t]); step();
@@ -62,15 +64,15 @@
     }
     const n = v.ability.target.n || 1;
     const a = { kind: 'ability', unit: u.id, tiles: [] };
-    if (v.ability.target.kind === 'unit') return pick(u, a, () => (a.target == null ? { units: J(ctAim(u.id)).units || [] } : {}));
-    pick(u, a, () => ((a.tiles || []).length < n ? { tiles: J(ctAim(u.id)).tiles || [] } : {}));
+    if (v.ability.target.kind === 'unit') return pick(u, a, () => (a.target == null ? { units: J(ctAim(u.id)).units || [] } : {}), v.ability.name, v.ability.text);
+    pick(u, a, () => ((a.tiles || []).length < n ? { tiles: J(ctAim(u.id)).tiles || [] } : {}), v.ability.name, v.ability.text);
   };
   const oldAim = window.aimSkill;
   window.aimSkill = function (s, v) {
     if (sel && s._aim) {
       const i = sel.sks.indexOf(s);
       const a = { kind: 'attack', unit: sel.id, skill: i, tiles: [] };
-      return pick(sel, a, (x) => J(ctSkillAim(sel.id, i, JSON.stringify(x))));
+      return pick(sel, a, (x) => J(ctSkillAim(sel.id, i, JSON.stringify(x))), s.n, s.d);
     }
     return oldAim(s, v);
   };

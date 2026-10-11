@@ -62,7 +62,8 @@
     M = V.heights.map((r) => r.slice());
     BIO = BIOMES.find((b) => b.n === V.biome) || BIOMES[0];
     CHS = (V.chests || []).map((c) => ({ x: c.x, y: c.y, t: c.kind }));
-    FIELDS = []; TRAPS = []; OBJ = null; TURN = V.turn;
+    FIELDS = (V.fields || []).map((f) => ({ x: f.X, y: f.Y, r: f.Range, turns: f.Turns, kind: f.Kind, sq: f.Square }));
+    TRAPS = []; OBJ = null; TURN = V.turn;
     const c = V.climb;
     floor = c ? c.floor : V.floor || 1; best = c ? c.best : floor; gold = c ? c.gold : V.gold || 0;
     const seen = new Set(), list = [];
@@ -79,13 +80,14 @@
         shield: u.shield || 0, abcd: u.ability ? u.ability.wait : 0, undo: u.canUndo ? { x: u.x, y: u.y } : null });
       if (u.boss || u.elite) o.simg = (typeof IMX !== 'undefined' && IMX[u.class]) || o.simg;
       if (hero) { o.ref = partyObj(u.class); o.ref.bag.potion = u.potions; o.form = o.ref.form; }
+      else o.ref = { c: u.class, e: o.e, lv: o.lv, gear: {}, m: o.m }; // like the old game's mk(): every unit has a ref
       list.push(o);
     }
     for (const id of [...CT.objs.keys()]) if (!seen.has(id)) CT.objs.delete(id);
     U = list;
     P.length = 0;
     if (c) c.team.forEach((cls) => P.push(partyObj(cls)));
-    else U.filter((o) => o.ref).forEach((o) => P.push(o.ref));
+    else U.filter((o) => o.ref && o.ref.bag).forEach((o) => P.push(o.ref));
     if (sel && !U.includes(sel)) sel = null;
     if (insp && !U.includes(insp)) insp = null;
     if (sel && sel.done) { sel = null; mode = null; reach = []; tg = []; }
@@ -98,6 +100,7 @@
     const s = (typeof SK !== 'undefined' && SK[name]) || {};
     return fxKey(name) || s.vfx || FXN[name] || ELFX[s.el] || 'slash';
   }
+  function name(o) { return o ? (o.team ? 'enemy ' : '') + o.c : 'someone'; }
   function pop(o, txt, col, big, delay = 0) {
     if (!o || !M[o.y]) return;
     const b = spos(o);
@@ -145,6 +148,19 @@
       case 'gold': pop(obj(e.unit), '+' + e.amount + 'g', '#ffd84a', 0, delay + 250); return 0;
       case 'loot': add('Loot: ' + e.skill + '!'); return 0;
       case 'turn-start': if (e.side === 1) log('Enemy turn.'); return 0;
+      case 'potion': { const v = obj(e.unit); if (v) { pop(v, '+' + e.amount, '#6ee7a0', 0, delay); spawn('heal', v, v, '', '#fff', 0, 1); } return 300; }
+      case 'ability': { const v = obj(e.unit); if (v) { add(name(v) + ': ' + e.skill + '.'); spawn('light', v, v, '', '#fff', 0, 1); } return 400; }
+      case 'revived': { add(name(obj(e.target)) + ' is revived!'); return 300; }
+      case 'level-up': { const v = obj(e.unit); if (v) { pop(v, 'LEVEL ' + e.amount + '!', '#ffd84a', 1, delay + 300); spxAt('E18', v, 300); } return 0; }
+      case 'evolved': add(name(obj(e.unit)) + ' evolves into ' + e.skill + '!'); return 0;
+      case 'learned': add(name(obj(e.unit)) + ' learned ' + e.skill + '!'); return 0;
+      case 'bonded': add(name(obj(e.unit)) + ' bonded with a ' + e.skill + '!'); return 0;
+      case 'seized': add('👑 Throne seized!'); return 400;
+      case 'reinforced': add('⚠ ' + e.amount + ' enemy reinforcements arrive!'); return 400;
+      case 'trapped': add(name(obj(e.unit)) + ' is caught in a snare!'); return 200;
+      case 'status': { const v = obj(e.target); if (v && e.statuses) Object.assign(v.st, e.statuses); return 0; }
+      case 'won': add('Victory!'); return 0;
+      case 'lost': add('Defeat.'); return 0;
       default: return 0;
     }
   }
@@ -193,7 +209,7 @@
       if (!act({ kind: 'place', hero: u.c, x, y })) return;
       const from = [u.x, u.y];
       sync();
-      const o = U.find((z) => z.c === u.c && z.ref);
+      const o = U.find((z) => z.c === u.c && z.ref && z.ref.bag);
       if (o) { o.mv = { t0: now(), dur: 300, path: [from, [x, y]], n: 1 }; }
       sel = null; mode = null; reach = []; tg = [];
       kick();
