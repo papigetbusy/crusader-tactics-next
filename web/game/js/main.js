@@ -20,7 +20,7 @@ const $ = (id) => document.getElementById(id);
 export const st = {
   view: null, units: [], sel: null, look: null, aim: null,
   skill: -1, reach: new Set(), targets: new Set(), starts: null, danger: null, zone: null, attack: null, picks: null, inReach: null,
-  overlay: (g, now) => { if (playback.draw(g, now)) kick(); },
+  overlay: (g, now) => { if (st.dragLine) st.dragLine(g); if (playback.draw(g, now)) kick(); },
   opt: options,
   anim: playback.anim,
   shownHp: (u) => u.hp,

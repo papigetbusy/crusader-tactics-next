@@ -69,6 +69,8 @@ export const act = (a) => json(window.ctApply(JSON.stringify(a)));
 
 export const reach = (unit) => json(window.ctReach(unit)) || [];
 export const threat = (unit) => json(window.ctThreat(unit)) || [];
+export const threatHit = (unit) => json(window.ctThreatHit(unit)) || [];
+export const attackTiles = (unit) => json(window.ctAttackTiles(unit)) || [];
 export const targets = (unit, slot, set = 0) => json(window.ctTargets(unit, slot, set)) || [];
 export const preview = (unit, slot, target, set = 0) => json(window.ctPreview(unit, slot, target, set));
 export const previewFrom = (unit, slot, target, x, y) => json(window.ctPreviewFrom(unit, slot, target, x, y));

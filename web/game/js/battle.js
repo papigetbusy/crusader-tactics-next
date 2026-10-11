@@ -6,7 +6,7 @@ import { tileAt, unitAt, closeUp, focusOn, lookAt, cam, safeTop } from './camera
 import { TS } from './look.js';
 import { active, label, STATUS } from './statuses.js';
 import { picture } from './units.js';
-import { feet } from './board.js';
+import { feet, map as map0, top as top0 } from './board.js';
 import * as team from './team.js';
 import * as shop from './shop.js';
 import * as playback from './playback.js';
@@ -22,6 +22,7 @@ export function wire(s) {
   screen = s;
   const c = $('map');
   c.addEventListener('click', tap);
+  dragging(c);
   $('endTurn').onclick = endTurn;
   $('startBattle').onclick = () => send({ kind: 'start' }, 'Your turn. Tap a hero.');
   $('summaryGo').onclick = () => send({ kind: 'continue' }, '', autosave);
@@ -76,12 +77,14 @@ function clear() {
   s.reach = new Set();
   s.targets = new Set();
   s.zone = null;
+  s.attack = null;
   s.picks = null;
   s.picking = null;
   $('aimPanel').hidden = true;
   $('menu').hidden = true;
   $('sub').hidden = true;
   $('einfo').hidden = true;
+  stopDrag();
   $('terr').hidden = true;
   if (view()) $('endTurn').hidden = phase() !== 'battle' || !!view().outcome || playback.playing();
   $('forecast').hidden = true;
@@ -132,6 +135,7 @@ export function after() {
 // ---------- tapping the map ----------
 
 function tap(e) {
+  if (cam.dragged) { cam.dragged = false; return; } // the end of a pan, not a tap
   const s = st(), v = view();
   if (!v || playback.playing() || $('decision').hidden === false || $('summary').hidden === false) return;
   const t = tileAt(e.clientX, e.clientY), u = unitAt(s.units, e.clientX, e.clientY);
@@ -176,6 +180,8 @@ function select(u) {
   const s = st();
   s.sel = u;
   $('endTurn').hidden = true; // as in the old game, End Turn hides while a hero is chosen
+  s.attack = new Set(referee.attackTiles(u.id).map(([x, y]) => key(x, y)));
+  if (s.opt.autoZoom) closeUp(u.x, u.y);
   s.reach = new Set((u.canMove ? referee.reach(u.id) : []).map(([x, y]) => key(x, y)));
   screen.log(u.canMove ? 'Tap a blue tile to move, tap an enemy to attack, or tap the hero again for commands.' : 'Choose a command.');
   if (!u.canMove) menu();
@@ -198,7 +204,7 @@ function reselect(id) {
 function look(u) {
   const s = st();
   s.look = u;
-  s.zone = { walk: new Set(referee.threat(u.id).map(([x, y]) => key(x, y))), hit: new Set() };
+  s.zone = { walk: new Set(referee.threat(u.id).map(([x, y]) => key(x, y))), hit: new Set(referee.threatHit(u.id).map(([x, y]) => key(x, y))) };
   const hp = u.team && !u.ally ? '#e5484d' : '#4cd97b', im = picture(u);
   const src = im ? (im.toDataURL ? im.toDataURL() : im.src) : '';
   const E = { fire: 'Fire', ice: 'Ice', elec: 'Thunder', light: 'Light', dark: 'Dark' }, W = { sword: 'Sword', axe: 'Axe', lance: 'Lance' };
@@ -281,6 +287,7 @@ function menu() {
   m.hidden = false;
   sub.hidden = true;
   s.reach = new Set();
+  s.attack = new Set(referee.attackTiles(u.id).map(([x, y]) => key(x, y)));
   place2();
   screen.kick();
 }
@@ -380,6 +387,7 @@ function aimWith(slot, target) {
   if (!referee.targets(u.id, slot, s.set || 0).length) s.set = 0;
   s.skill = slot;
   s.reach = new Set();
+  s.attack = null;
   $('sub').hidden = true;
   s.targets = new Set(ids);
   s.aim = (target && ids.includes(target.id) && target) || s.units.find((x) => x.id === ids[0]);
@@ -485,4 +493,96 @@ function summary() {
     ${s.heroes.map((h) => `<p>${h.class} · Lv ${h.from}${h.to > h.from ? ' → ' + h.to + ' ▲' : ''} · +${h.xp} XP</p>`).join('')}
     ${s.loot && s.loot.length ? `<p>Loot: ${s.loot.map((i) => i.name).join(', ')}</p>` : ''}<p>Gold +${s.gold}</p>`;
   $('summaryGo').textContent = `Continue to Floor ${c.floor}`;
+}
+
+// ---------- dragging a hero to a tile [old v0.23 L1985-2019] ----------
+
+let drag = null, eatClick = 0;
+function stopDrag() { if (drag) { drag = null; cam.held = false; st().overlayDrag = null; } }
+
+function dragging(c) {
+  const canDrag = (u) => ready(u) && u.canMove && phase() === 'battle' && !view().outcome;
+  c.addEventListener('pointerdown', (e) => {
+    if (drag || playback.playing() || st().skill >= 0 || st().picking || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    const u = unitAt(st().units, e.clientX, e.clientY);
+    if (!canDrag(u)) return;
+    drag = { u, id: e.pointerId, x0: e.clientX, y0: e.clientY, x: e.clientX, y: e.clientY, on: false, t: null };
+    cam.held = true; // the map doesn't pan while a hero might be dragged
+  });
+  addEventListener('pointermove', (e) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    drag.x = e.clientX;
+    drag.y = e.clientY;
+    if (!drag.on && Math.hypot(drag.x - drag.x0, drag.y - drag.y0) > 12) {
+      const D = drag;
+      if (st().sel !== D.u || !st().reach.size) select(D.u); // (select clears, so keep the drag)
+      drag = D;
+      cam.held = true;
+      cam.tx = cam.x; // keep the map still under the finger
+      cam.ty = cam.y;
+      drag.on = true;
+      $('menu').hidden = true;
+      requestAnimationFrame(edge);
+    }
+    if (drag.on) { drag.t = tileAt(drag.x, drag.y); screen.kick(); }
+  });
+  const end = (e, cancel) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const D = drag;
+    drag = null;
+    cam.held = false;
+    if (!D.on) return;
+    eatClick = performance.now() + 350;
+    const u = D.u, t = cancel ? null : tileAt(e.clientX, e.clientY);
+    if (t && t[0] === u.x && t[1] === u.y) return menu();
+    if (t && st().reach.has(key(t[0], t[1])) && !st().unitAt(t[0], t[1])) {
+      return send({ kind: 'move', unit: u.id, x: t[0], y: t[1] }, '', () => reselect(u.id));
+    }
+    if (!cancel) screen.log('They can’t reach that tile. Drag to a blue tile.');
+    screen.kick();
+  };
+  addEventListener('pointerup', (e) => end(e, false));
+  addEventListener('pointercancel', (e) => end(e, true));
+  addEventListener('click', (e) => { if (performance.now() < eatClick) { e.stopImmediatePropagation(); e.preventDefault(); eatClick = 0; } }, true);
+  st().dragLine = (g) => drawDrag(g);
+}
+
+// edge scrolls the map while a dragged hero is near the screen's edge.
+function edge() {
+  if (!drag || !drag.on) return;
+  if (Math.hypot(drag.x - drag.x0, drag.y - drag.y0) >= 40) {
+    const m = 56, sp = 8 / cam.k;
+    let dx = 0, dy = 0;
+    if (drag.x < m) dx = -sp; else if (drag.x > innerWidth - m) dx = sp;
+    if (drag.y < m) dy = -sp; else if (drag.y > innerHeight - m) dy = sp;
+    if (dx || dy) { cam.tx += dx; cam.ty += dy; cam.x += dx; cam.y += dy; drag.t = tileAt(drag.x, drag.y); screen.kick(); }
+  }
+  requestAnimationFrame(edge);
+}
+
+// drawDrag draws the dashed line from the hero and the tile under the finger.
+function drawDrag(g) {
+  if (!drag || !drag.on || !drag.t) return;
+  const u = drag.u, t = drag.t, ok = st().reach.has(key(t[0], t[1])) && !st().unitAt(t[0], t[1]), home = t[0] === u.x && t[1] === u.y;
+  const a = feet(u.x, u.y), b = feet(t[0], t[1]), col = ok ? '#d9c27a' : home ? '#ffffff' : '#e5484d';
+  g.save();
+  g.setLineDash([7, 6]);
+  g.lineCap = 'round';
+  g.beginPath();
+  g.moveTo(a.x, a.y - map0.foot);
+  g.lineTo(b.x, b.y - map0.foot);
+  g.lineWidth = 3;
+  g.strokeStyle = ok ? 'rgba(217,194,122,.9)' : 'rgba(255,255,255,.45)';
+  g.stroke();
+  g.setLineDash([]);
+  const cs = top0(t[0], t[1]);
+  g.beginPath();
+  cs.forEach((p, i) => (i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])));
+  g.closePath();
+  g.fillStyle = ok ? 'rgba(217,194,122,.32)' : home ? 'rgba(255,255,255,.16)' : 'rgba(229,72,77,.3)';
+  g.fill();
+  g.lineWidth = 3;
+  g.strokeStyle = col;
+  g.stroke();
+  g.restore();
 }

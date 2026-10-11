@@ -88,22 +88,7 @@ func targets(c *content.Content, b *state.Battle, u *state.Unit, s content.Skill
 		}
 		return nil
 	}
-	lo, hi := s.MinRange, s.MaxRange
-	if s.Strike {
-		lo, hi = strikeRange(c, u)
-	}
-	if !s.Heal {
-		hi += u.RangeBonus
-		if u.Status["heye"] > 0 && s.Kind != "u" {
-			hi += int(u.P("heR", 3))
-		}
-		if u.Status["deadeye"] > 0 {
-			hi += 99
-		}
-		if u.Status["aim"] > 0 {
-			hi += 2 // Steady Aim
-		}
-	}
+	lo, hi := SkillRange(c, u, s)
 	var out []*state.Unit
 	for _, v := range b.Units {
 		var want bool
@@ -128,4 +113,27 @@ func PetOf(b *state.Battle, u *state.Unit) *state.Unit {
 		}
 	}
 	return nil
+}
+
+// SkillRange is how near and how far a unit can use a skill now: the skill's
+// range (a Strike's comes from the weapon in hand), plus range bonuses for
+// attacks (gear, Hunter's Eye, Deadeye, Steady Aim).
+func SkillRange(c *content.Content, u *state.Unit, s content.Skill) (lo, hi int) {
+	lo, hi = s.MinRange, s.MaxRange
+	if s.Strike {
+		lo, hi = strikeRange(c, u)
+	}
+	if !s.Heal {
+		hi += u.RangeBonus
+		if u.Status["heye"] > 0 && s.Kind != "u" {
+			hi += int(u.P("heR", 3))
+		}
+		if u.Status["deadeye"] > 0 {
+			hi += 99
+		}
+		if u.Status["aim"] > 0 {
+			hi += 2 // Steady Aim
+		}
+	}
+	return lo, hi
 }

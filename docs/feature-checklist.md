@@ -53,23 +53,23 @@ The old screen is carried over and wired to the referee; each of these gets tick
 - ➕ Camera keeps a margin so units never hide under the bottom bar; it stays inside the map
 - ✅ When aiming, the camera frames the attacker and the target above the forecast window (8h)
 - ✅ After a hero acts, the camera moves to the next ready hero ("Next hero" button too) (8h)
-- ➕ Optional auto-zoom on the selected hero; the camera follows your selection when zoomed in
+- ✅ Optional auto-zoom on the selected hero; the camera follows your selection when zoomed in (8i)
 - ✅ Minimap you can tap to jump, with your view box drawn on it (8a)
 - ✅ Units turn into simple markers only when zoomed far out (8a)
 - ✅ Flat (Fire Emblem) view and isometric view with rotate (flat is the main view) (new screen, 8g)
 - 🔜 The camera waits for each animation to finish before moving on (your request)
 
 **Moving and acting**
-- ➕ **Drag a hero to a blue tile to move** (press, drag, release), with a preview line and target tile; the map scrolls when you drag near the screen edge; a short tap after a drag is ignored so it doesn't misfire; dropping on an unreachable tile says so
+- ✅ (8i) **Drag a hero to a blue tile to move** (press, drag, release), with a preview line and target tile; the map scrolls when you drag near the screen edge; a short tap after a drag is ignored so it doesn't misfire; dropping on an unreachable tile says so
 - ✅ Tap a hero, tap a blue tile to move, or tap the hero again to act in place (8a)
 - ✅ Tap a monster to attack it (walks closer if needed; forecast first, tap again to confirm)
 - ✅ Bottom command bar and the classic side menu (commands beside the hero, skills fly out) (8h)
 - ✅ Aim strip: target list with ◀ ▶ to cycle targets, skill switcher, weapon-set buttons, Cancel and Attack (8h)
 - ✅ Forecast window (at the bottom, as in v0.24): HP before → after with a KO tag, DEF, damage, hit %, WEAK/RESIST, skill and weapon, statuses; green window for heals and buffs (8h)
-- ✅ Tap a monster to see its move zone, weaknesses and skills (8h; the red attack zone around it is still to do)
+- ✅ Tap a monster to see its move and attack zones, weaknesses and skills (8h, 8i)
 - ✅ Danger zone: shade every tile monsters can reach (Phase 9 builds on this) (8d)
-- ➕ Attack-range tiles shown after moving
-- ➕ Tap an empty tile for the system menu (End Turn, Gear, Save, map tools, floors)
+- ✅ Attack-range tiles shown after moving (8i, from the referee)
+- ✅ The system menu (End Turn, Gear, Save, map tools, floors) opens from ☰ (8d). In the final old game (v0.26.1) tapping an empty tile only clears the selection, so the new one does the same.
 - ✅ End Turn glows when everyone has acted; optional auto end turn; asks before ending if heroes haven't acted (8a/8d)
 - ✅ Battle speed (1x, 2x, Instant) and a Skip button during the enemy turn (8c/8d)
 

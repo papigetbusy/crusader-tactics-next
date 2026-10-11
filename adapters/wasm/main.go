@@ -13,6 +13,7 @@ import (
 
 	"github.com/papigetbusy/crusader-tactics-next/data"
 	"github.com/papigetbusy/crusader-tactics-next/sim/action"
+	"github.com/papigetbusy/crusader-tactics-next/sim/board"
 	"github.com/papigetbusy/crusader-tactics-next/sim/content"
 	"github.com/papigetbusy/crusader-tactics-next/sim/engine"
 )
@@ -139,6 +140,17 @@ func main() {
 		}
 		return text(out)
 	}))
+	tiles := func(ts []board.Tile) any {
+		var out [][2]int
+		for _, t := range ts {
+			out = append(out, [2]int{t.X, t.Y})
+		}
+		return text(out)
+	}
+	// ctAttackTiles(unit) -> where a hero's ready attacks reach now (red tiles)
+	g.Set("ctAttackTiles", fn(func(a []js.Value) any { return tiles(game.AttackTiles(a[0].Int())) }))
+	// ctThreatHit(unit) -> where a monster could hit next turn (red zone)
+	g.Set("ctThreatHit", fn(func(a []js.Value) any { return tiles(game.ThreatHit(a[0].Int())) }))
 	// ctTargets(unit, slot[, set]) -> [unitID,...]
 	g.Set("ctTargets", fn(func(a []js.Value) any { return text(game.TargetsWith(a[0].Int(), a[1].Int(), optInt(a, 2))) }))
 	// ctPreview(unit, slot, target[, set]) -> forecast or null
