@@ -26,6 +26,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-12 · Grok · Grand Hex is signed off. Code is in new-animations/code/grand-hex.js. It is not in the game. Queen's Garden is next.
 - 2026-10-12 · Grok · Grand Hex aura is black in the middle, fading to green, and the green changes from frame to frame. Not signed off.
 - 2026-10-12 · Grok · Grand Hex aura is now the game's warp ring, recolored green, around her. Not signed off.
 - 2026-10-12 · Grok · Grand Hex review now gives her a green glow and the game's absorb ring, recolored green, around her while she powers up. Not signed off.
