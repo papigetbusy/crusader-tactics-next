@@ -221,3 +221,7 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
 .srow > .b { flex: none; width: 104px; }
 .srow .btns .b, .srow > .b { box-sizing: border-box; width: 100%; }
 .srow > .b { width: 104px; }
+
+/* The import window: file picker and paste box fill the panel. */
+#slotsWin textarea, #slotsWin input[type=file] { display: block; width: 100%; box-sizing: border-box; margin: 6px 0; font: 12px ui-monospace, Menlo, monospace; color: #e8dcc0; }
+#slotsWin textarea { background: #1a0d10; border: 1px solid #6a4a1a; border-radius: 6px; padding: 6px; }

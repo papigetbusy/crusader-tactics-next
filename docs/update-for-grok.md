@@ -54,7 +54,7 @@ Things that changed today that you may have missed reading the repo. Start with 
   - skill aiming now says when an aim is complete
 
 ## Known problems and next session
-1. **The attack animations are ported, waiting for the owner's check.** Running the old game showed that its FX2 code (`FX2assign`, `fxTheme`, `fx2Layers`) is never drawn; what draws is `drawP` (old lines 922-966) plus the `makeRecipe` picture stacks (old lines 1331-1380). The owner chose to port what really draws, with the ACT poses and `anim`. The old Codex is an archive, not the authority for how attacks look.
+1. **The attack animations are ported and approved by the owner.** The save-file picker is done too. Running the old game showed that its FX2 code (`FX2assign`, `fxTheme`, `fx2Layers`) is never drawn; what draws is `drawP` (old lines 922-966) plus the `makeRecipe` picture stacks (old lines 1331-1380). The owner chose to port what really draws, with the ACT poses and `anim`. The old Codex is an archive, not the authority for how attacks look.
 2. **Update the Codex** (only after the owner approves the attacks):
    - upload the old one (v0.21/0.22) to the repo
    - check every entry against the new game

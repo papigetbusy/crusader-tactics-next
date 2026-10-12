@@ -144,14 +144,51 @@ export function autosave() {
 }
 
 function load(text, from) {
-  if (!text) return;
+  if (!text) return false;
   const r = referee.load(text);
-  if (!r || r.error) return alert('Could not load: ' + (r ? r.error : 'no answer'));
+  if (!r || r.error) { alert('Could not load: ' + (r ? r.error : 'no answer')); return false; }
   ['slotsWin', 'summary', 'team'].forEach((id) => { if ($(id)) $(id).hidden = true; });
   $('title').hidden = true;
   screen.show(r.view, true);
   screen.after();
   screen.log(`Loaded ${from}.`);
+  return true;
+}
+
+// importer: bring in a save from a file or pasted text, into a slot of the
+// player's choice; it asks before replacing a slot that has a game [old
+// Settings → Saves, savTab L1674-1684, importSave L1671]. The screen only
+// reads the file; the referee checks and loads the save text.
+function importer(mode) {
+  const w = cover('slotsWin');
+  let slot = [1, 2, 3].find((k) => !get(k)) || 3, text = '', name = '';
+  const draw = () => {
+    w.innerHTML = `<div class="panel box wide"><div class="ttl">Import a save</div>
+      <p><small>Choose a save file or paste a save code, pick a slot, then tap Import. <b>Importing replaces that slot.</b></small></p>
+      <div class="mrow"><span>Slot</span>${seg('imSlot', [[1, '1'], [2, '2'], [3, '3']], slot)}</div>
+      <input type="file" id="imFile" accept=".json,.txt,application/json,text/plain">
+      <textarea id="imText" rows="3" placeholder="…or paste a save code here"></textarea>
+      <p id="imMsg"><small>${name ? 'Ready: ' + name : ''}</small></p>
+      <div class="btns"><button class="b" id="imGo">Import</button><button class="b" id="imBack">Back</button></div></div>`;
+    w.hidden = false;
+    const msg = (t, bad) => { $('imMsg').innerHTML = `<small style="color:${bad ? '#ff8a8a' : '#8ff0b0'}">${t}</small>`; };
+    $('imSlot').querySelectorAll('button').forEach((b) => (b.onclick = () => { slot = +b.dataset.v; $('imSlot').querySelectorAll('button').forEach((x) => x.classList.toggle('on', x === b)); }));
+    $('imFile').onchange = (e) => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      if (f.size > 2e6) return msg('That file is too large to be a save.', true);
+      f.text().then((t) => { text = t; name = f.name; msg(`Ready: ${f.name} (${Math.max(1, Math.round(f.size / 1024))} KB). Tap Import.`); }).catch(() => msg('Could not read that file.', true));
+    };
+    $('imBack').onclick = () => slots(mode);
+    $('imGo').onclick = () => {
+      const t = (text || $('imText').value).trim();
+      if (!t) return msg('Choose a file or paste a save code first.', true);
+      const i = info(slot);
+      if (get(slot) && !confirm(`Replace slot ${slot}?\nSlot ${slot} already has a game${i ? ` (floor ${i.floor}, ${i.when})` : ''}. Importing replaces it.`)) return;
+      if (load(t, name ? 'the save file' : 'the pasted save') && put(slot)) screen.log(`Imported save loaded into slot ${slot}.`);
+    };
+  };
+  draw();
 }
 
 export function slots(mode) {
@@ -179,7 +216,7 @@ export function slots(mode) {
     a.click();
     screen.log('Save copied and downloaded.');
   };
-  $('svImp').onclick = () => { const t = prompt('Paste a save:'); if (t) load(t.trim(), 'the pasted save'); };
+  $('svImp').onclick = () => importer(mode);
 }
 
 export { closeUp };

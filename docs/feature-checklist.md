@@ -84,7 +84,7 @@ The old screen is carried over and wired to the referee; each of these gets tick
 **Look and feel**
 - 🔜 Your new sprites with movement and attack animations; glows per evolution stage; companion blue glow; enraged boss red glow
 - ✅ Gothic look: crimson and gold, night-graded battlefield, vignette, Grenze Gotisch and EB Garamond fonts (8a)
-- ➕ Unique layered attack effects for every skill, monster attack and ability; caster poses; damage numbers; smooth tile-by-tile movement
+- ✅ Unique layered attack effects for every skill, monster attack and ability; caster poses; damage numbers; smooth tile-by-tile movement (8l, checked by the owner 2026-10-11)
 - ➕ Map art (Tiny Swords tiles, coasts, bridges, roads, cliffs, trees, houses, castle), item icons
 - (There was no sound in the old game.)
 
