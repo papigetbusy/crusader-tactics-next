@@ -276,7 +276,7 @@ Ascension skills (one body only):
 
 - [x] Blood Moon (Blood Witch only) — approved. Code is in `code/blood-moon.js`. Not in the game.
 - [ ] Grand Hex (Hex Queen only) — gif: v1 made, not signed off (`gifs/witch/grand-hex/v1.gif`) — code: waiting
-- [ ] Soul Nova (Necromancer only) — in-game review GIF made, not signed off (`gifs/witch/soul-nova/review.gif`) — code: waiting
+- [ ] Soul Nova (Necromancer only) — glow test made, not signed off (`gifs/witch/soul-nova/review-glow.gif`) — code: waiting
 
 ### Healer
 
