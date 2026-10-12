@@ -26,17 +26,22 @@ export const BLOOD_MOON = {
   ascension: 'Blood Witch',
   fps: 10,
   clearOfCaster: 8,
+  approved: true,
+  inGame: '../gifs/witch/blood-moon/in-game.gif',
+  // game: true means the codex effect also plays that step, on the enemy:
+  // the red beam, the red burst inside it, and the ring under his feet.
+  // The ring is gone by the last step.
   frames: [
     { body: 1 },
     { body: 2 },
     { body: 3 },
     { body: 4 },
-    { body: 5, effect: 'moon', at: 'sky' },
-    { body: 6, effect: 'moon', at: 'sky' },
-    { body: 7, effect: 'pillar', at: 'enemy' },
-    { body: 7, effect: 'blast', at: 'enemy' },
-    { body: 8, effect: 'blast', at: 'enemy' },
-    { body: 8, effect: 'blast', at: 'enemy' },
+    { body: 5, effect: 'moon', at: 'sky', game: true },
+    { body: 6, effect: 'moon', at: 'sky', game: true },
+    { body: 7, effect: 'pillar', at: 'enemy', game: true },
+    { body: 7, effect: 'blast', at: 'enemy', game: true },
+    { body: 8, effect: 'blast', at: 'enemy', game: true },
+    { body: 8, effect: 'blast', at: 'enemy', game: true, ring: false },
   ],
   files: {
     body: [1, 2, 3, 4, 5, 6, 7, 8].map((n) => `../gifs/witch/blood-moon/frames/body-${n}.png`),
