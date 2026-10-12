@@ -26,6 +26,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-12 · Grok · Named idle sprites for the art AI are in new-animations/idle-sprites.zip. First prompt batch is prompts/01-warrior-ascension.md. Not in the game.
 - 2026-10-12 · Grok · Idle cards for all 60 hero forms are in new-animations/idle-cards. Skill names to copy are in new-animations/HERO-NAMES.md. Not in the game.
 - 2026-10-12 · Grok · Tested the animation bot on six warrior sheets. Review GIFs only. Not signed off. Not in the game.
 - 2026-10-12 · Grok · The animation bot makes a first review GIF for every sheet dropped in new-animations/inbox, then stops. It does not write code and it does not sign off.

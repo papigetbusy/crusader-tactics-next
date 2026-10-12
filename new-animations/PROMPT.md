@@ -1,9 +1,14 @@
-# Sprite prompt
+# Art rule
 
-Paste the block. Change only the FILL lines. The hero is called with @, not described.
+One skill, one prompt, one sheet. Work in batches of about six. Ascension skills come in sixes: three skills and three class abilities, each locked to its own body.
 
-The body row is always that one saved hero, full body, no spell.
-The effect row is always the spell only, no hero.
+Call the hero with @ and the saved name. Do not describe the face, clothes, weapon, or colors. The saved picture is the design.
+
+Eight frames. Not nine. Eight equal cells is what the sheet cutter reads. Nine makes the cells uneven and a frame gets skipped.
+
+The body row is that one hero, full body, no spell. The effect row is the spell only, no hero. The last body is the same picture as the first, so the move ends on idle.
+
+Ascension moves use the ascension name. Blood Rage is @Berserker, not @Warrior. Do not draw the other two ascensions of that class.
 
 ```
 Sprite sheet for FILL SKILL. One character only: @FILL HERO.
