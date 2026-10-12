@@ -278,7 +278,7 @@ Shared skills (every form of this class):
 Ascension skills (one body only):
 
 - [x] Blood Moon (Blood Witch only) — approved. Code is in `code/blood-moon.js`. Not in the game.
-- [ ] Grand Hex (Hex Queen only) — review GIF from the v3 sheet, not signed off (`gifs/witch/grand-hex/review-v3.gif`). Body 6 and body 8 were skipped. — code: waiting
+- [ ] Grand Hex (Hex Queen only) — green aura review, not signed off (`gifs/witch/grand-hex/review-aura.gif`). — code: waiting
 - [x] Soul Nova (Necromancer only) — approved. Code is in `code/soul-nova.js`. Not in the game.
 
 ### Healer

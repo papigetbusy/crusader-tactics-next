@@ -26,6 +26,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-12 · Grok · Grand Hex review now gives her a green glow and the game's absorb ring, recolored green, around her while she powers up. Not signed off.
 - 2026-10-12 · Grok · Grand Hex review uses the v3 Hex Queen sheet. The seal grows onto the enemy and she returns to idle. Not signed off.
 - 2026-10-12 · Grok · Sprite prompts now call the saved hero with @. Grand Hex uses @hex queen.
 - 2026-10-12 · Grok · Sprite prompts now use one locked template in new-animations/PROMPT.md. Grand Hex is being sent again. The last sheet mixed in the other witches.
