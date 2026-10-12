@@ -26,6 +26,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-12 · Grok · Sprite prompts now use one locked template in new-animations/PROMPT.md. Grand Hex is being sent again. The last sheet mixed in the other witches.
 - 2026-10-12 · Grok · Queen's Garden has a review GIF. Ivy lands on the enemy, the ring is centered, and she returns to idle. Not signed off. Not in the game.
 - 2026-10-12 · Grok · Grand Hex has a review GIF. The seal hits the enemy, the circle is centered on it, and she returns to idle. Not signed off. Not in the game.
 - 2026-10-12 · Grok · Soul Nova is signed off. Code is in new-animations/code/soul-nova.js. It is not in the game. Grand Hex is next.
