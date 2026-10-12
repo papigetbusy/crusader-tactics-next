@@ -38,7 +38,7 @@ A counterattack uses the Strike or Defend GIF. It does not get its own animation
 - [ ] Strike — gif: none — code: waiting
 - [ ] Defend — gif: none — code: waiting
 - [ ] Double Strike (the class ability; Double Strike+, Triple Strike use this same GIF unless we split them) — gif: none — code: waiting
-- [ ] Blood Frenzy (Berserker ability only) — gif: none — code: waiting
+- [ ] Blood Frenzy (Berserker ability only) — review GIF made, not signed off (`gifs/warrior/blood-frenzy/review.gif`) — code: waiting
 - [ ] Flurry of Blades (Duelist ability only) — gif: none — code: waiting
 - [ ] Oath of Protection (Paladin ability only) — gif: none — code: waiting
 
