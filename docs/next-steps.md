@@ -20,6 +20,12 @@ Written 2026-10-11 for the owner and Grok. The full plan is in `roadmap.md`, and
 ## The new attack window: done 2026-10-12
 The owner signed off design B with a skill-name box (no count) and ◀ ▶ to cycle attacks; built in `battle.js` (forecast, placeForecast) and `style.css`.
 
+## Next session, first thing: missing from the old build (owner, 2026-10-12)
+Match the old game (screen only; check against papigetbusy/crusader-tactics):
+1. **Done heroes dim:** when a hero can't do anything else this turn, it is drawn dimmed, showing it has made its turn.
+2. **Health bars drain as damage lands:** the lost part of the bar should slide down when the hit lands (old shp/sh/sht, about 350 ms), not jump at the end of the turn. Today `st.shownHp` is just `u.hp` and the bar only changes when the new View is shown.
+3. **Weakness indicator:** show that one of your moves does bonus damage (WEAK) to a monster, the way the old game marked it (before choosing the attack, not only in the forecast).
+
 ## Left to do, in order
 
 ### 1. Finish Phase 8 (small polish): done 2026-10-11
