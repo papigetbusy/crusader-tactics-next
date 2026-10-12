@@ -18,6 +18,16 @@ const RollShuffle = "shuffle"
 // It assumes the caller already checked the use is allowed.
 func UseSkill(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Unit, slot int, v *state.Unit, emit action.Emit) error {
 	s := u.Skills[slot]
+	if err := useSkill(c, b, dice, u, slot, v, emit); err != nil {
+		return err
+	}
+	counter(c, b, dice, u, s, v, emit)
+	return nil
+}
+
+// useSkill is UseSkill before any counterattack.
+func useSkill(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Unit, slot int, v *state.Unit, emit action.Emit) error {
+	s := u.Skills[slot]
 	if IsNew(s) {
 		return useNew(c, b, dice, u, slot, s, Pick{Target: v}, emit)
 	}

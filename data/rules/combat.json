@@ -42,6 +42,8 @@
   "equipEndsTurn": true,
   "levelUpKeepsWeapon": true,
   "monstersRevive": true,
+  "counterattacks": true,
+  "counterPower": 1,
   "rallyAttack": 1.25,
   "weakAttack": 0.7,
   "brokenDefense": 0.7,

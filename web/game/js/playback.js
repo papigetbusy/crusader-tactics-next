@@ -103,7 +103,7 @@ export function play(units, events, speed, done, onEnemyTurn, calm) {
         t += dur;
         break;
       }
-      case 'skill': case 'overwatch': {
+      case 'skill': case 'overwatch': case 'counter': {
         if (!who) break;
         t = Math.max(t, busyUntil);
         const tg = target || who, L = look(who, e.skill || 'Strike'), a = feet(...at(who.id)), b = feet(...at(tg.id));

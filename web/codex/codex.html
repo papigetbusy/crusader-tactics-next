@@ -205,7 +205,9 @@ function mech() {
   return `<h2>Combat</h2><div class="card"><ul>
 <li><b>Damage</b> comes from your attack (weapon ATK × rank) and the skill's power, minus the target's defense, then multiplied by the weapon triangle, element weakness, bonuses and terrain. The forecast runs the same math as the real hit.</li>
 <li><b>Elements:</b> Fire beats Ice, Ice beats Thunder, Thunder beats Fire; Light and Dark beat each other. A weakness takes ×1.5 (WEAK), a resistance ×0.75 (RESIST).</li>
-<li><b>Hit chance</b> is shown on every attack. The weapon triangle adds or removes 15%; some skills can't miss.</li><li><b>Terrain</b>: forest −15%, hill −10%, fort and throne −25% damage taken.</li></ul></div>
+<li><b>Hit chance</b> is shown on every attack. The weapon triangle adds or removes 15%; some skills can't miss.</li><li><b>Terrain</b>: forest −15%, hill −10%, fort and throne −25% damage taken.</li>
+<li><b>Counterattacks</b>: a unit that survives a single-target hit strikes back once with a full Strike if the attacker is within its Strike range. No counter while stunned, frozen, rooted or cloaked, or against area skills, ultimates, heals and buffs. The forecast shows it.</li>
+<li><b>Smarter enemies</b>: from floor 20 (bosses and elites from floor 10) monsters go for a hero they can defeat, then healers, then heroes weak to their attack.</li></ul></div>
 <h2>Growth</h2><div class="card"><ul><li>Each level needs level × ${D.Progress.xpPerLevel} XP. Kills give the most XP (×${D.Progress.killBoss} for bosses, ×${D.Progress.killElite} for elites); part of each kill's XP is shared with the other heroes in the fight; hits and heals give a little.</li>
 <li>Forms change at Lv ${D.Progress.formLevels[1]} and Lv ${D.Progress.formLevels[2]}; at Lv ${D.Progress.ascendAt} you choose one of three ascensions (new sprite, passive and ultimate).</li>
 <li>Skills are learned on one schedule for every class, and level up with use (+5% power per skill level; switching skills counts double). Change your skills once per floor; it doesn't use up the turn.</li>

@@ -114,6 +114,7 @@ const (
 	Faded         = "faded"      // Unit (a shadow clone) fades away
 	Trapped       = "trapped"    // Unit stepped on a hidden snare
 	OverwatchShot = "overwatch"  // Unit shoots Target, who moved into its aimed cone
+	Countered     = "counter"    // Unit strikes back at Target, who just hit it (Phase 9)
 	ActAgain      = "act-again"  // Unit may act again this turn, thanks to Skill (Hit and Run, Quick Draw...)
 	Learned       = "learned"    // Unit learned skill Skill
 	Ascended      = "ascended"   // Unit ascended to Skill

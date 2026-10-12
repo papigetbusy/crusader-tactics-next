@@ -71,6 +71,11 @@ type Combat struct {
 	// weapons in hand (the old game counted weapon set 1's).
 	LevelUpKeepsWeapon bool `json:"levelUpKeepsWeapon"`
 	MonstersRevive     bool `json:"monstersRevive"` // fallen monsters are kept so a monster healer can bring them back
+	// Counterattacks (Phase 9): a unit hit by a single-target attack that
+	// survives strikes back once with its Strike, if the attacker is in its
+	// Strike range. CounterPower scales that Strike (1 = full).
+	Counterattacks bool    `json:"counterattacks"`
+	CounterPower   float64 `json:"counterPower,omitempty"`
 
 	// Statuses that change damage.
 	RallyAttack   float64 `json:"rallyAttack"`   // rally: attacker hits this much harder

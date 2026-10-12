@@ -16,7 +16,11 @@ func UseAimed(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Unit,
 	if !IsNew(s) {
 		return UseSkill(c, b, dice, u, slot, p.Target, emit)
 	}
-	return useNew(c, b, dice, u, slot, s, p, emit)
+	if err := useNew(c, b, dice, u, slot, s, p, emit); err != nil {
+		return err
+	}
+	counter(c, b, dice, u, s, p.Target, emit)
+	return nil
 }
 
 // useNew is one even-schedule skill: what it does for its kind of aim, the

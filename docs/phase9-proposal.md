@@ -25,7 +25,7 @@ The owner moved the balance autoplayer to the end, so these numbers are a carefu
 - **No counter when:** the defender is stunned, frozen, rooted by a net or cloaked; the attack was an area skill, an ultimate, a heal or buff; the attacker is out of the defender's range; or the attack killed.
 - **Both sides counter** (heroes and monsters), so positioning matters.
 - The **forecast shows both sides**: "Counter: 8 dmg · 72%" or "No counter: out of range".
-- The Duelist's Riposte stays and is stronger than a plain counter (60%, twice with Flurry); a Duelist uses Riposte instead of the plain counter.
+- The Duelist's Riposte stays: since the counter is now a full Strike, a Duelist does both (the counter, plus Riposte's 60% melee strike, twice with Flurry). Claude's call while building, for the owner to confirm.
 
 ## P9-3 Class-owned terrain (owner: not now)
 - **Bush (new tile, in grass and forest edges, a few per map):** anyone in a bush takes 10% less damage. An **Assassin** in a bush is **cloaked** (can't be targeted) and gets **+25% crit**; attacking breaks the cloak until the Assassin leaves the bush and enters one again.

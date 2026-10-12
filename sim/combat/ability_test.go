@@ -45,7 +45,7 @@ func TestAbilities(t *testing.T) {
 		h.Cooldowns = []int{0}
 		var n int
 		_ = UseSkill(c, b, hits(), h, 0, f, func(e action.Event) {
-			if e.Kind == action.Hit {
+			if e.Kind == action.Hit && e.Unit == h.ID {
 				n++
 			}
 		})

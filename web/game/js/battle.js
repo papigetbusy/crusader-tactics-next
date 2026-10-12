@@ -410,12 +410,18 @@ function forecast() {
   const ko = after && /^0(–|$)/.test(after) ? '<b class="ko">KO</b>' : '';
   const sets = (u.gear && u.gear.sets) || [], hand = sets.findIndex((x) => x.inHand), set = s.set || hand + 1;
   const weapons = sets.length ? (sets[set - 1] || sets[0]).weapons : '';
+  // The target's counterattack, from the referee (Phase 9).
+  let ctr = '';
+  if (f && f.counter) {
+    const c = f.counter, alo = Math.max(0, u.hp - c.high), ahi = Math.max(0, u.hp - c.low);
+    ctr = `<div class="ctr">⚔ Counter <b>${c.low === c.high ? c.mid : c.low + '–' + c.high}</b> · Hit <b>${c.hitChance}%</b> · your HP → <b>${alo === ahi ? alo : alo + '–' + ahi}</b>${alo === 0 ? ' <b class="ko">KO</b>' : ''}${ko ? '<span class="dim"> (not if it falls)</span>' : ''}</div>`;
+  } else if (f && f.noCounter && foe && dmg) ctr = `<div class="ctr dim">No counter: ${f.noCounter}</div>`;
   const pills = active(v).map((q) => `<span class="pill ${STATUS[q].bad ? 'd' : 'b'}">${label(v, q)} · ${v.statuses[q]}</span>`).join('');
   F.className = 'panel ' + (foe ? 'red' : 'green');
   F.innerHTML = `<div class="fh">${v.kind || v.class} · Lv ${v.level}${v.boss ? ' · Boss' : v.elite ? ' · Elite' : ''}</div>
     <div>HP <b>${v.hp}</b>${after ? ` → <b class="af">${after}</b>` : ''} ${ko}<span class="dim"> · DEF ${v.def}</span></div>
     <div>${line}</div><div class="fs">${sk.ultimate ? '★ ' : ''}${sk.name === 'Strike' ? 'Attack' : sk.name}${weapons ? ' · ' + weapons : ''}${sk.text ? ' · ' + sk.text : ''}</div>
-    <div class="you">${u.class} · HP ${u.hp}/${u.maxHp}</div>${pills ? `<div class="pills">${pills}</div>` : ''}
+    <div class="you">${u.class} · HP ${u.hp}/${u.maxHp}</div>${ctr}${pills ? `<div class="pills">${pills}</div>` : ''}
     <div class="skills" id="fSkills"></div><div class="fr" id="fRow"></div>`;
   const sw = $('fSkills');
   u.skills.forEach((k, i) => {
