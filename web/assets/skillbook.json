@@ -1,0 +1,1426 @@
+{
+ "skills": {
+  "Absolute Zero": {
+   "class": "Mage",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 1.8,
+   "element": "ice",
+   "ascension": "Cryomancer"
+  },
+  "Aftershock": {
+   "class": "Tank",
+   "hero": true,
+   "kind": "n",
+   "level": 24,
+   "power": 1
+  },
+  "Ambush": {
+   "class": "Assassin",
+   "hero": true,
+   "kind": "n",
+   "level": 3,
+   "power": 1.2
+  },
+  "Arcane Nova": {
+   "class": "Mage",
+   "hero": true,
+   "kind": "u",
+   "level": 20,
+   "power": 2,
+   "magic": true
+  },
+  "Assassinate": {
+   "class": "Assassin",
+   "hero": true,
+   "kind": "u",
+   "level": 1,
+   "power": 1.8
+  },
+  "Backstab": {
+   "power": 1.3
+  },
+  "Bait and Switch": {
+   "class": "Assassin",
+   "hero": true,
+   "kind": "n",
+   "level": 18
+  },
+  "Barrage": {
+   "power": 1.2
+  },
+  "Bash": {
+   "class": "Tank",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 1.1
+  },
+  "Battle Trance": {
+   "class": "Warrior",
+   "hero": true,
+   "kind": "n",
+   "level": 24
+  },
+  "Blessing": {
+   "class": "Healer",
+   "hero": true,
+   "kind": "n",
+   "level": 6,
+   "support": true
+  },
+  "Blink": {
+   "class": "Mage",
+   "hero": true,
+   "kind": "n",
+   "level": 15
+  },
+  "Blizzard": {
+   "class": "Mage",
+   "hero": true,
+   "kind": "n",
+   "level": 12,
+   "power": 1.1,
+   "element": "ice"
+  },
+  "Blood Drain": {
+   "power": 1
+  },
+  "Blood Moon": {
+   "class": "Witch",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 2,
+   "element": "dark",
+   "ascension": "Blood Witch"
+  },
+  "Blood Rage": {
+   "class": "Warrior",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 2.6,
+   "ascension": "Berserker"
+  },
+  "Bodyguard": {
+   "class": "Tank",
+   "hero": true,
+   "kind": "n",
+   "level": 12
+  },
+  "Bog of Despair": {
+   "class": "Witch",
+   "hero": true,
+   "kind": "n",
+   "level": 27
+  },
+  "Bone Storm": {
+   "power": 0.8
+  },
+  "Boot Shot": {
+   "class": "Gunslinger",
+   "hero": true,
+   "kind": "n",
+   "level": 12,
+   "power": 0.9
+  },
+  "Bullet Hell": {
+   "class": "Gunslinger",
+   "hero": true,
+   "kind": "u",
+   "level": 20,
+   "power": 0.5
+  },
+  "Bulwark": {
+   "class": "Tank",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "support": true,
+   "ascension": "Guardian"
+  },
+  "Cataclysm": {
+   "power": 2,
+   "element": "user",
+   "visual": "nova"
+  },
+  "Cavalry Breaker": {
+   "class": "Knight",
+   "hero": true,
+   "kind": "u",
+   "level": 20,
+   "power": 2.6,
+   "charge": true
+  },
+  "Chain Lightning": {
+   "class": "Mage",
+   "hero": true,
+   "kind": "n",
+   "level": 9,
+   "power": 0.9,
+   "element": "elec"
+  },
+  "Charge": {
+   "class": "Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 1,
+   "charge": true
+  },
+  "Claw": {
+   "power": 1
+  },
+  "Claw Swipe": {
+   "power": 1.1
+  },
+  "Cleanse": {
+   "class": "Healer",
+   "hero": true,
+   "kind": "n",
+   "level": 9,
+   "heal": true,
+   "cleanse": true
+  },
+  "Cloak": {
+   "hero": true,
+   "support": true
+  },
+  "Club Smash": {
+   "power": 1.4
+  },
+  "Concussive Arrow": {
+   "class": "Ranger",
+   "hero": true,
+   "kind": "n",
+   "level": 24,
+   "power": 0.9
+  },
+  "Constrict": {
+   "power": 1.2
+  },
+  "Contagion": {
+   "class": "Witch",
+   "hero": true,
+   "kind": "n",
+   "level": 24
+  },
+  "Crescent Wave": {
+   "class": "Warrior",
+   "hero": true,
+   "kind": "n",
+   "level": 6,
+   "power": 1.3
+  },
+  "Crimson Waltz": {
+   "class": "Assassin",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 0.55,
+   "ascension": "Blade Dancer"
+  },
+  "Crippling Cut": {
+   "class": "Assassin",
+   "hero": true,
+   "kind": "n",
+   "level": 21,
+   "power": 0.9
+  },
+  "Crusade": {
+   "class": "Knight",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 2.2,
+   "element": "light",
+   "physical": true,
+   "charge": true,
+   "ascension": "Templar"
+  },
+  "Crushing Blow": {
+   "class": "Tank",
+   "hero": true,
+   "kind": "u",
+   "level": 1,
+   "power": 1.8
+  },
+  "Curse of Frailty": {
+   "class": "Witch",
+   "hero": true,
+   "kind": "n",
+   "level": 6,
+   "power": 0.3,
+   "magic": true
+  },
+  "Dark Pact": {
+   "support": true
+  },
+  "Dead or Alive": {
+   "class": "Gunslinger",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 2.6,
+   "ascension": "Bounty Hunter"
+  },
+  "Deadeye": {
+   "class": "Ranger",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 3.2,
+   "ascension": "Sniper"
+  },
+  "Death Blossom": {
+   "class": "Assassin",
+   "hero": true,
+   "kind": "u",
+   "level": 20,
+   "power": 0.6
+  },
+  "Death Bolt": {
+   "power": 1.2,
+   "magic": true
+  },
+  "Disarming Shot": {
+   "class": "Gunslinger",
+   "hero": true,
+   "kind": "n",
+   "level": 15,
+   "power": 0.8
+  },
+  "Disengage": {
+   "class": "Ranger",
+   "hero": true,
+   "kind": "n",
+   "level": 18,
+   "power": 0.8
+  },
+  "Dive Claw": {
+   "power": 1.3
+  },
+  "Dive Strike": {
+   "power": 1.5
+  },
+  "Divine Grace": {
+   "class": "Healer",
+   "hero": true,
+   "kind": "u",
+   "level": 1,
+   "power": 3,
+   "heal": true
+  },
+  "Doom Lance": {
+   "class": "Knight",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 3,
+   "ascension": "Black Knight"
+  },
+  "Double Tap": {
+   "class": "Gunslinger",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 0.6
+  },
+  "Dragon Claw": {
+   "class": "Dragon Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 1.1
+  },
+  "Dragon Scales": {
+   "class": "Dragon Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 15
+  },
+  "Dragon Slash": {
+   "class": "Warrior",
+   "hero": true,
+   "kind": "u",
+   "level": 20,
+   "power": 3,
+   "element": "fire",
+   "physical": true
+  },
+  "Dragon's Fury": {
+   "class": "Dragon Knight",
+   "hero": true,
+   "kind": "u",
+   "level": 20,
+   "power": 2,
+   "element": "fire"
+  },
+  "Dragonfire": {
+   "class": "Dragon Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 3,
+   "power": 0.9,
+   "element": "fire"
+  },
+  "Earthshatter": {
+   "class": "Tank",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 1.8,
+   "ascension": "Juggernaut"
+  },
+  "Echo": {
+   "class": "Mage",
+   "hero": true,
+   "kind": "n",
+   "level": 27
+  },
+  "Ember Trail": {
+   "class": "Dragon Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 21
+  },
+  "Execution": {
+   "class": "Warrior",
+   "hero": true,
+   "kind": "n",
+   "level": 12,
+   "power": 2.2
+  },
+  "Fan of Knives": {
+   "class": "Assassin",
+   "hero": true,
+   "kind": "n",
+   "level": 6,
+   "power": 0.8
+  },
+  "Fire Breath": {
+   "power": 1.2
+  },
+  "Fireball": {
+   "class": "Mage",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 1.2,
+   "element": "fire"
+  },
+  "Flail Smash": {
+   "power": 1.3
+  },
+  "Flame Breath": {
+   "power": 1
+  },
+  "Flaming Volley": {
+   "class": "Ranger",
+   "hero": true,
+   "kind": "n",
+   "level": 27,
+   "power": 0.7,
+   "element": "fire",
+   "physical": true
+  },
+  "Flash Bang": {
+   "class": "Gunslinger",
+   "hero": true,
+   "kind": "n",
+   "level": 6,
+   "power": 0.4
+  },
+  "Fortress Slam": {
+   "class": "Tank",
+   "hero": true,
+   "kind": "n",
+   "level": 15,
+   "power": 1.2
+  },
+  "Frost Bolt": {
+   "class": "Mage",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 1,
+   "element": "ice"
+  },
+  "Frost Nova": {
+   "power": 1,
+   "magic": true
+  },
+  "Gale Volley": {
+   "class": "Ranger",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 1,
+   "element": "elec",
+   "physical": true,
+   "ascension": "Tempest Archer"
+  },
+  "Garrote": {
+   "class": "Assassin",
+   "hero": true,
+   "kind": "n",
+   "level": 15,
+   "power": 0.7
+  },
+  "Glacial Breath": {
+   "class": "Dragon Knight",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 1.6,
+   "element": "ice",
+   "ascension": "Frost Wyrm"
+  },
+  "Glacier Fist": {
+   "power": 1.4
+  },
+  "Grand Charge": {
+   "class": "Knight",
+   "hero": true,
+   "kind": "u",
+   "level": 1,
+   "power": 1.8,
+   "charge": true
+  },
+  "Grand Hex": {
+   "class": "Witch",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 0.8,
+   "magic": true,
+   "ascension": "Hex Queen"
+  },
+  "Grave Bolt": {
+   "power": 1.2,
+   "magic": true
+  },
+  "Grave Nova": {
+   "power": 1,
+   "magic": true
+  },
+  "Gravity Well": {
+   "class": "Mage",
+   "hero": true,
+   "kind": "n",
+   "level": 24,
+   "power": 0.7,
+   "magic": true
+  },
+  "Greater Spell": {
+   "power": 1.5,
+   "element": "user",
+   "visual": "meteor"
+  },
+  "Ground Pound": {
+   "class": "Tank",
+   "hero": true,
+   "kind": "n",
+   "level": 3,
+   "power": 0.8
+  },
+  "Ground Slam": {
+   "power": 0.8
+  },
+  "Heal Ally": {
+   "class": "Healer",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 1.2,
+   "heal": true
+  },
+  "Heavy Slash": {
+   "power": 1.2
+  },
+  "Hellfire": {
+   "power": 1,
+   "magic": true
+  },
+  "Hellfire Dive": {
+   "class": "Dragon Knight",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 2.2,
+   "element": "fire",
+   "ascension": "Inferno Rider"
+  },
+  "Hex": {
+   "class": "Witch",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 0.4,
+   "magic": true
+  },
+  "Hex Storm": {
+   "class": "Witch",
+   "hero": true,
+   "kind": "u",
+   "level": 20,
+   "power": 1.5,
+   "element": "dark"
+  },
+  "High Noon": {
+   "class": "Gunslinger",
+   "hero": true,
+   "kind": "n",
+   "level": 27,
+   "power": 1.3
+  },
+  "Hollow Point": {
+   "class": "Gunslinger",
+   "hero": true,
+   "kind": "u",
+   "level": 1,
+   "power": 1.7
+  },
+  "Holy Judgment": {
+   "class": "Warrior",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 2.2,
+   "element": "light",
+   "physical": true,
+   "ascension": "Paladin"
+  },
+  "Holy Siphon": {
+   "class": "Healer",
+   "hero": true,
+   "kind": "n",
+   "level": 12,
+   "power": 0.9,
+   "element": "light"
+  },
+  "Hook Chain": {
+   "class": "Tank",
+   "hero": true,
+   "kind": "n",
+   "level": 9,
+   "power": 0.7
+  },
+  "Hunter's Mark": {
+   "class": "Ranger",
+   "hero": true,
+   "kind": "n",
+   "level": 21,
+   "power": 0.5
+  },
+  "Ice Lance": {
+   "class": "Mage",
+   "hero": true,
+   "kind": "n",
+   "level": 6,
+   "power": 1.3,
+   "element": "ice"
+  },
+  "Impale": {
+   "class": "Dragon Knight",
+   "hero": true,
+   "kind": "u",
+   "level": 1,
+   "power": 1.6
+  },
+  "Infernal Claw": {
+   "power": 1.3
+  },
+  "Inferno": {
+   "class": "Mage",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 2.2,
+   "element": "fire",
+   "ascension": "Pyromancer"
+  },
+  "Iron Shell": {
+   "class": "Tank",
+   "hero": true,
+   "kind": "n",
+   "level": 18
+  },
+  "Ironhide": {
+   "class": "Tank",
+   "hero": true,
+   "kind": "n",
+   "level": 6,
+   "support": true
+  },
+  "Lance Break": {
+   "class": "Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 3,
+   "power": 1.3
+  },
+  "Lance Strike": {
+   "class": "Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 1.1
+  },
+  "Lance Wall": {
+   "class": "Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 21,
+   "power": 0.9
+  },
+  "Last Light": {
+   "class": "Healer",
+   "hero": true,
+   "kind": "u",
+   "level": 20,
+   "support": true
+  },
+  "Leaping Cleave": {
+   "class": "Warrior",
+   "hero": true,
+   "kind": "n",
+   "level": 18,
+   "power": 1.1
+  },
+  "Lightning Charge": {
+   "class": "Knight",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 2,
+   "element": "elec",
+   "physical": true,
+   "charge": true,
+   "ascension": "Storm Rider"
+  },
+  "Lucky Coin": {
+   "class": "Gunslinger",
+   "hero": true,
+   "kind": "n",
+   "level": 24
+  },
+  "Mana Burn": {
+   "class": "Mage",
+   "hero": true,
+   "kind": "n",
+   "level": 18,
+   "power": 0.8,
+   "magic": true
+  },
+  "Mass Heal": {
+   "class": "Healer",
+   "hero": true,
+   "kind": "n",
+   "level": 15,
+   "power": 1,
+   "heal": true
+  },
+  "Mass Mend": {
+   "power": 1,
+   "heal": true
+  },
+  "Mend Self": {
+   "class": "Healer",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 0.8,
+   "heal": true
+  },
+  "Meteor": {
+   "class": "Mage",
+   "hero": true,
+   "kind": "u",
+   "level": 1,
+   "power": 1.5,
+   "element": "fire"
+  },
+  "Miasma": {
+   "class": "Witch",
+   "hero": true,
+   "kind": "n",
+   "level": 3,
+   "power": 0.7,
+   "magic": true
+  },
+  "Momentum": {
+   "class": "Warrior",
+   "hero": true,
+   "kind": "n",
+   "level": 27,
+   "power": 1
+  },
+  "Multishot": {
+   "class": "Ranger",
+   "hero": true,
+   "kind": "n",
+   "level": 3,
+   "power": 0.7
+  },
+  "Open Veins": {
+   "class": "Assassin",
+   "hero": true,
+   "kind": "n",
+   "level": 24,
+   "power": 0.6
+  },
+  "Pandemic": {
+   "class": "Healer",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 1,
+   "element": "dark",
+   "ascension": "Plague Doctor"
+  },
+  "Phantom Rush": {
+   "class": "Assassin",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 0.9,
+   "ascension": "Phantom"
+  },
+  "Piercing Shot": {
+   "class": "Ranger",
+   "hero": true,
+   "kind": "n",
+   "level": 12,
+   "power": 1.4
+  },
+  "Pinning Shot": {
+   "class": "Ranger",
+   "hero": true,
+   "kind": "n",
+   "level": 9,
+   "power": 0.7
+  },
+  "Plague Mist": {
+   "power": 0.7,
+   "magic": true
+  },
+  "Plague Swarm": {
+   "class": "Witch",
+   "hero": true,
+   "kind": "n",
+   "level": 9,
+   "power": 0.9,
+   "element": "dark"
+  },
+  "Poison Arrow": {
+   "class": "Ranger",
+   "hero": true,
+   "kind": "n",
+   "level": 6,
+   "power": 0.8
+  },
+  "Poison Blade": {
+   "power": 0.7
+  },
+  "Powder Keg": {
+   "class": "Gunslinger",
+   "hero": true,
+   "kind": "n",
+   "level": 21,
+   "power": 1.6,
+   "element": "fire",
+   "physical": true
+  },
+  "Power Shot": {
+   "class": "Ranger",
+   "hero": true,
+   "kind": "u",
+   "level": 1,
+   "power": 1.6
+  },
+  "Power Strike": {
+   "class": "Warrior",
+   "hero": true,
+   "kind": "u",
+   "level": 1,
+   "power": 1.6
+  },
+  "Prism Aura": {
+   "class": "Healer",
+   "hero": true,
+   "kind": "n",
+   "level": 18,
+   "support": true
+  },
+  "Puppet Strings": {
+   "class": "Witch",
+   "hero": true,
+   "kind": "n",
+   "level": 18
+  },
+  "Quick Shot": {
+   "class": "Gunslinger",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 1
+  },
+  "Radiant Burst": {
+   "class": "Healer",
+   "hero": true,
+   "kind": "n",
+   "level": 3,
+   "power": 1,
+   "element": "light"
+  },
+  "Rain of Arrows": {
+   "class": "Ranger",
+   "hero": true,
+   "kind": "u",
+   "level": 20,
+   "power": 1.2
+  },
+  "Rampage": {
+   "power": 1.5
+  },
+  "Relentless Charge": {
+   "class": "Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 27,
+   "power": 1.3,
+   "charge": true
+  },
+  "Rend": {
+   "class": "Warrior",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 0.8
+  },
+  "Renewal": {
+   "class": "Healer",
+   "hero": true,
+   "kind": "n",
+   "level": 27,
+   "support": true
+  },
+  "Rescue": {
+   "class": "Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 24
+  },
+  "Resurrection": {
+   "class": "Healer",
+   "hero": true,
+   "kind": "n",
+   "level": 24,
+   "revive": true
+  },
+  "Ricochet": {
+   "class": "Gunslinger",
+   "hero": true,
+   "kind": "n",
+   "level": 3,
+   "power": 0.8
+  },
+  "Ricochet Storm": {
+   "class": "Gunslinger",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 0.9,
+   "ascension": "Trickshot"
+  },
+  "Riposte Stance": {
+   "class": "Warrior",
+   "hero": true,
+   "kind": "n",
+   "level": 15
+  },
+  "Roll Out": {
+   "class": "Gunslinger",
+   "hero": true,
+   "kind": "n",
+   "level": 18,
+   "power": 0.9
+  },
+  "Running Thrust": {
+   "class": "Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 6,
+   "power": 1.5,
+   "charge": true
+  },
+  "Sacred Flame": {
+   "class": "Healer",
+   "hero": true,
+   "kind": "n",
+   "level": 21,
+   "power": 1.1,
+   "element": "light"
+  },
+  "Sanctuary": {
+   "class": "Healer",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 1.5,
+   "heal": true,
+   "ascension": "Saint"
+  },
+  "Savage Claw": {
+   "power": 1.2
+  },
+  "Scatter Shot": {
+   "class": "Gunslinger",
+   "hero": true,
+   "kind": "n",
+   "level": 9,
+   "power": 0.9
+  },
+  "Shackle": {
+   "power": 0.8
+  },
+  "Shadow Nova": {
+   "power": 0.9
+  },
+  "Shadowstep": {
+   "class": "Assassin",
+   "hero": true,
+   "kind": "n",
+   "level": 9,
+   "power": 1
+  },
+  "Shell Slam": {
+   "power": 1.5
+  },
+  "Shield Bash": {
+   "class": "Tank",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 0.9
+  },
+  "Shield Crush": {
+   "power": 0.8
+  },
+  "Shield of Faith": {
+   "class": "Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 15
+  },
+  "Shot": {
+   "class": "Ranger",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 1
+  },
+  "Shoulder Check": {
+   "class": "Warrior",
+   "hero": true,
+   "kind": "n",
+   "level": 9,
+   "power": 0.9
+  },
+  "Six Shooter": {
+   "class": "Gunslinger",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 0.45,
+   "ascension": "Outlaw"
+  },
+  "Skewer": {
+   "class": "Dragon Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 24,
+   "power": 1.2
+  },
+  "Sky Dive": {
+   "class": "Dragon Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 9,
+   "power": 1.5
+  },
+  "Slash": {
+   "class": "Warrior",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 1
+  },
+  "Smash": {
+   "power": 1.4
+  },
+  "Smoke Bomb": {
+   "class": "Assassin",
+   "hero": true,
+   "kind": "n",
+   "level": 12,
+   "support": true
+  },
+  "Snare Field": {
+   "class": "Ranger",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 0.8,
+   "ascension": "Trapper"
+  },
+  "Snaring Shot": {
+   "class": "Ranger",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 0.6
+  },
+  "Soul Bolt": {
+   "power": 1.2
+  },
+  "Soul Nova": {
+   "class": "Witch",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 1.3,
+   "element": "dark",
+   "ascension": "Necromancer"
+  },
+  "Soul Rend": {
+   "power": 1,
+   "magic": true
+  },
+  "Soul Siphon": {
+   "class": "Witch",
+   "hero": true,
+   "kind": "n",
+   "level": 21,
+   "power": 1,
+   "element": "dark"
+  },
+  "Spear Thrust": {
+   "class": "Dragon Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 1
+  },
+  "Spore Bolt": {
+   "power": 0.9,
+   "visual": "spit"
+  },
+  "Stab": {
+   "class": "Assassin",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 1
+  },
+  "Static Field": {
+   "class": "Mage",
+   "hero": true,
+   "kind": "n",
+   "level": 21,
+   "power": 0.6,
+   "element": "elec"
+  },
+  "Steady Aim": {
+   "class": "Ranger",
+   "hero": true,
+   "kind": "n",
+   "level": 15
+  },
+  "Stone Quake": {
+   "power": 1.2
+  },
+  "Strike": {
+   "hero": true,
+   "power": 1,
+   "strike": true
+  },
+  "Sunder": {
+   "class": "Warrior",
+   "hero": true,
+   "kind": "n",
+   "level": 21,
+   "power": 1.2
+  },
+  "Tail Slam": {
+   "power": 1.4
+  },
+  "Tail Sweep": {
+   "class": "Dragon Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 12,
+   "power": 0.8
+  },
+  "Taunting Roar": {
+   "class": "Tank",
+   "hero": true,
+   "kind": "n",
+   "level": 21
+  },
+  "Thousand Cuts": {
+   "class": "Warrior",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 0.6,
+   "ascension": "Duelist"
+  },
+  "Thunder": {
+   "class": "Mage",
+   "hero": true,
+   "kind": "n",
+   "level": 3,
+   "power": 1.2,
+   "element": "elec"
+  },
+  "Thunder Lance": {
+   "class": "Dragon Knight",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 2,
+   "element": "elec",
+   "physical": true,
+   "ascension": "Storm Dragoon"
+  },
+  "Thunderstorm": {
+   "class": "Mage",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 1.4,
+   "element": "elec",
+   "ascension": "Stormcaller"
+  },
+  "Tidal Crush": {
+   "power": 1.4,
+   "magic": true
+  },
+  "Time Warp": {
+   "class": "Healer",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "support": true,
+   "ascension": "Oracle"
+  },
+  "Titan's Wrath": {
+   "class": "Tank",
+   "hero": true,
+   "kind": "u",
+   "level": 20,
+   "power": 2.6
+  },
+  "Toxic Bolt": {
+   "class": "Witch",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 1,
+   "element": "dark"
+  },
+  "Toxic Spores": {
+   "power": 1,
+   "visual": "spit"
+  },
+  "Trample": {
+   "class": "Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 12,
+   "power": 0.8
+  },
+  "Twin Fangs": {
+   "class": "Assassin",
+   "hero": true,
+   "kind": "n",
+   "level": 27,
+   "power": 0.9
+  },
+  "Unhorse": {
+   "class": "Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 18,
+   "power": 1.2
+  },
+  "Unstoppable": {
+   "class": "Tank",
+   "hero": true,
+   "kind": "n",
+   "level": 27,
+   "power": 0.9
+  },
+  "Valor": {
+   "class": "Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 9,
+   "support": true
+  },
+  "Venom Edge": {
+   "class": "Assassin",
+   "hero": true,
+   "kind": "n",
+   "level": 1,
+   "power": 0.8
+  },
+  "Venom Spit": {
+   "power": 0.9
+  },
+  "Venom Storm": {
+   "class": "Assassin",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "power": 0.9,
+   "ascension": "Viper"
+  },
+  "Venom Wave": {
+   "power": 0.9
+  },
+  "Voodoo Link": {
+   "class": "Witch",
+   "hero": true,
+   "kind": "n",
+   "level": 12
+  },
+  "War Cry": {
+   "class": "Tank",
+   "hero": true,
+   "kind": "u",
+   "level": 30,
+   "support": true,
+   "ascension": "Warlord"
+  },
+  "War Stomp": {
+   "power": 0.9
+  },
+  "Whirlwind": {
+   "class": "Warrior",
+   "hero": true,
+   "kind": "n",
+   "level": 3,
+   "power": 0.9
+  },
+  "Wing Gust": {
+   "class": "Dragon Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 6,
+   "power": 0.7
+  },
+  "Wing Slash": {
+   "power": 1.1
+  },
+  "Witch's Brew": {
+   "class": "Witch",
+   "hero": true,
+   "kind": "u",
+   "level": 1,
+   "power": 1.4,
+   "element": "dark"
+  },
+  "Wither": {
+   "class": "Witch",
+   "hero": true,
+   "kind": "n",
+   "level": 15,
+   "power": 0.6,
+   "element": "dark"
+  },
+  "Withering Curse": {
+   "power": 0.6
+  },
+  "Wyrm Roar": {
+   "class": "Dragon Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 18
+  },
+  "Wyrmbond": {
+   "class": "Dragon Knight",
+   "hero": true,
+   "kind": "n",
+   "level": 27,
+   "power": 0.9
+  }
+ },
+ "abilities": {
+  "Absolute Freeze": "Mage",
+  "Beast Mode": "Dragon Knight",
+  "Beast Mode II": "Dragon Knight",
+  "Beast Mode+": "Dragon Knight",
+  "Blood Frenzy": "Warrior",
+  "Blood Pact": "Witch",
+  "Bloodlust": "Assassin",
+  "Bloodlust II": "Assassin",
+  "Bloodlust+": "Assassin",
+  "Crash Down": "Dragon Knight",
+  "Crimson Bloodlust": "Assassin",
+  "Dead Man's Hand": "Gunslinger",
+  "Deadeye Focus": "Ranger",
+  "Death Mark": "Assassin",
+  "Divine Choir": "Healer",
+  "Double Strike": "Warrior",
+  "Double Strike+": "Warrior",
+  "Elemental Overload": "Mage",
+  "Enlightenment": "Healer",
+  "Enlightenment II": "Healer",
+  "Enlightenment+": "Healer",
+  "Firestorm Field": "Mage",
+  "Flurry of Blades": "Warrior",
+  "Frost Bulwark": "Tank",
+  "Glacial Scales": "Dragon Knight",
+  "Grave Bloom": "Witch",
+  "Hunter's Eye": "Ranger",
+  "Hunter's Eye II": "Ranger",
+  "Hunter's Eye+": "Ranger",
+  "Inferno Beast": "Dragon Knight",
+  "Inner Element": "Mage",
+  "Inner Element II": "Mage",
+  "Inner Element+": "Mage",
+  "Iron Maiden": "Tank",
+  "Iron Maiden II": "Tank",
+  "Iron Maiden+": "Tank",
+  "Oath of Protection": "Warrior",
+  "Oath of Ruin": "Knight",
+  "Overwatch": "Gunslinger",
+  "Plague Bloom": "Healer",
+  "Poison Ivy": "Witch",
+  "Poison Ivy II": "Witch",
+  "Poison Ivy+": "Witch",
+  "Queen's Garden": "Witch",
+  "Quick Draw": "Gunslinger",
+  "Quick Draw II": "Gunslinger",
+  "Quick Draw+": "Gunslinger",
+  "Sacred Vow": "Knight",
+  "Shadow Clones": "Assassin",
+  "Sky Lord": "Dragon Knight",
+  "Snare Field": "Ranger",
+  "Storm Eye": "Ranger",
+  "Thunderous Oath": "Knight",
+  "Time Shift": "Healer",
+  "Triple Strike": "Warrior",
+  "Unbroken Maiden": "Tank",
+  "Vow of Honor": "Knight",
+  "Vow of Honor II": "Knight",
+  "Vow of Honor+": "Knight",
+  "Wanted Poster": "Gunslinger",
+  "War Banner": "Tank"
+ }
+}

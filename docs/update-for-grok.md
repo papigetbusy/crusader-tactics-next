@@ -24,7 +24,7 @@ Things that changed today that you may have missed reading the repo. Start with 
   - the full forecast window
   - the wooden command menu beside the hero, with a Skills fly-out
   - skills and class abilities aimed in several taps
-- **Animations:** walking, damage numbers, and a simplified effect list with one lunge (being replaced). During the enemy turn the camera waits for each animation, and there's a Skip button.
+- **Animations:** walking, damage numbers, and each attack's effect and pose ported from the old game (see `next-steps.md`). During the enemy turn the camera waits for each animation, and there's a Skip button.
 - **Information on the map:**
   - red attack tiles
   - a monster's purple move zone and red attack zone
@@ -54,7 +54,7 @@ Things that changed today that you may have missed reading the repo. Start with 
   - skill aiming now says when an aim is complete
 
 ## Known problems and next session
-1. **The attack animations are not done.** The screen plays a simplified effect list and one lunge. The fix ports the old game's running version (`FX2assign`, `fxTheme`, `fx2Layers`, the ACT pose table and `anim`), not the replaced E1–E18 `drawSPXfor`. The old Codex is an archive, not the authority for how attacks look.
+1. **The attack animations are ported, waiting for the owner's check.** Running the old game showed that its FX2 code (`FX2assign`, `fxTheme`, `fx2Layers`) is never drawn; what draws is `drawP` (old lines 922-966) plus the `makeRecipe` picture stacks (old lines 1331-1380). The owner chose to port what really draws, with the ACT poses and `anim`. The old Codex is an archive, not the authority for how attacks look.
 2. **Update the Codex** (only after the owner approves the attacks):
    - upload the old one (v0.21/0.22) to the repo
    - check every entry against the new game

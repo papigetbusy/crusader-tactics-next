@@ -1,10 +1,12 @@
 // Pictures: loads assets/manifest.json (every picture by name) and
-// assets/sheets.json (how sheets are cut into frames). When the owner's new
+// assets/sheets.json (how sheets are cut into frames) and assets/skillbook.json
+// (what each skill looks like, made by tools/skillbook). When the owner's new
 // art arrives, it replaces files in assets/ and nothing here changes.
 
 const pics = {}; // "group/name" -> Image
 let manifest = {};
 export let sheets = { effects: {}, itemIcons: {}, heroBox: {} };
+export let book = { skills: {}, abilities: {} }; // assets/skillbook.json: what each skill looks like
 
 const loadImage = (src) =>
   new Promise((ok) => {
@@ -17,7 +19,7 @@ const loadImage = (src) =>
 // load fetches every picture. progress(done, total) is called as they arrive.
 export async function load(build, progress = () => {}) {
   const get = (f) => fetch('assets/' + f + '?v=' + build).then((r) => r.json());
-  [manifest, sheets] = await Promise.all([get('manifest.json'), get('sheets.json')]);
+  [manifest, sheets, book] = await Promise.all([get('manifest.json'), get('sheets.json'), get('skillbook.json')]);
   const jobs = [];
   const files = {};
   for (const [group, names] of Object.entries(manifest)) {

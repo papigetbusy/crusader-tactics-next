@@ -10,7 +10,7 @@ Written 2026-10-11 for the owner and Grok. The full plan is in `roadmap.md`, and
   - moving (tap or drag) and attacking with the full forecast
   - the command menu beside the hero, with skills that fly out
   - skills and class abilities aimed in several taps
-  - walking (attack animations are NOT done; see section 2)
+  - walking, and the attack effects and poses ported from the old game (waiting for the owner's check; see section 2)
   - the enemy turn with Skip, the danger zone and monster zones
   - the gear sheet with item pictures and comparisons
   - shop, floor list, saves with autosave, settings
@@ -27,11 +27,11 @@ Written 2026-10-11 for the owner and Grok. The full plan is in `roadmap.md`, and
 - The level-cap notice
 
 ### 2. Fix the attack animations, then update the Codex (next session, first thing)
-- **The attack animations are not done (owner, 2026-10-11).** The screen plays a simplified effect list and one lunge (`web/game/js/playback.js`).
-  - Port the version that actually runs in the old game (papigetbusy/crusader-tactics, index.html): `FX2assign`, `fxTheme` and `fx2Layers` (each skill gets its own stack of pictures from its name and element, including the 53 new skills), and the ACT pose table and `anim` (guns and bows kick back, spells lift, charges and dives dash, potions and knives are thrown, blinks blink). Screen only; the referee does not change. Use the effect files already in `web/assets`.
-  - Do not port the earlier `drawSPXfor` that only uses the E1–E18 list; it was replaced.
-  - The old Codex (v0.21/0.22) is older than these animations. It is an archive, not the authority for how attacks look.
-  - Done when Strike, Fireball, a gunshot and a heal look different from each other, and a charge dashes instead of lunging. The new Codex is written only after the owner says those look right.
+- **The attack animations are ported; waiting for the owner to check them (2026-10-11).**
+  - When we ran the old game, the FX2 code (`FX2assign`, `fxTheme`, `fx2Layers`, old lines 1386-1453) turned out never to be drawn. An earlier copy of the same step wins when the page runs. What really draws is each skill's own pixel effect (`drawP`, old lines 922-966) with a stack of recolored pictures on top (`makeRecipe`, old lines 1331-1380). The owner chose to port what really draws.
+  - Ported, screen only (`web/game/js/fxbook.js`, `fxpixel.js`, `fxskill.js`, `fxsprite.js`, `playback.js`): the per-skill effects and their timings, the picture stacks, the older effects for skills without an entry, the poses and `anim` (guns and bows kick back, spells lift, charges and dives dash, potions and knives are thrown, blinks blink, breath rears, everything else lunges), the screen shake and the "fewer flashes" option. The referee did not change. `tools/skillbook` writes the list of skills the screen needs (a test keeps it in step with `data/`).
+  - The 53 new skills and Last Light got their own entries (marked NEW in `fxbook.js`).
+  - Next: the owner plays Strike, Fireball, a gunshot, a heal and a charge on the published link. The new Codex is written only after he says they look right.
 
 - The Codex is the old game's reference page (v0.21/0.22). Upload the old Codex to this repository as-is, so nothing is lost.
 - Make a checklist comparing every entry in it with the new game: in the code, in the roadmap, changed, or missing.

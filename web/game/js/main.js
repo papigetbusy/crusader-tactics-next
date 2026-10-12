@@ -23,6 +23,7 @@ export const st = {
   overlay: (g, now) => { if (st.dragLine) st.dragLine(g); if (playback.draw(g, now)) kick(); },
   opt: options,
   anim: playback.anim,
+  shake: playback.shake,
   shownHp: (u) => u.hp,
   unitAt: (x, y) => st.units.find((u) => u.x === x && u.y === y) || null,
 };
