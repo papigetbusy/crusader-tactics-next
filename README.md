@@ -26,6 +26,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-12 · Grok · Blood Moon v2 is a test GIF only, at assets/preview. It is not in the game and not in new-animations yet.
 - 2026-10-12 · Grok · New attack tests live in `new-animations/` (not in the game). `gifs/` holds every try. `code/` gets one file per attack only after that GIF is signed off. They go into the game together, once the checklist is done. The witch v1 GIFs are the first three, still not signed off.
 - 2026-10-12 · Grok · A separate attack preview (not in the game) is at assets/preview, so the witch GIFs can be opened and saved.
 - 2026-10-12 · Grok · On the place-your-heroes screen, 1 2 3 save a starting formation. An empty number saves where they stand and turns gold. Tap a gold number to put them back. Hold a gold number to overwrite it; Cancel does nothing, Yes replaces it. Formations are kept in that save.
