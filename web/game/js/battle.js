@@ -15,9 +15,8 @@ import { autosave } from './sysmenu.js';
 
 const $ = (id) => document.getElementById(id);
 let screen = null; // { st, show, kick, log }
-let seen = '';
+let seen = ''; // which floor and step the screen last showed (to frame a new floor once)
 let rules = null; // the fixed rules guide (terrain, element wheel, weapon triangle), for words on screen
-let lastReady = 0; // ready heroes last time, to move the camera on after one acts // which floor and step the screen last showed (to frame a new floor once)
 
 export function wire(s) {
   screen = s;
@@ -118,13 +117,8 @@ export function after() {
   if (p === 'prepare') screen.log(`Floor ${v.climb.floor}: look at the map, tap Team to choose heroes, tap a hero then a blue tile to place them, then Start battle.`);
   if (p === 'shop' && $('shopWin').hidden) shop.open();
   const readyHeroes = st().units.filter(ready);
-  if (p === 'battle' && !v.outcome && lastReady > readyHeroes.length && readyHeroes.length && !s.sel) {
-    const h = readyHeroes[0];
-    const f = feet(h.x, h.y);
-    lookAt(f.x, f.y - 40);
-    screen.log(`Next: ${h.class}. Tap them to give orders.`);
-  }
-  lastReady = readyHeroes.length;
+  // When a hero finishes, the camera stays where it is (owner, 2026-10-11);
+  // ⇥ Next hero still jumps to the next one.
   $('endTurn').classList.toggle('pulse', p === 'battle' && !readyHeroes.length);
   // the danger zone: every tile a monster could walk to next turn
   s.danger = s.opt.danger && p === 'battle' && !v.outcome
@@ -189,7 +183,8 @@ function select(u) {
   screen.log(u.canMove ? 'Tap a blue tile to move, tap an enemy to attack, or tap the hero again for commands.' : 'Choose a command.');
   if (!u.canMove) menu();
   terrainBox(u);
-  closeUp(u.x, u.y);
+  // Choosing a hero no longer zooms in (owner, 2026-10-11); the
+  // "Auto-zoom on selected hero" setting still does, when turned on.
   screen.kick();
 }
 

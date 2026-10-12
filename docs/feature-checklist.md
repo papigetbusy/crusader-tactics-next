@@ -52,7 +52,7 @@ The old screen is carried over and wired to the referee; each of these gets tick
 - ✅ Never zoom out past a finger-sized tile on phones; "overview" zoom shows the whole map, then pinch or + to return (8a)
 - ➕ Camera keeps a margin so units never hide under the bottom bar; it stays inside the map
 - ✅ When aiming, the camera frames the attacker and the target above the forecast window (8h)
-- ✅ After a hero acts, the camera moves to the next ready hero ("Next hero" button too) (8h)
+- ✏️ After a hero acts, the camera stays put; the "Next hero" button moves to the next one (owner's change 2026-10-11; was: the camera moved on by itself)
 - ✅ Optional auto-zoom on the selected hero; the camera follows your selection when zoomed in (8i)
 - ✅ Minimap you can tap to jump, with your view box drawn on it (8a)
 - ✅ Units turn into simple markers only when zoomed far out (8a)
