@@ -31,6 +31,8 @@ Noticed by the owner while playtesting. Notes only, nothing changed yet. Check e
 1. **A hero who can't do anything else should dim**, showing it has made its turn (as in the old game).
 2. **Health bars should drain as damage lands.** In the old game the bar slid down with each hit; now the lost health only shows at the end of the action.
 3. **The weakness indicator is missing.** The old game showed when one of your moves does bonus damage (a WEAK mark on the move or target) before you choose it.
+4. **Redesign the ☰ menu's map controls (owner's sketch, 2026-10-12):** drop the full panel of rows and labels. Keep only a narrow strip of the icons (zoom −/+, view, minimap, danger zone, battle speed, rotate, next hero...), each a tap-to-toggle on/off, placed in the space outside the map's borders, never over the map. The owner's screenshot shows the current panel and a crop of just the icon column he wants.
+5. **Phone, flat view, before a battle:** the "Team" and "Start battle" buttons sit over two of the heroes, so they're hard to select and move onto the starting tiles. The old game didn't cover them; move the buttons (or frame the map) so no hero is covered.
 
 ## Left to do, in order
 
