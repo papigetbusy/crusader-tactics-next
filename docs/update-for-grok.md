@@ -7,7 +7,7 @@ Things that changed today that you may have missed reading the repo. Start with 
   - The first Phase 8 attempt wired the referee under the old game's page. That is gone.
   - `web/game/` is a new screen written from scratch.
 - **The page keeps no game state.** It stores only the referee's last answer (the View) to draw it, and sends actions. Everything goes through `web/game/js/referee.js`, so the same screen can talk to a server later.
-- **Mindset** (design-lock 19): single-player is perfected first, matching the original in every rule, animation and movement. Online 1v1 versus comes only after that, and reuses all of it. Nothing may be built in a way that blocks multiplayer.
+- **Mindset** (design-lock 19): single-player is perfected first, matching every rule, animation and movement of the original that the owner did not already change on purpose (his signed changes stay). Online 1v1 versus comes only after that, and reuses all of it. Nothing may be built in a way that blocks multiplayer.
 - **Online 1v1 rules (a skeleton for the vision, details later):**
   - each player picks 8 heroes, all at Lv 30, with chosen ascensions
   - full purple gear sets for everyone
@@ -24,7 +24,7 @@ Things that changed today that you may have missed reading the repo. Start with 
   - the full forecast window
   - the wooden command menu beside the hero, with a Skills fly-out
   - skills and class abilities aimed in several taps
-- **Animations:** walking, strikes, effects, damage numbers. During the enemy turn the camera waits for each animation, and there's a Skip button.
+- **Animations:** walking, damage numbers, and a simplified effect list with one lunge (being replaced). During the enemy turn the camera waits for each animation, and there's a Skip button.
 - **Information on the map:**
   - red attack tiles
   - a monster's purple move zone and red attack zone
@@ -54,8 +54,8 @@ Things that changed today that you may have missed reading the repo. Start with 
   - skill aiming now says when an aim is complete
 
 ## Known problems and next session
-1. **The attack animations are wrong.** The screen uses a simplified effect list. Fix them against the old Codex, which lists every animation, and against the old game's effect recipes.
-2. **Update the Codex:**
+1. **The attack animations are not done.** The screen plays a simplified effect list and one lunge. The fix ports the old game's running version (`FX2assign`, `fxTheme`, `fx2Layers`, the ACT pose table and `anim`), not the replaced E1–E18 `drawSPXfor`. The old Codex is an archive, not the authority for how attacks look.
+2. **Update the Codex** (only after the owner approves the attacks):
    - upload the old one (v0.21/0.22) to the repo
    - check every entry against the new game
    - write the new Codex from the data, using the new sprites

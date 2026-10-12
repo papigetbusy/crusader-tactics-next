@@ -10,7 +10,7 @@ Written 2026-10-11 for the owner and Grok. The full plan is in `roadmap.md`, and
   - moving (tap or drag) and attacking with the full forecast
   - the command menu beside the hero, with skills that fly out
   - skills and class abilities aimed in several taps
-  - walking and attack animations with the old effects
+  - walking (attack animations are NOT done; see section 2)
   - the enemy turn with Skip, the danger zone and monster zones
   - the gear sheet with item pictures and comparisons
   - shop, floor list, saves with autosave, settings
@@ -27,9 +27,11 @@ Written 2026-10-11 for the owner and Grok. The full plan is in `roadmap.md`, and
 - The level-cap notice
 
 ### 2. Fix the attack animations, then update the Codex (next session, first thing)
-- **The attack animations are wrong (owner, 2026-10-11).** The new screen uses a simplified effect list (`web/game/js/playback.js`).
-  - The old Codex lists every skill's animation. Cross-check every skill, monster attack and class ability against it, and fix the screen to match.
-  - The old game's own effect recipes ("FX v2: 70 sprite animations, recolored + stacked, unique per skill", old index.html around line 1331-1480: RCP, FX2M, SKFX) are the reference for layers, colors and timing.
+- **The attack animations are not done (owner, 2026-10-11).** The screen plays a simplified effect list and one lunge (`web/game/js/playback.js`).
+  - Port the version that actually runs in the old game (papigetbusy/crusader-tactics, index.html): `FX2assign`, `fxTheme` and `fx2Layers` (each skill gets its own stack of pictures from its name and element, including the 53 new skills), and the ACT pose table and `anim` (guns and bows kick back, spells lift, charges and dives dash, potions and knives are thrown, blinks blink). Screen only; the referee does not change. Use the effect files already in `web/assets`.
+  - Do not port the earlier `drawSPXfor` that only uses the E1–E18 list; it was replaced.
+  - The old Codex (v0.21/0.22) is older than these animations. It is an archive, not the authority for how attacks look.
+  - Done when Strike, Fireball, a gunshot and a heal look different from each other, and a charge dashes instead of lunging. The new Codex is written only after the owner says those look right.
 
 - The Codex is the old game's reference page (v0.21/0.22). Upload the old Codex to this repository as-is, so nothing is lost.
 - Make a checklist comparing every entry in it with the new game: in the code, in the roadmap, changed, or missing.
@@ -73,6 +75,10 @@ Versus rules (owner, 2026-10-11):
 - Everyone wears a full purple gear set, so every match is even.
 - Chess.com-style clocks: a time limit per turn, plus an overall time for each player.
 - A match lasts about 5 minutes at most.
+
+Rules for the online work (owner, 2026-10-11). Do not build these now:
+- A whole climb must replay from its seed plus the list of actions and come out identical.
+- The turn clock and the match clock live in the referee and are shown in the View. The screen only displays them. Running out of time is the referee's decision.
 - Still to settle with the owner: the seconds per turn and per player, the map (fixed or random, and how big), which purple set each class gets, and what happens when a clock runs out.
 
 Estimate: about 3 sessions once the game matches the original.
