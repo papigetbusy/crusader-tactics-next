@@ -17,6 +17,8 @@ Not in the game yet. The code is waiting in `code/`.
 6. The code and that GIF stay here. The play page does not load them.
 7. When every row below is signed off, they all go into the game in one pass. Not before.
 
+Look, from 2026-10-12 on. The body can stay a small motion. The power is effects the game already has, recolored, plus the hero glow (a colored blur, a pool under the feet, sparks). The effect does not cover the attacker. The last frames are the idle body, with the glow gone. She does not stay on the attack pose. Blood Moon was signed before this rule, so its ending is still the swing until it is updated.
+
 A shared skill can be used by every form of that class, so it needs a signed GIF on each body (the base forms and the ascensions). An ascension skill needs a GIF only on the body that learns it. One code file still covers the attack. The extra GIFs are the same move on the other bodies.
 
 Walk cycles are not on this list. They are a separate pass.
@@ -276,7 +278,7 @@ Ascension skills (one body only):
 
 - [x] Blood Moon (Blood Witch only) — approved. Code is in `code/blood-moon.js`. Not in the game.
 - [ ] Grand Hex (Hex Queen only) — gif: v1 made, not signed off (`gifs/witch/grand-hex/v1.gif`) — code: waiting
-- [ ] Soul Nova (Necromancer only) — glow test made, not signed off (`gifs/witch/soul-nova/review-glow.gif`) — code: waiting
+- [ ] Soul Nova (Necromancer only) — glow look approved. Ends on idle. Not signed off until the owner says the ending is right (`gifs/witch/soul-nova/review-glow.gif`) — code: waiting
 
 ### Healer
 

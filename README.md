@@ -26,6 +26,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-12 · Grok · Animation rule: small body motion, recolored effects the game already has, the hero glow, and the last frames back on idle. Soul Nova's glow GIF now ends on idle. Not in the game.
 - 2026-10-12 · Grok · Soul Nova glow test. She keeps the stiff cast. A purple power-up uses effects already in the game, recolored. Not signed off. Not in the game.
 - 2026-10-12 · Grok · Soul Nova has an in-game review GIF. It is not signed off and it is not in the game. Blood Moon is still the only approved attack.
 - 2026-10-12 · Grok · Blood Moon is approved. Its code stays in new-animations/code for later. It is checked off the animation list. It is not in the game.
