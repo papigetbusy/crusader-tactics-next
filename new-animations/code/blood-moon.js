@@ -7,8 +7,18 @@
 // An effect is removed only when the owner says to remove it.
 //
 // The small red spark is already painted on body frames 3 and 4.
-// clearOfCaster is a last resort: slide an effect only if its pixels would
-// cover her. Do not slide it just because it is near her.
+// The effect the game already draws for this skill, from the codex.
+// It plays on the enemy, with the new pictures. It is not a replacement.
+// Blood Moon's entry is a pillar: a red beam, the ts_expl1 burst tinted
+// red inside that beam, and a red ring that grows under his feet and fades.
+export const GAME_EFFECT = {
+  base: 'pillar',
+  colors: ['#c8102e', '#ff4d4d'],
+  sheet: 'effects/ts-expl1.png',
+  tint: '#ff4d4d',
+  ring: 'under the enemy, grows, then fades',
+  beam: 'red light on the enemy',
+};
 
 export const BLOOD_MOON = {
   name: 'Blood Moon',
