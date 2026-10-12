@@ -102,8 +102,13 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
 #forecast .fr, #aimPanel .fr { display: flex; gap: 6px; margin-top: 6px; }
 #forecast .fr .b, #aimPanel .fr .b { flex: 1; min-height: 46px; }
 
-#prepare { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(14px + var(--safe-b)); z-index: 4; display: flex; gap: 8px; white-space: nowrap; }
+#prepare { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(14px + var(--safe-b)); z-index: 4; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+#prepBtns { display: flex; gap: 8px; white-space: nowrap; }
+#forms { display: flex; gap: 6px; }
+.fb { width: 42px; height: 36px; padding: 0; font: 700 16px 'EB Garamond', Georgia, serif; color: rgba(233, 207, 138, .45); background: rgba(12, 5, 7, .45); border: 1px solid rgba(233, 207, 138, .35); border-radius: 6px; }
+.fb.on { color: #ffe6a8; background: #3a2c14; border-color: #e9cf8a; }
 #prepare .b { min-height: 52px; padding: 0 22px; font-size: 18px; }
+#formAsk { position: fixed; left: 50%; top: 42%; transform: translate(-50%, -50%); z-index: 14; }
 .cover { position: fixed; inset: 0; z-index: 12; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; }
 .box { position: relative; width: min(340px, 90vw); max-height: 86vh; overflow: auto; padding: 14px 16px; font-size: 15px; line-height: 20px; text-align: center; }
 #decision { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 12; }

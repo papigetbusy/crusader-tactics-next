@@ -36,7 +36,6 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 ## Now working on
 (one line each: who · task · files · date; remove it when done)
 
-- Grok · three formation buttons on the place-heroes screen · web/game/play.html, web/game/style.css, web/game/js/formations.js, web/game/js/battle.js, web/game/js/sysmenu.js · 2026-10-12
 
 
 

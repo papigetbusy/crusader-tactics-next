@@ -4,6 +4,7 @@
 // Saves are the referee's own save text, kept in this browser.
 import * as referee from './referee.js';
 import { options, saveOptions, onOptionsSaved, applyOptions, withSettings } from './options.js';
+import { snapshot as formationSnapshot, restore as formationRestore } from './formations.js';
 import { zoomStep, closeUp } from './camera.js';
 import { rotate } from './board.js';
 import { url } from './assets.js';
@@ -184,9 +185,19 @@ export async function seedPurpleTeam() {
   } catch (e) { /* storage blocked: the Continue row below still loads it */ }
 }
 
+function pack(text) {
+  const t = withSettings(text);
+  try {
+    const o = JSON.parse(t);
+    o.formations = formationSnapshot();
+    return JSON.stringify(o);
+  } catch (e) {
+    return t;
+  }
+}
 function put(k) {
   const v = screen.st.view, c = v.climb;
-  const text = withSettings(referee.save());
+  const text = pack(referee.save());
   if (!text || text.startsWith('{"error"')) return false;
   try {
     localStorage.setItem(KEY(k), text);
@@ -207,7 +218,11 @@ function load(text, from) {
   if (!text) return false;
   const r = referee.load(text);
   if (!r || r.error) { alert('Could not load: ' + (r ? r.error : 'no answer')); return false; }
-  try { applyOptions(JSON.parse(text).screen); } catch (e) { /* a save with no settings keeps the ones already on screen */ }
+  try {
+    const o = JSON.parse(text);
+    applyOptions(o.screen);
+    formationRestore(o.formations);
+  } catch (e) { /* a save with no settings keeps the ones already on screen */ }
   ['slotsWin', 'summary', 'team'].forEach((id) => { if ($(id)) $(id).hidden = true; });
   $('title').hidden = true;
   mapOn(true);
@@ -280,7 +295,7 @@ export function slots(mode) {
 
 // exportSave copies the game's save text and downloads it as a file.
 export function exportSave() {
-  const t = withSettings(referee.save());
+  const t = pack(referee.save());
   try { navigator.clipboard && navigator.clipboard.writeText(t); } catch (e) { /* not allowed: the download still works */ }
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([t], { type: 'application/json' }));

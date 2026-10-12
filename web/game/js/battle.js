@@ -12,6 +12,7 @@ import * as shop from './shop.js';
 import * as playback from './playback.js';
 import { check as capCheck } from './capnotice.js';
 import { autosave } from './sysmenu.js';
+import { filled, remember, spotsFor } from './formations.js';
 
 const $ = (id) => document.getElementById(id);
 let screen = null; // { st, show, kick, log }
@@ -29,6 +30,7 @@ export function wire(s) {
   $('skip').onclick = () => { playback.skip(); $('skip').hidden = true; };
   rules = referee.guide();
   $('teamButton').onclick = () => team.open(view(), (v) => { clear(); screen.show(v); after(); }, screen.log);
+  wireForms();
 }
 
 const st = () => screen.st;
@@ -115,6 +117,8 @@ export function after() {
   $('endTurn').hidden = p !== 'battle' || !!v.outcome;
   decision();
   summary();
+  if (p !== 'prepare') $('formAsk').hidden = true;
+  paintForms();
   if (p === 'prepare') screen.log(`Floor ${v.climb.floor}: look at the map, tap Team to choose heroes, tap a hero then a blue tile to place them, then Start battle.`);
   if (p === 'shop' && $('shopWin').hidden) shop.open();
   const readyHeroes = st().units.filter(ready);
@@ -245,6 +249,82 @@ function place(t, u) {
   }
   s.sel = null;
   screen.kick();
+}
+
+// ---------- formations: 1 2 3 ----------
+
+function paintForms() {
+  document.querySelectorAll('#forms .fb').forEach((b) => b.classList.toggle('on', filled(+b.dataset.f)));
+}
+
+// putFormation walks the heroes onto a saved formation, one place at a time.
+function putFormation(i) {
+  const spots = spotsFor(i, view());
+  if (!spots.length) return screen.log('That formation has none of these heroes.');
+  let next = view();
+  for (let pass = 0; pass < 3; pass++) {
+    let moved = false;
+    for (const s of spots) {
+      const cur = (next.climb.placed || []).find((p) => p.class === s.class);
+      if (!cur || (cur.tile.x === s.x && cur.tile.y === s.y)) continue;
+      const r = referee.act({ kind: 'place', hero: s.class, x: s.x, y: s.y });
+      if (!r || r.refused) return screen.log(r && r.refused ? r.refused.reason : 'Could not place them.');
+      next = r.view;
+      moved = true;
+    }
+    if (!moved) break;
+  }
+  clear();
+  screen.show(next);
+  after();
+  autosave();
+  screen.log(`Formation ${i + 1}.`);
+}
+
+function saveFormation(i) {
+  const v = view();
+  if (!v || !v.climb || !(v.climb.placed || []).length) return;
+  remember(i, v.climb.placed, v.n);
+  paintForms();
+  autosave();
+  screen.log(`Formation ${i + 1} saved.`);
+}
+
+let holdForm = false;
+function wireForms() {
+  document.querySelectorAll('#forms .fb').forEach((b) => {
+    const i = +b.dataset.f;
+    let timer = 0;
+    b.oncontextmenu = (e) => e.preventDefault();
+    b.onpointerdown = () => {
+      holdForm = false;
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        holdForm = true;
+        if (!filled(i)) saveFormation(i);
+        else askOverwrite(i);
+      }, 450);
+    };
+    b.onpointerup = () => {
+      clearTimeout(timer);
+      if (holdForm) return;
+      if (!filled(i)) saveFormation(i);
+      else putFormation(i);
+    };
+    b.onpointercancel = () => clearTimeout(timer);
+  });
+  $('formNo').onclick = () => { $('formAsk').hidden = true; };
+  $('formYes').onclick = () => {
+    const i = +$('formAsk').dataset.i;
+    $('formAsk').hidden = true;
+    if (i >= 0) saveFormation(i);
+  };
+}
+
+function askOverwrite(i) {
+  $('formAsk').dataset.i = String(i);
+  $('formAskText').textContent = `Overwrite formation ${i + 1}? The heroes will be saved where they stand now.`;
+  $('formAsk').hidden = false;
 }
 
 // ---------- the command menu ----------
