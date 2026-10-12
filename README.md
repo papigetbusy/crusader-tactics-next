@@ -26,6 +26,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-12 · Grok · Soul Nova has an in-game review GIF. It is not signed off and it is not in the game. Blood Moon is still the only approved attack.
 - 2026-10-12 · Grok · Blood Moon is approved. Its code stays in new-animations/code for later. It is checked off the animation list. It is not in the game.
 - 2026-10-12 · Grok · Blood Moon's in-game GIF now also plays the effect the codex already uses: a red beam on the enemy, the red burst inside it, and a ring that grows under his feet and fades. The signed swing and the red moon stay.
 - 2026-10-12 · Grok · Blood Moon's in-game GIF keeps the red moon circle from the signed test. It hangs in the air, then the pillar and the blast hit the enemy. An effect is only removed if the owner says so.
