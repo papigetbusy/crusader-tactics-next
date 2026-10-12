@@ -26,6 +26,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-12 · Grok · Soul Nova's opening circle is centered on the black ball and drawn behind it. Not signed off. Not in the game.
 - 2026-10-12 · Grok · Soul Nova's hit now uses the black ball from the first GIF, on the glow version. She still returns to idle. Not signed off. Not in the game.
 - 2026-10-12 · Grok · Animation rule: small body motion, recolored effects the game already has, the hero glow, and the last frames back on idle. Soul Nova's glow GIF now ends on idle. Not in the game.
 - 2026-10-12 · Grok · Soul Nova glow test. She keeps the stiff cast. A purple power-up uses effects already in the game, recolored. Not signed off. Not in the game.
