@@ -47,6 +47,12 @@ Paste this at the top of every big prompt. Decisions confirmed by the owner on 2
 
 19. **The mindset of the whole build (owner, 2026-10-11).** Single-player comes first and is ironed out until it matches the original game: match every rule, animation, and movement the owner did not already change on purpose. Everything in docs/changes-from-old-game.md and the signed items in design-lock.md stays. Do not revert the purple tier, the skill schedule, no recruiting, no defeat penalty, or skills at +5%. The online 1v1 versus mode reuses all of it, so a flaw left in single-player would carry into multiplayer. Multiplayer work starts only once single-player is right. Until then, nothing may be built in a way that blocks it: the rules stay in the referee, every move is an action, and the screen keeps no game state. The versus rules are kept as the target in `next-steps.md`, so the vision isn't lost while building, as happened in the first version of the game.
 
+20. **Phase 9 rules (owner, 2026-10-11, from docs/phase9-proposal.md).**
+    - Smarter enemies from floor 20 (bosses and elites from floor 10): they weigh heroes they can defeat this turn, healers, and heroes weak to their element; from floor 50 they also avoid ending next to two or more heroes when they can't attack. Floors 1-19 play like the old game.
+    - Fire Emblem counterattacks with a full Strike, for heroes and monsters: a unit hit by a single-target attack that survives strikes back once if the attacker is in its Strike range. No counter when stunned, frozen, rooted or cloaked, or against area skills, ultimates, heals and buffs. The forecast shows the counter. The Duelist's Riposte replaces the plain counter for Duelists.
+    - Height: from a hill, +10% damage and +10% hit; uphill, −10% hit; one step only; climbing a hill costs 1 extra move except for fliers, Rangers and Knights.
+    - Class-owned terrain: not now.
+
 ## Existing rules to preserve
 - Floors stay the same within a run; revisiting a cleared floor gives less gold and the same XP.
 - Level cap tied to the monster level of the best floor reached.
