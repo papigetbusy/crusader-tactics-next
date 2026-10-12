@@ -26,6 +26,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-12 · Grok · Each save file remembers its own settings (isometric or flat, danger zone, minimap and the rest). Loading a save puts that look back. An older save with no settings keeps whatever is on screen.
 - 2026-10-12 · Grok · Floor 41 was redrawing the whole map every moment, and pinch-zoom on a phone snapped instead of zooming. The ground is now painted once and moved, pinch zooms smoothly from the whole map to up close, and the picture is drawn a bit softer on a sharp phone so it keeps up.
 - 2026-10-12 · Grok · The map-icon strip stays hidden. A clear eye in the top left opens it, and tapping the map closes it again.
 - 2026-10-12 · Grok · Finished heroes turn gray, health bars drain as the hit lands (and fill on a heal), a skill says WEAK before you pick it when it does bonus damage and the target is marked WEAK or RESIST once the attack window is open, and map controls are a narrow icon strip on the left edge instead of a labeled panel in the menu.

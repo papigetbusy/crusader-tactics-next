@@ -27,6 +27,7 @@ The owner noticed these while playtesting. All four are on the screen only; the 
 3. **WEAK** shows on a skill in the command menu when that move does bonus damage to someone in range, before you pick it. Once the attack window is open, WEAK or RESIST is also drawn on each target.
 4. **Map controls are a narrow icon strip**, hidden until the clear eye in the top left is tapped (zoom, view, minimap, danger zone, speed, rotate, next hero). Tapping the map closes it. The ☰ menu no longer has the labeled map panel.
 5. **Speed (owner, floor 41):** the ground is painted once and reused, so panning and pinching do not redraw every tile. Pinch zooms smoothly instead of snapping to the whole map. Water and trees hold still.
+6. **Settings travel with the save** (owner, 2026-10-12). Isometric or flat, the danger zone, the minimap and the other options are stored in that save file. Loading it puts them back. Another save can look different.
 
 ## Left to do, in order
 

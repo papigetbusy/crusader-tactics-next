@@ -34,7 +34,7 @@ function opt(B) {
     ${row('Auto end turn', sw('oAuto', options.autoEnd), 'Ends your turn once every hero has acted')}
     ${row('Ask before ending turn', sw('oAsk', options.confirmEnd), 'Warns if heroes haven’t acted yet')}
     ${row('Damage numbers', sw('oDmg', options.damageNumbers))}
-    <h4>Map</h4>${row('Map view', seg('oView', [[1, 'Flat'], [0, 'Isometric']], options.flat ? 1 : 0))}${row('Minimap', sw('oMini', options.minimap))}${row('Auto-zoom on selected hero', sw('oZoom', options.autoZoom))}${row('Danger zone', sw('oDanger', options.danger), 'Shade every tile monsters can reach')}
+    <h4>Map</h4><p><small>Saved with this game. Another save can look different.</small></p>${row('Map view', seg('oView', [[1, 'Flat'], [0, 'Isometric']], options.flat ? 1 : 0))}${row('Minimap', sw('oMini', options.minimap))}${row('Auto-zoom on selected hero', sw('oZoom', options.autoZoom))}${row('Danger zone', sw('oDanger', options.danger), 'Shade every tile monsters can reach')}
     <h4>Accessibility &amp; performance</h4>${row('Reduce flashing effects', sw('oCalm', options.calm), 'Softer, single-layer attack animations')}
     ${row('Low graphics', sw('oLow', options.lowGraphics), 'Still water and trees, no vignette; saves battery')}
     ${row('Colorblind-friendly tiles', sw('oCb', options.colorblind))}

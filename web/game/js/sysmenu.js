@@ -3,7 +3,7 @@
 // [old openSys L1506, refreshSys L1605, openFloors L1614, save slots L1886].
 // Saves are the referee's own save text, kept in this browser.
 import * as referee from './referee.js';
-import { options, saveOptions } from './options.js';
+import { options, saveOptions, onOptionsSaved, applyOptions, withSettings } from './options.js';
 import { zoomStep, closeUp } from './camera.js';
 import { rotate } from './board.js';
 import { url } from './assets.js';
@@ -14,6 +14,10 @@ let screen = null; // { st, show, kick, log, after, gear, endTurn, nextHero }
 
 export function wire(s) {
   screen = s;
+  // A changed setting is written into the autosave, so Continue comes back the same way.
+  onOptionsSaved(() => {
+    if (screen && screen.st.view && screen.st.view.climb) put('auto');
+  });
   wireSettings(s);
   $('menuButton').onclick = (e) => { e.stopPropagation(); $('sys').hidden ? open() : close(); };
   const eye = $('mapEye');
@@ -182,7 +186,7 @@ export async function seedPurpleTeam() {
 
 function put(k) {
   const v = screen.st.view, c = v.climb;
-  const text = referee.save();
+  const text = withSettings(referee.save());
   if (!text || text.startsWith('{"error"')) return false;
   try {
     localStorage.setItem(KEY(k), text);
@@ -203,6 +207,7 @@ function load(text, from) {
   if (!text) return false;
   const r = referee.load(text);
   if (!r || r.error) { alert('Could not load: ' + (r ? r.error : 'no answer')); return false; }
+  try { applyOptions(JSON.parse(text).screen); } catch (e) { /* a save with no settings keeps the ones already on screen */ }
   ['slotsWin', 'summary', 'team'].forEach((id) => { if ($(id)) $(id).hidden = true; });
   $('title').hidden = true;
   mapOn(true);
@@ -275,7 +280,7 @@ export function slots(mode) {
 
 // exportSave copies the game's save text and downloads it as a file.
 export function exportSave() {
-  const t = referee.save();
+  const t = withSettings(referee.save());
   try { navigator.clipboard && navigator.clipboard.writeText(t); } catch (e) { /* not allowed: the download still works */ }
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([t], { type: 'application/json' }));

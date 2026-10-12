@@ -36,7 +36,6 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 ## Now working on
 (one line each: who · task · files · date; remove it when done)
 
-- Grok · keep each save's settings inside that save file · web/game/js/options.js, web/game/js/sysmenu.js, sim/save/save_test.go · 2026-10-12
 
 
 
