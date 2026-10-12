@@ -1,7 +1,7 @@
 // One picture of the battle each frame: ground, tile highlights, chests,
 // units, effects and the minimap. Reads the screen state (st); never rules.
 import { map, tiles, drawWater, drawTile, objects, vignette, poly, top, turnStep, pj, height } from './board.js';
-import { cam, layout } from './camera.js';
+import { cam, layout, moving, gesturing } from './camera.js';
 import * as units from './units.js';
 import { CHEST, TS } from './look.js';
 import * as iso from './iso.js';
@@ -28,21 +28,18 @@ export function draw(canvas, st) {
   }
   const K = cam.k, D = cam.dpr;
   g.setTransform(D * K, 0, 0, D * K, D * (cam.offX + sx * K), D * (cam.offY + sy * K));
-  const list = tiles(), calm = st.opt.lowGraphics;
-  if (map.flat) drawWater(g, list, now, calm);
-  else iso.water(g, list, now, calm);
-  for (const [x, y, p] of list) {
-    if (map.flat) drawTile(g, x, y, p);
-    else iso.tile(g, x, y, p);
-    marks(g, x, y, p, st, now);
-  }
-  const obj = map.flat ? objects(list, now, calm, !!v.throne && !v.outcome) : iso.objects(list, now, calm);
-  obj.sort((a, b) => a[0] - b[0]);
-  g.save();
-  g.imageSmoothingEnabled = false;
-  obj.forEach((o) => o[1](g));
-  g.restore();
-  if (!st.opt.lowGraphics) vignette(g, canvas.width, canvas.height);
+  const calm = st.opt.lowGraphics || st.opt.calm;
+  paintGround(g, st, now, calm);
+  const pad = 220;
+  const x0 = -cam.offX / cam.k - pad, y0 = -cam.offY / cam.k - pad;
+  const x1 = (cam.w - cam.offX) / cam.k + pad, y1 = (cam.h - cam.offY) / cam.k + pad;
+  const list = tiles().filter((t) => t[2].x >= x0 && t[2].x <= x1 && t[2].y >= y0 && t[2].y <= y1);
+  const here = new Map();
+  for (const u of st.units) here.set(u.x + ',' + u.y, u);
+  const traps = new Set((v.trapTiles || []).map((q) => q.x + ',' + q.y));
+  const kegs = new Set((v.kegs || []).map((q) => q.X + ',' + q.Y));
+  for (const [x, y, p] of list) marks(g, x, y, p, st, now, here, traps, kegs);
+  if (!st.opt.lowGraphics && !moving() && !gesturing()) vignette(g, canvas.width, canvas.height);
   (v.chests || []).forEach((c) => chest(g, c, now));
   units.draw(g, st.units, {
     now, k: K, dpr: D, sel: st.sel, look: st.look, aim: st.aim,
@@ -51,10 +48,44 @@ export function draw(canvas, st) {
   if (st.overlay) st.overlay(g, now);
 }
 
+// The ground is painted once into a picture and reused. Panning and pinching
+// only move that picture, so a big floor does not redraw every tile.
+let plate = null;
+function paintGround(g, st, now, calm) {
+  const v = st.view;
+  const key = [map.n, map.flat ? 1 : 0, map.ang, map.biome, v.floor, calm ? 1 : 0, v.throne ? 1 : 0].join('|');
+  if (!plate) plate = { c: document.createElement('canvas'), key: '', at: 0 };
+  const refresh = plate.key !== key;
+  if (refresh) {
+    const c = plate.c, w = Math.ceil(map.ww), h = Math.ceil(map.wh);
+    if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
+    const q = c.getContext('2d');
+    q.setTransform(1, 0, 0, 1, 0, 0);
+    q.clearRect(0, 0, w, h);
+    const list = tiles();
+    if (map.flat) drawWater(q, list, now, calm);
+    else iso.water(q, list, now, calm);
+    for (const [x, y, p] of list) {
+      if (map.flat) drawTile(q, x, y, p);
+      else iso.tile(q, x, y, p);
+    }
+    const obj = map.flat ? objects(list, now, calm, !!v.throne && !v.outcome) : iso.objects(list, now, calm);
+    obj.sort((a, b) => a[0] - b[0]);
+    q.save();
+    q.imageSmoothingEnabled = false;
+    obj.forEach((o) => o[1](q));
+    q.restore();
+    plate.key = key;
+    plate.at = now;
+  }
+  g.imageSmoothingEnabled = false;
+  g.drawImage(plate.c, 0, 0);
+}
+
 // marks shades a tile: where a hero can walk, what is in reach, the danger
 // zone, a looked-at monster's range, aiming, fields, snares, kegs, banners
 // [old draw L1858-1866].
-function marks(g, x, y, p, st, now) {
+function marks(g, x, y, p, st, now, here, traps, kegs) {
   const key = x + ',' + y, t = top(x, y), v = st.view;
   if ((st.look && st.look.team && st.look.x === x && st.look.y === y) || (st.aim && st.aim.x === x && st.aim.y === y)) {
     g.save();
@@ -68,13 +99,15 @@ function marks(g, x, y, p, st, now) {
     g.stroke();
     g.restore();
   }
-  g.strokeStyle = 'rgba(0,0,0,.08)';
-  g.lineWidth = 1;
-  g.beginPath();
-  g.moveTo(t[0][0], t[0][1]);
-  t.slice(1).forEach((q) => g.lineTo(q[0], q[1]));
-  g.closePath();
-  g.stroke();
+  if (cam.k >= 0.35) {
+    g.strokeStyle = 'rgba(0,0,0,.08)';
+    g.lineWidth = 1;
+    g.beginPath();
+    g.moveTo(t[0][0], t[0][1]);
+    t.slice(1).forEach((q) => g.lineTo(q[0], q[1]));
+    g.closePath();
+    g.stroke();
+  }
   const cb = st.opt.colorblind;
   if (st.zone) {
     if (st.zone.walk.has(key)) poly(g, t, 'rgba(190,120,255,.38)');
@@ -89,13 +122,13 @@ function marks(g, x, y, p, st, now) {
     if (d <= f.Range) poly(g, t, f.Kind === 'banner' ? 'rgba(255,215,90,.16)' : 'rgba(255,110,30,' + (0.25 + 0.1 * Math.sin(now / 200 + x + y)).toFixed(2) + ')');
   });
   const h = height(x, y) > 0 ? map.th : 0;
-  if ((v.trapTiles || []).some((q) => q.x === x && q.y === y)) {
+  if (traps.has(key)) {
     g.fillStyle = '#9ae6b4';
     g.font = 'bold 18px sans-serif';
     g.textAlign = 'center';
     g.fillText('✳', p.x, p.y - h + 6);
   }
-  if ((v.kegs || []).some((q) => q.X === x && q.Y === y)) {
+  if (kegs.has(key)) {
     g.font = 'bold 22px sans-serif';
     g.textAlign = 'center';
     g.fillText('💣', p.x, p.y - h + 4);
@@ -109,7 +142,7 @@ function marks(g, x, y, p, st, now) {
   if (st.starts && st.starts.has(key)) poly(g, t, 'rgba(110,210,255,.5)');
   if (st.reach.has(key)) poly(g, t, 'rgba(110,210,255,.5)');
   else if (st.attack && st.attack.has(key)) poly(g, t, cb ? 'rgba(255,150,40,.32)' : 'rgba(255,60,60,.3)');
-  const o = st.unitAt(x, y);
+  const o = here.get(key);
   if (o && o === st.sel) poly(g, t, 'rgba(242,184,75,.4)');
   if (o && o === st.aim) poly(g, t, 'rgba(255,215,0,.55)');
   if (o && st.inReach && st.inReach.has(o.id) && !st.targets.has(o.id)) poly(g, t, 'rgba(255,90,90,.35)');

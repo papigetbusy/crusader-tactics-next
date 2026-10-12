@@ -83,11 +83,16 @@ export const inside = (x, y) => x >= 0 && y >= 0 && x < map.n && y < map.n;
 export const ground = (x, y) => (map.ground[y] && map.ground[y][x]) || (height(x, y) === -1 ? 'w' : 'g');
 export const height = (x, y) => (map.heights[y] ? map.heights[y][x] || 0 : 0);
 
-// tiles lists every tile with its screen spot, back to front.
+// tiles lists every tile with its screen spot, back to front. The spots only
+// change when the map size, the view or the rotation changes, so they are kept.
+let tileCache = null;
 export function tiles() {
+  if (tileCache && tileCache.n === map.n && tileCache.flat === map.flat && tileCache.ang === map.ang) return tileCache.list;
   const out = [];
   for (let y = 0; y < map.n; y++) for (let x = 0; x < map.n; x++) out.push([x, y, pj(x, y)]);
-  return out.sort((a, b) => a[2].d - b[2].d);
+  out.sort((a, b) => a[2].d - b[2].d);
+  if (!turning()) tileCache = { n: map.n, flat: map.flat, ang: map.ang, list: out };
+  return out;
 }
 
 // ---------- Tiny Swords ground ----------

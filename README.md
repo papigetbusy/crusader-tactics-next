@@ -26,6 +26,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-12 · Grok · Floor 41 was redrawing the whole map every moment, and pinch-zoom on a phone snapped instead of zooming. The ground is now painted once and moved, pinch zooms smoothly from the whole map to up close, and the picture is drawn a bit softer on a sharp phone so it keeps up.
 - 2026-10-12 · Grok · The map-icon strip stays hidden. A clear eye in the top left opens it, and tapping the map closes it again.
 - 2026-10-12 · Grok · Finished heroes turn gray, health bars drain as the hit lands (and fill on a heal), a skill says WEAK before you pick it when it does bonus damage and the target is marked WEAK or RESIST once the attack window is open, and map controls are a narrow icon strip on the left edge instead of a labeled panel in the menu.
 - 2026-10-12 · Claude · The attack window is menu-sized in a crimson wooden frame, floating beside the hero, with a skill-name box and arrows to cycle attacks (owner's design B). Added `docs/working-together.md` for Claude and Grok.

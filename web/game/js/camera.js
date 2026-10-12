@@ -11,7 +11,7 @@ export const cam = {
   k0: 1, k: 1, // scale for the whole map, and the scale now
   offX: 0, offY: 0, // screen spot of the map picture's corner
   overview: false, before: null, lock: false,
-  dpr: 1, w: 390, h: 844,
+  dpr: 1, w: 390, h: 844, touch: 0,
 };
 export const TOUCH = matchMedia('(pointer:coarse)').matches || innerWidth < 700;
 const big = () => (map.flat ? 0.84 : 0.62); // smallest comfortable tile on a phone
@@ -54,19 +54,6 @@ export function frame(heroes, chosen) {
 export function layout(heroes = [], chosen = null, first = false) {
   const W = cam.w, H = cam.h;
   cam.k0 = Math.min(W / map.ww, H / map.wh);
-  if (TOUCH && cam.k0 > 0 && !cam.overview && !first) {
-    const zm = Math.min(3.4, big() / cam.k0);
-    if (cam.zt < zm) {
-      cam.zt = zm;
-      if (cam.z < zm) cam.z = zm;
-    }
-    // asked for the whole map: frame the heroes instead
-    if (zm > 1 && Math.abs(cam.tx - map.ww / 2) < 2 && Math.abs(cam.ty - map.wh / 2) < 2 && heroes.length) {
-      const b = feet(...xy(chosen || heroes[(heroes.length / 2) | 0]));
-      cam.x = cam.tx = b.x;
-      cam.y = cam.ty = b.y - 60;
-    }
-  }
   cam.z += (cam.zt - cam.z) * 0.25;
   if (Math.abs(cam.zt - cam.z) < 0.003) cam.z = cam.zt;
   if (cam.zt <= 1 && cam.z < 1.02) {
@@ -86,9 +73,10 @@ export function layout(heroes = [], chosen = null, first = false) {
   cam.offX = W / 2 - cx * cam.k;
   cam.offY = H / 2 - cy * cam.k;
 }
-const xy = (u) => [u.x, u.y];
+
 
 export const moving = () => Math.abs(cam.tx - cam.x) > 0.5 || Math.abs(cam.ty - cam.y) > 0.5 || Math.abs(cam.zt - cam.z) > 0.003;
+export const gesturing = () => performance.now() - cam.touch < 220;
 
 // lookAt eases the camera to a map spot.
 export function lookAt(x, y) {
@@ -117,29 +105,12 @@ function zoomRaw(cx, cy, z) {
   cam.x = cam.tx = (cam.w / 2 - cx) / nk + wx;
   cam.y = cam.ty = (base - cy) / nk + wy;
   cam.z = cam.zt = z;
+  cam.touch = performance.now();
   kick();
 }
 
-// zoomAt zooms around a screen spot. On a phone, zooming out past the
-// smallest comfortable size shows the whole map (the overview).
-export function zoomAt(cx, cy, z, onOverview) {
-  if (TOUCH) {
-    if (cam.lock) return;
-    const zm = zoomFloor();
-    if (!cam.overview && zm > 1 && z < zm * 0.82) {
-      cam.lock = true;
-      overview(true, null, onOverview);
-      return;
-    }
-    if (cam.overview) {
-      if (z > 1.3) {
-        cam.lock = true;
-        const [px, py] = toMap(cx, cy);
-        overview(false, [px, py], onOverview);
-      }
-      return;
-    }
-  }
+// zoomAt zooms around a screen spot, smoothly, from the whole map up to the closest view.
+export function zoomAt(cx, cy, z) {
   zoomRaw(cx, cy, z);
 }
 
@@ -147,16 +118,15 @@ export function zoomAt(cx, cy, z, onOverview) {
 // smallest comfortable size shows the whole map [old zin/zout L1770-1771,
 // overview L2093].
 const STEPS = [1, 1.6, 2.4, 3.4];
-export function zoomStep(dir, onOverview) {
+export function zoomStep(dir) {
   if (dir > 0) {
-    if (cam.overview) return overview(false, null, onOverview);
     const z = STEPS.find((s) => s > cam.zt + 0.01);
     if (z) cam.zt = z;
   } else {
-    if (TOUCH && !cam.overview && zoomFloor() > 1 && cam.zt <= zoomFloor() + 0.01) return overview(true, null, onOverview);
     const z = STEPS.filter((s) => s < cam.zt - 0.01).pop();
-    if (z) cam.zt = z;
+    cam.zt = z || 1;
   }
+  cam.overview = false;
   kick();
 }
 
@@ -257,6 +227,7 @@ export function controls(canvas, keys, onOverview) {
     if (drag.moved) {
       cam.x = cam.tx = drag.cx - dx / cam.k;
       cam.y = cam.ty = drag.cy - dy / cam.k;
+      cam.touch = performance.now();
       kick();
     }
   });
@@ -293,7 +264,7 @@ export function controls(canvas, keys, onOverview) {
 
 // resize matches the canvas to the screen.
 export function resize(canvas) {
-  cam.dpr = devicePixelRatio || 1;
+  cam.dpr = Math.min(devicePixelRatio || 1, 2);
   cam.w = innerWidth;
   cam.h = innerHeight;
   canvas.width = cam.w * cam.dpr;

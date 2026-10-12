@@ -36,6 +36,5 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 ## Now working on
 (one line each: who · task · files · date; remove it when done)
 
-- Grok · floor 41 lag and pinch zoom · web/game/js/camera.js, board.js, scene.js, units.js · 2026-10-12
 
 

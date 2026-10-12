@@ -26,6 +26,7 @@ The owner noticed these while playtesting. All four are on the screen only; the 
 2. **Health bars drain as the hit lands**, over about a third of a second, instead of jumping at the end of the action. Heals fill the same way.
 3. **WEAK** shows on a skill in the command menu when that move does bonus damage to someone in range, before you pick it. Once the attack window is open, WEAK or RESIST is also drawn on each target.
 4. **Map controls are a narrow icon strip**, hidden until the clear eye in the top left is tapped (zoom, view, minimap, danger zone, speed, rotate, next hero). Tapping the map closes it. The ☰ menu no longer has the labeled map panel.
+5. **Speed (owner, floor 41):** the ground is painted once and reused, so panning and pinching do not redraw every tile. Pinch zooms smoothly instead of snapping to the whole map. Water and trees hold still.
 
 ## Left to do, in order
 

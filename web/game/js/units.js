@@ -104,16 +104,16 @@ function sprite(g, u, sx, by, s) {
       g.fill();
     }
     g.shadowColor = ac;
-    g.shadowBlur = (hero.stage >= 2 ? 14 : 8) * s.k * s.dpr;
+    g.shadowBlur = hero.stage >= 2 ? 10 : 6;
   }
   if (!hero && spirit) {
     g.shadowColor = '#4fa8ff';
-    g.shadowBlur = 18 * s.k * s.dpr;
+    g.shadowBlur = 12;
   }
   const sh = hue(u) || (u.enraged ? '#ff2a2a' : null);
   if (sh) {
     g.shadowColor = sh;
-    g.shadowBlur = 22 * s.k * s.dpr;
+    g.shadowBlur = 12;
   }
   if (flash) g.filter = 'brightness(2.6)';
   if (im.bw) g.drawImage(im, sx - (w / 2 + im.px) * k, by + 8 - (h + im.py) * k, im.width * k, im.height * k);
