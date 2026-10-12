@@ -4,7 +4,7 @@ Written 2026-10-11 for the owner and Grok. The full plan is in `roadmap.md`, and
 
 ## Where we are
 - **Phases 0–7 are done.** The Go referee plays the whole game: combat, skills, gear, the purple tier, loot, floors, the climb, team select, shops, saves. Every old-game match check is green.
-- **Phase 8 (the game screen) is nearly done.** The Play page is a new screen written from scratch. It uses only the old game's pictures, never its code. It only draws the referee's answers and sends actions, so online play stays possible. Done:
+- **Phase 8 (the game screen) is done (2026-10-11).** The Play page is a new screen written from scratch. It uses only the old game's pictures, never its code. It only draws the referee's answers and sends actions, so online play stays possible. Done:
   - title screen
   - team picker and placing heroes
   - moving (tap or drag) and attacking with the full forecast
@@ -19,10 +19,10 @@ Written 2026-10-11 for the owner and Grok. The full plan is in `roadmap.md`, and
 
 ## Left to do, in order
 
-### 1. Finish Phase 8 (small polish)
-- Zoom buttons
+### 1. Finish Phase 8 (small polish): done 2026-10-11
+- Zoom buttons (− and + beside the slider in the ☰ menu, with the menu's icons, as in v0.26)
 - Title screen candle, lightning and mist effects
-- Settings tabs: How to Play, What's New, Report
+- Settings tabs: Options, How to Play, What's New, Saves, Report
 - The damage-numbers on/off option
 - First-time tips (off by default, each shown once)
 - The level-cap notice

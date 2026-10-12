@@ -48,7 +48,7 @@ The old screen is carried over and wired to the referee; each of these gets tick
 
 **Camera**
 - ✅ Drag anywhere to pan; pinch to zoom where your fingers are; mouse wheel zooms where you point (8a)
-- ➕ Zoom buttons with fixed steps (1x, 1.6x, 2.4x, 3.4x) and a zoom slider; keyboard WASD / arrows to pan, + and - to zoom
+- ✅ Zoom buttons with fixed steps (1x, 1.6x, 2.4x, 3.4x) and a zoom slider; keyboard WASD / arrows to pan, + and - to zoom (8o: − and + beside the slider in the ☰ menu, as in v0.26)
 - ✅ Never zoom out past a finger-sized tile on phones; "overview" zoom shows the whole map, then pinch or + to return (8a)
 - ➕ Camera keeps a margin so units never hide under the bottom bar; it stays inside the map
 - ✅ When aiming, the camera frames the attacker and the target above the forecast window (8h)
@@ -74,12 +74,12 @@ The old screen is carried over and wired to the referee; each of these gets tick
 - ✅ Battle speed (1x, 2x, Instant) and a Skip button during the enemy turn (8c/8d)
 
 **Menus and info**
-- ➕ Title screen (castle art, candle flicker, lightning and mist), New Game hero pick, Continue with save slots
+- ✅ Title screen (castle art, candle flicker, lightning and mist), New Game hero pick, Continue with save slots (8o)
 - ✅ Gear sheet: CAPPED tag, bag sorting, stat comparison with worn gear, weapon ranks shown, Drop with confirmation, item pictures (8k)
-- ➕ Settings: Options, How to Play (with a link to the Codex), What's New, a copyable bug Report
-- ➕ Options: damage numbers, reduced flashing, low graphics, colorblind-friendly tiles, minimap, danger zone
-- 🔜 First-time tips, off by default (v0.25), each shown once; battle goal only at the start (your request)
-- ➕ Level-cap notice; status badges only on the selected or targeted unit
+- ✅ Settings: Options, How to Play (with a link to the Codex), What's New, Saves, a copyable bug Report (8o)
+- ✅ Options: damage numbers, reduced flashing, low graphics, colorblind-friendly tiles, minimap, danger zone (8o)
+- ✅ First-time tips, off by default (v0.25), each shown once; battle goal only at the start (your request) (8o)
+- ✅ Level-cap notice; status badges only on the selected or targeted unit (8o)
 
 **Look and feel**
 - 🔜 Your new sprites with movement and attack animations; glows per evolution stage; companion blue glow; enraged boss red glow

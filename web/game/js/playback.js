@@ -12,6 +12,7 @@ import { SKFX, ACT, POSE_MS, FXN, EE, SHK0, fxKey, durOf, impOf } from './fxbook
 import { drawOlder } from './fxpixel.js';
 import { drawP } from './fxskill.js';
 import { setup } from './fxsprite.js';
+import { options } from './options.js';
 
 let ready = false;
 const skillOf = (name) => (book.skills || {})[name] || {};
@@ -261,6 +262,8 @@ export function draw(g, now) {
   }
   for (let i = pops.length; i--; ) if (now > pops[i].t0 + 1000) pops.splice(i, 1);
   for (const o of pops) {
+    // The damage-numbers option hides numbers, not words like MISS [old L1661].
+    if (!options.damageNumbers && /^(CRIT )?[+−-]?\d/.test(o.txt)) continue;
     const p = (now - o.t0) / 1000;
     g.save();
     g.globalAlpha = p > 0.7 ? (1 - p) / 0.3 : 1;

@@ -4,15 +4,17 @@
 // Saves are the referee's own save text, kept in this browser.
 import * as referee from './referee.js';
 import { options, saveOptions } from './options.js';
-import { cam, zoomAt, closeUp } from './camera.js';
+import { cam, zoomAt, zoomStep, closeUp } from './camera.js';
 import { rotate } from './board.js';
 import { url } from './assets.js';
+import { settings, wireSettings } from './settings.js';
 
 const $ = (id) => document.getElementById(id);
 let screen = null; // { st, show, kick, log, after, gear, endTurn, nextHero }
 
 export function wire(s) {
   screen = s;
+  wireSettings(s);
   $('menuButton').onclick = (e) => { e.stopPropagation(); $('sys').hidden ? open() : close(); };
   document.addEventListener('pointerdown', (e) => {
     if (!$('sys').hidden && !$('sys').contains(e.target) && e.target !== $('menuButton')) close();
@@ -20,8 +22,21 @@ export function wire(s) {
 }
 
 const close = () => { $('sys').hidden = true; };
-const sw = (id, on) => `<button class="sw ${on ? 'on' : ''}" id="${id}"><i></i></button>`;
-const seg = (id, opts, val) => `<div class="seg" id="${id}">${opts.map(([v, l]) => `<button data-v="${v}" class="${String(v) === String(val) ? 'on' : ''}">${l}</button>`).join('')}</div>`;
+// The menu's little line icons [old IC2, L1566].
+const IC = {
+  zout: '<circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 15l6 6M7 10h6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>',
+  zin: '<circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 15l6 6M7 10h6M10 7v6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>',
+  rot: '<path d="M19 12a7 7 0 1 1-2.1-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M17 3v4.5h-4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+  next: '<path d="M4 12h12M12 7l5 5-5 5M20 5v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+  map: '<path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z M9 4v14 M15 6v14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
+  view: '<path d="M12 3l9 5-9 5-9-5z M3 12l9 5 9-5 M3 16l9 5 9-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
+  danger: '<path d="M12 3l10 18H2z M12 10v5 M12 18v.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>',
+  speed: '<circle cx="12" cy="13" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 13l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  floors: '<path d="M4 20h16M6 16h12M8 12h8M10 8h4M12 4v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+};
+const ic = (n, s = 20) => `<svg viewBox="0 0 24 24" width="${s}" height="${s}" aria-hidden="true" style="flex:none">${IC[n]}</svg>`;
+export const sw = (id, on) => `<button class="sw ${on ? 'on' : ''}" id="${id}"><i></i></button>`;
+export const seg = (id, opts, val) => `<div class="seg" id="${id}">${opts.map(([v, l]) => `<button data-v="${v}" class="${String(v) === String(val) ? 'on' : ''}">${l}</button>`).join('')}</div>`;
 
 export function open() {
   const v = screen.st.view, c = v.climb, w = $('sys');
@@ -31,13 +46,13 @@ export function open() {
     <button class="row" id="sGear">Gear</button><button class="row" id="sSave">Save</button>
     <button class="row" id="sSet">Settings</button><button class="row" id="sClose">✕ Close</button>
     <div class="lbl">Map</div>
-    <div class="mrow"><span>Zoom</span><input type="range" id="sZoom" min="1" max="3.4" step="0.05" value="${cam.zt.toFixed(2)}"></div>
-    <div class="mrow"><span>View</span>${seg('sView', [[1, 'Flat'], [0, 'Isometric']], options.flat ? 1 : 0)}</div>
-    <div class="mrow"><span>Minimap</span>${sw('sMini', options.minimap)}</div>
-    <div class="mrow"><span>Danger zone</span>${sw('sDanger', options.danger)}</div>
-    <div class="mrow"><span>Battle speed</span>${seg('sSpeed', [[1, '1×'], [2, '2×'], [3, 'Instant']], options.speed)}</div>
-    <div class="mbtns"><button class="mb" id="sRot">⟳<span>Rotate</span></button><button class="mb" id="sNext">⇥<span>Next hero</span></button></div>
-    ${c ? '<div class="lbl">Floors</div><button class="b wide" id="sFloors">Floor list</button>' : ''}`;
+    <div class="mrow"><button class="zb" id="sZout" aria-label="Zoom out">${ic('zout')}</button><input type="range" id="sZoom" min="1" max="3.4" step="0.05" value="${cam.zt.toFixed(2)}" aria-label="Zoom"><button class="zb" id="sZin" aria-label="Zoom in">${ic('zin')}</button></div>
+    <div class="mrow">${ic('view')}<span>View</span>${seg('sView', [[1, 'Flat'], [0, 'Isometric']], options.flat ? 1 : 0)}</div>
+    <div class="mrow">${ic('map')}<span>Minimap</span>${sw('sMini', options.minimap)}</div>
+    <div class="mrow">${ic('danger')}<span>Danger zone</span>${sw('sDanger', options.danger)}</div>
+    <div class="mrow">${ic('speed')}<span>Battle speed</span>${seg('sSpeed', [[1, '1×'], [2, '2×'], [3, 'Instant']], options.speed)}</div>
+    <div class="mbtns"><button class="mb" id="sRot">${ic('rot', 22)}<span>Rotate</span></button><button class="mb" id="sNext">${ic('next', 22)}<span>Next hero</span></button></div>
+    ${c ? `<div class="lbl">Floors</div><button class="b wide" id="sFloors">${ic('floors', 18)} Floor list</button>` : ''}`;
   w.hidden = false;
   const on = (id, f) => { if ($(id)) $(id).onclick = f; };
   on('sEnd', () => { close(); screen.endTurn(); });
@@ -49,6 +64,9 @@ export function open() {
   on('sNext', () => { close(); screen.nextHero(); });
   on('sFloors', () => { close(); floors(); });
   $('sZoom').oninput = (e) => zoomAt(innerWidth / 2, innerHeight / 2, +e.target.value);
+  const step = (d) => { zoomStep(d); $('sZoom').value = cam.zt.toFixed(2); };
+  on('sZin', () => step(1));
+  on('sZout', () => step(-1));
   const flip = (id, k) => on(id, () => { options[k] = !options[k]; saveOptions(); screen.after(); open(); });
   flip('sMini', 'minimap');
   flip('sDanger', 'danger');
@@ -56,32 +74,7 @@ export function open() {
   $('sView').querySelectorAll('button').forEach((b) => (b.onclick = () => { screen.setView(b.dataset.v === '1'); saveOptions(); open(); }));
 }
 
-// ---------- settings ----------
-
-export function settings() {
-  const w = cover('settingsWin');
-  const row = (label, ctl, sub) => `<div class="mrow"><span>${label}${sub ? `<br><small>${sub}</small>` : ''}</span>${ctl}</div>`;
-  w.innerHTML = `<div class="panel box wide"><div class="ttl">Settings</div>
-    <h4>Battle</h4>${row('Battle speed', seg('oSpeed', [[1, '1×'], [2, '2×'], [3, 'Instant']], options.speed))}
-    ${row('Auto end turn', sw('oAuto', options.autoEnd), 'Ends your turn once every hero has acted')}
-    ${row('Ask before ending turn', sw('oAsk', options.confirmEnd), 'Warns if heroes haven’t acted yet')}
-    <h4>Map</h4>${row('Map view', seg('oView', [[1, 'Flat'], [0, 'Isometric']], options.flat ? 1 : 0))}${row('Minimap', sw('oMini', options.minimap))}${row('Auto-zoom on selected hero', sw('oZoom', options.autoZoom))}${row('Danger zone', sw('oDanger', options.danger), 'Shade every tile monsters can reach')}
-    <h4>Accessibility &amp; performance</h4>${row('Reduce flashing effects', sw('oCalm', options.calm))}
-    ${row('Low graphics', sw('oLow', options.lowGraphics), 'Still water and trees, no vignette; saves battery')}
-    ${row('Colorblind-friendly tiles', sw('oCb', options.colorblind))}
-    <div class="btns"><button class="b" id="oCodex">Codex</button><button class="b" id="oTitle">Title screen</button><button class="b" id="oClose">Close</button></div></div>`;
-  w.hidden = false;
-  const flip = (id, k) => ($(id).onclick = () => { options[k] = !options[k]; saveOptions(); screen.after(); settings(); });
-  flip('oAuto', 'autoEnd'); flip('oAsk', 'confirmEnd'); flip('oMini', 'minimap'); flip('oDanger', 'danger');
-  flip('oCalm', 'calm'); flip('oLow', 'lowGraphics'); flip('oCb', 'colorblind'); flip('oZoom', 'autoZoom');
-  $('oSpeed').querySelectorAll('button').forEach((b) => (b.onclick = () => { options.speed = +b.dataset.v; saveOptions(); settings(); }));
-  $('oView').querySelectorAll('button').forEach((b) => (b.onclick = () => { screen.setView(b.dataset.v === '1'); saveOptions(); settings(); }));
-  $('oClose').onclick = () => { w.hidden = true; };
-  $('oCodex').onclick = () => window.open('codex.html', '_blank');
-  $('oTitle').onclick = () => { if (confirm('Go back to the title screen? Unsaved progress is lost (the autosave keeps your last turn).')) location.reload(); };
-}
-
-function cover(id) {
+export function cover(id) {
   let w = $(id);
   if (!w) {
     w = document.createElement('div');
@@ -160,7 +153,7 @@ function load(text, from) {
 // player's choice; it asks before replacing a slot that has a game [old
 // Settings → Saves, savTab L1674-1684, importSave L1671]. The screen only
 // reads the file; the referee checks and loads the save text.
-function importer(mode) {
+export function importer(mode) {
   const w = cover('slotsWin');
   let slot = [1, 2, 3].find((k) => !get(k)) || 3, text = '', name = '';
   const draw = () => {
@@ -208,16 +201,19 @@ export function slots(mode) {
   w.querySelectorAll('[data-sv]').forEach((b) => (b.onclick = () => { if (put(b.dataset.sv)) { screen.log('Saved to slot ' + b.dataset.sv + '.'); slots(mode); } }));
   w.querySelectorAll('[data-ld]').forEach((b) => (b.onclick = () => load(get(b.dataset.ld), b.dataset.ld === 'auto' ? 'the autosave' : 'slot ' + b.dataset.ld)));
   $('svClose').onclick = () => { w.hidden = true; };
-  if ($('svExp')) $('svExp').onclick = () => {
-    const t = referee.save();
-    try { navigator.clipboard && navigator.clipboard.writeText(t); } catch (e) { /* not allowed: the download still works */ }
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([t], { type: 'application/json' }));
-    a.download = 'crusader-tactics-save.json';
-    a.click();
-    screen.log('Save copied and downloaded.');
-  };
+  if ($('svExp')) $('svExp').onclick = () => { exportSave(); screen.log('Save copied and downloaded.'); };
   $('svImp').onclick = () => importer(mode);
 }
 
-export { closeUp };
+// exportSave copies the game's save text and downloads it as a file.
+export function exportSave() {
+  const t = referee.save();
+  try { navigator.clipboard && navigator.clipboard.writeText(t); } catch (e) { /* not allowed: the download still works */ }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([t], { type: 'application/json' }));
+  const c = screen.st.view && screen.st.view.climb;
+  a.download = 'crusader-save-floor' + (c ? c.best : 1) + '.json';
+  a.click();
+}
+
+export { closeUp, settings };

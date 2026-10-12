@@ -10,6 +10,7 @@ import { feet, map as map0, top as top0 } from './board.js';
 import * as team from './team.js';
 import * as shop from './shop.js';
 import * as playback from './playback.js';
+import { check as capCheck } from './capnotice.js';
 import { autosave } from './sysmenu.js';
 
 const $ = (id) => document.getElementById(id);
@@ -53,9 +54,11 @@ function send(action, message, then) {
   $('endTurn').hidden = true;
   const finish = () => {
     $('skip').hidden = true;
+    const before = st().units;
     screen.show(r.view);
     if (message) screen.log(message);
     after();
+    capCheck(r.events || [], r.view, before);
     if (then) then();
   };
   playback.play(st().units, r.events || [], st().opt.speed, finish, () => {

@@ -14,6 +14,7 @@ const defaults = {
   calm: false, // fewer flashes
   lowGraphics: false, // still water and trees, no vignette
   colorblind: false,
+  tipsOn: false, // first-time tips are off until "Show tips again" (old v0.25)
 };
 
 function read() {

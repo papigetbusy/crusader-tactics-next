@@ -143,6 +143,23 @@ export function zoomAt(cx, cy, z, onOverview) {
   zoomRaw(cx, cy, z);
 }
 
+// zoomStep is the − and + buttons: fixed zoom steps; on a phone, − at the
+// smallest comfortable size shows the whole map [old zin/zout L1770-1771,
+// overview L2093].
+const STEPS = [1, 1.6, 2.4, 3.4];
+export function zoomStep(dir, onOverview) {
+  if (dir > 0) {
+    if (cam.overview) return overview(false, null, onOverview);
+    const z = STEPS.find((s) => s > cam.zt + 0.01);
+    if (z) cam.zt = z;
+  } else {
+    if (TOUCH && !cam.overview && zoomFloor() > 1 && cam.zt <= zoomFloor() + 0.01) return overview(true, null, onOverview);
+    const z = STEPS.filter((s) => s < cam.zt - 0.01).pop();
+    if (z) cam.zt = z;
+  }
+  kick();
+}
+
 // overview shows the whole map (on) or zooms back in around a map spot.
 export function overview(on, at, told = () => {}) {
   if (on) {

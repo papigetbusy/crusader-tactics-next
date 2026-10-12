@@ -11,6 +11,8 @@ import { options } from './options.js';
 import * as battle from './battle.js';
 import * as playback from './playback.js';
 import * as sysmenu from './sysmenu.js';
+import * as tips from './tips.js';
+import * as title from './title.js';
 import * as gear from './gear.js';
 import * as shop from './shop.js';
 
@@ -100,6 +102,7 @@ export function log(text) {
 export async function boot(build) {
   $('version').textContent = build === '__BUILD__' ? 'test' : build;
   const loading = $('loading'), text = $('loadingText');
+  title.start();
   $('titleStart').hidden = true;
   loading.hidden = false;
   resize($('map'));
@@ -132,6 +135,7 @@ export async function boot(build) {
   gear.wire({ st, show, kick, log, after: battle.after });
   shop.wire({ st, show, kick, log, after: battle.after });
   sysmenu.wire({ st, show, kick, log, setView, after: battle.after, gear: () => gear.open(), endTurn: battle.endTurn, nextHero });
+  tips.watch(st);
   requestAnimationFrame(loop);
 }
 
