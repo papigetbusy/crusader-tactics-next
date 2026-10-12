@@ -58,4 +58,4 @@ Things that changed today that you may have missed reading the repo. Start with 
 2. **The Codex is done.** The old one is archived unchanged in `docs/codex/old-codex-v0.22.html`. The new one (`web/codex/codex.html`, published as `codex.html`) is built from the game's data by `tools/codex`, with the new sprites and live attack effects. `docs/codex-checklist.md` lists every old entry and where it is now (nothing removed).
 3. **Phase 8 polish is done:** zoom buttons, the title screen's candle and lightning effects, How to Play / What's New / Saves / Report, the damage-numbers option, first-time tips, the level-cap notice.
 4. **Phase 9 is done** (smarter enemies from floor 20, full-power counterattacks, height); class-owned terrain was left out for now. See `phase9-proposal.md`.
-5. **Then:** the owner's new art, the balance autoplayer, Phase 9, and online versus last.
+5. **Then:** Phase 10 (online-ready check), online versus, and last the owner's new art and the balance autoplayer (owner moved those to the end).
