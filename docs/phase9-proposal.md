@@ -2,7 +2,7 @@
 
 Written 2026-10-11. **Owner's answers (2026-10-11): P9-1 yes, from floor 20 · P9-2 yes, with a full-power Strike, both sides counter · P9-3 not now · P9-4 yes, as written.**
 
-Written 2026-10-11. The ideas are already signed in `design-lock.md` (rule 9 and "Planned after the port matches"); this turns them into exact rules with numbers. Nothing here is built until the owner says yes. Every rule lives in the referee and in data files, with a plain-sentence test, so online play keeps working.
+The ideas are already signed in `design-lock.md` (rule 9 and "Planned after the port matches"); this turns them into exact rules with numbers. Nothing here is built until the owner says yes. Every rule lives in the referee and in data files, with a plain-sentence test, so online play keeps working.
 
 The owner moved the balance autoplayer to the end, so these numbers are a careful first guess, checked by playtesting; the autoplayer tunes them later.
 
@@ -16,7 +16,7 @@ The owner moved the balance autoplayer to the end, so these numbers are a carefu
   - a hero it can **defeat this turn** (strongest pull),
   - a **healer** (Healer class, or any hero carrying a heal),
   - a hero **weak to its element** (the WEAK hit).
-- **From floor 50:** the same, plus monsters avoid ending their move next to two or more heroes when they can't attack anyone.
+- **From floor 50:** the same, plus monsters avoid ending their move within 2 tiles of two or more heroes when they can't attack anyone.
 - Bosses and elites use the smarter thinking from floor 10.
 
 ## P9-2 Counterattacks (Fire Emblem style)

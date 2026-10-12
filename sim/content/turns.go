@@ -16,6 +16,16 @@ type AI struct {
 	SpecialSkillChance float64 `json:"specialSkillChance"` // chance to use a special (non-basic) skill
 	TooClosePenalty    float64 `json:"tooClosePenalty"`    // tile score penalty for standing inside minimum range
 	SpreadWeight       float64 `json:"spreadWeight"`       // ranged units prefer distance, melee closeness
+
+	// Smarter enemies as you climb (owner, 2026-10-11; Phase 9). 0 = never.
+	SmartFrom       int     `json:"smartFrom,omitempty"`       // from this floor monsters weigh who to hit
+	SmartBossFrom   int     `json:"smartBossFrom,omitempty"`   // the same for bosses and elites
+	CautiousFrom    int     `json:"cautiousFrom,omitempty"`    // from this floor they avoid ending next to several heroes when they can't attack
+	KillWeight      float64 `json:"killWeight,omitempty"`      // pull of a hero it can defeat this turn
+	HealerWeight    float64 `json:"healerWeight,omitempty"`    // pull of a healer
+	WeakWeight      float64 `json:"weakWeight,omitempty"`      // pull of a hero weak to its attack
+	TileWeight      float64 `json:"tileWeight,omitempty"`      // how much that pull counts when choosing where to stand
+	CautiousPenalty float64 `json:"cautiousPenalty,omitempty"` // tile score penalty for ending next to 2+ heroes without attacking
 }
 
 var oldTurns = Turns{

@@ -120,6 +120,13 @@ func ChooseTile(c *content.Content, b *state.Battle, e *state.Unit, s content.Sk
 		goals[i] = board.Tile{X: f.X, Y: f.Y}
 	}
 	walk := board.Distances(c, b, e, goals)
+	think := smart(c, b, e) || cautious(c, b, e)
+	pulls := map[int]float64{}
+	if think {
+		for _, f := range fs {
+			pulls[f.ID] = pull(c, b, e, s, f)
+		}
+	}
 	best, bestScore, found := board.Tile{}, 1e9, false
 	for _, t := range board.Reach(c, b, e) {
 		md := math.MaxInt
@@ -138,6 +145,9 @@ func ChooseTile(c *content.Content, b *state.Battle, e *state.Unit, s content.Sk
 			spread = -spread
 		}
 		pen += float64(spread * c.AI.SpreadWeight) // float64() keeps Go from fusing the multiply and add
+		if think {
+			pen += tileBonus(c, b, e, s, fs, pulls, t.X, t.Y)
+		}
 		if pen < bestScore {
 			best, bestScore, found = t, pen, true
 		}
@@ -193,7 +203,11 @@ func chooseTarget(c *content.Content, b *state.Battle, e *state.Unit, s content.
 			return z
 		}
 	}
-	sort.SliceStable(cands, func(i, j int) bool { return cands[i].HP < cands[j].HP })
+	if smart(c, b, e) {
+		smartOrder(c, b, e, s, cands)
+	} else {
+		sort.SliceStable(cands, func(i, j int) bool { return cands[i].HP < cands[j].HP })
+	}
 	if len(cands) == 0 {
 		return nil
 	}

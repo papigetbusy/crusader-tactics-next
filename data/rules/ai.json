@@ -1,6 +1,15 @@
 {
+  "_about": "How monsters think. The first four numbers are the old game's (aiTurn, lines 1740-1746). The rest are the smarter enemies of Phase 9 (owner, 2026-10-11): from smartFrom (bosses and elites from smartBossFrom) a monster prefers a hero it can defeat this turn, then healers, then heroes weak to its attack; from cautiousFrom it avoids ending its move next to two or more heroes when it can't attack. Floors before smartFrom play like the old game.",
   "healWhenAllyBelow": 0.75,
   "specialSkillChance": 0.45,
   "tooClosePenalty": 30,
-  "spreadWeight": 0.01
+  "spreadWeight": 0.01,
+  "smartFrom": 20,
+  "smartBossFrom": 10,
+  "cautiousFrom": 50,
+  "killWeight": 100,
+  "healerWeight": 40,
+  "weakWeight": 30,
+  "tileWeight": 0.02,
+  "cautiousPenalty": 5
 }

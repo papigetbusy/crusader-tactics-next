@@ -14,7 +14,7 @@ Every feature of the old game (v0.26.1), and where it lands in the rebuild. Noth
 - ✅ Skills level up with use (+5% per level; switching skills counts double)
 - ✅ Class abilities at Lv 1, 5 and 20, the 30 ascension abilities and all 30 ascension passives
 - ✅ Revives, seize-the-throne, reinforcement floors (where reinforcements appear comes in Phase 7)
-- ✅ Monster AI (copied exactly; smarter AI comes in Phase 9)
+- ✅ Monster AI (copied exactly for floors 1-19; smarter from floor 20, Phase 9a)
 - ✅ Levels, XP, XP sharing, level cap, evolutions at Lv 5 and 20, ascension at Lv 30
 - ✅ Gear: weapons, armor, charms, rarities, all 27 bonuses, weapon ranks E to S, weapon sets, dual wielding, armor sets, legendaries
 - ✅ Necromancer raises, shadow clones, traps, banners, fire fields, Overwatch, Sky Lord

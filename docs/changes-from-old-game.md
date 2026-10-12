@@ -25,6 +25,8 @@ Every place where the new game intentionally behaves differently from the old on
 
 - Choosing a hero no longer zooms the camera in, and when a hero finishes acting the camera stays put instead of moving to the next hero (⇥ Next hero still does). The "Auto-zoom on selected hero" setting still zooms in when turned on. (Owner, 2026-10-11.)
 
+- Smarter enemies as you climb: from floor 20 (bosses and elites from floor 10) a monster prefers a hero it can defeat this turn, then healers, then heroes weak to its attack, and picks where to stand with that in mind; from floor 50 it avoids ending its move within 2 tiles of two or more heroes when it can't attack. Floors 1-19 play like the old game, where monsters always hit the lowest-HP hero in reach. (Owner, 2026-10-11; Phase 9.)
+
 ## Decided, arriving with later phases
 - Team select and deployment: all 10 heroes (one of each class) are yours from the start, and there is no recruiting; the old game started with one hero and offered a new one every 25 floors (up to 8). Start with 5 hero slots; one more slot at floors 25, 50 and 75 (8 is the most). Each floor: look at the map, choose who to bring from all 10 heroes, fill every slot, then place them. Only the heroes who fight on a floor earn its XP. You place them yourself on blue starting tiles, and each map has more blue tiles than heroes, so where you start is a real choice. If you don't choose, the game brings your highest-level heroes. Monster level is set when the map is made, from your strongest heroes for that many slots (the old game used the whole party). The old game took the whole party into every fight. (Approved 2026-10-10; arrives in Phase 7, screen in Phase 8.)
 
