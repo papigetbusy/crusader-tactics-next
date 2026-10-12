@@ -187,7 +187,7 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
 #menu .abl { color: #ffd77a; }
 #menu, #sub { min-width: 112px; max-width: 190px; }
 /* monster info and terrain boxes, top left [old einfo, terr] */
-#einfo { left: 8px; top: calc(8px + var(--safe-t)); width: min(270px, 64vw); padding: 8px 10px; font-size: 13px; line-height: 17px; }
+#einfo { left: 8px; top: calc(52px + var(--safe-t)); width: min(270px, 64vw); padding: 8px 10px; font-size: 13px; line-height: 17px; }
 .ei-top { display: flex; gap: 8px; }
 .ei-por { width: 52px; height: 52px; flex: none; border: 1px solid #6a4a1a; background: #14070a center / contain no-repeat; image-rendering: pixelated; }
 .ei-mid { flex: 1; min-width: 0; }
@@ -199,7 +199,7 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
 .pills { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
 .pill { font: 700 10px system-ui, sans-serif; padding: 2px 6px; border-radius: 9px; border: 1px solid rgba(255,255,255,.3); }
 .pill.d { background: #5a1018; color: #ffd0d0; } .pill.b { background: #10305a; color: #cfe4ff; }
-#terr { left: 8px; top: calc(8px + var(--safe-t)); padding: 5px 10px; font-size: 12px; line-height: 15px; }
+#terr { left: 8px; top: calc(52px + var(--safe-t)); padding: 5px 10px; font-size: 12px; line-height: 15px; }
 #terr .tn { font: 700 12px 'EB Garamond', Georgia, serif; letter-spacing: .14em; text-transform: uppercase; color: #e9cf8a; }
 #forecast .af { color: #ff8a7a; } #forecast .dim { color: #b89a8a; } #forecast b { color: #fff3dc; }
 #forecast .fd, #forecast b.fd { color: #ffd77a; } #forecast .weak { color: #f2c14e; } #forecast .resist { color: #9aa6c8; }
@@ -227,11 +227,22 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
 #slotsWin textarea, #slotsWin input[type=file] { display: block; width: 100%; box-sizing: border-box; margin: 6px 0; font: 12px ui-monospace, Menlo, monospace; color: #e8dcc0; }
 #slotsWin textarea { background: #1a0d10; border: 1px solid #6a4a1a; border-radius: 6px; padding: 6px; }
 
-/* Map controls: a narrow icon strip on the left edge, off the middle of the map. */
+/* Map controls stay off the battlefield until the eye in the top left is tapped. */
+#mapEye {
+  position: fixed; z-index: 6;
+  left: calc(6px + env(safe-area-inset-left, 0px));
+  top: calc(8px + var(--safe-t));
+  width: 40px; height: 40px; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: none; border-radius: 8px;
+  color: rgba(233, 207, 138, .72);
+}
+#mapEye.on { color: #ffe6a8; background: rgba(12, 5, 7, .35); }
+#mapEye:active { color: #fff; }
 #mapbar {
   position: fixed; z-index: 5;
-  left: calc(4px + env(safe-area-inset-left, 0px));
-  top: 50%; transform: translateY(-50%);
+  left: calc(6px + env(safe-area-inset-left, 0px));
+  top: calc(52px + var(--safe-t));
   display: flex; flex-direction: column; gap: 4px;
 }
 #mapbar .mb2 {

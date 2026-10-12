@@ -16,8 +16,22 @@ export function wire(s) {
   screen = s;
   wireSettings(s);
   $('menuButton').onclick = (e) => { e.stopPropagation(); $('sys').hidden ? open() : close(); };
+  const eye = $('mapEye');
+  if (eye) eye.onclick = (e) => {
+    e.stopPropagation();
+    const bar = $('mapbar');
+    const openBar = bar.hidden;
+    if (openBar) mountMapbar();
+    bar.hidden = !openBar;
+    eye.classList.toggle('on', openBar);
+  };
   document.addEventListener('pointerdown', (e) => {
     if (!$('sys').hidden && !$('sys').contains(e.target) && e.target !== $('menuButton')) close();
+    const bar = $('mapbar'), eyeBtn = $('mapEye');
+    if (bar && !bar.hidden && !bar.contains(e.target) && eyeBtn && !eyeBtn.contains(e.target)) {
+      bar.hidden = true;
+      eyeBtn.classList.remove('on');
+    }
   }, true);
 }
 
@@ -85,10 +99,10 @@ function mountMapbar() {
 }
 
 export function mapOn(show) {
-  const bar = $('mapbar');
-  if (!bar) return;
+  const bar = $('mapbar'), eye = $('mapEye');
+  if (bar) bar.hidden = true;
+  if (eye) { eye.hidden = !show; eye.classList.remove('on'); }
   if (show) mountMapbar();
-  bar.hidden = !show;
 }
 
 export function cover(id) {

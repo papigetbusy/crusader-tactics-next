@@ -25,7 +25,7 @@ The owner noticed these while playtesting. All four are on the screen only; the 
 1. **A hero who has finished the turn goes gray** (and a little see-through), so a spent hero no longer looks ready.
 2. **Health bars drain as the hit lands**, over about a third of a second, instead of jumping at the end of the action. Heals fill the same way.
 3. **WEAK** shows on a skill in the command menu when that move does bonus damage to someone in range, before you pick it. Once the attack window is open, WEAK or RESIST is also drawn on each target.
-4. **Map controls are a narrow icon strip** on the left edge (zoom, view, minimap, danger zone, speed, rotate, next hero). The ☰ menu no longer has the labeled map panel.
+4. **Map controls are a narrow icon strip**, hidden until the clear eye in the top left is tapped (zoom, view, minimap, danger zone, speed, rotate, next hero). Tapping the map closes it. The ☰ menu no longer has the labeled map panel.
 
 ## Left to do, in order
 
