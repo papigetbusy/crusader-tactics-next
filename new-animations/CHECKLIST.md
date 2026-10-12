@@ -5,11 +5,12 @@ This folder is not part of the game. Nothing here is loaded by the play page.
 ## How this works
 
 1. You send the sprite sheet.
-2. A GIF goes in `gifs/<class>/<attack>/v1.gif`, then `v2.gif`, and so on. Old versions stay, so we can compare.
-3. We tweak until you say that version is the one.
-4. Only then does one code file get written in `code/`, named after the attack. Test GIFs never get their own code.
-5. The code stays here until every attack, defend and ability on this list is signed off.
-6. Then they all go into the game in one pass. Not before.
+2. A test GIF is made. It is not filed here until you say that version is the one.
+3. We tweak until you do.
+4. Then one code file is written in `code/`, named after the attack. Test GIFs never get their own code.
+5. An in-game GIF is made from that code: the move hitting an enemy. The effect plays with the sprite, and it is not allowed to cover or cut the attacker's sprite.
+6. The code and that GIF stay here. The play page does not load them.
+7. When every row below is signed off, they all go into the game in one pass. Not before.
 
 A shared skill can be used by every form of that class, so it needs a signed GIF on each body (the base forms and the ascensions). An ascension skill needs a GIF only on the body that learns it. One code file still covers the attack. The extra GIFs are the same move on the other bodies.
 
@@ -268,7 +269,7 @@ Shared skills (every form of this class):
 
 Ascension skills (one body only):
 
-- [ ] Blood Moon (Blood Witch only) — gif: v1 made, not signed off (`gifs/witch/blood-moon/v1.gif`) — code: waiting
+- [x] Blood Moon (Blood Witch only) — gif: signed off — code: written (`code/blood-moon.js`, in-game GIF at `gifs/witch/blood-moon/in-game.gif`)
 - [ ] Grand Hex (Hex Queen only) — gif: v1 made, not signed off (`gifs/witch/grand-hex/v1.gif`) — code: waiting
 - [ ] Soul Nova (Necromancer only) — gif: v1 made, not signed off (`gifs/witch/soul-nova/v1.gif`) — code: waiting
 

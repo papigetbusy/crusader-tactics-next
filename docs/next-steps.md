@@ -31,7 +31,7 @@ The owner noticed these while playtesting. All four are on the screen only; the 
 7. **Formations** (owner, 2026-10-12). Before the battle, 1 2 3 remember where the heroes stand. Tap a gold number to place them. Hold a gold number to overwrite it, after a Yes. They are stored in that save, and they fit a different size floor.
 
 ## New attack animations: not in the game yet
-The owner is rebuilding attack pictures one GIF at a time in `new-animations/`. Test GIFs stay in `gifs/`. Code for an attack is written only after the owner signs that GIF off, one file per attack, in `new-animations/code/`. Nothing from that folder is loaded by the play page until every attack, defend and ability on `new-animations/CHECKLIST.md` is signed off, and then they are added together. Do not wire a single test GIF into the battle screen.
+The owner is rebuilding attack pictures one GIF at a time in `new-animations/`. A test GIF stays a test until he signs it off. Then one code file is written in `new-animations/code/`, and an in-game GIF is made of that move hitting an enemy. The effect plays with the sprite and must not cover the attacker. Nothing from that folder is loaded by the play page until every row of `new-animations/CHECKLIST.md` is signed off, and then they are added together. Blood Moon is the first one signed off (2026-10-12). Do not wire it in early.
 
 ## Left to do, in order
 
