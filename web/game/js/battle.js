@@ -405,7 +405,7 @@ function forecast() {
   if (f && dmg) {
     const lo = Math.max(0, v.hp - f.high), hi = Math.max(0, v.hp - f.low);
     after = lo === hi ? '' + lo : lo + '–' + hi;
-    line = `Dmg <b class="fd">${f.low === f.high ? f.mid : f.low + '–' + f.high}</b> · Hit <b>${f.hitChance}%</b> ${f.mult > 1 ? '<b class="weak">WEAK</b>' : f.mult < 1 ? '<b class="resist">RESIST</b>' : ''}`;
+    line = `Dmg <b class="fd">${f.low === f.high ? f.mid : f.low + '–' + f.high}</b> · Hit <b>${f.hitChance}%</b> ${f.mult > 1 ? '<b class="weak">WEAK</b>' : f.mult < 1 ? '<b class="resist">RESIST</b>' : ''}${f.height > 0 ? ' <b class="weak">HIGH GROUND</b>' : f.height < 0 ? ' <b class="resist">UPHILL</b>' : ''}`;
   } else if (f) line = `${sk.heal ? 'Heal' : 'Effect'} <b class="fd">${sk.heal ? '+' + (f.heal || f.mid) : sk.name}</b>`;
   const ko = after && /^0(–|$)/.test(after) ? '<b class="ko">KO</b>' : '';
   const sets = (u.gear && u.gear.sets) || [], hand = sets.findIndex((x) => x.inHand), set = s.set || hand + 1;

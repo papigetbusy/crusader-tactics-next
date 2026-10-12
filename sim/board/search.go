@@ -14,7 +14,7 @@ var neighbours = [4][2]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
 // search is the old game's "dial-bucket" shortest-path search (function dijk,
 // index.html line 1222). Tiles are kept in buckets by total cost and handled
 // cheapest first; within a bucket, in the order they were added.
-func search(b *state.Battle, src []Tile, cost func(x, y int) int, limit int, block func(x, y int) bool) searchResult {
+func search(b *state.Battle, src []Tile, cost func(x, y int) int, limit int, block func(x, y int) bool, climb ...func(fx, fy, x, y int) int) searchResult {
 	n := b.N
 	r := searchResult{dist: make([]int, n*n), parent: make([]int, n*n)}
 	for i := range r.dist {
@@ -47,6 +47,9 @@ func search(b *state.Battle, src []Tile, cost func(x, y int) int, limit int, blo
 				step := cost(a, c)
 				if step >= 100_000_000 {
 					continue
+				}
+				if len(climb) > 0 && climb[0] != nil {
+					step += climb[0](x, y, a, c)
 				}
 				nd, kk := d+step, c*n+a
 				if nd > limit || nd >= r.dist[kk] {

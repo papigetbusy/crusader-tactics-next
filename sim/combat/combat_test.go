@@ -98,8 +98,8 @@ func TestCombat(t *testing.T) {
 		foe2 := &state.Unit{ID: 3, Team: state.Enemies, Weapon: "sword", Atk: 20, HP: 10, MaxHP: 10, Status: map[string]int{}}
 		target := &state.Unit{ID: 4, Team: state.Heroes, Weapon: "lance", Def: 5, X: 1, HP: 10, MaxHP: 10, Status: map[string]int{}}
 		_, m := Damage(c, b, Attack{By: foe2, Skill: plain(1), Target: target}, 1)
-		if m != 1.5 || HitChance(c, Attack{By: foe2, Skill: plain(1), Target: target}) != 100 {
-			t.Fatalf("multiplier %v, hit %d", m, HitChance(c, Attack{By: foe2, Skill: plain(1), Target: target}))
+		if m != 1.5 || HitChance(c, nil, Attack{By: foe2, Skill: plain(1), Target: target}) != 100 {
+			t.Fatalf("multiplier %v, hit %d", m, HitChance(c, nil, Attack{By: foe2, Skill: plain(1), Target: target}))
 		}
 	})
 
@@ -128,7 +128,7 @@ func TestCombat(t *testing.T) {
 	t.Run("Heals, buffs and revives never miss", func(t *testing.T) {
 		c, _, h, f := arena('g')
 		for _, s := range []content.Skill{{Heal: true}, {Support: true}, {Revive: true}} {
-			if HitChance(c, Attack{By: h, Skill: s, Target: f}) != 100 {
+			if HitChance(c, nil, Attack{By: h, Skill: s, Target: f}) != 100 {
 				t.Fatalf("%+v can miss", s)
 			}
 		}
@@ -136,7 +136,7 @@ func TestCombat(t *testing.T) {
 
 	t.Run("Hit chance is 95% for a hero's melee attack and 90% for a monster's", func(t *testing.T) {
 		c, _, h, f := arena('g')
-		if HitChance(c, Attack{By: h, Skill: plain(1), Target: f}) != 95 || HitChance(c, Attack{By: f, Skill: plain(1), Target: h}) != 90 {
+		if HitChance(c, nil, Attack{By: h, Skill: plain(1), Target: f}) != 95 || HitChance(c, nil, Attack{By: f, Skill: plain(1), Target: h}) != 90 {
 			t.Fatal("base hit chances wrong")
 		}
 	})

@@ -49,6 +49,32 @@ func StepCost(c *content.Content, b *state.Battle, u *state.Unit, x, y int) int 
 	return t.MoveCost
 }
 
+// Climb is the extra cost of stepping up from (fx, fy) onto a hill at (x, y)
+// (Phase 9 height rules): nothing for fliers and climbing classes, or with
+// height rules off.
+func Climb(c *content.Content, b *state.Battle, u *state.Unit) func(fx, fy, x, y int) int {
+	if !c.Combat.Height || c.Combat.ClimbCost == 0 || c.Flying[u.Class] {
+		return nil
+	}
+	for _, k := range c.Combat.ClimbFree {
+		if k == u.Class {
+			return nil
+		}
+	}
+	h := func(x, y int) int {
+		if y < len(b.Heights) && x < len(b.Heights[y]) {
+			return b.Heights[y][x]
+		}
+		return 0
+	}
+	return func(fx, fy, x, y int) int {
+		if h(x, y) > 0 && h(fx, fy) <= 0 {
+			return c.Combat.ClimbCost
+		}
+		return 0
+	}
+}
+
 // CanMove reports whether a unit may still move this turn: not yet moved,
 // and not snared, locked or shocked.
 func CanMove(u *state.Unit) bool {
@@ -159,7 +185,7 @@ func Reach(c *content.Content, b *state.Battle, u *state.Unit) []Tile {
 		return out
 	}
 	cost := func(x, y int) int { return StepCost(c, b, u, x, y) }
-	r := search(b, []Tile{{X: u.X, Y: u.Y}}, cost, Budget(b, u), enemyBlocks(b, u))
+	r := search(b, []Tile{{X: u.X, Y: u.Y}}, cost, Budget(b, u), enemyBlocks(b, u), Climb(c, b, u))
 	var out []Tile
 	for k, d := range r.dist {
 		if d >= Blocked {
@@ -191,7 +217,11 @@ func Path(c *content.Content, b *state.Battle, u *state.Unit, x, y int) []Tile {
 	if u.Status["vamp"] > 0 { // Blood Pact walks over anything (old bfsPath, line 1228)
 		cost = func(int, int) int { return 2 }
 	}
-	r := search(b, []Tile{{X: u.X, Y: u.Y}}, cost, 10_000_000, enemyBlocks(b, u))
+	climb := Climb(c, b, u)
+	if u.Status["vamp"] > 0 {
+		climb = nil
+	}
+	r := search(b, []Tile{{X: u.X, Y: u.Y}}, cost, 10_000_000, enemyBlocks(b, u), climb)
 	k := y*b.N + x
 	if r.dist[k] >= Blocked {
 		return nil

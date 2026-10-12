@@ -76,6 +76,15 @@ type Combat struct {
 	// Strike range. CounterPower scales that Strike (1 = full).
 	Counterattacks bool    `json:"counterattacks"`
 	CounterPower   float64 `json:"counterPower,omitempty"`
+	// Height (Phase 9): attacking from a hill onto lower ground hits harder
+	// and surer; attacking uphill is less sure; climbing onto a hill costs
+	// more move, except for fliers and ClimbFree classes. One step counts.
+	Height       bool     `json:"height"`
+	HeightDamage float64  `json:"heightDamage,omitempty"` // damage multiplier from higher ground
+	HeightHit    int      `json:"heightHit,omitempty"`    // hit chance added from higher ground
+	UphillHit    int      `json:"uphillHit,omitempty"`    // hit chance taken away attacking uphill
+	ClimbCost    int      `json:"climbCost,omitempty"`    // extra half-steps to step up onto a hill
+	ClimbFree    []string `json:"climbFree,omitempty"`    // classes that climb for free (fliers always do)
 
 	// Statuses that change damage.
 	RallyAttack   float64 `json:"rallyAttack"`   // rally: attacker hits this much harder

@@ -30,3 +30,15 @@ func TestCounterForecast(t *testing.T) {
 		}
 	})
 }
+
+func TestHeightForecast(t *testing.T) {
+	t.Run("The forecast says when a hero attacks from high ground", func(t *testing.T) {
+		g := duel()
+		e := g.B.Unit(2)
+		e.X, e.Y = 1, 0
+		g.B.Heights = [][]int{{1, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}}
+		if f, _ := g.Preview(1, 0, 2); f.Height != 1 {
+			t.Fatalf("forecast %+v", f)
+		}
+	})
+}

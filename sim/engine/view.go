@@ -238,6 +238,8 @@ type Forecast struct {
 	// NoCounter says why it can't strike back ("out of range", "stunned"...).
 	Counter   *combat.Forecast `json:"counter,omitempty"`
 	NoCounter string           `json:"noCounter,omitempty"`
+	// Height is 1 when attacking from high ground, -1 when attacking uphill.
+	Height int `json:"height,omitempty"`
 }
 
 // PreviewFrom forecasts a skill use as if the unit first walked to (x, y),
@@ -289,6 +291,7 @@ func (g *Game) preview(u, v *state.Unit, slot int) (Forecast, bool) {
 	_, classBase, _ := g.C.SkillFor(u.Team, u.Class, s.Name)
 	f := Forecast{Forecast: combat.Preview(g.C, g.B, combat.Attack{By: u, Skill: s, ClassBase: classBase, Target: v})}
 	f.Also = combat.AlsoHit(g.B, u, s, v)
+	f.Height = combat.HeightEdge(g.C, g.B, u, v)
 	if g.C.Combat.Counterattacks && v.Team != u.Team {
 		if ok, why := combat.CanCounter(g.C, u, v, s, u.X, u.Y); ok {
 			cf := combat.Preview(g.C, g.B, combat.CounterAttack(g.C, u, v))

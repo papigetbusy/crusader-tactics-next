@@ -44,6 +44,15 @@
   "monstersRevive": true,
   "counterattacks": true,
   "counterPower": 1,
+  "height": true,
+  "heightDamage": 1.1,
+  "heightHit": 10,
+  "uphillHit": 10,
+  "climbCost": 2,
+  "climbFree": [
+    "Ranger",
+    "Knight"
+  ],
   "rallyAttack": 1.25,
   "weakAttack": 0.7,
   "brokenDefense": 0.7,

@@ -55,7 +55,7 @@ func Hurt(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit act
 	fixed := a.Fixed > 0
 	hc := 100 // the old game rolls the hit dice even for hits that cannot miss
 	if !a.Sure && !fixed {
-		hc = HitChance(c, a)
+		hc = HitChance(c, b, a)
 	}
 	if dice.Roll(RollHit)*100 >= float64(hc) {
 		emit(action.Event{Kind: action.Missed, Unit: u.ID, Target: v.ID})

@@ -4,6 +4,20 @@ package content
 func init() {
 	Changes = append(Changes, Change{
 		Date: "2026-10-11",
+		What: "Height: attacking from a hill onto lower ground deals 10% more damage with +10% hit; attacking uphill " +
+			"has −10% hit; climbing onto a hill costs 1 more move, except for fliers, Rangers and Knights. " +
+			"Before, height only changed how the map looked.",
+		Apply: func(c *Content) {
+			k := &c.Combat
+			k.Height, k.HeightDamage, k.HeightHit, k.UphillHit, k.ClimbCost = true, 1.1, 10, 10, 2
+			k.ClimbFree = []string{"Ranger", "Knight"}
+		},
+	})
+}
+
+func init() {
+	Changes = append(Changes, Change{
+		Date: "2026-10-11",
 		What: "Fire Emblem counterattacks: a unit hit by a single-target attack that survives strikes back once with " +
 			"a full Strike if the attacker is within its Strike range. Not when stunned, frozen, rooted or cloaked, and " +
 			"not against area skills, ultimates, heals or buffs. Before, only a Duelist (and Riposte Stance) struck back.",

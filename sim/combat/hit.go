@@ -10,7 +10,7 @@ import (
 
 // HitChance is the chance in % that an attack lands (old hitCh, line 1060):
 // Inner Element and a Wanted Poster never miss; a Phantom is harder to hit.
-func HitChance(c *content.Content, a Attack) int {
+func HitChance(c *content.Content, b *state.Battle, a Attack) int {
 	k := c.Combat
 	u, v, s := a.By, a.Target, a.Skill
 	if s.NoRoll() || u.Status["inner"] > 0 || (v.Wanted && v.WantedBy == u.ID) {
@@ -49,6 +49,12 @@ func HitChance(c *content.Content, a Attack) int {
 		}
 	}
 	h += u.Af("hit") - v.Af("evade")
+	switch HeightEdge(c, b, u, v) {
+	case 1:
+		h += k.HeightHit
+	case -1:
+		h -= k.UphillHit
+	}
 	if v.Ascension == "Phantom" {
 		h -= int(c.Ascensions["Phantom"].N("evasion"))
 	}

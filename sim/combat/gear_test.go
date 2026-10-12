@@ -58,8 +58,8 @@ func TestGearInCombat(t *testing.T) {
 		if dm != 24 {
 			t.Fatalf("rank S damage %d, want 24 (20 x 1.2)", dm)
 		}
-		bare := HitChance(c, Attack{By: &state.Unit{Team: state.Heroes, Status: map[string]int{}}, Skill: plain(1), Target: f})
-		if hc := HitChance(c, Attack{By: h, Skill: plain(1), Target: f}); hc != min(100, bare+15) {
+		bare := HitChance(c, nil, Attack{By: &state.Unit{Team: state.Heroes, Status: map[string]int{}}, Skill: plain(1), Target: f})
+		if hc := HitChance(c, nil, Attack{By: h, Skill: plain(1), Target: f}); hc != min(100, bare+15) {
 			t.Fatalf("hit %d, bare %d", hc, bare)
 		}
 	})
@@ -80,10 +80,10 @@ func TestGearInCombat(t *testing.T) {
 
 	t.Run("Evade gear lowers the attacker's hit chance; hit gear raises it", func(t *testing.T) {
 		c, _, h, f := arena('g')
-		base := HitChance(c, Attack{By: f, Skill: plain(1), Target: h})
+		base := HitChance(c, nil, Attack{By: f, Skill: plain(1), Target: h})
 		h.Affix = map[string]int{"evade": 20}
 		f.Affix = map[string]int{"hit": 5}
-		if hc := HitChance(c, Attack{By: f, Skill: plain(1), Target: h}); hc != base-15 {
+		if hc := HitChance(c, nil, Attack{By: f, Skill: plain(1), Target: h}); hc != base-15 {
 			t.Fatalf("hit %d, base %d", hc, base)
 		}
 	})

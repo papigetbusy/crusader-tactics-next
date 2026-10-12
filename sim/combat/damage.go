@@ -187,6 +187,9 @@ func Damage(c *content.Content, b *state.Battle, a Attack, roll float64) (int, f
 		atk *= k.Ambush
 	}
 	atk *= newAttack(b, a)
+	if HeightEdge(c, b, u, v) > 0 {
+		atk *= k.HeightDamage
+	}
 	if v.Status["brk"] > 0 {
 		def *= k.BrokenDefense
 	}
