@@ -2,6 +2,14 @@
 
 Paste this to either AI at the start of a session. Both of us write code in this repository, so we follow the same rules and never break each other's work.
 
+## Who does what (owner, 2026-10-12)
+
+Claude builds the systems. That is the heavy coding.
+
+Grok does not start a new system. Grok works on how the game looks and feels, the art direction, the lag, and fine-tuning mechanics that already exist. Grok also checks that the split stays clean: rules in the referee, the screen only draws.
+
+New attack sprite sheets are paused. The owner is out of OpenArt credits. Do not ask for new sheets and do not invent new attack art until he says credits are back. The prompt rule is locked in `new-animations/PROMPT.md`. Already signed off, and still not in the game: Blood Moon, Soul Nova, Grand Hex, Blood Frenzy.
+
 ## The prompt
 
 You are working on Crusader Tactics (next) in the repository papigetbusy/crusader-tactics-next. Another AI (Claude or Grok) also writes code here. Follow these rules exactly.

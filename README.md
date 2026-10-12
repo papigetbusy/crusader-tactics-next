@@ -23,9 +23,11 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 3. **Log every change in this README.** Add a short plain-words line under "Change log" below for each piece of work you finish: date, who, what changed. This README is the shared log of everything, so the other AI and the owner can see what happened.
 4. **What to work on:** `docs/next-steps.md` (the next-session list at the top, then "Left to do, in order").
 5. **When Claude comes back,** it audits everything that changed since its last commit (diff, tests, project rules) before doing anything else.
+6. **Who does what (owner, 2026-10-12).** Claude does the heavy coding and new systems. Grok does not start those. Grok works on look and feel, art direction, lag, and fine-tuning mechanics, and checks that the architecture stays clean (rules in the referee, the screen only draws). New attack sheets are paused until the owner has OpenArt credits again. The prompt rule is already locked in `new-animations/PROMPT.md`. Signed off, still not in the game: Blood Moon, Soul Nova, Grand Hex, Blood Frenzy.
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-12 · Grok · Job split: Claude builds systems. Grok handles feel, lag, art direction, and keeping the rules in the referee. New attack sheets wait until OpenArt credits are back.
 - 2026-10-12 · Grok · Blood Frenzy signed off. The prompt rule is locked to that sheet. Not in the game.
 - 2026-10-12 · Grok · Idle sprites are also in new-animations/Idle, one file per hero, so they can be opened from the repo. Not in the game.
 - 2026-10-12 · Grok · Blood Frenzy review GIF. The ring stays on the Berserker. Not signed off. Not in the game.
