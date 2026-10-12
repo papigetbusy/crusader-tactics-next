@@ -118,6 +118,37 @@ const get = (k) => { try { return localStorage.getItem(KEY(k)); } catch (e) { re
 const info = (k) => { try { return JSON.parse(localStorage.getItem(KEY(k) + '-info') || 'null'); } catch (e) { return null; } };
 export const anySave = () => ['auto', 1, 2, 3].some((k) => get(k));
 
+// The purple-team test save ships with the game (web/assets/purple-team.json).
+// Phones cannot download it, so the first empty slot — 3, then 2, then 1 —
+// is filled on startup. A slot you have saved into yourself is never replaced.
+// If every slot is already full, Continue still shows a Purple team row.
+const PURPLE = 'purple-team';
+let purpleText = '';
+export async function seedPurpleTeam() {
+  try {
+    const res = await fetch('assets/purple-team.json');
+    if (!res.ok) return;
+    const text = (await res.text()).trim();
+    const parsed = JSON.parse(text);
+    if (!parsed || parsed.kind !== 'climb' || !parsed.data) return;
+    purpleText = text;
+    const run = parsed.data.run || {};
+    const battle = parsed.data.battle || {};
+    const meta = JSON.stringify({
+      floor: run.floor || battle.Floor || 1,
+      best: run.best || run.floor || 1,
+      turn: battle.Turn || 1,
+      when: 'Purple team',
+      builtIn: PURPLE,
+    });
+    const held = [1, 2, 3].find((k) => (info(k) || {}).builtIn === PURPLE);
+    const slot = held || [3, 2, 1].find((k) => !get(k));
+    if (!slot) return;
+    localStorage.setItem(KEY(slot), text);
+    localStorage.setItem(KEY(slot) + '-info', meta);
+  } catch (e) { /* storage blocked: the Continue row below still loads it */ }
+}
+
 function put(k) {
   const v = screen.st.view, c = v.climb;
   const text = referee.save();
@@ -193,13 +224,18 @@ export function slots(mode) {
     return `<div class="srow"><span><b>${k === 'auto' ? 'Autosave' : 'Slot ' + k}</b><br><small>${i ? `Floor ${i.floor} (best ${i.best}) · turn ${i.turn} · ${i.when}` : 'empty'}</small></span>
       ${mode === 'save' && k !== 'auto' ? `<button class="b" data-sv="${k}">Save</button>` : ''}${i ? `<button class="b" data-ld="${k}">Load</button>` : ''}</div>`;
   }).join('');
+  const held = [1, 2, 3].some((k) => (info(k) || {}).builtIn === PURPLE);
+  const extra = purpleText && !held
+    ? `<div class="srow"><span><b>Purple team</b><br><small>Floor 40 · whole team in purple gear</small></span><button class="b" id="ldPurple">Load</button></div>`
+    : '';
   const inGame = screen.st.view && $('title').hidden;
-  w.innerHTML = `<div class="panel box wide"><div class="ttl">${mode === 'save' ? 'Save your game' : 'Continue'}</div>${rows}
+  w.innerHTML = `<div class="panel box wide"><div class="ttl">${mode === 'save' ? 'Save your game' : 'Continue'}</div>${extra}${rows}
     <div class="btns">${inGame ? '<button class="b" id="svExp">Export</button>' : ''}<button class="b" id="svImp">Import</button></div>
     <button class="b" id="svClose">Close</button></div>`;
   w.hidden = false;
   w.querySelectorAll('[data-sv]').forEach((b) => (b.onclick = () => { if (put(b.dataset.sv)) { screen.log('Saved to slot ' + b.dataset.sv + '.'); slots(mode); } }));
   w.querySelectorAll('[data-ld]').forEach((b) => (b.onclick = () => load(get(b.dataset.ld), b.dataset.ld === 'auto' ? 'the autosave' : 'slot ' + b.dataset.ld)));
+  if ($('ldPurple')) $('ldPurple').onclick = () => load(purpleText, 'the purple team');
   $('svClose').onclick = () => { w.hidden = true; };
   if ($('svExp')) $('svExp').onclick = () => { exportSave(); screen.log('Save copied and downloaded.'); };
   $('svImp').onclick = () => importer(mode);
