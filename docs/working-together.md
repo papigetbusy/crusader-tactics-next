@@ -36,3 +36,5 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 ## Now working on
 (one line each: who · task · files · date; remove it when done)
 
+- Grok · hide the map-icon strip behind a top-left eye button · web/game/play.html, web/game/style.css, web/game/js/sysmenu.js · 2026-10-12
+
