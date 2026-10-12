@@ -256,7 +256,7 @@ Ascension skills (one body only):
 - [ ] Defend — gif: none — code: waiting
 - [ ] Poison Ivy (the class ability; Poison Ivy+, Poison Ivy II use this same GIF unless we split them) — gif: none — code: waiting
 - [ ] Blood Pact (Blood Witch ability only) — gif: none — code: waiting
-- [ ] Queen's Garden (Hex Queen ability only) — gif: none — code: waiting
+- [ ] Queen's Garden (Hex Queen ability only) — review GIF made, not signed off (`gifs/witch/queens-garden/review.gif`) — code: waiting
 - [ ] Grave Bloom (Necromancer ability only) — gif: none — code: waiting
 
 Shared skills (every form of this class):
