@@ -116,6 +116,7 @@ export async function boot(build) {
     text.textContent = 'The game did not start: ' + e.message;
     return;
   }
+  await sysmenu.seedPurpleTeam();
   loading.hidden = true;
   $('titleStart').hidden = false;
   $('newGame').onclick = () => start(referee.newClimb());
