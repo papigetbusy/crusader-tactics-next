@@ -57,8 +57,11 @@ def load_skills():
 def load_fx():
     text = FXBOOK.read_text()
     found = {}
-    for name, base, colors in re.findall(r"""['"]([^'"]+)['"]:\s*\['([a-z]+)',\s*'([^']+)'""", text):
-        found[name] = (base, colors.split(","))
+    for quoted, bare, base, colors in re.findall(
+        r"""(?:['"]([^'"]+)['"]|([A-Za-z_][A-Za-z0-9_]*))\s*:\s*\['([a-z]+)',\s*'([^']+)'""",
+        text,
+    ):
+        found[quoted or bare] = (base, colors.split(","))
     return found
 
 
@@ -103,7 +106,7 @@ def cut_sheet(path):
     fg = (dist > 80) & ~magenta
     h, w = fg.shape
     seen = np.zeros(fg.shape, bool)
-    bodies, effects = [], []
+    parts = []
     ys, xs = np.where(fg)
     from collections import deque
     for y, x in zip(ys, xs):
@@ -136,7 +139,15 @@ def cut_sheet(path):
         # even when the pose is wide (a point, a lean).
         colors = len(np.unique(pix.reshape(-1, 3) // 16, axis=0)) if len(pix) else 0
         im = Image.fromarray(np.dstack([crop, alpha]))
-        (bodies if colors > 550 else effects).append((y0, x0, len(pts), im))
+        parts.append((y0, x0, len(pts), colors, im))
+    if not parts:
+        return [], []
+    # Relative, not a fixed number. The hex queen has more colors than
+    # these smaller warriors, and a slash has far fewer than either.
+    cut = max(80, max(p[3] for p in parts) * 0.45)
+    bodies, effects = [], []
+    for y0, x0, n, colors, im in parts:
+        (bodies if colors >= cut else effects).append((y0, x0, n, im))
     bodies.sort(key=lambda t: (t[0] // 80, t[1]))
     # A row of different sizes is a spell growing. Same-size pictures stay in reading order.
     areas = [t[2] for t in effects]
@@ -216,8 +227,10 @@ def black_core(center, power, size):
 
 
 def render(name, bodies, effects, colors, use_ring):
-    bodies = [scale(b, 0.52) for b in bodies]
-    effects = [scale(e, 0.7) for e in effects]
+    # Keep every hero about the same size on the map, whatever the sheet was.
+    s = 120 / bodies[0].height
+    bodies = [scale(b, s) for b in bodies]
+    effects = [scale(e, s) for e in effects]
     palette = shades(colors)
     sheet = Image.open(EFFECTS / "scifi-warp-001.png")
     aura = [scale(tint_ring(sheet.crop((i * 64, 0, (i + 1) * 64, 64)), palette[n % len(palette)]), 3.5) for n, i in enumerate((5, 6, 7, 8, 7, 6))]

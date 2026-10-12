@@ -44,25 +44,25 @@ A counterattack uses the Strike or Defend GIF. It does not get its own animation
 
 Shared skills (every form of this class):
 
-- [ ] Power Strike — gif: none — code: waiting
+- [ ] Power Strike — gif: bot review made, not signed off — code: waiting
 - [ ] Rend — gif: none — code: waiting
 - [ ] Slash — gif: none — code: waiting
 - [ ] Whirlwind — gif: none — code: waiting
 - [ ] Crescent Wave — gif: none — code: waiting
 - [ ] Shoulder Check — gif: none — code: waiting
-- [ ] Execution — gif: none — code: waiting
+- [ ] Execution — gif: bot review made, not signed off — code: waiting
 - [ ] Riposte Stance — gif: none — code: waiting
 - [ ] Leaping Cleave — gif: none — code: waiting
-- [ ] Dragon Slash — gif: none — code: waiting
+- [ ] Dragon Slash — gif: bot review made, not signed off — code: waiting
 - [ ] Sunder — gif: none — code: waiting
 - [ ] Battle Trance — gif: none — code: waiting
 - [ ] Momentum — gif: none — code: waiting
 
 Ascension skills (one body only):
 
-- [ ] Blood Rage (Berserker only) — gif: none — code: waiting
-- [ ] Thousand Cuts (Duelist only) — gif: none — code: waiting
-- [ ] Holy Judgment (Paladin only) — gif: none — code: waiting
+- [ ] Blood Rage (Berserker only) — gif: bot review made, not signed off — code: waiting
+- [ ] Thousand Cuts (Duelist only) — gif: bot review made, not signed off — code: waiting
+- [ ] Holy Judgment (Paladin only) — gif: bot review made, not signed off — code: waiting
 
 ### Knight
 
