@@ -10,9 +10,9 @@ Not in the game yet. The code is waiting in `code/`.
 
 ## How this works
 
-1. You send the sprite sheet.
-2. A test GIF is made. It is not filed here until you say that version is the one.
-3. We tweak until you do.
+1. You send the sprite sheet, or you drop a pile of them in `inbox/` and run `python3 new-animations/bot/make.py`.
+2. A test GIF is made. The bot can make the first pass for many skills, then it stops. It does not write code and it does not sign off.
+3. We go through them one by one and tweak until you say that version is the one.
 4. Then one code file is written in `code/`, named after the attack. Test GIFs never get their own code.
 5. An in-game GIF is made from that code: the move hitting an enemy. The effect plays with the sprite, and it is not allowed to cover or cut the attacker's sprite.
 6. The code and that GIF stay here. The play page does not load them.
