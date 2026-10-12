@@ -15,6 +15,7 @@ import * as tips from './tips.js';
 import * as title from './title.js';
 import * as gear from './gear.js';
 import * as shop from './shop.js';
+import * as lag from './lag.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -36,17 +37,37 @@ let wake = 0;
 export const kick = () => { wake = performance.now() + 600; };
 onMove(kick);
 
-function loop() {
+function loop(now) {
   requestAnimationFrame(loop);
-  if (!st.view || !$('title').hidden) return;
-  const now = performance.now();
+  if (lag.on) lag.begin(now);
+  if (!st.view || !$('title').hidden) {
+    if (lag.on) lag.end(null);
+    return;
+  }
+  const t = performance.now();
   // busy: draw every frame; quiet: a few frames a second for water and trees
-  if (now > wake && !moving() && now - (loop.last || 0) < 120) return;
-  loop.last = now;
+  if (t > wake && !moving() && t - (loop.last || 0) < 120) {
+    if (lag.on) lag.end({ skipped: true, floor: st.view.floor, n: st.view.n });
+    return;
+  }
+  loop.last = t;
   scene.draw($('map'), st);
+  if (lag.on) lag.mark('menu');
   if (!$('menu').hidden) battle.placeMenu();
   if (!$('forecast').hidden) battle.placeForecast();
+  if (lag.on) lag.mark('minimap');
   minimap.draw($('mini'), st, st.opt.minimap && !document.body.classList.contains('aim'));
+  if (lag.on) {
+    lag.mark('');
+    const v = st.view;
+    lag.end({
+      floor: v.climb ? v.climb.floor : v.floor,
+      n: v.n,
+      zoom: Math.round(cam.k * 100) / 100,
+      units: st.units.length,
+      moving: moving(),
+    });
+  }
 }
 
 // ---------- the referee's View on screen ----------
@@ -138,6 +159,26 @@ export async function boot(build) {
   shop.wire({ st, show, kick, log, after: battle.after });
   sysmenu.wire({ st, show, kick, log, setView, after: battle.after, gear: () => gear.open(), endTurn: battle.endTurn, nextHero });
   tips.watch(st);
+  if (lag.on) {
+    window.crusaderLag = {
+      report: lag.report,
+      reset: lag.reset,
+      floor(n) {
+        const [run, hi, lo] = crypto.getRandomValues(new Uint32Array(3));
+        const pack = JSON.parse(window.ctFloor(n, run, hi, lo));
+        $('title').hidden = true;
+        sysmenu.mapOn(true);
+        show(pack.view);
+        battle.after();
+        const v = pack.view;
+        return { n: v.n, floor: v.floor, units: v.units.length };
+      },
+      zoom(z) { cam.zt = z; kick(); },
+      flat(v) { setView(!!v); },
+      whole() { overview(true); },
+      close() { overview(false); },
+    };
+  }
   requestAnimationFrame(loop);
 }
 

@@ -5,6 +5,7 @@ import { cam, layout, moving, gesturing } from './camera.js';
 import * as units from './units.js';
 import { CHEST, TS } from './look.js';
 import * as iso from './iso.js';
+import { on as lagOn, mark as lagMark, extra as lagExtra } from './lag.js';
 
 // st: { view, sel, look, aim, reach:Set, targets:Set(ids), starts:Set, danger:Set,
 //       zone:{walk:Set, hit:Set}, attack:Set, picks:{tiles:Set, all:Set}, opt,
@@ -16,6 +17,7 @@ export function draw(canvas, st) {
   const heroes = v.units.filter((u) => u.team === 0 && !u.companion);
   layout(heroes, st.sel);
   const now = performance.now();
+  if (lagOn) lagMark('clear');
   g.setTransform(1, 0, 0, 1, 0, 0);
   g.clearRect(0, 0, canvas.width, canvas.height);
   let sx = 0, sy = 0;
@@ -29,23 +31,33 @@ export function draw(canvas, st) {
   const K = cam.k, D = cam.dpr;
   g.setTransform(D * K, 0, 0, D * K, D * (cam.offX + sx * K), D * (cam.offY + sy * K));
   const calm = st.opt.lowGraphics || st.opt.calm;
+  if (lagOn) lagMark('ground');
   paintGround(g, st, now, calm);
   const pad = 220;
   const x0 = -cam.offX / cam.k - pad, y0 = -cam.offY / cam.k - pad;
   const x1 = (cam.w - cam.offX) / cam.k + pad, y1 = (cam.h - cam.offY) / cam.k + pad;
+  if (lagOn) lagMark('list');
   const list = tiles().filter((t) => t[2].x >= x0 && t[2].x <= x1 && t[2].y >= y0 && t[2].y <= y1);
   const here = new Map();
   for (const u of st.units) here.set(u.x + ',' + u.y, u);
   const traps = new Set((v.trapTiles || []).map((q) => q.x + ',' + q.y));
   const kegs = new Set((v.kegs || []).map((q) => q.X + ',' + q.Y));
+  if (lagOn) lagMark('marks');
   for (const [x, y, p] of list) marks(g, x, y, p, st, now, here, traps, kegs);
   if (!st.opt.lowGraphics && !moving() && !gesturing()) vignette(g, canvas.width, canvas.height);
+  if (lagOn) lagMark('units');
   (v.chests || []).forEach((c) => chest(g, c, now));
   units.draw(g, st.units, {
     now, k: K, dpr: D, sel: st.sel, look: st.look, aim: st.aim,
     anim: st.anim, shownHp: st.shownHp, calm: st.opt.calm, low: st.opt.lowGraphics, marks: st.marks,
   });
+  if (lagOn) lagMark('overlay');
   if (st.overlay) st.overlay(g, now);
+  if (lagOn) {
+    lagMark('');
+    lagExtra({ tiles: list.length, rebuilt: plate && plate.rebuilt });
+    if (plate) plate.rebuilt = false;
+  }
 }
 
 // The ground is painted once into a picture and reused. Panning and pinching
@@ -77,6 +89,7 @@ function paintGround(g, st, now, calm) {
     q.restore();
     plate.key = key;
     plate.at = now;
+    plate.rebuilt = true;
   }
   g.imageSmoothingEnabled = false;
   g.drawImage(plate.c, 0, 0);
