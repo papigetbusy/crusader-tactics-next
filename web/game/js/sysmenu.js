@@ -4,7 +4,7 @@
 // Saves are the referee's own save text, kept in this browser.
 import * as referee from './referee.js';
 import { options, saveOptions } from './options.js';
-import { cam, zoomAt, zoomStep, closeUp } from './camera.js';
+import { zoomStep, closeUp } from './camera.js';
 import { rotate } from './board.js';
 import { url } from './assets.js';
 import { settings, wireSettings } from './settings.js';
@@ -45,13 +45,6 @@ export function open() {
     ${battle ? '<button class="row" id="sEnd">End Turn</button>' : ''}
     <button class="row" id="sGear">Gear</button><button class="row" id="sSave">Save</button>
     <button class="row" id="sSet">Settings</button><button class="row" id="sClose">✕ Close</button>
-    <div class="lbl">Map</div>
-    <div class="mrow"><button class="zb" id="sZout" aria-label="Zoom out">${ic('zout')}</button><input type="range" id="sZoom" min="1" max="3.4" step="0.05" value="${cam.zt.toFixed(2)}" aria-label="Zoom"><button class="zb" id="sZin" aria-label="Zoom in">${ic('zin')}</button></div>
-    <div class="mrow">${ic('view')}<span>View</span>${seg('sView', [[1, 'Flat'], [0, 'Isometric']], options.flat ? 1 : 0)}</div>
-    <div class="mrow">${ic('map')}<span>Minimap</span>${sw('sMini', options.minimap)}</div>
-    <div class="mrow">${ic('danger')}<span>Danger zone</span>${sw('sDanger', options.danger)}</div>
-    <div class="mrow">${ic('speed')}<span>Battle speed</span>${seg('sSpeed', [[1, '1×'], [2, '2×'], [3, 'Instant']], options.speed)}</div>
-    <div class="mbtns"><button class="mb" id="sRot">${ic('rot', 22)}<span>Rotate</span></button><button class="mb" id="sNext">${ic('next', 22)}<span>Next hero</span></button></div>
     ${c ? `<div class="lbl">Floors</div><button class="b wide" id="sFloors">${ic('floors', 18)} Floor list</button>` : ''}`;
   w.hidden = false;
   const on = (id, f) => { if ($(id)) $(id).onclick = f; };
@@ -60,18 +53,42 @@ export function open() {
   on('sSave', () => { close(); slots('save'); });
   on('sSet', () => { close(); settings(); });
   on('sClose', close);
-  on('sRot', () => { rotate(); screen.kick(); });
-  on('sNext', () => { close(); screen.nextHero(); });
   on('sFloors', () => { close(); floors(); });
-  $('sZoom').oninput = (e) => zoomAt(innerWidth / 2, innerHeight / 2, +e.target.value);
-  const step = (d) => { zoomStep(d); $('sZoom').value = cam.zt.toFixed(2); };
-  on('sZin', () => step(1));
-  on('sZout', () => step(-1));
-  const flip = (id, k) => on(id, () => { options[k] = !options[k]; saveOptions(); screen.after(); open(); });
-  flip('sMini', 'minimap');
-  flip('sDanger', 'danger');
-  $('sSpeed').querySelectorAll('button').forEach((b) => (b.onclick = () => { options.speed = +b.dataset.v; saveOptions(); open(); }));
-  $('sView').querySelectorAll('button').forEach((b) => (b.onclick = () => { screen.setView(b.dataset.v === '1'); saveOptions(); open(); }));
+}
+
+// The map controls are a narrow strip of icons on the edge of the screen,
+// never a labeled panel over the map (owner, 2026-10-12). Tap toggles.
+function mountMapbar() {
+  const bar = $('mapbar');
+  if (!bar || !screen) return;
+  const b = (id, label, icon, on) => `<button type="button" class="mb2${on ? ' on' : ''}" id="${id}" aria-label="${label}" title="${label}">${ic(icon, 18)}</button>`;
+  const speed = options.speed === 3 ? '⚡' : options.speed + '×';
+  bar.innerHTML = [
+    b('mbOut', 'Zoom out', 'zout', false),
+    b('mbIn', 'Zoom in', 'zin', false),
+    b('mbView', 'Flat or isometric', 'view', options.flat),
+    b('mbMap', 'Minimap', 'map', options.minimap),
+    b('mbDanger', 'Danger zone', 'danger', options.danger),
+    `<button type="button" class="mb2${options.speed > 1 ? ' on' : ''}" id="mbSpeed" aria-label="Battle speed" title="Battle speed">${speed}</button>`,
+    b('mbRot', 'Rotate', 'rot', false),
+    b('mbNext', 'Next hero', 'next', false),
+  ].join('');
+  const on = (id, f) => { const el = $(id); if (el) el.onclick = (e) => { e.stopPropagation(); f(); }; };
+  on('mbOut', () => zoomStep(-1));
+  on('mbIn', () => zoomStep(1));
+  on('mbView', () => { screen.setView(!options.flat); saveOptions(); mountMapbar(); });
+  on('mbMap', () => { options.minimap = !options.minimap; saveOptions(); screen.after(); mountMapbar(); });
+  on('mbDanger', () => { options.danger = !options.danger; saveOptions(); screen.after(); mountMapbar(); });
+  on('mbSpeed', () => { options.speed = options.speed === 3 ? 1 : options.speed + 1; saveOptions(); mountMapbar(); });
+  on('mbRot', () => { rotate(); screen.kick(); });
+  on('mbNext', () => screen.nextHero());
+}
+
+export function mapOn(show) {
+  const bar = $('mapbar');
+  if (!bar) return;
+  if (show) mountMapbar();
+  bar.hidden = !show;
 }
 
 export function cover(id) {
@@ -174,6 +191,7 @@ function load(text, from) {
   if (!r || r.error) { alert('Could not load: ' + (r ? r.error : 'no answer')); return false; }
   ['slotsWin', 'summary', 'team'].forEach((id) => { if ($(id)) $(id).hidden = true; });
   $('title').hidden = true;
+  mapOn(true);
   screen.show(r.view, true);
   screen.after();
   screen.log(`Loaded ${from}.`);

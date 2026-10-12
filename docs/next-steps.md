@@ -20,12 +20,12 @@ Written 2026-10-11 for the owner and Grok. The full plan is in `roadmap.md`, and
 ## The new attack window: done 2026-10-12
 The owner signed off design B with a skill-name box (no count) and ◀ ▶ to cycle attacks; built in `battle.js` (forecast, placeForecast) and `style.css`.
 
-## Next session, first thing: missing from the old build (owner, 2026-10-12)
-Noticed by the owner while playtesting. Notes only, nothing changed yet. Check each against the old game, then fix:
-1. **A hero who can't do anything else should dim**, showing it has made its turn (as in the old game).
-2. **Health bars should drain as damage lands.** In the old game the bar slid down with each hit; now the lost health only shows at the end of the action (old shp/sh/sht, about 350 ms; today `st.shownHp` is just `u.hp`).
-3. **The weakness indicator is missing.** The old game showed when one of your moves does bonus damage (a WEAK mark on the move or target) before you choose it.
-4. **Redesign the ☰ menu's map controls (owner's sketch, 2026-10-12):** drop the full panel of rows and labels. Keep only a narrow strip of the icons (zoom −/+, view, minimap, danger zone, battle speed, rotate, next hero...), each a tap-to-toggle on/off, placed in the space outside the map's borders, never over the map. The owner's screenshot shows the current panel and a crop of just the icon column he wants.
+## Next session, first thing: missing from the old build — done 2026-10-12
+The owner noticed these while playtesting. All four are on the screen only; the referee did not change.
+1. **A hero who has finished the turn goes gray** (and a little see-through), so a spent hero no longer looks ready.
+2. **Health bars drain as the hit lands**, over about a third of a second, instead of jumping at the end of the action. Heals fill the same way.
+3. **WEAK** shows on a skill in the command menu when that move does bonus damage to someone in range, before you pick it. Once the attack window is open, WEAK or RESIST is also drawn on each target.
+4. **Map controls are a narrow icon strip** on the left edge (zoom, view, minimap, danger zone, speed, rotate, next hero). The ☰ menu no longer has the labeled map panel.
 
 ## Left to do, in order
 

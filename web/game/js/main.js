@@ -26,7 +26,7 @@ export const st = {
   opt: options,
   anim: playback.anim,
   shake: playback.shake,
-  shownHp: (u) => u.hp,
+  shownHp: (u) => playback.shownHp(u),
   unitAt: (x, y) => st.units.find((u) => u.x === x && u.y === y) || null,
 };
 
@@ -143,6 +143,7 @@ export async function boot(build) {
 
 function start(view) {
   $('title').hidden = true;
+  sysmenu.mapOn(true);
   show(view);
   battle.after();
 }

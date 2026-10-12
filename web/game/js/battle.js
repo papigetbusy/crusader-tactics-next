@@ -82,6 +82,7 @@ function clear() {
   s.attack = null;
   s.picks = null;
   s.picking = null;
+  s.marks = null;
   $('aimPanel').hidden = true;
   $('menu').hidden = true;
   $('sub').hidden = true;
@@ -248,16 +249,46 @@ function place(t, u) {
 
 // ---------- the command menu ----------
 
+// weakSkill is true when this move does bonus damage to someone in range.
+function weakSkill(u, i) {
+  const sk = u.skills[i];
+  if (!sk || sk.wait || sk.heal || sk.support || sk.revive) return false;
+  for (const id of referee.targets(u.id, i)) {
+    const f = referee.preview(u.id, i, id);
+    if (f && f.mult > 1) return true;
+  }
+  return false;
+}
+
+// markTargets labels each foe the chosen move is strong or weak against.
+function markTargets(u, slot, set) {
+  const marks = new Map();
+  const sk = u.skills[slot];
+  if (!sk || sk.heal || sk.support || sk.revive) return marks;
+  for (const id of referee.targets(u.id, slot, set || 0)) {
+    const f = referee.preview(u.id, slot, id, set || 0);
+    if (f && f.mult > 1) marks.set(id, 'weak');
+    else if (f && f.mult < 1) marks.set(id, 'resist');
+  }
+  return marks;
+}
+
 function menu() {
   const s = st(), u = s.sel, m = $('menu'), sub = $('sub');
   if (!u) return;
   $('endTurn').hidden = true;
   m.innerHTML = '';
   sub.innerHTML = '';
-  const row = (box, text, f, off, cls) => {
+  const row = (box, text, f, off, cls, tag) => {
     const b = document.createElement('button');
     b.className = 'row' + (cls ? ' ' + cls : '');
     b.textContent = text;
+    if (tag === 'weak') {
+      const w = document.createElement('b');
+      w.className = 'weak';
+      w.textContent = ' WEAK';
+      b.append(w);
+    }
     b.disabled = !!off;
     b.onclick = (e) => { e.stopPropagation(); f(b); };
     box.append(b);
@@ -270,8 +301,8 @@ function menu() {
       const ask = multi && !sk.wait ? referee.skillAim(u.id, i, {}) : null;
       const n = sk.wait ? 0 : multi ? (ask.units || []).length + (ask.tiles || []).length : referee.targets(u.id, i).length;
       const go = () => (multi ? pick(u, sk.name, sk.text, { kind: 'attack', unit: u.id, skill: i, tiles: [] }, (a) => referee.skillAim(u.id, i, a)) : aimWith(i));
-      if (sk.name === 'Strike') return row(m, 'Attack', go, !n);
-      row(sub, (sk.ultimate ? '★ ' : '') + sk.name + (sk.wait ? ` (${sk.wait})` : ''), go, !n);
+      if (sk.name === 'Strike') return row(m, 'Attack', go, !n, '', weakSkill(u, i) ? 'weak' : '');
+      row(sub, (sk.ultimate ? '★ ' : '') + sk.name + (sk.wait ? ` (${sk.wait})` : ''), go, !n, '', weakSkill(u, i) ? 'weak' : '');
     });
     if (sub.children.length) row(m, 'Skills ▸', (b) => { sub.hidden = !sub.hidden; b.classList.toggle('on', !sub.hidden); place2(); });
   }
@@ -389,6 +420,7 @@ function aimWith(slot, target) {
   $('sub').hidden = true;
   s.targets = new Set(ids);
   s.aim = (target && ids.includes(target.id) && target) || s.units.find((x) => x.id === ids[0]);
+  s.marks = markTargets(u, slot, s.set || 0);
   $('menu').hidden = true;
   forecast();
 }
@@ -400,6 +432,7 @@ function forecast() {
   const s = st(), u = s.sel, v = s.aim, sk = u.skills[s.skill], F = $('forecast');
   const ids = [...s.targets], idx = ids.indexOf(v.id);
   const f = referee.preview(u.id, s.skill, v.id, s.set || 0);
+  s.marks = markTargets(u, s.skill, s.set || 0);
   const foe = v.team !== u.team, dmg = !(sk.heal || sk.support || sk.revive);
   let after = '', line = '—';
   if (f && dmg) {

@@ -36,4 +36,3 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 ## Now working on
 (one line each: who · task · files · date; remove it when done)
 
-- Grok · dim spent heroes, drain health bars, WEAK marks, map-icon strip · web/game/js/units.js, playback.js, battle.js, scene.js, main.js, sysmenu.js, play.html, style.css · 2026-10-12

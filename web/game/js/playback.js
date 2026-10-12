@@ -47,10 +47,21 @@ function look(u, name) {
 let run = null; // { items, units, end, done, clock }
 const pops = [];
 const fx = [];
+const bars = new Map(); // id -> { from, to, t0, dur } while a health bar slides
 export const shake = { amp: 0, t0: 0 };
 export const playing = () => !!run;
 let skipped = false;
 export const skip = () => { skipped = true; };
+
+// shownHp is what the health bar draws. After a hit it slides from the old
+// number to the new one over about 350 ms (old shp / sht).
+export function shownHp(u) {
+  const b = bars.get(u.id);
+  if (!b) return u.hp;
+  const p = (performance.now() - b.t0) / b.dur;
+  if (p >= 1) return b.to;
+  return b.from + (b.to - b.from) * Math.max(0, p);
+}
 
 // play shows events one after another on the previous answer's units, then
 // calls done (which shows the new answer). speed: 1, 2 or 3 (instant).
@@ -60,6 +71,9 @@ export function play(units, events, speed, done, onEnemyTurn, calm) {
   const k = () => (skipped ? 40 : speed === 3 ? 12 : speed === 2 ? 2.2 : 1);
   const now = performance.now();
   const byId = new Map(units.map((u) => [u.id, u]));
+  const hpNow = new Map(units.map((u) => [u.id, u.hp]));
+  const hpMax = new Map(units.map((u) => [u.id, u.maxHp || u.hp]));
+  bars.clear();
   const spot = new Map(); // where each unit stands on screen now (it may have walked)
   const at = (id) => spot.get(id) || (byId.get(id) ? [byId.get(id).x, byId.get(id).y] : null);
   const items = [];
@@ -88,6 +102,16 @@ export function play(units, events, speed, done, onEnemyTurn, calm) {
   const pop = (pt, id, txt, col, big, hurt) => {
     items.push({ t: pt, kind: 'pop', at: at(id), txt, col, big, id, hurt });
     busy(pt + 450);
+  };
+  // slide schedules the health bar to drain or fill when the hit lands.
+  const slide = (id, to, pt) => {
+    if (!hpNow.has(id)) return;
+    const from = hpNow.get(id);
+    const next = Math.max(0, Math.min(hpMax.get(id), Math.round(to)));
+    if (next === from) return;
+    items.push({ t: pt, kind: 'hp', id, from, to: next });
+    hpNow.set(id, next);
+    busy(pt + 350);
   };
   for (const e of events) {
     const who = e.unit ? byId.get(e.unit) : null, target = e.target ? byId.get(e.target) : who;
@@ -136,6 +160,9 @@ export function play(units, events, speed, done, onEnemyTurn, calm) {
         const txt = e.kind === 'missed' ? 'MISS' : e.kind === 'hit' ? (e.crit ? 'CRIT ' + n : n + (e.mult > 1 ? '!' : '')) : '+' + n;
         const col = e.kind === 'missed' ? '#c9c9d6' : e.kind === 'hit' ? (e.crit ? '#ff9a2e' : e.mult > 1 ? '#ffd84a' : e.mult < 1 ? '#c9c9d6' : '#fff') : '#6ee7a0';
         pop(pt, v.id, txt, col, e.crit || e.mult > 1, e.kind === 'hit');
+        if (e.kind === 'hit') slide(v.id, hpNow.get(v.id) - n, pt);
+        else if (e.kind === 'healed') slide(v.id, hpNow.get(v.id) + n, pt);
+        else if (e.kind === 'revived') slide(v.id, n, pt);
         break;
       }
       case 'potion': { // a potion heals with the heal sparkle [old usePotion L1806]
@@ -143,12 +170,14 @@ export function play(units, events, speed, done, onEnemyTurn, calm) {
         t = Math.max(t, busyUntil);
         effect(t, 'heal', who.id, who.id, 1);
         pop(t + impOf('heal'), who.id, '+' + e.amount, '#6ee7a0', false);
+        slide(who.id, hpNow.get(who.id) + e.amount, t + impOf('heal'));
         t += 120;
         break;
       }
       case 'ticked': {
         if (!who) break;
         pop(t, who.id, '' + e.amount, '#ff9a9a', false, true);
+        slide(who.id, hpNow.get(who.id) - e.amount, t);
         t += 120;
         break;
       }
@@ -184,6 +213,15 @@ function step(now) {
       const f = feet(...i.at);
       pops.push({ x: f.x, y: f.y - 72, t0: now, txt: i.txt, col: i.col, big: i.big });
     }
+    if (i.kind === 'hp') {
+      const prev = bars.get(i.id);
+      let from = i.from;
+      if (prev) {
+        const p = (now - prev.t0) / prev.dur;
+        from = p >= 1 ? prev.to : prev.from + (prev.to - prev.from) * Math.max(0, p);
+      }
+      bars.set(i.id, { from, to: i.to, t0: now, dur: 350 / Math.max(1, Math.min(run.k(), 8)) });
+    }
     if (i.kind === 'fx' && i.from && i.to) {
       const a = feet(...i.from), b = feet(...i.to);
       fx.push({ k: i.k, sx: a.x, sy: a.y - 28, tx: b.x, ty: b.y - 30, S: i.S, d: i.d, abn: i.abn, t0: now, real: i.d / Math.min(run.k(), 6), calm: run.calm });
@@ -195,9 +233,11 @@ function step(now) {
     }
     if (i.kind === 'enemy' && run.onEnemyTurn) run.onEnemyTurn();
   }
-  if (c >= run.end + 450) {
+  const sliding = [...bars.values()].some((b) => now < b.t0 + b.dur);
+  if (c >= run.end + 450 && !sliding) {
     const done = run.done;
     run = null;
+    bars.clear();
     done();
   }
 }

@@ -221,15 +221,17 @@ export function draw(g, units, s) {
   for (const { u, an, sx, by } of list) {
     g.save();
     g.translate(an.x, an.y);
-    const st = u.statuses || {};
-    g.globalAlpha = (st.cloak > 0 || st.blood > 0 || st.sky > 0 ? 0.45 : u.decoy ? 0.7 : 1) * (u.done && u.team === 0 ? 0.55 : 1) * (an.a == null ? 1 : an.a);
+    const stt = u.statuses || {};
+    const spent = u.done && u.team === 0;
+    g.globalAlpha = (stt.cloak > 0 || stt.blood > 0 || stt.sky > 0 ? 0.45 : u.decoy ? 0.7 : 1) * (spent ? 0.8 : 1) * (an.a == null ? 1 : an.a);
+    if (spent) g.filter = 'grayscale(1) brightness(0.55)';
     if (s.k * (map.flat ? TS : 96) < 15) {
       marker(g, u, sx, by, s.sel);
       g.restore();
       continue;
     }
     g.lineWidth = 3;
-    g.strokeStyle = u === s.sel ? '#f2b84b' : u.ally || u.companion ? '#4fa8ff' : u.team ? '#ff5d5d' : '#5df0d0';
+    g.strokeStyle = spent ? '#6a655c' : u === s.sel ? '#f2b84b' : u.ally || u.companion ? '#4fa8ff' : u.team ? '#ff5d5d' : '#5df0d0';
     g.beginPath();
     g.ellipse(sx, by, 26 * (u.boss ? 1.4 : 1), 13 * (u.boss ? 1.4 : 1), 0, 0, 7);
     g.stroke();
@@ -239,11 +241,12 @@ export function draw(g, units, s) {
     g.translate(-sx, -by + (an.b || 0));
     const tp = sprite(g, u, sx, by, s);
     g.restore();
+    g.filter = 'none';
     if (!s.low && !s.calm) {
-      if (st.poison > 0) loopFx(g, 'poisonSt', sx, by - 46, TS * 0.95, s.now);
-      if (st.burn > 0) loopFx(g, 'fire4A', sx, by - 18, TS * 0.6, s.now, 55);
+      if (stt.poison > 0) loopFx(g, 'poisonSt', sx, by - 46, TS * 0.95, s.now);
+      if (stt.burn > 0) loopFx(g, 'fire4A', sx, by - 18, TS * 0.6, s.now, 55);
     }
-    if (st.shock > 0) shockArcs(g, sx, by - 34);
+    if (stt.shock > 0) shockArcs(g, sx, by - 34);
     healthBar(g, u, sx, tp, s);
     g.restore();
   }
@@ -290,6 +293,8 @@ function healthBar(g, u, sx, tp, s) {
   }
   g.globalAlpha = 1;
   if (u === s.sel || u === s.look || u === s.aim) badges(g, u, sx, yy - (u.boss || u.elite || u.ally || u.companion || u.pet ? 16 : 3), s.k);
+  const tag = s.marks && s.marks.get(u.id);
+  if (tag) outlined(g, tag === 'weak' ? 'WEAK' : 'RESIST', sx, yy - 18, tag === 'weak' ? '#f2c14e' : '#9aa6c8', 12);
 }
 
 export { pj };

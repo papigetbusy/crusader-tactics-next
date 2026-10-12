@@ -46,7 +46,7 @@ export function draw(canvas, st) {
   (v.chests || []).forEach((c) => chest(g, c, now));
   units.draw(g, st.units, {
     now, k: K, dpr: D, sel: st.sel, look: st.look, aim: st.aim,
-    anim: st.anim, shownHp: st.shownHp, calm: st.opt.calm, low: st.opt.lowGraphics,
+    anim: st.anim, shownHp: st.shownHp, calm: st.opt.calm, low: st.opt.lowGraphics, marks: st.marks,
   });
   if (st.overlay) st.overlay(g, now);
 }
