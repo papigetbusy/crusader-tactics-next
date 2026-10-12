@@ -47,13 +47,12 @@ When Phase 8 is done and plays well, the owner swaps in his new sprites and atta
 ### 4. Balance autoplayer
 Rebuild the old game's skilled autoplayer in Go. Tune the new skills, the purple tier and legendary power. Report where runs get stuck.
 
-### 5. Phase 9: new systems
-Each one is measured with the autoplayer:
-- smarter enemy AI as you climb
-- class-owned terrain
-- height advantage
-- Fire Emblem counterattacks
-- and the rest in `roadmap.md`
+### 5. Phase 9: new systems (done 2026-10-11, as approved in `phase9-proposal.md`)
+- Smarter enemies from floor 20 (bosses and elites from floor 10)
+- Fire Emblem counterattacks with a full Strike, both sides, shown in the forecast
+- Height: high ground and uphill, climbing costs
+- Class-owned terrain: not now (owner)
+- The owner moved the balance autoplayer and his new art to the end; these numbers get tuned by the autoplayer then.
 
 ### 6. Phase 10: online-ready check
 Prove the screen only talks to the referee through `web/game/js/referee.js`, so the same screen can talk to a server.
