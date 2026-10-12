@@ -53,6 +53,7 @@ jobs:
           mkdir -p site/game/js && cp web/game/style.css site/game/
           for f in web/game/js/*.js; do sed "s/\.js';/.js?v=$LABEL';/g" "$f" > "site/game/js/$(basename "$f")"; done
           cp -r web/assets site/assets
+          cp -r new-animations site/new-animations
           sed "s/__BUILD__/$LABEL/g" web/codex/codex.html > site/codex.html && cp web/codex/codex.json site/codex.json
           ls -l site
       - uses: actions/configure-pages@v5

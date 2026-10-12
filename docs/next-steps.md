@@ -30,6 +30,9 @@ The owner noticed these while playtesting. All four are on the screen only; the 
 6. **Settings travel with the save** (owner, 2026-10-12). Isometric or flat, the danger zone, the minimap and the other options are stored in that save file. Loading it puts them back. Another save can look different.
 7. **Formations** (owner, 2026-10-12). Before the battle, 1 2 3 remember where the heroes stand. Tap a gold number to place them. Hold a gold number to overwrite it, after a Yes. They are stored in that save, and they fit a different size floor.
 
+## New attack animations: not in the game yet
+The owner is rebuilding attack pictures one GIF at a time in `new-animations/`. Test GIFs stay in `gifs/`. Code for an attack is written only after the owner signs that GIF off, one file per attack, in `new-animations/code/`. Nothing from that folder is loaded by the play page until every attack, defend and ability on `new-animations/CHECKLIST.md` is signed off, and then they are added together. Do not wire a single test GIF into the battle screen.
+
 ## Left to do, in order
 
 ### 1. Finish Phase 8 (small polish): done 2026-10-11
