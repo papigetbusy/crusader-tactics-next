@@ -10,3 +10,4 @@ Read `docs/design-lock.md` and `docs/skeleton-design.md` before changing anythin
 - Old-game match checks use `testdata/oldgame/` only, never the live `data/`, so editing data never breaks them. Port the old code exactly; note the old line numbers.
 - Intentional differences from the old game must be listed in docs (fair shuffle is approved).
 - Push only when the owner has asked for the work. Commit messages say what changed in plain words.
+- Claude and Grok both write code here: follow `docs/working-together.md` (pull first, claim the task, tests and green tick before and after pushing).
