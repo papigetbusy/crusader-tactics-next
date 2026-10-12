@@ -9,6 +9,28 @@ The clean rebuild of Crusader Tactics. The rules live in Go (the **referee**), t
 - What's left, in order: `docs/next-steps.md`. Latest update for Grok: `docs/update-for-grok.md`.
 - The old game stays playable at https://papigetbusy.github.io/crusader-tactics/ until this one matches it.
 
+## Two AIs code here: read this first (Claude and Grok)
+
+Claude and Grok both write code in this repository for the owner. To stay consistent and not cause bugs:
+
+1. **Follow `docs/working-together.md` exactly.** Pull first, claim your task in its "Now working on" list, run `gofmt`, `go vet` and `go test ./...` before pushing, pull again, never force-push, and wait for the green tick.
+2. **The rules of the project:** `CLAUDE.md`, `docs/design-lock.md` and `docs/skeleton-design.md`.
+   - Game rules live only in `sim/` (the referee); the screen in `web/game/` only draws the View and sends actions.
+   - Numbers live in `data/`.
+   - Every rule has a plain-sentence test.
+   - The old game's code is never used, only its art.
+   - Nothing changes how the game plays without the owner's approval, and approved changes are listed in `docs/changes-from-old-game.md`.
+3. **Log every change in this README.** Add a short plain-words line under "Change log" below for each piece of work you finish: date, who, what changed. This README is the shared log of everything, so the other AI and the owner can see what happened.
+4. **What to work on:** `docs/next-steps.md` (the next-session list at the top, then "Left to do, in order").
+5. **When Claude comes back,** it audits everything that changed since its last commit (diff, tests, project rules) before doing anything else.
+
+### Change log
+(newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-12 · Claude · The attack window is menu-sized in a crimson wooden frame, floating beside the hero, with a skill-name box and arrows to cycle attacks (owner's design B). Added `docs/working-together.md` for Claude and Grok.
+- 2026-10-12 · Grok · A floor 40 purple-team save ships with the test build and loads into an empty slot; the shield icon became the site icon.
+- 2026-10-11 · Claude · Phase 9: smarter enemies from floor 20, full-power counterattacks, height. Phase 8 polish: zoom buttons, title effects, Settings tabs, damage-numbers switch, tips, level-cap notice. The new Codex. Ported attack effects. Save-file import.
+- Next (Grok, 2026-10-12): finished heroes dim, health bars drain as hits land, weakness indicator, icon-strip map controls (see `docs/next-steps.md`).
+
 ## Where things are
 
 | Folder | What it is |
