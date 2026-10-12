@@ -32,7 +32,6 @@ Noticed by the owner while playtesting. Notes only, nothing changed yet. Check e
 2. **Health bars should drain as damage lands.** In the old game the bar slid down with each hit; now the lost health only shows at the end of the action.
 3. **The weakness indicator is missing.** The old game showed when one of your moves does bonus damage (a WEAK mark on the move or target) before you choose it.
 4. **Redesign the ☰ menu's map controls (owner's sketch, 2026-10-12):** drop the full panel of rows and labels. Keep only a narrow strip of the icons (zoom −/+, view, minimap, danger zone, battle speed, rotate, next hero...), each a tap-to-toggle on/off, placed in the space outside the map's borders, never over the map. The owner's screenshot shows the current panel and a crop of just the icon column he wants.
-5. **Phone, flat view, before a battle: the camera can't move far enough on small maps.** The "Team" and "Start battle" buttons cover two heroes on the bottom rows. On big maps the camera lets you look past the map's border, so you can pan the heroes up and out from under the buttons; on smaller maps (tighter ratio) the camera is locked to the map and won't move, so the buttons stay on top of the heroes. Fix (owner, 2026-10-12): let the camera pan past the map's edges on every map size, at least enough to bring the bottom rows clear of the buttons, as the old game did.
 
 ## Left to do, in order
 
