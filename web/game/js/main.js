@@ -190,6 +190,15 @@ export async function boot(build) {
       flat(v) { setView(!!v); },
       whole() { overview(true); },
       close() { overview(false); },
+      units() {
+        return st.units.map((u) => ({
+          id: u.id, team: u.team, x: u.x, y: u.y, name: u.name, cls: u.class,
+          canMove: !!u.canMove, done: !!u.done, hp: u.hp, skills: (u.skills || []).map((s) => s.name),
+        }));
+      },
+      reach(id) { return referee.reach(id); },
+      targets(id, slot) { return referee.targets(id, slot); },
+      act(action) { return battle.playForLag(action); },
     };
   }
   requestAnimationFrame(loop);

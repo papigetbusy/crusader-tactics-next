@@ -87,6 +87,15 @@ export function playOut(r, message, then, sideBefore) {
   screen.kick();
 }
 
+// playForLag runs one action through the same pictures as a tap, and finishes
+// when those pictures are done. Only the lag watch calls it.
+export function playForLag(action) {
+  return new Promise((done) => {
+    const ok = send(action, '', () => done({ ok: true }));
+    if (!ok) done({ ok: false, refused: true });
+  });
+}
+
 // clear forgets what the player was pointing at.
 function clear() {
   const s = st();
