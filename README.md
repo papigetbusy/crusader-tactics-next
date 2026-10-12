@@ -26,6 +26,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-12 · Grok · Blood Moon's in-game GIF keeps the red moon circle from the signed test. It hangs in the air, then the pillar and the blast hit the enemy. An effect is only removed if the owner says so.
 - 2026-10-12 · Grok · Blood Moon is the first signed attack. Its code is in new-animations/code and is not loaded by the game. The in-game GIF shows it hitting an enemy, with the blast kept off her sprite.
 - 2026-10-12 · Grok · Blood Moon v2 is a test GIF only, at assets/preview. It is not in the game and not in new-animations yet.
 - 2026-10-12 · Grok · New attack tests live in `new-animations/` (not in the game). `gifs/` holds every try. `code/` gets one file per attack only after that GIF is signed off. They go into the game together, once the checklist is done. The witch v1 GIFs are the first three, still not signed off.
