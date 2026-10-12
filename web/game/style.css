@@ -256,3 +256,26 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
 /* The target's counterattack in the forecast (Phase 9). */
 #forecast .ctr { font-size: 12px; color: #ffb0a0; margin-top: 2px; }
 #forecast .ctr.dim { color: #c9b89a; }
+
+/* The attack window (owner's design B, 2026-10-12): menu-sized, a crimson
+   wooden frame (green for heals and buffs), floating beside the hero. */
+#forecast.atk { left: auto; right: auto; bottom: auto; width: 196px; box-sizing: border-box; padding: 15px 15px 13px 18px; border: none; background: none; box-shadow: none;
+  font: 600 13px 'EB Garamond', Georgia, serif; line-height: 18px; color: #fff1d6; text-shadow: 0 2px 0 #2a0e04; filter: drop-shadow(0 6px 10px rgba(0,0,0,.55)); }
+#forecast.atk .frame { position: absolute; inset: 0; z-index: -1; border: 13px solid transparent; border-image: url(../assets/ui/wood.png) 64 fill / 13px stretch;
+  filter: saturate(1.6) hue-rotate(-22deg) brightness(.55) contrast(1.15); }
+#forecast.atk.green .frame { filter: saturate(1.4) hue-rotate(70deg) brightness(.5) contrast(1.1); }
+#forecast.atk .fh { font-size: 12px; color: #ffc2b4; border-bottom: 1px solid rgba(255,190,170,.35); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#forecast.atk.green .fh { color: #b8ffd0; }
+#forecast.atk .hpbar { height: 7px; background: #2a0c10; border: 1px solid #000; margin: 3px 0 1px; position: relative; }
+#forecast.atk .hpbar i { position: absolute; left: 0; top: 0; bottom: 0; background: #e5484d; }
+#forecast.atk .hpbar b { position: absolute; top: 0; bottom: 0; background: #ffd77a; opacity: .9; }
+#forecast.atk .ctr { font-size: 12px; line-height: 16px; color: #ffc9bd; }
+#forecast.atk .pills { margin-top: 3px; }
+#forecast.atk .sk { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; height: 30px; border: 1px solid rgba(255,215,122,.6); border-radius: 4px; background: rgba(30,6,8,.75); }
+#forecast.atk .sk span { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#forecast.atk .sk button, #forecast.atk .icons button { background: none; border: 0; color: #ffd77a; font-size: 14px; padding: 0 8px; height: 100%; }
+#forecast.atk .icons { display: flex; justify-content: space-between; margin-top: 5px; }
+#forecast.atk .icons button { width: 34px; height: 30px; border: 1px solid rgba(255,200,160,.45); border-radius: 4px; background: rgba(60,10,14,.6); color: #fff1d6; padding: 0; }
+#forecast.atk button:disabled { opacity: .35; }
+#forecast.atk .cap { text-align: center; font-size: 10px; color: #e8cfc0; margin-top: 1px; }
+#forecast.atk .go { display: block; width: 100%; margin-top: 4px; min-height: 0; height: 30px; padding: 0; border: 7px solid transparent; border-image: url(../assets/ui/btnt.png) 48 fill / 7px stretch; background: none; color: #2a1606; text-shadow: 0 1px 0 #ffe6a8; font: 700 13px 'EB Garamond', Georgia, serif; line-height: 14px; }

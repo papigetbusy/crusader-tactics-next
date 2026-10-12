@@ -45,6 +45,7 @@ function loop() {
   loop.last = now;
   scene.draw($('map'), st);
   if (!$('menu').hidden) battle.placeMenu();
+  if (!$('forecast').hidden) battle.placeForecast();
   minimap.draw($('mini'), st, st.opt.minimap && !document.body.classList.contains('aim'));
 }
 

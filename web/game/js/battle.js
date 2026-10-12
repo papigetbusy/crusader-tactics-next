@@ -409,41 +409,39 @@ function forecast() {
   } else if (f) line = `${sk.heal ? 'Heal' : 'Effect'} <b class="fd">${sk.heal ? '+' + (f.heal || f.mid) : sk.name}</b>`;
   const ko = after && /^0(–|$)/.test(after) ? '<b class="ko">KO</b>' : '';
   const sets = (u.gear && u.gear.sets) || [], hand = sets.findIndex((x) => x.inHand), set = s.set || hand + 1;
-  const weapons = sets.length ? (sets[set - 1] || sets[0]).weapons : '';
   // The target's counterattack, from the referee (Phase 9).
   let ctr = '';
   if (f && f.counter) {
     const c = f.counter, alo = Math.max(0, u.hp - c.high), ahi = Math.max(0, u.hp - c.low);
-    ctr = `<div class="ctr">⚔ Counter <b>${c.low === c.high ? c.mid : c.low + '–' + c.high}</b> · Hit <b>${c.hitChance}%</b> · your HP → <b>${alo === ahi ? alo : alo + '–' + ahi}</b>${alo === 0 ? ' <b class="ko">KO</b>' : ''}${ko ? '<span class="dim"> (not if it falls)</span>' : ''}</div>`;
+    ctr = `<div class="ctr">⚔ Counter <b>${c.low === c.high ? c.mid : c.low + '–' + c.high}</b> · <b>${c.hitChance}%</b> · you → <b>${alo === ahi ? alo : alo + '–' + ahi}</b>${alo === 0 ? ' <b class="ko">KO</b>' : ''}${ko ? '<span class="dim"> (not if it falls)</span>' : ''}</div>`;
   } else if (f && f.noCounter && foe && dmg) ctr = `<div class="ctr dim">No counter: ${f.noCounter}</div>`;
+  // The attack window (owner's design B, signed off 2026-10-12): menu-sized,
+  // floating beside the hero, with a box to cycle skills and arrows to
+  // cycle enemies in range.
   const pills = active(v).map((q) => `<span class="pill ${STATUS[q].bad ? 'd' : 'b'}">${label(v, q)} · ${v.statuses[q]}</span>`).join('');
-  F.className = 'panel ' + (foe ? 'red' : 'green');
-  F.innerHTML = `<div class="fh">${v.kind || v.class} · Lv ${v.level}${v.boss ? ' · Boss' : v.elite ? ' · Elite' : ''}</div>
-    <div>HP <b>${v.hp}</b>${after ? ` → <b class="af">${after}</b>` : ''} ${ko}<span class="dim"> · DEF ${v.def}</span></div>
-    <div>${line}</div><div class="fs">${sk.ultimate ? '★ ' : ''}${sk.name === 'Strike' ? 'Attack' : sk.name}${weapons ? ' · ' + weapons : ''}${sk.text ? ' · ' + sk.text : ''}</div>
-    <div class="you">${u.class} · HP ${u.hp}/${u.maxHp}</div>${ctr}${pills ? `<div class="pills">${pills}</div>` : ''}
-    <div class="skills" id="fSkills"></div><div class="fr" id="fRow"></div>`;
-  const sw = $('fSkills');
-  u.skills.forEach((k, i) => {
-    if (k.wait || MULTI.has(k.aim) || !(foe ? !(k.heal || k.support || k.revive) : k.heal || k.support || k.revive)) return;
-    if (!referee.targets(u.id, i).length) return;
-    const b = document.createElement('button');
-    b.textContent = (k.ultimate ? '★ ' : '') + (k.name === 'Strike' ? 'Attack' : k.name);
-    b.className = i === s.skill ? 'on' : '';
-    b.onclick = () => { if (i !== s.skill) aimWith(i, v); };
-    sw.append(b);
-  });
-  const row = $('fRow'), btn = (t, fn, cls, off) => {
-    const b = document.createElement('button');
-    b.className = 'b' + (cls ? ' ' + cls : '');
-    b.innerHTML = t;
-    b.disabled = !!off;
-    b.onclick = fn;
-    row.append(b);
-  };
+  const lo = f && dmg ? Math.max(0, v.hp - f.high) : v.hp;
+  const bar = dmg && v.maxHp ? `<div class="hpbar"><i style="width:${(100 * v.hp) / v.maxHp}%"></i><b style="left:${(100 * lo) / v.maxHp}%;width:${(100 * (v.hp - lo)) / v.maxHp}%"></b></div>` : '';
+  const opts = u.skills.map((k, i) => [k, i]).filter(([k, i]) => !k.wait && !MULTI.has(k.aim) && (foe ? !(k.heal || k.support || k.revive) : k.heal || k.support || k.revive) && referee.targets(u.id, i).length);
+  const at = opts.findIndex(([, i]) => i === s.skill), nm = (k) => (k.ultimate ? '★ ' : '') + (k.name === 'Strike' ? 'Attack' : k.name);
+  F.className = 'panel atk ' + (foe ? 'red' : 'green');
+  F.innerHTML = `<div class="frame"></div><div class="fh">${v.kind || v.class} · Lv ${v.level}${v.boss ? ' · Boss' : v.elite ? ' · Elite' : ''}</div>${bar}
+    <div>HP <b>${v.hp}</b>${after ? ` → <b class="af">${after}</b>` : ''} ${ko}</div>
+    <div>${line}</div>${ctr}${pills ? `<div class="pills">${pills}</div>` : ''}
+    <div class="sk"><button id="fSkPrev" aria-label="Previous skill">◀</button><span>${nm(sk)}</span><button id="fSkNext" aria-label="Next skill">▶</button></div>
+    <div class="icons"><button id="fPrev" aria-label="Previous enemy">◀</button><button id="fSet" aria-label="Swap weapon set">⇄</button><button id="fNo" aria-label="Cancel">✕</button><button id="fNext" aria-label="Next enemy">▶</button></div>
+    <div class="cap">◀ ▶ ${foe ? 'enemies' : 'allies'} in range</div>
+    <button class="b go" id="fGo">${sk.heal ? '✚ Heal' : sk.support ? '✦ Cast' : sk.revive ? '✦ Revive' : '⚔ Attack'}</button>`;
+  const skill = (d) => { if (opts.length > 1) aimWith(opts[(Math.max(0, at) + d + opts.length) % opts.length][1], v); };
+  $('fSkPrev').onclick = () => skill(-1);
+  $('fSkNext').onclick = () => skill(1);
+  $('fSkPrev').disabled = $('fSkNext').disabled = opts.length < 2;
   const cycle = (d) => { s.aim = st().units.find((x) => x.id === ids[(idx + d + ids.length) % ids.length]); const p = feet(s.aim.x, s.aim.y); lookAt(p.x, p.y - 40); forecast(); };
-  if (ids.length > 1) { btn('◀', () => cycle(-1)); btn('▶', () => cycle(1)); }
-  if (dmg && sets.length > 1) btn('⇄' + set, () => {
+  $('fPrev').onclick = () => cycle(-1);
+  $('fNext').onclick = () => cycle(1);
+  $('fPrev').disabled = $('fNext').disabled = ids.length < 2;
+  $('fSet').disabled = !(dmg && sets.length > 1);
+  if (dmg && sets.length > 1) $('fSet').textContent = '⇄' + set;
+  $('fSet').onclick = () => {
     for (let k = 1; k <= sets.length; k++) {
       const n = ((set - 1 + k) % sets.length) + 1;
       if (referee.targets(u.id, s.skill, n).length) { s.set = n; break; }
@@ -451,15 +449,42 @@ function forecast() {
     s.targets = new Set(referee.targets(u.id, s.skill, s.set));
     if (!s.targets.has(s.aim.id)) s.aim = st().units.find((x) => s.targets.has(x.id));
     forecast();
-  });
-  btn('✕', () => { clear(); screen.kick(); });
-  btn(sk.heal ? '✚ Heal' : sk.support ? '✦ Cast' : sk.revive ? '✦ Revive' : '⚔ Attack', attack, 'red go');
+  };
+  $('fNo').onclick = () => { clear(); screen.kick(); };
+  $('fGo').onclick = attack;
   F.hidden = false;
   const a = feet(u.x, u.y), b = feet(v.x, v.y);
-  requestAnimationFrame(() => focusOn((a.x + b.x) / 2, (a.y + b.y) / 2 - 40, F.getBoundingClientRect().top));
+  requestAnimationFrame(() => { focusOn((a.x + b.x) / 2, (a.y + b.y) / 2 - 40, innerHeight - 20); placeForecast(); });
+  placeForecast();
   screen.log('Tap the target again or press ⚔ Attack.');
   screen.kick();
 }
+
+// placeForecast floats the attack window beside the hero, on whichever side
+// (right, left, above, below) covers the fewest units; it never covers the
+// hero or the target if it can help it.
+function placeForecast() {
+  const s = st(), F = $('forecast');
+  if (F.hidden || !s.sel || !s.aim || !F.classList.contains('atk')) return;
+  const W = innerWidth, H = innerHeight, w = F.offsetWidth || 196, h = F.offsetHeight || 260, t = TS * cam.k, top0 = safeTop() + 52;
+  const at = (x, y) => { const p = feet(x, y); return [cam.offX + p.x * cam.k, cam.offY + p.y * cam.k]; };
+  const [hx, hy] = at(s.sel.x, s.sel.y);
+  const spots = [[hx + t * 0.62, hy - t * 0.5 - h / 2], [hx - t * 0.62 - w, hy - t * 0.5 - h / 2], [hx - w / 2, hy - t * 1.25 - h], [hx - w / 2, hy + t * 0.3]];
+  const cost = ([l, tp]) => {
+    let n = 0;
+    for (const z of s.units) {
+      const [ux, uy] = at(z.x, z.y), cy = uy - t * 0.45;
+      if (ux > l - t * 0.4 && ux < l + w + t * 0.4 && cy > tp - t * 0.5 && cy < tp + h + t * 0.5) n += z === s.sel || z === s.aim ? 10 : 3;
+    }
+    if (l < 6 || l + w > W - 6 || tp < top0 || tp + h > H - 8) n += 50;
+    return n;
+  };
+  let best = spots[0], bc = Infinity;
+  for (const p of spots) { const c = cost(p); if (c < bc) { bc = c; best = p; } }
+  F.style.left = Math.max(6, Math.min(W - w - 6, best[0])) + 'px';
+  F.style.top = Math.max(top0, Math.min(H - h - 8, best[1])) + 'px';
+}
+export { placeForecast };
 
 function attack() {
   const s = st();

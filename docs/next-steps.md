@@ -17,12 +17,8 @@ Written 2026-10-11 for the owner and Grok. The full plan is in `roadmap.md`, and
   - shop, floor list, saves with autosave, settings
   - flat and isometric views with rotate
 
-## Next session, first thing: the new attack window (owner, 2026-10-12)
-The owner picked mockup **B** (menu-sized, crimson wooden frame, floats beside the hero and moves to whichever side covers the fewest units, never the target or the hero), with these changes:
-- Make the ⚔ Attack button slimmer.
-- Above it, add a box with the attack's name and ◀ ▶ arrows to cycle through the hero's attacks; the forecast (HP before → after, damage, hit, WEAK, counter) updates for each, so the player can find the hardest-hitting one and attack with it.
-- Keep the other ◀ ▶ arrows to cycle through enemies in range (and ⇄ weapon set, ✕ cancel).
-- Steps: draw the revised B as a picture first (mockup script: scratchpad mock2.js; pictures only, no game change), get the owner's sign-off, then build it in `web/game/js/battle.js` (forecast and its placement) and `style.css`.
+## The new attack window: done 2026-10-12
+The owner signed off design B with a skill-name box (no count) and ◀ ▶ to cycle attacks; built in `battle.js` (forecast, placeForecast) and `style.css`.
 
 ## Left to do, in order
 
