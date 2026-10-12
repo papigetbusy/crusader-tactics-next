@@ -27,7 +27,7 @@ Written 2026-10-11 for the owner and Grok. The full plan is in `roadmap.md`, and
 - First-time tips (off by default, each shown once)
 - The level-cap notice
 
-### 2. Fix the attack animations, then update the Codex (next session, first thing)
+### 2. Attack animations, save-file picker and the Codex (done 2026-10-11)
 - **The attack animations are ported and the owner approved them (2026-10-11).**
   - When we ran the old game, the FX2 code (`FX2assign`, `fxTheme`, `fx2Layers`, old lines 1386-1453) turned out never to be drawn. An earlier copy of the same step wins when the page runs. What really draws is each skill's own pixel effect (`drawP`, old lines 922-966) with a stack of recolored pictures on top (`makeRecipe`, old lines 1331-1380). The owner chose to port what really draws.
   - Ported, screen only (`web/game/js/fxbook.js`, `fxpixel.js`, `fxskill.js`, `fxsprite.js`, `playback.js`): the per-skill effects and their timings, the picture stacks, the older effects for skills without an entry, the poses and `anim` (guns and bows kick back, spells lift, charges and dives dash, potions and knives are thrown, blinks blink, breath rears, everything else lunges), the screen shake and the "fewer flashes" option. The referee did not change. `tools/skillbook` writes the list of skills the screen needs (a test keeps it in step with `data/`).
@@ -35,19 +35,11 @@ Written 2026-10-11 for the owner and Grok. The full plan is in `roadmap.md`, and
   - The owner checked Strike, Fireball, a gunshot, a heal and a charge on the published link and approved them. The new Codex can now be written.
 - **The save-file picker is done (2026-10-11):** Save → Import picks a slot, then a file or pasted code, and asks before replacing a slot.
 
-- The Codex is the old game's reference page (v0.21/0.22). Upload the old Codex to this repository as-is, so nothing is lost.
-- Make a checklist comparing every entry in it with the new game: in the code, in the roadmap, changed, or missing.
-- Write the new Codex from the game's data files, so it always matches the code. It should cover:
-  - the 53 new skills plus Last Light
-  - the purple tier
-  - the team picker and hero slots (5, plus one at floors 25, 50 and 75)
-  - shops before every 7th floor
-  - saves
-  - skill changes once per floor
-  - no defeat penalty
-  - every other change in `changes-from-old-game.md`
-- **Use the new sprites** (the v0.26 hero and ascension pictures now in `web/assets/heroes`). The old Codex shows outdated sprites.
-- Never delete an entry without listing it as changed or removed.
+- **The Codex is done (2026-10-11), waiting for the owner to look it over.**
+  - The old Codex (v0.21/0.22) is in `docs/codex/old-codex-v0.22.html`, unchanged.
+  - The new Codex is published with the game as `codex.html` (links: the site's top bar, and Settings → Codex in the game). `tools/codex` builds it from the game's own data files, so it always matches the code; a test fails if it falls out of date (after changing `data/` or `changes-from-old-game.md`, run `go run ./tools/codex`).
+  - It covers heroes with the new v0.26 sprites (every form and ascension, stats, weapons, class abilities, skills by level with the 53 new skills and Last Light marked New), monsters on the skill schedule, elites and bosses, every attack effect playing live with the game's own effect code, items with the purple tier and its bonuses, statuses, terrain and biomes, floors and rules (team slots 5 + one at floors 25, 50 and 75, no recruiting, shops before every 7th floor, saves, skill changes once per floor, no defeat penalty), mechanics, controls, and every change from `changes-from-old-game.md`.
+  - `docs/codex-checklist.md` lists every entry of the old Codex and where it is now: nothing was lost (0 removed); changes such as new skill levels are listed. A test fails if an old entry ever disappears without being listed as removed.
 
 ### 3. The owner's new art
 When Phase 8 is done and plays well, the owner swaps in his new sprites and attack animations. They replace files in `web/assets/`; no code changes needed for plain swaps. Claude wires in the hue and animation effects.

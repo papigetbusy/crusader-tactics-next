@@ -33,7 +33,7 @@ footer{margin-top:20px;color:var(--muted);font-size:13px}
 </style>`
 
 func page(title, active, build, body string) string {
-	links := [][2]string{{"play.html", "Play"}, {"./", "Practice fight"}, {"rules.html", "Rule Book"}, {"match.html", "Old-Game Match"},
+	links := [][2]string{{"play.html", "Play"}, {"codex.html", "Codex"}, {"./", "Practice fight"}, {"rules.html", "Rule Book"}, {"match.html", "Old-Game Match"},
 		{"house.html", "House Rules"}, {"changes.html", "Changes"}}
 	var nav strings.Builder
 	for _, l := range links {

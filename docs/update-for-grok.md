@@ -55,10 +55,6 @@ Things that changed today that you may have missed reading the repo. Start with 
 
 ## Known problems and next session
 1. **The attack animations are ported and approved by the owner.** The save-file picker is done too. Running the old game showed that its FX2 code (`FX2assign`, `fxTheme`, `fx2Layers`) is never drawn; what draws is `drawP` (old lines 922-966) plus the `makeRecipe` picture stacks (old lines 1331-1380). The owner chose to port what really draws, with the ACT poses and `anim`. The old Codex is an archive, not the authority for how attacks look.
-2. **Update the Codex** (only after the owner approves the attacks):
-   - upload the old one (v0.21/0.22) to the repo
-   - check every entry against the new game
-   - write the new Codex from the data, using the new sprites
-   - never delete an entry without listing it as changed or removed
+2. **The Codex is done.** The old one is archived unchanged in `docs/codex/old-codex-v0.22.html`. The new one (`web/codex/codex.html`, published as `codex.html`) is built from the game's data by `tools/codex`, with the new sprites and live attack effects. `docs/codex-checklist.md` lists every old entry and where it is now (nothing removed).
 3. **Phase 8 polish:** zoom buttons, the title screen's candle and lightning effects, How to Play / What's New / Report, the damage-numbers option, first-time tips, the level-cap notice.
 4. **Then:** the owner's new art, the balance autoplayer, Phase 9, and online versus last.

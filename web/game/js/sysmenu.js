@@ -69,7 +69,7 @@ export function settings() {
     <h4>Accessibility &amp; performance</h4>${row('Reduce flashing effects', sw('oCalm', options.calm))}
     ${row('Low graphics', sw('oLow', options.lowGraphics), 'Still water and trees, no vignette; saves battery')}
     ${row('Colorblind-friendly tiles', sw('oCb', options.colorblind))}
-    <div class="btns"><button class="b" id="oTitle">Title screen</button><button class="b" id="oClose">Close</button></div></div>`;
+    <div class="btns"><button class="b" id="oCodex">Codex</button><button class="b" id="oTitle">Title screen</button><button class="b" id="oClose">Close</button></div></div>`;
   w.hidden = false;
   const flip = (id, k) => ($(id).onclick = () => { options[k] = !options[k]; saveOptions(); screen.after(); settings(); });
   flip('oAuto', 'autoEnd'); flip('oAsk', 'confirmEnd'); flip('oMini', 'minimap'); flip('oDanger', 'danger');
@@ -77,6 +77,7 @@ export function settings() {
   $('oSpeed').querySelectorAll('button').forEach((b) => (b.onclick = () => { options.speed = +b.dataset.v; saveOptions(); settings(); }));
   $('oView').querySelectorAll('button').forEach((b) => (b.onclick = () => { screen.setView(b.dataset.v === '1'); saveOptions(); settings(); }));
   $('oClose').onclick = () => { w.hidden = true; };
+  $('oCodex').onclick = () => window.open('codex.html', '_blank');
   $('oTitle').onclick = () => { if (confirm('Go back to the title screen? Unsaved progress is lost (the autosave keeps your last turn).')) location.reload(); };
 }
 

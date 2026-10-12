@@ -1,0 +1,602 @@
+# Codex checklist: old entries in the new game
+
+Every entry of the old Codex (v0.22, `docs/codex/old-codex-v0.22.html`) and where it is in the new game. ✅ in the new Codex · ✏️ changed (what changed) · ❌ removed (why). Made by `go run ./tools/codex`; a test fails if an old entry disappears without being listed.
+
+## Heroes (10)
+
+- ✅ Assassin: all 6 forms and ascensions, all 6 class abilities; new v0.26 sprites
+- ✅ Dragon Knight: all 6 forms and ascensions, all 6 class abilities; new v0.26 sprites
+- ✅ Gunslinger: all 6 forms and ascensions, all 6 class abilities; new v0.26 sprites
+- ✅ Healer: all 6 forms and ascensions, all 6 class abilities; new v0.26 sprites
+- ✅ Knight: all 6 forms and ascensions, all 6 class abilities; new v0.26 sprites
+- ✅ Mage: all 6 forms and ascensions, all 6 class abilities; new v0.26 sprites
+- ✅ Ranger: all 6 forms and ascensions, all 6 class abilities; new v0.26 sprites
+- ✅ Tank: all 6 forms and ascensions, all 6 class abilities; new v0.26 sprites
+- ✅ Warrior: all 6 forms and ascensions, all 6 class abilities; new v0.26 sprites
+- ✅ Witch: all 6 forms and ascensions, all 6 class abilities; new v0.26 sprites
+
+## Hero skills (109)
+
+- ✅ Slash
+- ✅ Rend
+- ✏️ Whirlwind: learned at Lv 3 (was 4)
+- ✏️ Crescent Wave: learned at Lv 6 (was 8)
+- ✅ Power Strike
+- ✏️ Execution: now a normal skill
+- ✅ Dragon Slash
+- ✅ Bash
+- ✅ Shield Bash
+- ✏️ Ground Pound: learned at Lv 3 (was 4)
+- ✏️ Ironhide: learned at Lv 6 (was 8)
+- ✅ Crushing Blow
+- ✏️ Fortress Slam: learned at Lv 15 (was 14); now a normal skill
+- ✅ Titan's Wrath
+- ✅ Fireball
+- ✏️ Thunder: learned at Lv 3 (was 1)
+- ✅ Frost Bolt
+- ✏️ Ice Lance: learned at Lv 6 (was 3)
+- ✏️ Chain Lightning: learned at Lv 9 (was 6)
+- ✏️ Blizzard: learned at Lv 12 (was 10)
+- ✅ Meteor
+- ✅ Arcane Nova
+- ✅ Mend Self
+- ✅ Heal Ally
+- ✏️ Cleanse: learned at Lv 9 (was 6)
+- ✅ Radiant Burst
+- ✏️ Blessing: learned at Lv 6 (was 4)
+- ✏️ Holy Siphon: learned at Lv 12 (was 8)
+- ✏️ Prism Aura: learned at Lv 18 (was 12)
+- ✏️ Sacred Flame: learned at Lv 21 (was 14)
+- ✏️ Renewal: learned at Lv 27 (was 18)
+- ✏️ Mass Heal: learned at Lv 15 (was 10)
+- ✅ Divine Grace
+- ✏️ Resurrection: learned at Lv 24 (was 16); now a normal skill
+- ✅ Shot
+- ✅ Snaring Shot
+- ✅ Multishot
+- ✅ Poison Arrow
+- ✏️ Pinning Shot: learned at Lv 9 (was 10)
+- ✏️ Piercing Shot: learned at Lv 12 (was 14)
+- ✅ Power Shot
+- ✅ Rain of Arrows
+- ✅ Blood Rage
+- ✅ Holy Judgment
+- ✅ Thousand Cuts
+- ✅ Earthshatter
+- ✅ Bulwark
+- ✅ War Cry
+- ✅ Inferno
+- ✅ Absolute Zero
+- ✅ Thunderstorm
+- ✅ Sanctuary
+- ✅ Time Warp
+- ✅ Pandemic
+- ✅ Deadeye
+- ✅ Snare Field
+- ✅ Gale Volley
+- ✅ Stab
+- ✅ Venom Edge
+- ✏️ Ambush: learned at Lv 3 (was 4)
+- ✏️ Fan of Knives: learned at Lv 6 (was 8)
+- ✏️ Smoke Bomb: learned at Lv 12 (was 14)
+- ✅ Assassinate
+- ✅ Death Blossom
+- ✅ Quick Shot
+- ✅ Double Tap
+- ✏️ Ricochet: learned at Lv 3 (was 4)
+- ✏️ Flash Bang: learned at Lv 6 (was 8)
+- ✏️ Scatter Shot: learned at Lv 9 (was 12)
+- ✅ Hollow Point
+- ✅ Bullet Hell
+- ✅ Spear Thrust
+- ✅ Dragon Claw
+- ✏️ Dragonfire: learned at Lv 3 (was 4)
+- ✏️ Wing Gust: learned at Lv 6 (was 8)
+- ✏️ Sky Dive: learned at Lv 9 (was 12)
+- ✅ Impale
+- ✅ Dragon's Fury
+- ✅ Phantom Rush
+- ✅ Venom Storm
+- ✅ Crimson Waltz
+- ✅ Six Shooter
+- ✅ Dead or Alive
+- ✅ Ricochet Storm
+- ✅ Soul Nova
+- ✅ Blood Moon
+- ✅ Hellfire Dive
+- ✅ Glacial Breath
+- ✅ Thunder Lance
+- ✅ Toxic Bolt
+- ✅ Hex
+- ✏️ Miasma: learned at Lv 3 (was 4)
+- ✏️ Curse of Frailty: learned at Lv 6 (was 8)
+- ✏️ Plague Swarm: learned at Lv 9 (was 12)
+- ✅ Witch's Brew
+- ✅ Hex Storm
+- ✅ Lance Strike
+- ✅ Charge
+- ✏️ Lance Break: learned at Lv 3 (was 4)
+- ✏️ Running Thrust: learned at Lv 6 (was 8)
+- ✏️ Valor: learned at Lv 9 (was 12)
+- ✅ Grand Charge
+- ✅ Cavalry Breaker
+- ✅ Grand Hex
+- ✅ Crusade
+- ✅ Doom Lance
+- ✅ Lightning Charge
+- ✏️ Cloak: learned at Lv 0 (was 1)
+- ✏️ Strike: learned at Lv 0 (was 1)
+
+New in this game, not in the old Codex (53): Aftershock (Tank), Bait and Switch (Assassin), Battle Trance (Warrior), Blink (Mage), Bodyguard (Tank), Bog of Despair (Witch), Boot Shot (Gunslinger), Concussive Arrow (Ranger), Contagion (Witch), Crippling Cut (Assassin), Disarming Shot (Gunslinger), Disengage (Ranger), Dragon Scales (Dragon Knight), Echo (Mage), Ember Trail (Dragon Knight), Flaming Volley (Ranger), Garrote (Assassin), Gravity Well (Mage), High Noon (Gunslinger), Hook Chain (Tank), Hunter's Mark (Ranger), Iron Shell (Tank), Lance Wall (Knight), Last Light (Healer), Leaping Cleave (Warrior), Lucky Coin (Gunslinger), Mana Burn (Mage), Momentum (Warrior), Open Veins (Assassin), Powder Keg (Gunslinger), Puppet Strings (Witch), Relentless Charge (Knight), Rescue (Knight), Riposte Stance (Warrior), Roll Out (Gunslinger), Shadowstep (Assassin), Shield of Faith (Knight), Shoulder Check (Warrior), Skewer (Dragon Knight), Soul Siphon (Witch), Static Field (Mage), Steady Aim (Ranger), Sunder (Warrior), Tail Sweep (Dragon Knight), Taunting Roar (Tank), Trample (Knight), Twin Fangs (Assassin), Unhorse (Knight), Unstoppable (Tank), Voodoo Link (Witch), Wither (Witch), Wyrm Roar (Dragon Knight), Wyrmbond (Dragon Knight).
+
+## Attack effects (219)
+
+- ✅ Absolute Freeze: plays in the new Codex, animated with the game's own effect code
+- ✅ Absolute Zero: plays in the new Codex, animated with the game's own effect code
+- ✅ Ambush: plays in the new Codex, animated with the game's own effect code
+- ✅ Arcane Nova: plays in the new Codex, animated with the game's own effect code
+- ✅ Assassinate: plays in the new Codex, animated with the game's own effect code
+- ✅ Backstab: plays in the new Codex, animated with the game's own effect code
+- ✅ Barrage: plays in the new Codex, animated with the game's own effect code
+- ✅ Bash: plays in the new Codex, animated with the game's own effect code
+- ✅ Beast Mode: plays in the new Codex, animated with the game's own effect code
+- ✅ Beast Mode II: plays in the new Codex, animated with the game's own effect code
+- ✅ Beast Mode+: plays in the new Codex, animated with the game's own effect code
+- ✅ Blessing: plays in the new Codex, animated with the game's own effect code
+- ✅ Blizzard: plays in the new Codex, animated with the game's own effect code
+- ✅ Blood Drain: plays in the new Codex, animated with the game's own effect code
+- ✅ Blood Frenzy: plays in the new Codex, animated with the game's own effect code
+- ✅ Blood Moon: plays in the new Codex, animated with the game's own effect code
+- ✅ Blood Pact: plays in the new Codex, animated with the game's own effect code
+- ✅ Blood Rage: plays in the new Codex, animated with the game's own effect code
+- ✅ Bloodlust: plays in the new Codex, animated with the game's own effect code
+- ✅ Bloodlust II: plays in the new Codex, animated with the game's own effect code
+- ✅ Bloodlust+: plays in the new Codex, animated with the game's own effect code
+- ✅ Bone Storm: plays in the new Codex, animated with the game's own effect code
+- ✅ Bullet Hell: plays in the new Codex, animated with the game's own effect code
+- ✅ Bulwark: plays in the new Codex, animated with the game's own effect code
+- ✅ Cataclysm: plays in the new Codex, animated with the game's own effect code
+- ✅ Cavalry Breaker: plays in the new Codex, animated with the game's own effect code
+- ✅ Chain Lightning: plays in the new Codex, animated with the game's own effect code
+- ✅ Charge: plays in the new Codex, animated with the game's own effect code
+- ✅ Claw: plays in the new Codex, animated with the game's own effect code
+- ✅ Claw Swipe: plays in the new Codex, animated with the game's own effect code
+- ✅ Cleanse: plays in the new Codex, animated with the game's own effect code
+- ✅ Cloak: plays in the new Codex, animated with the game's own effect code
+- ✅ Club Smash: plays in the new Codex, animated with the game's own effect code
+- ✅ Constrict: plays in the new Codex, animated with the game's own effect code
+- ✅ Crescent Wave: plays in the new Codex, animated with the game's own effect code
+- ✅ Crimson Bloodlust: plays in the new Codex, animated with the game's own effect code
+- ✅ Crimson Waltz: plays in the new Codex, animated with the game's own effect code
+- ✅ Crusade: plays in the new Codex, animated with the game's own effect code
+- ✅ Crushing Blow: plays in the new Codex, animated with the game's own effect code
+- ✅ Curse of Frailty: plays in the new Codex, animated with the game's own effect code
+- ✅ Dark Pact: plays in the new Codex, animated with the game's own effect code
+- ✅ Dead Man's Hand: plays in the new Codex, animated with the game's own effect code
+- ✅ Dead or Alive: plays in the new Codex, animated with the game's own effect code
+- ✅ Deadeye: plays in the new Codex, animated with the game's own effect code
+- ✅ Deadeye Focus: plays in the new Codex, animated with the game's own effect code
+- ✅ Death Blossom: plays in the new Codex, animated with the game's own effect code
+- ✅ Death Bolt: plays in the new Codex, animated with the game's own effect code
+- ✅ Death Mark: plays in the new Codex, animated with the game's own effect code
+- ✅ Dive Claw: plays in the new Codex, animated with the game's own effect code
+- ✅ Dive Strike: plays in the new Codex, animated with the game's own effect code
+- ✅ Divine Choir: plays in the new Codex, animated with the game's own effect code
+- ✅ Divine Grace: plays in the new Codex, animated with the game's own effect code
+- ✅ Doom Lance: plays in the new Codex, animated with the game's own effect code
+- ✅ Double Strike: plays in the new Codex, animated with the game's own effect code
+- ✅ Double Strike+: plays in the new Codex, animated with the game's own effect code
+- ✅ Double Tap: plays in the new Codex, animated with the game's own effect code
+- ✅ Dragon Claw: plays in the new Codex, animated with the game's own effect code
+- ✅ Dragon Slash: plays in the new Codex, animated with the game's own effect code
+- ✅ Dragon's Fury: plays in the new Codex, animated with the game's own effect code
+- ✅ Dragonfire: plays in the new Codex, animated with the game's own effect code
+- ✅ Earthshatter: plays in the new Codex, animated with the game's own effect code
+- ✅ Elemental Overload: plays in the new Codex, animated with the game's own effect code
+- ✅ Enlightenment: plays in the new Codex, animated with the game's own effect code
+- ✅ Enlightenment II: plays in the new Codex, animated with the game's own effect code
+- ✅ Enlightenment+: plays in the new Codex, animated with the game's own effect code
+- ✅ Execution: plays in the new Codex, animated with the game's own effect code
+- ✅ Fan of Knives: plays in the new Codex, animated with the game's own effect code
+- ✅ Fire Breath: plays in the new Codex, animated with the game's own effect code
+- ✅ Fireball: plays in the new Codex, animated with the game's own effect code
+- ✅ Firestorm Field: plays in the new Codex, animated with the game's own effect code
+- ✅ Flail Smash: plays in the new Codex, animated with the game's own effect code
+- ✅ Flame Breath: plays in the new Codex, animated with the game's own effect code
+- ✅ Flash Bang: plays in the new Codex, animated with the game's own effect code
+- ✅ Flurry of Blades: plays in the new Codex, animated with the game's own effect code
+- ✅ Fortress Slam: plays in the new Codex, animated with the game's own effect code
+- ✅ Frost Bolt: plays in the new Codex, animated with the game's own effect code
+- ✅ Frost Bulwark: plays in the new Codex, animated with the game's own effect code
+- ✅ Frost Nova: plays in the new Codex, animated with the game's own effect code
+- ✅ Gale Volley: plays in the new Codex, animated with the game's own effect code
+- ✅ Glacial Breath: plays in the new Codex, animated with the game's own effect code
+- ✅ Glacial Scales: plays in the new Codex, animated with the game's own effect code
+- ✅ Glacier Fist: plays in the new Codex, animated with the game's own effect code
+- ✅ Grand Charge: plays in the new Codex, animated with the game's own effect code
+- ✅ Grand Hex: plays in the new Codex, animated with the game's own effect code
+- ✅ Grave Bloom: plays in the new Codex, animated with the game's own effect code
+- ✅ Grave Bolt: plays in the new Codex, animated with the game's own effect code
+- ✅ Grave Nova: plays in the new Codex, animated with the game's own effect code
+- ✅ Greater Spell: plays in the new Codex, animated with the game's own effect code
+- ✅ Ground Pound: plays in the new Codex, animated with the game's own effect code
+- ✅ Ground Slam: plays in the new Codex, animated with the game's own effect code
+- ✅ Heal Ally: plays in the new Codex, animated with the game's own effect code
+- ✅ Heavy Slash: plays in the new Codex, animated with the game's own effect code
+- ✅ Hellfire: plays in the new Codex, animated with the game's own effect code
+- ✅ Hellfire Dive: plays in the new Codex, animated with the game's own effect code
+- ✅ Hex: plays in the new Codex, animated with the game's own effect code
+- ✅ Hex Storm: plays in the new Codex, animated with the game's own effect code
+- ✅ Hollow Point: plays in the new Codex, animated with the game's own effect code
+- ✅ Holy Judgment: plays in the new Codex, animated with the game's own effect code
+- ✅ Holy Siphon: plays in the new Codex, animated with the game's own effect code
+- ✅ Hunter's Eye: plays in the new Codex, animated with the game's own effect code
+- ✅ Hunter's Eye II: plays in the new Codex, animated with the game's own effect code
+- ✅ Hunter's Eye+: plays in the new Codex, animated with the game's own effect code
+- ✅ Ice Lance: plays in the new Codex, animated with the game's own effect code
+- ✅ Impale: plays in the new Codex, animated with the game's own effect code
+- ✅ Infernal Claw: plays in the new Codex, animated with the game's own effect code
+- ✅ Inferno: plays in the new Codex, animated with the game's own effect code
+- ✅ Inferno Beast: plays in the new Codex, animated with the game's own effect code
+- ✅ Inner Element: plays in the new Codex, animated with the game's own effect code
+- ✅ Inner Element II: plays in the new Codex, animated with the game's own effect code
+- ✅ Inner Element+: plays in the new Codex, animated with the game's own effect code
+- ✅ Iron Maiden: plays in the new Codex, animated with the game's own effect code
+- ✅ Iron Maiden II: plays in the new Codex, animated with the game's own effect code
+- ✅ Iron Maiden+: plays in the new Codex, animated with the game's own effect code
+- ✅ Ironhide: plays in the new Codex, animated with the game's own effect code
+- ✅ Lance Break: plays in the new Codex, animated with the game's own effect code
+- ✅ Lance Strike: plays in the new Codex, animated with the game's own effect code
+- ✅ Lightning Charge: plays in the new Codex, animated with the game's own effect code
+- ✅ Mass Heal: plays in the new Codex, animated with the game's own effect code
+- ✅ Mass Mend: plays in the new Codex, animated with the game's own effect code
+- ✅ Mend Self: plays in the new Codex, animated with the game's own effect code
+- ✅ Meteor: plays in the new Codex, animated with the game's own effect code
+- ✅ Miasma: plays in the new Codex, animated with the game's own effect code
+- ✅ Multishot: plays in the new Codex, animated with the game's own effect code
+- ✅ Oath of Protection: plays in the new Codex, animated with the game's own effect code
+- ✅ Oath of Ruin: plays in the new Codex, animated with the game's own effect code
+- ✅ Overwatch: plays in the new Codex, animated with the game's own effect code
+- ✅ Pandemic: plays in the new Codex, animated with the game's own effect code
+- ✅ Phantom Rush: plays in the new Codex, animated with the game's own effect code
+- ✅ Piercing Shot: plays in the new Codex, animated with the game's own effect code
+- ✅ Pinning Shot: plays in the new Codex, animated with the game's own effect code
+- ✅ Plague Bloom: plays in the new Codex, animated with the game's own effect code
+- ✅ Plague Mist: plays in the new Codex, animated with the game's own effect code
+- ✅ Plague Swarm: plays in the new Codex, animated with the game's own effect code
+- ✅ Poison Arrow: plays in the new Codex, animated with the game's own effect code
+- ✅ Poison Blade: plays in the new Codex, animated with the game's own effect code
+- ✅ Poison Ivy: plays in the new Codex, animated with the game's own effect code
+- ✅ Poison Ivy II: plays in the new Codex, animated with the game's own effect code
+- ✅ Poison Ivy+: plays in the new Codex, animated with the game's own effect code
+- ✅ Power Shot: plays in the new Codex, animated with the game's own effect code
+- ✅ Power Strike: plays in the new Codex, animated with the game's own effect code
+- ✅ Prism Aura: plays in the new Codex, animated with the game's own effect code
+- ✅ Queen's Garden: plays in the new Codex, animated with the game's own effect code
+- ✅ Quick Draw: plays in the new Codex, animated with the game's own effect code
+- ✅ Quick Draw II: plays in the new Codex, animated with the game's own effect code
+- ✅ Quick Draw+: plays in the new Codex, animated with the game's own effect code
+- ✅ Quick Shot: plays in the new Codex, animated with the game's own effect code
+- ✅ Radiant Burst: plays in the new Codex, animated with the game's own effect code
+- ✅ Rain of Arrows: plays in the new Codex, animated with the game's own effect code
+- ✅ Rampage: plays in the new Codex, animated with the game's own effect code
+- ✅ Rend: plays in the new Codex, animated with the game's own effect code
+- ✅ Renewal: plays in the new Codex, animated with the game's own effect code
+- ✅ Resurrection: plays in the new Codex, animated with the game's own effect code
+- ✅ Ricochet: plays in the new Codex, animated with the game's own effect code
+- ✅ Ricochet Storm: plays in the new Codex, animated with the game's own effect code
+- ✅ Running Thrust: plays in the new Codex, animated with the game's own effect code
+- ✅ Sacred Flame: plays in the new Codex, animated with the game's own effect code
+- ✅ Sacred Vow: plays in the new Codex, animated with the game's own effect code
+- ✅ Sanctuary: plays in the new Codex, animated with the game's own effect code
+- ✅ Savage Claw: plays in the new Codex, animated with the game's own effect code
+- ✅ Scatter Shot: plays in the new Codex, animated with the game's own effect code
+- ✅ Shackle: plays in the new Codex, animated with the game's own effect code
+- ✅ Shadow Clones: plays in the new Codex, animated with the game's own effect code
+- ✅ Shadow Nova: plays in the new Codex, animated with the game's own effect code
+- ✅ Shell Slam: plays in the new Codex, animated with the game's own effect code
+- ✅ Shield Bash: plays in the new Codex, animated with the game's own effect code
+- ✅ Shield Crush: plays in the new Codex, animated with the game's own effect code
+- ✅ Shot: plays in the new Codex, animated with the game's own effect code
+- ✅ Six Shooter: plays in the new Codex, animated with the game's own effect code
+- ✅ Sky Dive: plays in the new Codex, animated with the game's own effect code
+- ✅ Sky Lord: plays in the new Codex, animated with the game's own effect code
+- ✅ Slash: plays in the new Codex, animated with the game's own effect code
+- ✅ Smash: plays in the new Codex, animated with the game's own effect code
+- ✅ Smoke Bomb: plays in the new Codex, animated with the game's own effect code
+- ✅ Snare Field: plays in the new Codex, animated with the game's own effect code
+- ✅ Snaring Shot: plays in the new Codex, animated with the game's own effect code
+- ✅ Soul Bolt: plays in the new Codex, animated with the game's own effect code
+- ✅ Soul Nova: plays in the new Codex, animated with the game's own effect code
+- ✅ Soul Rend: plays in the new Codex, animated with the game's own effect code
+- ✅ Spear Thrust: plays in the new Codex, animated with the game's own effect code
+- ✅ Spore Bolt: plays in the new Codex, animated with the game's own effect code
+- ✅ Stab: plays in the new Codex, animated with the game's own effect code
+- ✅ Stone Quake: plays in the new Codex, animated with the game's own effect code
+- ✅ Storm Eye: plays in the new Codex, animated with the game's own effect code
+- ✅ Strike: plays in the new Codex, animated with the game's own effect code
+- ✅ Strike_g: plays in the new Codex, animated with the game's own effect code
+- ✅ Strike_gun: plays in the new Codex, animated with the game's own effect code
+- ✅ Strike_m: plays in the new Codex, animated with the game's own effect code
+- ✅ Strike_r: plays in the new Codex, animated with the game's own effect code
+- ✅ Tail Slam: plays in the new Codex, animated with the game's own effect code
+- ✅ Thousand Cuts: plays in the new Codex, animated with the game's own effect code
+- ✅ Thunder: plays in the new Codex, animated with the game's own effect code
+- ✅ Thunder Lance: plays in the new Codex, animated with the game's own effect code
+- ✅ Thunderous Oath: plays in the new Codex, animated with the game's own effect code
+- ✅ Thunderstorm: plays in the new Codex, animated with the game's own effect code
+- ✅ Tidal Crush: plays in the new Codex, animated with the game's own effect code
+- ✅ Time Shift: plays in the new Codex, animated with the game's own effect code
+- ✅ Time Warp: plays in the new Codex, animated with the game's own effect code
+- ✅ Titan's Wrath: plays in the new Codex, animated with the game's own effect code
+- ✅ Toxic Bolt: plays in the new Codex, animated with the game's own effect code
+- ✅ Toxic Spores: plays in the new Codex, animated with the game's own effect code
+- ✅ Triple Strike: plays in the new Codex, animated with the game's own effect code
+- ✅ Unbroken Maiden: plays in the new Codex, animated with the game's own effect code
+- ✅ Valor: plays in the new Codex, animated with the game's own effect code
+- ✅ Venom Edge: plays in the new Codex, animated with the game's own effect code
+- ✅ Venom Spit: plays in the new Codex, animated with the game's own effect code
+- ✅ Venom Storm: plays in the new Codex, animated with the game's own effect code
+- ✅ Venom Wave: plays in the new Codex, animated with the game's own effect code
+- ✅ Vow of Honor: plays in the new Codex, animated with the game's own effect code
+- ✅ Vow of Honor II: plays in the new Codex, animated with the game's own effect code
+- ✅ Vow of Honor+: plays in the new Codex, animated with the game's own effect code
+- ✅ Wanted Poster: plays in the new Codex, animated with the game's own effect code
+- ✅ War Banner: plays in the new Codex, animated with the game's own effect code
+- ✅ War Cry: plays in the new Codex, animated with the game's own effect code
+- ✅ War Stomp: plays in the new Codex, animated with the game's own effect code
+- ✅ Whirlwind: plays in the new Codex, animated with the game's own effect code
+- ✅ Wing Gust: plays in the new Codex, animated with the game's own effect code
+- ✅ Wing Slash: plays in the new Codex, animated with the game's own effect code
+- ✅ Witch's Brew: plays in the new Codex, animated with the game's own effect code
+- ✅ Withering Curse: plays in the new Codex, animated with the game's own effect code
+
+## Monsters (30)
+
+- ✅ Slime
+- ✅ Carrion Strider
+- ✅ Goblin
+- ✅ Skeleton
+- ✅ Zombie
+- ✅ Rogue
+- ✅ Imp Bat
+- ✅ Wolf
+- ✅ Man-Eater
+- ✅ Eyeball
+- ✅ Rock Golem
+- ✅ Hedgehog
+- ✅ Lizardman
+- ✅ Mushroom
+- ✅ Flame Spirit
+- ✅ Ice Drop
+- ✅ Spider
+- ✅ Minotaur
+- ✅ Bone Wyvern
+- ✅ Ghost
+- ✅ Reaper
+- ✅ Crystal
+- ✅ Mimic
+- ✅ Bomb
+- ✅ Rat
+- ✅ Scorpion
+- ✅ Sludge
+- ✅ Worm
+- ✅ Horned Skull
+- ✅ Bone Hound
+
+Monsters now learn on the same schedule as heroes (see each monster in the new Codex); the old Codex listed a fixed kit.
+
+## Elites (9)
+
+- ✅ Dark Knight
+- ✅ Golden Drake
+- ✅ Shadow Assassin
+- ✅ Orc Brute
+- ✅ Dread Brute
+- ✅ Orc Chieftain
+- ✅ Plague Reaper
+- ✅ Bone Gargoyle
+- ✅ Frost Titan
+
+## Bosses (6)
+
+- ✅ Bat Lord
+- ✅ Lich King
+- ✅ Elder Dragon
+- ✅ Grave Lord
+- ✅ Abyss Serpent
+- ✅ Demon Lord
+
+## Items, sets and bonuses (102)
+
+- ✅ Rusty Blade
+- ✅ Hunting Bow
+- ✅ Oak Staff
+- ✅ Iron Axe
+- ✅ Iron Lance
+- ✅ Steel Sword
+- ✅ Yew Bow
+- ✅ Battle Axe
+- ✅ Ash Staff
+- ✅ Steel Lance
+- ✅ Mythril Blade
+- ✅ Elven Longbow
+- ✅ Frostbite Axe
+- ✅ Emberwood Staff
+- ✅ Silver Lance
+- ✅ Dawnbreaker
+- ✅ Voidreaver
+- ✅ Heavensfall
+- ✅ Gale Piercer
+- ✅ Staff of Eternity
+- ✅ Flintlock
+- ✅ Revolver
+- ✅ Silver Six
+- ✅ Thunderhowl
+- ✅ Twig Wand
+- ✅ Crystal Wand
+- ✅ Runic Wand
+- ✅ Emberheart Scepter
+- ✅ Rusty Knife
+- ✅ Steel Dagger
+- ✅ Shadow Kris
+- ✅ Nightfang
+- ✅ Plate Armor
+- ✅ Full Plate
+- ✅ Iron Greaves
+- ✅ Plate Sabatons
+- ✅ Iron Helm
+- ✅ Steel Helm
+- ✅ Cloth Tunic
+- ✅ Leather Vest
+- ✅ Worn Boots
+- ✅ Leather Boots
+- ✅ Cloth Hood
+- ✅ Leather Cap
+- ✅ Chain Mail
+- ✅ Scale Mail
+- ✅ Chain Boots
+- ✅ Scale Greaves
+- ✅ Chain Coif
+- ✅ Scale Helm
+- ✅ Aegis of Dawn
+- ✅ Dawnbreaker
+- ✅ Dawnguard Helm
+- ✅ Dawnstride Greaves
+- ✅ Emberheart Scepter
+- ✅ Gale Piercer
+- ✅ Heart of the Stair
+- ✅ Heavensfall
+- ✅ Nightbloom Hood
+- ✅ Nightbloom Robe
+- ✅ Nightbloom Slippers
+- ✅ Nightfang
+- ✅ Phoenix Feather
+- ✅ Staff of Eternity
+- ✅ Stormweave Coif
+- ✅ Stormweave Mail
+- ✅ Stormweave Treads
+- ✅ Thunderhowl
+- ✅ Voidreaver
+- ✅ Bone Charm
+- ✅ Lucky Coin
+- ✅ Wolf Fang
+- ✅ Aegis of Dawn (heavy set)
+- ✅ Nightbloom (light set)
+- ✅ Stormweave (medium set)
+- ✅ affix dmg
+- ✅ affix fire
+- ✅ affix ice
+- ✅ affix elec
+- ✅ affix light
+- ✅ affix dark
+- ✅ affix phys
+- ✅ affix addFire
+- ✅ affix addElec
+- ✅ affix crit
+- ✅ affix critDmg
+- ✅ affix hpPct
+- ✅ affix defPct
+- ✅ affix dr
+- ✅ affix leech
+- ✅ affix evade
+- ✅ affix healPct
+- ✅ affix bossDmg
+- ✅ affix bleedCh
+- ✅ affix poisonCh
+- ✅ affix thorns
+- ✅ affix regen
+- ✅ affix stunCh
+- ✅ affix double
+- ✅ affix cdr
+- ✅ affix movA
+- ✅ affix hit
+
+New in this game: the purple (epic) tier (14 purple bonuses, purple charms Saint's Reliquary, Blood Ruby, Hourglass of Ash).
+
+## Statuses (46)
+
+- ✅ bleed
+- ✅ poison
+- ✅ stun
+- ✅ shock
+- ✅ snare
+- ✅ lock
+- ✅ brk
+- ✅ weak
+- ✅ grd
+- ✅ rally
+- ✅ haste
+- ✅ prism
+- ✅ regen
+- ✅ dbl
+- ✅ imh
+- ✅ ironm
+- ✅ inner
+- ✅ enl
+- ✅ heye
+- ✅ blood
+- ✅ cloak
+- ✅ qd
+- ✅ beast
+- ✅ ivyA
+- ✅ vow
+- ✅ burn
+- ✅ ivy
+- ✅ flurry
+- ✅ frenzy
+- ✅ taunt
+- ✅ unb
+- ✅ bulwark
+- ✅ fstorm
+- ✅ frozen
+- ✅ choir
+- ✅ pbloom
+- ✅ deadeye
+- ✅ dmark
+- ✅ scales
+- ✅ sky
+- ✅ gbloom
+- ✅ vamp
+- ✅ svow
+- ✅ ruin
+- ✅ clone
+- ✅ tmark
+
+## Terrain (9)
+
+- ✅ Throne
+- ✅ Bridge
+- ✅ Forest
+- ✅ Plains
+- ✅ Hill
+- ✅ Mountain
+- ✅ Road
+- ✅ Fort
+- ✅ Water
+
+## Floors and rules (21)
+
+- ✅ Floors never end; maps start at 14×14 and grow by 1 every 4 floors, up to 32×32. → Same.
+- ✅ Enemies: 4 on floor 1, one more every few floors, more for a party above 5, up to 16. → Same rule; the team counted is the heroes you bring (5 to 8 slots).
+- ✏️ Monster level rises with every floor and with the party's strength. → Changed: monster level is set when the map is made, from your strongest heroes for the number of slots.
+- ✅ Every 5th floor has an elite; every 10th a boss on its throne. → Same.
+- ✏️ Every 7th floor is a shop. → Changed: the shop comes up before every 7th floor; you shop, then fight that floor.
+- ✏️ Recruit a new hero at floors 25, 50 and 75 (party up to 8). → Changed: all 10 heroes are yours from the start (no recruiting). You bring 5, and one more slot opens at floors 25, 50 and 75 (8 at most).
+- ✅ A free legendary every 100 floors. → Same.
+- ✅ Seize floors: move a hero onto the golden throne to win. → Same.
+- ✅ Reinforcement floors: 2 extra monsters arrive on turns 3 and 5. → Same.
+- ✅ Seven biomes. → Same.
+- ✅ A floor you return to has the same map, monsters and chest spots. → Same.
+- ✅ Opened chests stay opened; shops keep their stock. → Same.
+- ✅ Replaying a cleared floor gives half gold and full XP. → Same.
+- ✅ A boss that already dropped a legendary falls back to normal loot. → Same.
+- ✅ Level cap: at most 5 levels above the monsters of your highest floor. → Same.
+- ✏️ Loot rarities: common, uncommon, rare, legendary. → Changed: a purple (epic) tier sits between rare and legendary; legendaries only drop once a hero reaches Lv 30.
+- ✅ Skills level up with use. → Same: +5% power per skill level; switching skills counts double.
+- ✏️ Each class learns its own number of skills at its own levels. → Changed: every class learns on one even schedule (Lv 1, 3, 6 ... 27; ultimates at Lv 1, 20 and 30), with 53 new skills and Last Light.
+- ✅ Change ascension once per floor from the Gear sheet. → Same, between battles.
+- ✅ Settings → Saves: copy, download or import a save into any slot. → Same: Save → Export copies and downloads; Import takes a file or pasted code into a chosen slot and asks before replacing one.
+- ✅ Defeat: you stay on the floor; level up, gear up, try again. → Same, on purpose: no defeat penalty (owner, 2026-10-11).
+
+The old Codex's Mechanics, Controls and Credits tabs are rewritten for the new screen in the new Codex.

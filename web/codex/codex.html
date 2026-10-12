@@ -1,0 +1,269 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crusader Tactics Codex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@600;800&family=EB+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* The Codex: the game's reference pages, in the old Codex's look. Built
+   from the game's own data (codex.json, made by tools/codex), its pictures
+   (assets/) and its own attack-effect code, so it always matches the game. */
+:root{--gold:#d9b25a;--ivory:#efe3c8;--ink:#0b0608;--line:rgba(201,162,74,.35);color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0;background:var(--ink);color:var(--ivory);font:16px/1.45 'EB Garamond',Garamond,Georgia,serif}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:linear-gradient(#14070a,#0b0608);border-bottom:1px solid var(--line);padding:10px 12px 0}
+h1{margin:0;font:800 26px 'Grenze Gotisch',Georgia,serif;letter-spacing:.04em;color:var(--gold)}h1 small{font:600 13px 'EB Garamond',serif;color:#b89a6a;letter-spacing:.12em;text-transform:uppercase;margin-left:6px}
+h1 a{float:right;font:600 13px 'EB Garamond',serif;color:#ffd77a;letter-spacing:.1em;text-transform:uppercase;margin-top:8px;text-decoration:none}
+#q{width:100%;margin:8px 0;padding:9px 12px;background:#120609;border:1px solid var(--line);color:var(--ivory);font:16px 'EB Garamond',serif;border-radius:4px}
+nav{display:flex;gap:4px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}nav::-webkit-scrollbar{display:none}
+nav button{flex:none;background:#1c0a0e;border:1px solid #5a3a1a;color:var(--ivory);font:600 13px 'EB Garamond',serif;letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;border-radius:3px;cursor:pointer}
+nav button.on{background:linear-gradient(#a4202c,#5a0c14);border-color:var(--gold);color:#fff3d0}
+main{max-width:1100px;margin:0 auto;padding:12px}
+h2{font:800 22px 'Grenze Gotisch',Georgia,serif;color:var(--gold);letter-spacing:.04em;margin:18px 0 8px;border-bottom:1px solid var(--line);padding-bottom:4px}
+h3{font:700 15px 'EB Garamond',serif;letter-spacing:.14em;text-transform:uppercase;color:#e9cf8a;margin:16px 0 6px}
+.card{background:linear-gradient(180deg,#1a0a0e,#0f0507);border:1px solid #6a4a1a;box-shadow:0 0 0 1px #000 inset;border-radius:4px;padding:10px}
+.grid{display:grid;gap:8px}.g2{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}.g3{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}.g6{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;scrollbar-width:thin}
+.chip{flex:none;width:86px;text-align:center;background:#1a0a0e;border:1px solid #5a3a1a;border-radius:4px;padding:6px 4px;cursor:pointer;color:var(--ivory);font:600 12px 'EB Garamond',serif}
+.chip img{width:56px;height:56px;object-fit:contain;image-rendering:pixelated;display:block;margin:0 auto 2px}.chip.on{border-color:var(--gold);background:linear-gradient(#3a0c12,#1a0508)}
+.stage{text-align:center}.stage img{width:100%;height:110px;object-fit:contain;image-rendering:pixelated;background:radial-gradient(#2a1016,#0f0507 70%);border:1px solid #3a2410;border-radius:3px}
+.stage b{display:block;color:#e9cf8a;font-size:14px}.stage small{color:#b89a6a;font-size:12px;letter-spacing:.08em;text-transform:uppercase}.stage .st{font-size:12px;color:#d8ccb0}
+table{width:100%;border-collapse:collapse;font-size:14px}th{font:600 11px 'EB Garamond',serif;letter-spacing:.14em;text-transform:uppercase;color:#b89a6a;text-align:left;padding:6px;border-bottom:1px solid var(--line)}
+td{padding:6px;border-bottom:1px solid rgba(201,162,74,.14);vertical-align:top}
+.tbl-wrap{overflow-x:auto}
+.tag{display:inline-block;font:700 10px system-ui,sans-serif;padding:1px 6px;border-radius:8px;border:1px solid rgba(255,255,255,.25);margin:1px 2px 1px 0;white-space:nowrap}
+.u{background:#5a3a08;color:#ffe2a0}.sp{background:#2a1050;color:#e0c8ff}.bf{background:#10305a;color:#cfe4ff}.db{background:#5a1018;color:#ffd0d0}.nw{background:#0e4a2a;color:#b8ffd8}
+.el-fire{color:#ff8a4a}.el-ice{color:#8fd8ff}.el-elec{color:#ffe45c}.el-light{color:#fff2a8}.el-dark{color:#c79bff}
+.mon img{width:100%;height:100px;object-fit:contain;image-rendering:pixelated}.mon b{color:#e9cf8a}.mon small{color:#b89a6a}
+.fxg{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}.fxg div{text-align:center;font-size:12px}
+canvas.fx{width:100%;max-width:150px;aspect-ratio:26/19;border:1px solid #5a3a1a;border-radius:3px;background:radial-gradient(#2a1016,#0f0507 75%);display:block;margin:0 auto}
+.rc canvas.fx{flex:none;width:78px;max-width:78px;height:57px;align-self:flex-start}
+.ico{width:40px;height:40px;image-rendering:pixelated;vertical-align:middle;border-radius:3px}
+.terr img{width:60px;height:60px;image-rendering:pixelated;border:1px solid #3a2410;object-fit:cover}
+p{margin:6px 0}.muted{color:#b89a6a}.k{color:#ffd77a}ul{margin:6px 0 6px 20px;padding:0}li{margin:3px 0}
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}.seg button{background:#1c0a0e;border:1px solid #5a3a1a;color:var(--ivory);font:600 12px 'EB Garamond',serif;padding:5px 10px;border-radius:3px;cursor:pointer}.seg button.on{border-color:var(--gold);color:#ffd77a}
+.hide{display:none!important}
+.rc{display:flex;gap:10px;padding:9px 4px;border-bottom:1px solid rgba(201,162,74,.16)}.rc .b1{flex:1;min-width:0}
+.rc .nm{font-weight:700;font-size:16px}.rc .meta{font-size:13px;color:#c9b89a;margin:1px 0 3px}.rc .meta span{white-space:nowrap}.rc .ds{font-size:14px}
+.lv{display:inline-block;min-width:44px;text-align:center;font:700 11px system-ui,sans-serif;background:#3a2408;border:1px solid #8a6a2a;color:#ffd77a;border-radius:3px;padding:1px 4px;margin-right:6px}
+#load{padding:40px 12px;text-align:center;color:#b89a6a}
+</style></head>
+<body>
+<header><h1>Crusader Tactics <small>Codex</small><a href="play.html">Play ▸</a></h1><input id="q" placeholder="Search heroes, skills, monsters, items, statuses…" autocomplete="off"><nav id="tabs"></nav></header>
+<main id="main"><p id="load">Loading the Codex…</p></main>
+<script type="module">
+import { load, url, pic, book } from './game/js/assets.js?v=__BUILD__';
+import { icon } from './game/js/icons.js?v=__BUILD__';
+import { STATUS } from './game/js/statuses.js?v=__BUILD__';
+import { fxKey, FXN, durOf } from './game/js/fxbook.js?v=__BUILD__';
+import { drawOlder } from './game/js/fxpixel.js?v=__BUILD__';
+import { drawP } from './game/js/fxskill.js?v=__BUILD__';
+import { setup } from './game/js/fxsprite.js?v=__BUILD__';
+
+const $ = (s) => document.querySelector(s), esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+let D = null, TAB = 'heroes', HC = 'Warrior', FXF = 'all';
+const ELN = { fire: 'Fire', ice: 'Ice', elec: 'Thunder', light: 'Light', dark: 'Dark', user: 'Own element' };
+const elc = (e) => (e ? `<span class="el-${e}">${ELN[e] || e}</span>` : '<span class="muted">Random</span>');
+const rng = (s) => (s.Aim === 'self' ? 'Self' : s.Max >= 99 ? 'Any' : s.Min === s.Max ? (s.Min ? s.Min : 'Self') : s.Min + '–' + s.Max);
+const stName = (k) => k.charAt(0).toUpperCase() + k.slice(1);
+const TABS = [['heroes', 'Heroes'], ['monsters', 'Monsters'], ['bosses', 'Elites & Bosses'], ['effects', 'Attack Effects'], ['items', 'Items'], ['status', 'Statuses'], ['terrain', 'Terrain'], ['rules', 'Floors & Rules'], ['mech', 'Mechanics'], ['controls', 'Controls'], ['changes', 'What Changed'], ['credits', 'Credits']];
+
+// ---------- attack effects, animated with the game's own effect code ----------
+const cells = new Map(); // canvas -> { k, abn, d, self, cls }
+function fxCell(name, cls) {
+  let k, abn, self = false;
+  const s = book.skills[name] || {};
+  if (/^Strike_/.test(name)) k = 'P:' + name;
+  else if (D.Abilities[name]) { k = 'P:AB_' + D.Abilities[name]; abn = name; self = true; cls = D.Abilities[name]; }
+  else k = fxKey(name) || s.visual || FXN[name] || 'slash';
+  if (s.support || ['self'].includes((D.Skills.find((x) => x.Name === name) || {}).Aim)) self = true;
+  return `<canvas class="fx" width="260" height="190" data-k="${esc(k)}" data-abn="${esc(abn || '')}" data-self="${self ? 1 : ''}" data-cls="${esc(cls || s.class || '')}"></canvas>`;
+}
+const seen = new Set();
+const io = new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting ? seen.add(e.target) : seen.delete(e.target))));
+function wireFx() {
+  seen.clear();
+  document.querySelectorAll('canvas.fx').forEach((c) => {
+    c.dataset.t0 = String(Math.random() * 1000);
+    io.observe(c);
+  });
+}
+function frame(now) {
+  requestAnimationFrame(frame);
+  for (const c of seen) {
+    if (!c.isConnected) { seen.delete(c); continue; }
+    const g = c.getContext('2d'), k = c.dataset.k, d = durOf(k), self = !!c.dataset.self;
+    const p = ((now + +c.dataset.t0) % (d + 600)) / d;
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    g.clearRect(0, 0, c.width, c.height);
+    const sx = self ? 130 : 60, tx = self ? 130 : 200, fy = 150;
+    const who = pic('heroes', (c.dataset.cls || 'Warrior') + ' form1') || pic('heroes-first', c.dataset.cls || 'Warrior');
+    const foe = pic('monsters', 'Goblin');
+    const fig = (im, x, flip) => { if (!im) return; const h = 74, w = (im.width / im.height) * h; g.save(); g.imageSmoothingEnabled = false; g.translate(x, fy); if (flip) g.scale(-1, 1); g.globalAlpha = 0.9; g.drawImage(im, -w / 2, -h, w, h); g.restore(); };
+    g.fillStyle = 'rgba(0,0,0,.35)';
+    [[sx, fy], ...(self ? [] : [[tx, fy]])].forEach(([x, y]) => { g.beginPath(); g.ellipse(x, y, 24, 9, 0, 0, 7); g.fill(); });
+    fig(who, sx);
+    if (!self) fig(foe, tx, true);
+    if (p > 1) continue;
+    const f = { k, sx, sy: fy - 28, tx, ty: fy - 30, S: 1, d, abn: c.dataset.abn || undefined };
+    if (k.startsWith('P:')) drawP(g, f, p, now, false);
+    else drawOlder(g, f, p, now);
+  }
+}
+
+// ---------- tabs ----------
+function tabs() {
+  const n = $('#tabs');
+  n.innerHTML = '';
+  TABS.forEach(([k, l]) => { const b = document.createElement('button'); b.textContent = l; b.className = k === TAB ? 'on' : ''; b.onclick = () => { TAB = k; render(); scrollTo(0, 0); }; n.append(b); });
+}
+const fxTags = (s) => Object.entries(s.Effects || {}).map(([k, v]) => `<span class="tag db">${esc(stName(k))} ${v}t</span>`).join('') + Object.entries(s.Buffs || {}).map(([k, v]) => `<span class="tag bf">${esc(stName(k))} ${v}t</span>`).join('');
+
+function heroes() {
+  const H = D.Heroes;
+  let h = '<div class="chips">' + D.Order.map((c) => `<div class="chip ${c === HC ? 'on' : ''}" data-c="${c}"><img src="${url('heroes', H[c].Stages[0].Pic)}" alt="">${c}</div>`).join('') + '</div>';
+  const c = HC, x = H[c];
+  h += `<h2>${c}</h2><p class="muted">${esc(x.Role)}</p><h3>Evolution &amp; sprites</h3><div class="grid g6">` + x.Stages.map((s) => `<div class="stage card"><img src="${url('heroes', s.Pic)}" alt=""><small>${esc(s.Label)}</small><b>${esc(s.Name)}</b><div class="st">HP ${s.HP} · ATK ${s.Atk}<br>DEF ${s.Def} · MOV ${s.Mov}</div></div>`).join('') + '</div><p class="muted">Numbers without gear.</p>';
+  h += '<h3>Weapons &amp; armor</h3><div class="card">' + x.Prof.map(([lv, t]) => `<p><span class="k">Lv ${lv}</span> · ${esc(t)}</p>`).join('') + (x.Dual ? '<p class="muted">Dual-wields (uses both weapon slots at once).</p>' : '') + '</div>';
+  h += '<h3>Class ability</h3><div class="card">' + x.Abilities.map((a) => `<div class="rc" data-s="${esc(a.Name.toLowerCase())}">${fxCell(a.Name, c)}<div class="b1"><div class="nm"><span class="lv">${esc(a.Stage.replace(/ · .*$/, ''))}</span>✦ ${esc(a.Name)}</div><div class="meta">${esc(a.Stage)} · <span>Cooldown ${a.Free ? 'none' : a.Cooldown || '—'}</span> · free action</div><div class="ds">${esc(a.Text)}</div></div></div>`).join('') + '</div>';
+  const sk = D.Skills.filter((s) => s.Class === c).sort((a, b) => a.Level - b.Level || (a.Kind === 'u') - (b.Kind === 'u') || a.Name.localeCompare(b.Name));
+  h += '<h3>Skills (learned by level)</h3><div class="card">' + sk.map((s) => `<div class="rc" data-s="${esc(s.Name.toLowerCase())}">${fxCell(s.Name, c)}<div class="b1"><div class="nm"><span class="lv">Lv ${s.Level}</span>${s.Kind === 'u' ? '★ ' : ''}${esc(s.Name)}</div><div class="meta"><span>${esc(s.Type)}</span> · <span>Range ${rng(s)}${s.Area ? ' (area)' : ''}</span> · <span>Power ${s.Power ? '×' + s.Power : '—'}${s.Hits > 1 ? ' ×' + s.Hits + ' hits' : ''}</span> · <span>CD ${s.Cooldown || '—'}</span>${s.Free ? ' · <span>free</span>' : ''}</div>${s.Kind === 'u' ? '<span class="tag u">Ultimate</span>' : ''}${s.Ascension ? `<span class="tag sp">${esc(s.Ascension)} only</span>` : ''}${s.New ? '<span class="tag nw">New</span>' : ''}${fxTags(s)}<div class="ds">${esc(s.Text)}</div></div></div>`).join('') + '</div>';
+  h += `<p class="muted">Every class learns on the same schedule: two skills and an ultimate at Lv 1, a skill at Lv 3, 6, 9 … 27, a second ultimate at Lv 20 and the ascension's ultimate at Lv 30. A hero brings 4 skills and an ultimate into a fight and can change them once per floor.</p>`;
+  h += '<h3>Lv 30 ascensions</h3><div class="grid g3">' + x.Ascensions.map((s) => `<div class="card stage"><img src="${url('heroes', c + ' ' + s.Name)}" alt=""><b>${esc(s.Name)}</b><small>${elc(s.Element)}</small><p style="text-align:left;font-size:14px"><span class="k">${esc(s.Bonus)}</span><br>${esc(s.Passive)}<br><span class="muted">Ultimate:</span> ★ ${esc(s.Ultimate)}</p></div>`).join('') + '</div><p class="muted">You can change ascension once per floor between battles; learned skills stay.</p>';
+  const all = D.Skills.filter((s) => !s.Class);
+  if (all.length) h += '<h3>Every hero</h3><div class="card">' + all.map((s) => `<div class="rc" data-s="${esc(s.Name.toLowerCase())}">${fxCell(s.Name === 'Strike' ? 'Strike_m' : s.Name, c)}<div class="b1"><div class="nm">${esc(s.Name)}</div><div class="meta"><span>${esc(s.Type)}</span> · <span>Range ${rng(s)}</span></div><div class="ds">${esc(s.Text)}</div></div></div>`).join('') + '</div>';
+  return h;
+}
+
+function monsters() {
+  return `<h2>Monsters</h2><p class="muted">Normal monsters. Each fights as a class and learns that class's skills on the same schedule as heroes, then uses its 4 newest skills, its newest ultimate and Strike. Elements marked Random are rolled each time one spawns. One with a blue glow can be bonded as a companion spirit.</p><div class="grid g3">` +
+    D.Monsters.map((m) => `<div class="card mon" data-s="${esc((m.Name + ' ' + m.Class + ' ' + (m.Schedule || []).map((s) => s[1]).join(' ')).toLowerCase())}"><img src="${url('monsters', m.Name)}" alt=""><b>${esc(m.Name)}</b><br><small>${esc(m.Class)} · ${elc(m.Element)}</small><div style="margin-top:4px">${(m.Schedule || []).map(([lv, n]) => `<span class="tag bf">${lv} ${esc(n)}</span>`).join('')}</div></div>`).join('') + '</div>';
+}
+function bosses() {
+  const card = (m, extra) => `<div class="card mon" data-s="${esc(m.Name.toLowerCase())}"><img src="${url('bosses', m.Name)}" alt=""><b>${esc(m.Name)}</b><br><small>${elc(m.Element)}${extra || ''}</small><div>${(m.Skills || []).map((n) => `<span class="tag bf">${esc(n)}</span>`).join('')}</div></div>`;
+  const F = D.Floors;
+  return `<h2>Elites</h2><p class="muted">An elite appears on every ${F.eliteEvery}th floor that has no boss (and on every ${F.eliteBossFloors}th floor beside the boss), stronger than a normal monster. Elites learn on the schedule too.</p><div class="grid g3">` + D.Elites.map((m) => card(m)).join('') +
+    `</div><h2>Bosses</h2><p class="muted">A boss guards every ${F.bossEvery}th floor, sitting on the throne. The ${D.Bosses.length} bosses repeat in order every ${D.Bosses.length * F.bossEvery} floors and keep their own kits.</p><div class="grid g3">` + D.Bosses.map((m) => card(m, ` · Floors ${m.Floors.join(', ')}…`)).join('') + '</div>';
+}
+function effects() {
+  const heroSk = new Set(D.Skills.map((s) => s.Name)), ab = D.Abilities;
+  const cat = (n) => (ab[n] ? 'ability' : heroSk.has(n) || /^Strike_/.test(n) ? 'hero' : 'monster');
+  const names = [...new Set([...Object.keys(book.skills).filter((n) => n !== 'Strike'), 'Strike_m', 'Strike_r', 'Strike_gun', 'Strike_g', ...Object.keys(ab)])].sort();
+  const label = (n) => n.replace(/^Strike_(m|r|gun|g)$/, (_, k) => 'Strike (' + { m: 'melee', r: 'bow', gun: 'gun', g: 'magic' }[k] + ')');
+  return `<h2>Attack effects</h2><p class="muted">Every attack, monster skill and class ability has its own effect (${names.length} in total), played here by the game's own effect code: the drawn part (the fireball that flies, bullets, arrows, meteors…) with its stack of recolored effect pictures on top. In battle the user also strikes a pose: guns and bows kick back, spells lift, charges dash, potions and knives are thrown.</p><div class="seg">${[['all', 'All'], ['hero', 'Hero skills'], ['ability', 'Class abilities'], ['monster', 'Monster attacks']].map(([k, l]) => `<button class="${FXF === k ? 'on' : ''}" data-f="${k}">${l}</button>`).join('')}</div><div class="fxg">` +
+    names.filter((n) => FXF === 'all' || cat(n) === FXF).map((n) => `<div data-s="${esc(n.toLowerCase())}">${fxCell(n)}${esc(label(n))}</div>`).join('') + '</div>';
+}
+function items() {
+  const G = D.Gear, R = G.rarities, L = G.rarities.length - 1, ax = {};
+  G.affixes.forEach((a) => (ax[a.key] = a.text));
+  const line = (a) => `+${a.value}${ax[a.key] || ' ' + a.key}`;
+  const ic = (o) => `<img class="ico" src="${icon(o, L)}" alt="">`;
+  let h = `<h2>Rarity &amp; drops</h2><div class="card"><table><tr><th>Rarity</th><th>Power</th><th>Weapon rank needed</th></tr>${R.map((r, i) => `<tr><td style="color:${r.color}"><b>${r.name === 'epic' ? 'purple (epic)' : r.name}</b></td><td>${r.power}</td><td>${G.ranks[G.rarityRank[i]]}</td></tr>`).join('')}</table>
+    <p class="muted">Loot gets rarer and stronger as you climb. Purple items drop from floor 21. Legendaries only drop once any hero reaches Lv ${G.loot.legendaryFromLevel || 30}; before that a legendary roll gives a purple item. Chests: ${D.Floors.chests.map((c) => `${c.kind} ${Math.round(c.chance * 100)}%`).join(' · ')} per floor. A free legendary every 100 floors. In the shop, two copies of an item combine into one a rarity higher.</p></div>`;
+  const byT = {};
+  G.weapons.forEach((w) => ((byT[w.type] = byT[w.type] || {})[w.rarity] = (byT[w.type][w.rarity] || []).concat(w.name)));
+  h += '<h2>Weapons</h2><p class="muted">Each weapon type comes in tiers of base items; the same item can roll at a higher rarity (icon border color).</p><div class="grid g2">' + Object.entries(byT).map(([t, tiers]) => `<div class="card" data-s="${esc((t + ' ' + Object.values(tiers).flat().join(' ')).toLowerCase())}"><b style="font-size:17px">${esc(G.weaponNames[t] || t)}</b>` +
+    Object.entries(tiers).map(([r, ns]) => `<div style="display:flex;align-items:center;gap:8px;margin-top:6px">${ic({ slot: 'w', weaponType: t, tier: +r, name: ns[0], color: R[r].color })}<div><span style="color:${R[r].color};font-size:12px;letter-spacing:.1em;text-transform:uppercase">${R[r].name === 'epic' ? 'purple' : R[r].name}</span><br>${ns.map(esc).join(', ')}</div></div>`).join('') + '</div>').join('') + '</div>';
+  h += `<h3>Weapon ranks (Fire Emblem style)</h3><div class="card"><p>Ranks go ${G.ranks.join(' → ')}. A class's main weapon starts at C (Lv 1), reaches B at Lv 8, A at Lv 18 and S at Lv 30; the second weapon type tops out at A. Higher ranks multiply weapon ATK, and an item's rarity needs a matching rank (see the table above).</p>
+    <p><b>Weapon triangle:</b> Sword beats Axe, Axe beats Lance, Lance beats Sword: +15% hit and ×1.5 damage with the advantage, −15% hit and ×0.75 with the disadvantage. A hero with empty hands counts as their class's usual weapon.</p></div>`;
+  const W = { L: 'Light', M: 'Medium', H: 'Heavy' };
+  h += `<h2>Armor</h2><div class="card"><p>${Object.entries(G.armorWeights).map(([k, a]) => `<b>${W[k] || k}</b> ${a.def !== 1 ? (a.def > 1 ? '+' : '−') + Math.round(Math.abs(a.def - 1) * 100) + '% DEF' : 'DEF as is'}, ${a.hp !== 1 ? (a.hp > 1 ? '+' : '−') + Math.round(Math.abs(a.hp - 1) * 100) + '% HP' : 'HP as is'}`).join(' · ')}. Each class can wear certain weights (see Heroes).</p><div class="tbl-wrap"><table><tr><th>Weight</th><th>Helm</th><th>Armor</th><th>Boots</th></tr>` +
+    Object.entries(G.armorNames).map(([w, sl]) => `<tr data-s="${esc(Object.values(sl).flat().join(' ').toLowerCase())}"><td><b>${W[w] || w}</b></td>${['h', 'a', 'b'].map((k) => `<td>${(sl[k] || []).map((n, r) => ic({ slot: k, weight: w, tier: [0, 2, 3][r], name: n, color: R[[0, 2, 3][r]].color })).join(' ')}<br><span class="muted" style="font-size:12px">${(sl[k] || []).join(', ')}</span></td>`).join('')}</tr>`).join('') + '</table></div><p class="muted">The third name in each cell is the purple version.</p></div>';
+  h += `<h2>Purple bonuses</h2><p class="muted">Each purple item carries one purple bonus that names it (“Vampiric Gravewarden Blade”) plus 2–3 ordinary bonuses.</p><div class="tbl-wrap"><table><tr><th>Name</th><th>Bonus</th><th>Slots</th></tr>` +
+    G.prefixes.map((p) => `<tr data-s="${esc(p.name.toLowerCase())}"><td><b style="color:${R[L - 1].color}">${esc(p.name)}</b></td><td>${p.bonuses.map((b) => `+${b.low}–${b.high}${esc(ax[b.key] || ' ' + b.key)}`).join('<br>')}</td><td>${slots(p.slots)}</td></tr>`).join('') + '</table></div>';
+  h += '<h2>Legendary uniques</h2><div class="grid g2">' + G.uniques.map((u) => `<div class="card" data-s="${esc(u.name.toLowerCase())}">${ic({ slot: u.slot, weaponType: u.weaponType, weight: u.weight, tier: L, name: u.name, color: R[L].color }).replace('class="ico"', 'class="ico" style="width:48px;height:48px;float:left;margin-right:8px"')}<b style="color:#f2b84b">${esc(u.name)}</b><br><span class="muted">${esc(u.weaponType ? G.weaponNames[u.weaponType] : slots(u.slot))}${u.set ? ' · set: ' + esc((G.sets[u.set] || {}).name || u.set) : ''}</span><ul style="clear:both">${u.affixes.map((a) => `<li>${esc(line(a))}</li>`).join('')}</ul>${u.lore ? `<p class="muted"><i>${esc(u.lore)}</i></p>` : ''}</div>`).join('') + '</div>';
+  h += '<h3>Armor sets</h3><div class="grid g2">' + Object.values(G.sets).map((s) => `<div class="card"><b>${esc(s.name)}</b><p><span class="k">2 pieces:</span> ${s.two.map((a) => esc(line(a))).join(', ')}</p><p><span class="k">3 pieces:</span> ${s.three.map((a) => esc(line(a))).join(', ')}</p></div>`).join('') + '</div>';
+  h += `<h2>Bonuses (affixes)</h2><p class="muted">Rolled on gear that isn't unique; only bonuses that suit the hero who gets the item are rolled. Ranges by rarity: ${R.map((r) => r.name === 'epic' ? 'purple' : r.name).join(' / ')}.</p><div class="tbl-wrap"><table><tr><th>Bonus</th><th>Ranges</th><th>Slots</th></tr>` +
+    G.affixes.map((a) => `<tr data-s="${esc(a.text.toLowerCase())}"><td>+X${esc(a.text)}</td><td>${a.ranges.map((q) => (q[0] || q[1] ? q[0] + '–' + q[1] : '—')).join(' / ')}</td><td>${slots(a.slots)}</td></tr>`).join('') + '</table></div>';
+  h += `<h3>Charms</h3><div class="card">${G.charmNames.map((n, i) => ic({ slot: 'c', tier: Math.min(2, i), name: n, color: R[Math.min(2, i)].color })).join(' ')} ${(G.epicCharms || []).map((n) => ic({ slot: 'c', tier: L - 1, name: n, color: R[L - 1].color })).join(' ')}<p class="muted">${G.charmNames.join(', ')}${(G.epicCharms || []).length ? ' · purple: ' + G.epicCharms.join(', ') : ''}</p></div>`;
+  return h;
+}
+const slots = (s) => String(s).split('').map((c) => ({ w: 'Weapon', a: 'Armor', c: 'Charm', h: 'Helm', b: 'Boots' }[c] || c)).join(', ');
+function status() {
+  const u = { ticks: {} };
+  return '<h2>Statuses</h2><p class="muted">Badges appear above a unit when you select or target it; tap a monster to see its statuses in its info window. Amounts per turn show in the game.</p><div class="grid g3">' +
+    Object.entries(STATUS).map(([k, s]) => { const l = typeof s.label === 'function' ? s.label(u).replace(/[−+]0/, '') : s.label; return `<div class="card" data-s="${esc((k + ' ' + l).toLowerCase())}"><span class="tag ${s.bad ? 'db' : 'bf'}" style="border-color:${s.hue}">${esc(l)}</span><br><b>${esc(stName(k))}</b> <span class="muted">· ${s.bad ? 'harmful' : 'helpful'}</span></div>`; }).join('') + '</div>';
+}
+function terrain() {
+  return `<h2>Terrain</h2><p class="muted">Move cost is in move points (plains = 1). Damage reduction applies to units standing on the tile. Fliers cross water and mountains; mounted heroes are slowed in forest.</p><div class="tbl-wrap"><table><tr><th>Terrain</th><th>Move</th><th>Defense</th></tr>` +
+    D.Terrain.map((t) => `<tr class="terr" data-s="${esc(t.name.toLowerCase())}"><td><b>${esc(t.name)}</b></td><td>${t.moveCost >= 99 ? 'Blocked' : t.moveCost / 2}</td><td>${t.damageTaken < 1 ? '−' + Math.round((1 - t.damageTaken) * 100) + '% dmg' : '—'}${t.heal ? `<br>heals ${Math.round(t.heal * 100)}%/turn` : ''}</td></tr>`).join('') +
+    `</table></div><h3>Biomes</h3><div class="grid g6">${D.Biomes.map((b) => `<div class="card stage terr"><img src="${url('ground', b)}" alt=""><b>${esc(b)}</b></div>`).join('')}</div>`;
+}
+function rules() {
+  const F = D.Floors, P = D.Progress;
+  return `<h2>Floors</h2><div class="card"><ul>
+<li>Floors never end. Maps start at ${F.mapStart}×${F.mapStart} and grow by 1 every ${F.mapEvery} floors, up to ${F.mapMax}×${F.mapMax}.</li><li>Enemies: ${F.monstersStart} on floor 1, one more every ${F.monstersEvery} floors, plus more when you bring more than ${F.partyBase} heroes, up to ${F.monstersMax}. More enemies means each one is a little weaker.</li>
+<li>Monster level rises with every floor (faster after floor ${F.lateFrom}) and is set when the map is made, from your strongest heroes for the number of slots.</li>
+<li>Every <b>${F.eliteEvery}th</b> floor has an elite; every <b>${F.bossEvery}th</b> a boss on its throne. The <b>shop</b> comes up before every ${F.shopBefore || F.shopEvery}th floor: shop, then fight that floor. A free legendary every 100 floors.</li>
+<li><b>Seize floors</b>: move a hero onto the golden throne to win at once. <b>Reinforcement floors</b>: ${F.reinforceMax} extra monsters arrive on turns ${F.reinforceTurns.join(' and ')}.</li><li>${D.Biomes.length} biomes: ${D.Biomes.join(', ')}.</li></ul></div>
+<h2>Your team</h2><div class="card"><ul><li>All ten heroes are yours from the start; there is no recruiting.</li><li>Each floor: look at the map, choose who to bring, then place them yourself on the blue starting tiles. ${D.Slots.map(([f, n], i) => (i ? `${n} from floor ${f}` : `${n} heroes`)).join(', ')} (the most is ${D.Slots[D.Slots.length - 1][1]}).</li><li>Only the heroes who fight on a floor earn its XP. If you don't choose, the game brings your highest-level heroes.</li></ul></div>
+<h2>Replaying floors</h2><div class="card"><ul><li>Each run has a hidden seed: a floor you return to has the <b>same map, terrain, monsters and chest spots</b>. The floor list travels back to any floor reached.</li><li>Opened chests stay opened. Shops keep their stock. Companion spirits don't return on cleared floors.</li><li>Replaying a cleared floor gives <b>half gold</b> and <b>full XP</b>.</li><li>A boss that already dropped a legendary falls back to that floor's normal loot.</li></ul></div>
+<h2>Defeat</h2><div class="card"><p>A defeat keeps everything earned, and the floor is fought again. There is no penalty: reaching a floor you can't beat yet, then going back to farm XP and gear, is the game.</p></div>
+<h2>Level cap</h2><div class="card"><p>Heroes can be at most <b>${P.capAboveFloor} levels above the monsters on your highest floor</b>. A capped hero earns no XP until you clear that floor; each new floor raises the cap.</p></div>
+<h2>Saves</h2><div class="card"><p>Three save slots and an autosave after every turn of a climb, kept in this browser. A saved battle resumes mid-fight with fresh dice. Save → Export copies and downloads your game; Import takes a save file or pasted code into a slot you choose, and asks before replacing a slot that has a game.</p></div>`;
+}
+function mech() {
+  return `<h2>Combat</h2><div class="card"><ul>
+<li><b>Damage</b> comes from your attack (weapon ATK × rank) and the skill's power, minus the target's defense, then multiplied by the weapon triangle, element weakness, bonuses and terrain. The forecast runs the same math as the real hit.</li>
+<li><b>Elements:</b> Fire beats Ice, Ice beats Thunder, Thunder beats Fire; Light and Dark beat each other. A weakness takes ×1.5 (WEAK), a resistance ×0.75 (RESIST).</li>
+<li><b>Hit chance</b> is shown on every attack. The weapon triangle adds or removes 15%; some skills can't miss.</li><li><b>Terrain</b>: forest −15%, hill −10%, fort and throne −25% damage taken.</li></ul></div>
+<h2>Growth</h2><div class="card"><ul><li>Each level needs level × ${D.Progress.xpPerLevel} XP. Kills give the most XP (×${D.Progress.killBoss} for bosses, ×${D.Progress.killElite} for elites); part of each kill's XP is shared with the other heroes in the fight; hits and heals give a little.</li>
+<li>Forms change at Lv ${D.Progress.formLevels[1]} and Lv ${D.Progress.formLevels[2]}; at Lv ${D.Progress.ascendAt} you choose one of three ascensions (new sprite, passive and ultimate).</li>
+<li>Skills are learned on one schedule for every class, and level up with use (+5% power per skill level; switching skills counts double). Change your skills once per floor; it doesn't use up the turn.</li>
+<li>Class abilities are free actions with their own cooldown; they evolve at Lv 5, Lv 20 and Lv 30.</li></ul></div>
+<h2>Companions &amp; raises</h2><div class="card"><ul><li>Sometimes a monster spawns with a blue glow: defeat it to bond it as a companion that fights beside the hero who defeated it.</li><li><b>Necromancer</b>: each new kind of normal monster defeated can become a Raise skill. <b>Grave Bloom</b> raises a skeleton right after each kill.</li></ul></div>
+<h2>Gear</h2><div class="card"><ul><li>Slots: helm, armor, boots, charm and two weapon sets (Dragon Knight has three). Gunslingers and Assassins dual-wield. Switching weapon sets is free; putting gear on or taking it off in battle uses up the hero's turn (free before a battle starts).</li><li>The shop (before every 7th floor) buys, sells and combines items.</li></ul></div>`;
+}
+function controls() {
+  return `<h2>Controls</h2><div class="card"><ul>
+<li><b>Tap a hero</b> to see their blue move tiles and red attack tiles. Tap or drag to a blue tile to move there, or tap the hero again to act in place.</li>
+<li>A <b>wooden command menu</b> opens beside the hero: Attack, Skills ▸, ✦ class ability, Item, Move, Undo, Defend, Wait, Cancel.</li>
+<li>Pick an attack and the <b>forecast window</b> shows HP before → after (KO when it will die), damage, hit %, WEAK/RESIST and statuses. ◀ ▶ switch targets, ⇄ swaps weapon sets; switch skills right there. Tap a monster out of reach and the hero walks closer first.</li>
+<li>Some skills and abilities are aimed in several taps: tap the gold tiles, or Cancel.</li>
+<li><b>Tap a monster</b> to open its info window and see its move zone (purple) and attack zone (red).</li><li><b>☰</b> opens the menu: End Turn, Gear, Save, Settings, zoom, view (flat or isometric), rotate, minimap, danger zone, battle speed, next hero and the floor list.</li>
+<li>During the enemy turn the camera follows each monster; <b>Skip enemy turn</b> speeds it up.</li><li>Drag to pan, pinch or scroll to zoom.</li></ul></div>`;
+}
+function changes() {
+  return '<h2>What changed from the old game</h2><p class="muted">Every place where this game intentionally differs from the old one (v0.26.1). Anything not listed here matches the old game.</p>' +
+    Object.entries(D.Changes).map(([sec, list]) => `<h3>${esc(sec)}</h3><div class="card"><ul>${list.map((l) => `<li data-s="${esc(l.toLowerCase())}">${esc(l).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/`([^`]+)`/g, '<i>$1</i>')}</li>`).join('')}</ul></div>`).join('');
+}
+function credits() {
+  return `<h2>Credits</h2><div class="card"><ul>
+<li><b>Tiny Swords</b> by Pixel Frog: map tiles, trees, buildings, UI art.</li><li><b>Super Pixel Effects Gigapack (Free Version)</b> by Will Tice / unTied Games: attack animations (credit required by its license).</li>
+<li><b>Raven Fantasy Icons</b> by Clockwork Raven Studios: weapon and armor icons.</li><li><b>Grenze Gotisch</b> and <b>EB Garamond</b> fonts (SIL Open Font License) via Google Fonts.</li>
+<li>Hero and monster sprites: the game's own art. Game design: Crusader Tactics.</li></ul><p class="muted">Before an App Store release, confirm each asset's license on its store page.</p></div>`;
+}
+const R = { heroes, monsters, bosses, effects, items, status, terrain, rules, mech, controls, changes, credits };
+function render() {
+  tabs();
+  const m = $('#main');
+  m.innerHTML = R[TAB]();
+  m.querySelectorAll('.chip').forEach((c) => (c.onclick = () => { HC = c.dataset.c; render(); }));
+  m.querySelectorAll('.seg button[data-f]').forEach((b) => (b.onclick = () => { FXF = b.dataset.f; render(); }));
+  wireFx();
+  filter();
+}
+function filter() {
+  const q = $('#q').value.trim().toLowerCase();
+  document.querySelectorAll('#main [data-s]').forEach((el) => el.classList.toggle('hide', !!q && !el.dataset.s.includes(q)));
+}
+$('#q').addEventListener('input', () => {
+  const q = $('#q').value.trim().toLowerCase();
+  if (q && TAB === 'heroes') { const hit = D.Skills.find((s) => s.Class && s.Name.toLowerCase().includes(q)); if (hit && hit.Class !== HC) { HC = hit.Class; render(); return; } }
+  filter();
+});
+
+(async () => {
+  try {
+    [D] = await Promise.all([fetch('codex.json?v=__BUILD__').then((r) => r.json()), load('__BUILD__')]);
+  } catch (e) {
+    $('#load').textContent = 'The Codex could not load: ' + e.message;
+    return;
+  }
+  setup(book);
+  const t = location.hash.slice(1);
+  if (R[t]) TAB = t;
+  render();
+  requestAnimationFrame(frame);
+})();
+</script>
+</body></html>

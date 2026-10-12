@@ -1,0 +1,9655 @@
+{
+ "Heroes": {
+  "Assassin": {
+   "Role": "Fast dagger killer",
+   "Stages": [
+    {
+     "Key": "0",
+     "Label": "Lv 1",
+     "Name": "Assassin",
+     "Pic": "Assassin form1",
+     "Lv": 1,
+     "HP": 20,
+     "Atk": 11,
+     "Def": 2,
+     "Mov": 5
+    },
+    {
+     "Key": "1",
+     "Label": "Lv 5",
+     "Name": "Shadow",
+     "Pic": "Assassin form2",
+     "Lv": 5,
+     "HP": 35,
+     "Atk": 16,
+     "Def": 4,
+     "Mov": 5
+    },
+    {
+     "Key": "2",
+     "Label": "Lv 20",
+     "Name": "Nightblade",
+     "Pic": "Assassin form3",
+     "Lv": 20,
+     "HP": 91,
+     "Atk": 35,
+     "Def": 9,
+     "Mov": 6
+    },
+    {
+     "Key": "Phantom",
+     "Label": "Lv 30 · Phantom",
+     "Name": "Phantom",
+     "Pic": "Assassin Phantom",
+     "Lv": 30,
+     "HP": 134,
+     "Atk": 50,
+     "Def": 12,
+     "Mov": 7
+    },
+    {
+     "Key": "Viper",
+     "Label": "Lv 30 · Viper",
+     "Name": "Viper",
+     "Pic": "Assassin Viper",
+     "Lv": 30,
+     "HP": 134,
+     "Atk": 57,
+     "Def": 12,
+     "Mov": 6
+    },
+    {
+     "Key": "Blade Dancer",
+     "Label": "Lv 30 · Blade Dancer",
+     "Name": "Blade Dancer",
+     "Pic": "Assassin Blade Dancer",
+     "Lv": 30,
+     "HP": 134,
+     "Atk": 50,
+     "Def": 12,
+     "Mov": 8
+    }
+   ],
+   "Abilities": [
+    {
+     "Stage": "Lv 1",
+     "Name": "Bloodlust",
+     "Text": "3 turns: cloaked even while attacking, +3 move, +50% crit chance.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 5",
+     "Name": "Bloodlust+",
+     "Text": "3 turns: cloaked, +3 move, +60% crit chance, and crits deal +25% more.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 20",
+     "Name": "Bloodlust II",
+     "Text": "4 turns: cloaked, +4 move, +70% crit chance, crits +25%, and each kill recharges Cloak.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Phantom",
+     "Name": "Shadow Clones",
+     "Text": "Summon 2 decoy clones next to you for 3 turns. Enemies prefer to attack them, and a clone that's destroyed explodes.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Viper",
+     "Name": "Death Mark",
+     "Text": "Mark one enemy for 3 turns: it takes +50% damage from your party, and when it dies its poison spreads to every enemy within 2 tiles.",
+     "Cooldown": 4,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Blade Dancer",
+     "Name": "Crimson Bloodlust",
+     "Text": "4 turns: cloaked, +5 move, every hit crits, crits +50%, Cloak recharges on kills, and each kill adds a turn.",
+     "Cooldown": 5,
+     "Free": false
+    }
+   ],
+   "Ascensions": [
+    {
+     "Name": "Phantom",
+     "Element": "dark",
+     "Bonus": "+1 Move",
+     "Passive": "Evasion: 30% chance to dodge any attack.",
+     "Ultimate": "Phantom Rush"
+    },
+    {
+     "Name": "Viper",
+     "Element": "elec",
+     "Bonus": "+15% ATK",
+     "Passive": "Toxin: every hit causes bleed 3. Bleeding enemies take 30% more damage from you.",
+     "Ultimate": "Venom Storm"
+    },
+    {
+     "Name": "Blade Dancer",
+     "Element": "fire",
+     "Bonus": "+2 Move",
+     "Passive": "Dance of Blades: once per turn, a kill lets you act again.",
+     "Ultimate": "Crimson Waltz"
+    }
+   ],
+   "Prof": [
+    [
+     "1",
+     "⚔ Dagger C (max S) · 🛡 Light \u0026 Medium armor"
+    ],
+    [
+     "8",
+     "⚔ Dagger B (max S) · 🛡 Light \u0026 Medium armor"
+    ],
+    [
+     "18",
+     "⚔ Dagger A (max S) · 🛡 Light \u0026 Medium armor"
+    ],
+    [
+     "30",
+     "⚔ Dagger S (max S) · 🛡 Light \u0026 Medium armor"
+    ]
+   ],
+   "Dual": true
+  },
+  "Dragon Knight": {
+   "Role": "Flying dragon rider",
+   "Stages": [
+    {
+     "Key": "0",
+     "Label": "Lv 1",
+     "Name": "Dragon Knight",
+     "Pic": "Dragon Knight form1",
+     "Lv": 1,
+     "HP": 34,
+     "Atk": 12,
+     "Def": 6,
+     "Mov": 5
+    },
+    {
+     "Key": "1",
+     "Label": "Lv 5",
+     "Name": "Wyvern Knight",
+     "Pic": "Dragon Knight form2",
+     "Lv": 5,
+     "HP": 50,
+     "Atk": 17,
+     "Def": 8,
+     "Mov": 5
+    },
+    {
+     "Key": "2",
+     "Label": "Lv 20",
+     "Name": "Dragoon",
+     "Pic": "Dragon Knight form3",
+     "Lv": 20,
+     "HP": 107,
+     "Atk": 37,
+     "Def": 13,
+     "Mov": 6
+    },
+    {
+     "Key": "Inferno Rider",
+     "Label": "Lv 30 · Inferno Rider",
+     "Name": "Inferno Rider",
+     "Pic": "Dragon Knight Inferno Rider",
+     "Lv": 30,
+     "HP": 151,
+     "Atk": 56,
+     "Def": 16,
+     "Mov": 6
+    },
+    {
+     "Key": "Frost Wyrm",
+     "Label": "Lv 30 · Frost Wyrm",
+     "Name": "Frost Wyrm",
+     "Pic": "Dragon Knight Frost Wyrm",
+     "Lv": 30,
+     "HP": 181,
+     "Atk": 51,
+     "Def": 16,
+     "Mov": 6
+    },
+    {
+     "Key": "Storm Dragoon",
+     "Label": "Lv 30 · Storm Dragoon",
+     "Name": "Storm Dragoon",
+     "Pic": "Dragon Knight Storm Dragoon",
+     "Lv": 30,
+     "HP": 151,
+     "Atk": 51,
+     "Def": 16,
+     "Mov": 8
+    }
+   ],
+   "Abilities": [
+    {
+     "Stage": "Lv 1",
+     "Name": "Beast Mode",
+     "Text": "3 turns: +7 move, attacks add 25% of their damage as fire, 35% chance to burn for 3 turns.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 5",
+     "Name": "Beast Mode+",
+     "Text": "3 turns: +7 move, 30% added fire, 45% burn chance.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 20",
+     "Name": "Beast Mode II",
+     "Text": "4 turns: +7 move, 35% added fire, 55% burn chance, and attacks splash 50% to adjacent enemies.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Inferno Rider",
+     "Name": "Inferno Beast",
+     "Text": "4 turns: +8 move, 50% added fire, attacks always burn, splash, and every tile you end on burns for 2 turns.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Frost Wyrm",
+     "Name": "Glacial Scales",
+     "Text": "3 turns: ranged attacks can't hurt you, melee damage to you is cut by 40%, and melee attackers are rooted.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Storm Dragoon",
+     "Name": "Sky Lord",
+     "Text": "Take off (ends your turn): untargetable until your next turn, then Crash Down on any open tile within 8 for 2.5× damage to everything within 2 tiles, shocking them.",
+     "Cooldown": 5,
+     "Free": false
+    }
+   ],
+   "Ascensions": [
+    {
+     "Name": "Inferno Rider",
+     "Element": "fire",
+     "Bonus": "+10% ATK",
+     "Passive": "Fire skills deal 40% more damage and burn (bleed 2).",
+     "Ultimate": "Hellfire Dive"
+    },
+    {
+     "Name": "Frost Wyrm",
+     "Element": "ice",
+     "Bonus": "+20% HP",
+     "Passive": "Frost Breath: every attack snares. Immune to snare.",
+     "Ultimate": "Glacial Breath"
+    },
+    {
+     "Name": "Storm Dragoon",
+     "Element": "elec",
+     "Bonus": "+2 Move",
+     "Passive": "Sky Dive has no cooldown.",
+     "Ultimate": "Thunder Lance"
+    }
+   ],
+   "Prof": [
+    [
+     "1",
+     "⚔ Lance C (max S) · Axe C (max S) · Sword D (max A) · 🛡 Medium \u0026 Heavy armor"
+    ],
+    [
+     "8",
+     "⚔ Lance B (max S) · Axe C (max S) · Sword D (max A) · 🛡 Medium \u0026 Heavy armor"
+    ],
+    [
+     "18",
+     "⚔ Lance A (max S) · Axe B (max S) · Sword C (max A) · 🛡 Medium \u0026 Heavy armor"
+    ],
+    [
+     "30",
+     "⚔ Lance S (max S) · Axe A (max S) · Sword B (max A) · 🛡 Medium \u0026 Heavy armor"
+    ]
+   ],
+   "Dual": false
+  },
+  "Gunslinger": {
+   "Role": "Pistols, multi-shots",
+   "Stages": [
+    {
+     "Key": "0",
+     "Label": "Lv 1",
+     "Name": "Gunslinger",
+     "Pic": "Gunslinger form1",
+     "Lv": 1,
+     "HP": 22,
+     "Atk": 11,
+     "Def": 2,
+     "Mov": 4
+    },
+    {
+     "Key": "1",
+     "Label": "Lv 5",
+     "Name": "Desperado",
+     "Pic": "Gunslinger form2",
+     "Lv": 5,
+     "HP": 37,
+     "Atk": 16,
+     "Def": 4,
+     "Mov": 4
+    },
+    {
+     "Key": "2",
+     "Label": "Lv 20",
+     "Name": "Gunmaster",
+     "Pic": "Gunslinger form3",
+     "Lv": 20,
+     "HP": 93,
+     "Atk": 35,
+     "Def": 9,
+     "Mov": 5
+    },
+    {
+     "Key": "Outlaw",
+     "Label": "Lv 30 · Outlaw",
+     "Name": "Outlaw",
+     "Pic": "Gunslinger Outlaw",
+     "Lv": 30,
+     "HP": 136,
+     "Atk": 55,
+     "Def": 12,
+     "Mov": 5
+    },
+    {
+     "Key": "Bounty Hunter",
+     "Label": "Lv 30 · Bounty Hunter",
+     "Name": "Bounty Hunter",
+     "Pic": "Gunslinger Bounty Hunter",
+     "Lv": 30,
+     "HP": 136,
+     "Atk": 50,
+     "Def": 12,
+     "Mov": 5
+    },
+    {
+     "Key": "Trickshot",
+     "Label": "Lv 30 · Trickshot",
+     "Name": "Trickshot",
+     "Pic": "Gunslinger Trickshot",
+     "Lv": 30,
+     "HP": 136,
+     "Atk": 50,
+     "Def": 12,
+     "Mov": 6
+    }
+   ],
+   "Abilities": [
+    {
+     "Stage": "Lv 1",
+     "Name": "Quick Draw",
+     "Text": "This turn, fire two different skills, one from each gun, at one target or two.",
+     "Cooldown": 3,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 5",
+     "Name": "Quick Draw+",
+     "Text": "Two different skills this turn, and the second deals +25%.",
+     "Cooldown": 3,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 20",
+     "Name": "Quick Draw II",
+     "Text": "Two skills this turn (the same skill is allowed), both +20%.",
+     "Cooldown": 3,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Outlaw",
+     "Name": "Dead Man's Hand",
+     "Text": "Three skills this turn (repeats allowed), each +25%, at any mix of targets.",
+     "Cooldown": 3,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Bounty Hunter",
+     "Name": "Wanted Poster",
+     "Text": "Mark one enemy until it dies: your shots at it can't miss and deal +50%. Killing it recharges Wanted Poster and gives triple gold and a guaranteed item.",
+     "Cooldown": 4,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Trickshot",
+     "Name": "Overwatch",
+     "Text": "Ends your turn aiming a 4-tile cone. During the enemy turn you shoot every enemy that moves inside it, at 70% damage.",
+     "Cooldown": 4,
+     "Free": false
+    }
+   ],
+   "Ascensions": [
+    {
+     "Name": "Outlaw",
+     "Element": "fire",
+     "Bonus": "+10% ATK",
+     "Passive": "Fan the Hammer: single-shot skills fire twice at 60% damage.",
+     "Ultimate": "Six Shooter"
+    },
+    {
+     "Name": "Bounty Hunter",
+     "Element": "dark",
+     "Bonus": "+1 range",
+     "Passive": "Bounty: +50% damage to elites and bosses. Kills give double gold.",
+     "Ultimate": "Dead or Alive"
+    },
+    {
+     "Name": "Trickshot",
+     "Element": "elec",
+     "Bonus": "+1 Move",
+     "Passive": "Ricochet Master: every shot bounces to one more nearby enemy for 60%.",
+     "Ultimate": "Ricochet Storm"
+    }
+   ],
+   "Prof": [
+    [
+     "1",
+     "⚔ Gun C (max S) · 🛡 Light \u0026 Medium armor"
+    ],
+    [
+     "8",
+     "⚔ Gun B (max S) · 🛡 Light \u0026 Medium armor"
+    ],
+    [
+     "18",
+     "⚔ Gun A (max S) · 🛡 Light \u0026 Medium armor"
+    ],
+    [
+     "30",
+     "⚔ Gun S (max S) · 🛡 Light \u0026 Medium armor"
+    ]
+   ],
+   "Dual": true
+  },
+  "Healer": {
+   "Role": "Heals, buffs, light attacks",
+   "Stages": [
+    {
+     "Key": "0",
+     "Label": "Lv 1",
+     "Name": "Healer",
+     "Pic": "Healer form1",
+     "Lv": 1,
+     "HP": 18,
+     "Atk": 6,
+     "Def": 2,
+     "Mov": 3
+    },
+    {
+     "Key": "1",
+     "Label": "Lv 5",
+     "Name": "Cleric",
+     "Pic": "Healer form2",
+     "Lv": 5,
+     "HP": 32,
+     "Atk": 11,
+     "Def": 4,
+     "Mov": 3
+    },
+    {
+     "Key": "2",
+     "Label": "Lv 20",
+     "Name": "High Priest",
+     "Pic": "Healer form3",
+     "Lv": 20,
+     "HP": 89,
+     "Atk": 30,
+     "Def": 9,
+     "Mov": 4
+    },
+    {
+     "Key": "Saint",
+     "Label": "Lv 30 · Saint",
+     "Name": "Saint",
+     "Pic": "Healer Saint",
+     "Lv": 30,
+     "HP": 131,
+     "Atk": 44,
+     "Def": 12,
+     "Mov": 4
+    },
+    {
+     "Key": "Oracle",
+     "Label": "Lv 30 · Oracle",
+     "Name": "Oracle",
+     "Pic": "Healer Oracle",
+     "Lv": 30,
+     "HP": 131,
+     "Atk": 44,
+     "Def": 12,
+     "Mov": 5
+    },
+    {
+     "Key": "Plague Doctor",
+     "Label": "Lv 30 · Plague Doctor",
+     "Name": "Plague Doctor",
+     "Pic": "Healer Plague Doctor",
+     "Lv": 30,
+     "HP": 131,
+     "Atk": 57,
+     "Def": 12,
+     "Mov": 4
+    }
+   ],
+   "Abilities": [
+    {
+     "Stage": "Lv 1",
+     "Name": "Enlightenment",
+     "Text": "2 turns: healing +30%, and every heal reaches the whole party.",
+     "Cooldown": 4,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 5",
+     "Name": "Enlightenment+",
+     "Text": "2 turns: healing +40%, party heals, and each heal removes one debuff.",
+     "Cooldown": 4,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 20",
+     "Name": "Enlightenment II",
+     "Text": "3 turns: healing +50%, party heals, and each heal removes all debuffs.",
+     "Cooldown": 4,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Saint",
+     "Name": "Divine Choir",
+     "Text": "3 turns: healing +60%, party heals that cleanse everything, overheal shields doubled, and one fallen ally is revived right away.",
+     "Cooldown": 4,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Oracle",
+     "Name": "Time Shift",
+     "Text": "One ally acts again this turn (move and action refreshed) and gains Haste.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Plague Doctor",
+     "Name": "Plague Bloom",
+     "Text": "3 turns: each heal also deals half its amount as dark damage to every enemy within 2 tiles of the healed ally, and poisons them.",
+     "Cooldown": 5,
+     "Free": false
+    }
+   ],
+   "Ascensions": [
+    {
+     "Name": "Saint",
+     "Element": "light",
+     "Bonus": "+40% healing",
+     "Passive": "Overheal: healing beyond max HP becomes a shield.",
+     "Ultimate": "Sanctuary"
+    },
+    {
+     "Name": "Oracle",
+     "Element": "elec",
+     "Bonus": "+1 Move",
+     "Passive": "Foresight: healed allies get Haste (+2 Move). Divine Grace no longer roots you.",
+     "Ultimate": "Time Warp"
+    },
+    {
+     "Name": "Plague Doctor",
+     "Element": "dark",
+     "Bonus": "+30% ATK",
+     "Passive": "Contagion: your attacks cause bleed and heal your most hurt ally for 50% of the damage.",
+     "Ultimate": "Pandemic"
+    }
+   ],
+   "Prof": [
+    [
+     "1",
+     "⚔ Staff C (max S) · Wand D (max A) · 🛡 Light \u0026 Medium armor"
+    ],
+    [
+     "8",
+     "⚔ Staff B (max S) · Wand D (max A) · 🛡 Light \u0026 Medium armor"
+    ],
+    [
+     "18",
+     "⚔ Staff A (max S) · Wand C (max A) · 🛡 Light \u0026 Medium armor"
+    ],
+    [
+     "30",
+     "⚔ Staff S (max S) · Wand B (max A) · 🛡 Light \u0026 Medium armor"
+    ]
+   ],
+   "Dual": false
+  },
+  "Knight": {
+   "Role": "Mounted charger, huge move",
+   "Stages": [
+    {
+     "Key": "0",
+     "Label": "Lv 1",
+     "Name": "Knight",
+     "Pic": "Knight form1",
+     "Lv": 1,
+     "HP": 32,
+     "Atk": 13,
+     "Def": 7,
+     "Mov": 7
+    },
+    {
+     "Key": "1",
+     "Label": "Lv 5",
+     "Name": "Cavalier",
+     "Pic": "Knight form2",
+     "Lv": 5,
+     "HP": 48,
+     "Atk": 18,
+     "Def": 9,
+     "Mov": 7
+    },
+    {
+     "Key": "2",
+     "Label": "Lv 20",
+     "Name": "Knight Commander",
+     "Pic": "Knight form3",
+     "Lv": 20,
+     "HP": 105,
+     "Atk": 38,
+     "Def": 14,
+     "Mov": 8
+    },
+    {
+     "Key": "Templar",
+     "Label": "Lv 30 · Templar",
+     "Name": "Templar",
+     "Pic": "Knight Templar",
+     "Lv": 30,
+     "HP": 171,
+     "Atk": 53,
+     "Def": 19,
+     "Mov": 8
+    },
+    {
+     "Key": "Black Knight",
+     "Label": "Lv 30 · Black Knight",
+     "Name": "Black Knight",
+     "Pic": "Knight Black Knight",
+     "Lv": 30,
+     "HP": 149,
+     "Atk": 61,
+     "Def": 17,
+     "Mov": 8
+    },
+    {
+     "Key": "Storm Rider",
+     "Label": "Lv 30 · Storm Rider",
+     "Name": "Storm Rider",
+     "Pic": "Knight Storm Rider",
+     "Lv": 30,
+     "HP": 149,
+     "Atk": 53,
+     "Def": 17,
+     "Mov": 10
+    }
+   ],
+   "Abilities": [
+    {
+     "Stage": "Lv 1",
+     "Name": "Vow of Honor",
+     "Text": "3 turns: +30% attack, +5 move.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 5",
+     "Name": "Vow of Honor+",
+     "Text": "3 turns: +35% attack, +5 move, and charge bonus +50%.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 20",
+     "Name": "Vow of Honor II",
+     "Text": "3 turns: +40% attack, +6 move, charge bonus +50%, and allies next to you get +15% attack.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Templar",
+     "Name": "Sacred Vow",
+     "Text": "3 turns: half of all damage aimed at allies within 2 tiles hits you instead, you heal 10% of max HP each turn, and those allies get +20% DEF.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Black Knight",
+     "Name": "Oath of Ruin",
+     "Text": "3 turns: every kill gives you a full extra turn (move and attack) and stuns enemies within 2 tiles.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Storm Rider",
+     "Name": "Thunderous Oath",
+     "Text": "4 turns: +50% attack, +7 move, charge bonus doubled, and adjacent allies get +20% attack.",
+     "Cooldown": 5,
+     "Free": false
+    }
+   ],
+   "Ascensions": [
+    {
+     "Name": "Templar",
+     "Element": "light",
+     "Bonus": "+15% HP, +2 DEF",
+     "Passive": "Holy Charge: after charging 3+ tiles, your hit heals allies next to the target for 15% of their max HP.",
+     "Ultimate": "Crusade"
+    },
+    {
+     "Name": "Black Knight",
+     "Element": "dark",
+     "Bonus": "+15% ATK",
+     "Passive": "Dread: single-target attacks deal 40% more. Your kills terrify (stun) adjacent enemies.",
+     "Ultimate": "Doom Lance"
+    },
+    {
+     "Name": "Storm Rider",
+     "Element": "elec",
+     "Bonus": "+2 Move",
+     "Passive": "Thunder Gallop: charge bonus is doubled (+24% per tile, max +120%).",
+     "Ultimate": "Lightning Charge"
+    }
+   ],
+   "Prof": [
+    [
+     "1",
+     "⚔ Lance C (max S) · Sword D (max A) · 🛡 Medium \u0026 Heavy armor"
+    ],
+    [
+     "8",
+     "⚔ Lance B (max S) · Sword D (max A) · 🛡 Medium \u0026 Heavy armor"
+    ],
+    [
+     "18",
+     "⚔ Lance A (max S) · Sword C (max A) · 🛡 Medium \u0026 Heavy armor"
+    ],
+    [
+     "30",
+     "⚔ Lance S (max S) · Sword B (max A) · 🛡 Medium \u0026 Heavy armor"
+    ]
+   ],
+   "Dual": false
+  },
+  "Mage": {
+   "Role": "Elemental magic",
+   "Stages": [
+    {
+     "Key": "0",
+     "Label": "Lv 1",
+     "Name": "Mage",
+     "Pic": "Mage form1",
+     "Lv": 1,
+     "HP": 18,
+     "Atk": 11,
+     "Def": 1,
+     "Mov": 3
+    },
+    {
+     "Key": "1",
+     "Label": "Lv 5",
+     "Name": "Sorcerer",
+     "Pic": "Mage form2",
+     "Lv": 5,
+     "HP": 32,
+     "Atk": 16,
+     "Def": 3,
+     "Mov": 3
+    },
+    {
+     "Key": "2",
+     "Label": "Lv 20",
+     "Name": "Archmage",
+     "Pic": "Mage form3",
+     "Lv": 20,
+     "HP": 89,
+     "Atk": 35,
+     "Def": 8,
+     "Mov": 4
+    },
+    {
+     "Key": "Pyromancer",
+     "Label": "Lv 30 · Pyromancer",
+     "Name": "Pyromancer",
+     "Pic": "Mage Pyromancer",
+     "Lv": 30,
+     "HP": 131,
+     "Atk": 55,
+     "Def": 11,
+     "Mov": 4
+    },
+    {
+     "Key": "Cryomancer",
+     "Label": "Lv 30 · Cryomancer",
+     "Name": "Cryomancer",
+     "Pic": "Mage Cryomancer",
+     "Lv": 30,
+     "HP": 131,
+     "Atk": 50,
+     "Def": 11,
+     "Mov": 4
+    },
+    {
+     "Key": "Stormcaller",
+     "Label": "Lv 30 · Stormcaller",
+     "Name": "Stormcaller",
+     "Pic": "Mage Stormcaller",
+     "Lv": 30,
+     "HP": 111,
+     "Atk": 50,
+     "Def": 11,
+     "Mov": 5
+    }
+   ],
+   "Abilities": [
+    {
+     "Stage": "Lv 1",
+     "Name": "Inner Element",
+     "Text": "Next attack +30%, can't miss, and always applies its element's status.",
+     "Cooldown": 3,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 5",
+     "Name": "Inner Element+",
+     "Text": "Next attack +40%, can't miss, and its status lasts 1 turn longer.",
+     "Cooldown": 3,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 20",
+     "Name": "Inner Element II",
+     "Text": "Next attack +50%, can't miss, longer status, and its area grows 1 tile (single-target spells splash to adjacent enemies).",
+     "Cooldown": 3,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Pyromancer",
+     "Name": "Firestorm Field",
+     "Text": "Set a 3×3 area within 5 tiles ablaze for 3 turns: enemies in it burn every turn, and you deal +20% fire damage while it lasts.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Cryomancer",
+     "Name": "Absolute Freeze",
+     "Text": "Freeze one enemy within 6 tiles for 2 turns: it can't act, takes +50% damage from your party, and can't be healed.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Stormcaller",
+     "Name": "Elemental Overload",
+     "Text": "Your next 2 spells get +60%, can't miss, longer status and +1 tile area.",
+     "Cooldown": 3,
+     "Free": false
+    }
+   ],
+   "Ascensions": [
+    {
+     "Name": "Pyromancer",
+     "Element": "fire",
+     "Bonus": "+10% ATK",
+     "Passive": "Fire skills deal 40% more damage and burn (bleed 2).",
+     "Ultimate": "Inferno"
+    },
+    {
+     "Name": "Cryomancer",
+     "Element": "ice",
+     "Bonus": "+1 attack range",
+     "Passive": "Ice skills always snare. Snared enemies take 25% more damage from you.",
+     "Ultimate": "Absolute Zero"
+    },
+    {
+     "Name": "Stormcaller",
+     "Element": "elec",
+     "Bonus": "+1 Move, −15% HP",
+     "Passive": "Every attack arcs to one more enemy nearby for 50%.",
+     "Ultimate": "Thunderstorm"
+    }
+   ],
+   "Prof": [
+    [
+     "1",
+     "⚔ Wand C (max S) · Staff D (max A) · 🛡 Light \u0026 Medium armor"
+    ],
+    [
+     "8",
+     "⚔ Wand B (max S) · Staff D (max A) · 🛡 Light \u0026 Medium armor"
+    ],
+    [
+     "18",
+     "⚔ Wand A (max S) · Staff C (max A) · 🛡 Light \u0026 Medium armor"
+    ],
+    [
+     "30",
+     "⚔ Wand S (max S) · Staff B (max A) · 🛡 Light \u0026 Medium armor"
+    ]
+   ],
+   "Dual": false
+  },
+  "Ranger": {
+   "Role": "Long-range bow",
+   "Stages": [
+    {
+     "Key": "0",
+     "Label": "Lv 1",
+     "Name": "Ranger",
+     "Pic": "Ranger form1",
+     "Lv": 1,
+     "HP": 20,
+     "Atk": 10,
+     "Def": 2,
+     "Mov": 4
+    },
+    {
+     "Key": "1",
+     "Label": "Lv 5",
+     "Name": "Hunter",
+     "Pic": "Ranger form2",
+     "Lv": 5,
+     "HP": 35,
+     "Atk": 15,
+     "Def": 4,
+     "Mov": 4
+    },
+    {
+     "Key": "2",
+     "Label": "Lv 20",
+     "Name": "Sharpshooter",
+     "Pic": "Ranger form3",
+     "Lv": 20,
+     "HP": 91,
+     "Atk": 34,
+     "Def": 9,
+     "Mov": 5
+    },
+    {
+     "Key": "Sniper",
+     "Label": "Lv 30 · Sniper",
+     "Name": "Sniper",
+     "Pic": "Ranger Sniper",
+     "Lv": 30,
+     "HP": 134,
+     "Atk": 49,
+     "Def": 12,
+     "Mov": 5
+    },
+    {
+     "Key": "Trapper",
+     "Label": "Lv 30 · Trapper",
+     "Name": "Trapper",
+     "Pic": "Ranger Trapper",
+     "Lv": 30,
+     "HP": 134,
+     "Atk": 49,
+     "Def": 12,
+     "Mov": 5
+    },
+    {
+     "Key": "Tempest Archer",
+     "Label": "Lv 30 · Tempest Archer",
+     "Name": "Tempest Archer",
+     "Pic": "Ranger Tempest Archer",
+     "Lv": 30,
+     "HP": 134,
+     "Atk": 49,
+     "Def": 12,
+     "Mov": 7
+    }
+   ],
+   "Abilities": [
+    {
+     "Stage": "Lv 1",
+     "Name": "Hunter's Eye",
+     "Text": "This turn: +3 range, and your next skill (not ultimates) hits up to 3 enemies at +30%.",
+     "Cooldown": 3,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 5",
+     "Name": "Hunter's Eye+",
+     "Text": "This turn: +3 range, next skill hits up to 4 enemies at +35%.",
+     "Cooldown": 3,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 20",
+     "Name": "Hunter's Eye II",
+     "Text": "This turn: +4 range, next skill hits up to 5 enemies at +40% and ignores 30% DEF.",
+     "Cooldown": 3,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Sniper",
+     "Name": "Deadeye Focus",
+     "Text": "Stay still this turn: your next shot can hit any enemy on the map, always crits for 3× damage, and ignores all DEF.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Trapper",
+     "Name": "Snare Field",
+     "Text": "Hide 3 traps on tiles within 6. An enemy that steps on one is rooted and poisoned for 3 turns and takes +30% damage from you.",
+     "Cooldown": 4,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Tempest Archer",
+     "Name": "Storm Eye",
+     "Text": "For 2 turns: +5 range, and each skill hits every enemy in range (up to 6) at +50%, ignoring 30% DEF.",
+     "Cooldown": 4,
+     "Free": false
+    }
+   ],
+   "Ascensions": [
+    {
+     "Name": "Sniper",
+     "Element": "ice",
+     "Bonus": "+2 attack range",
+     "Passive": "Steady Aim: +35% damage if you haven't moved this turn. Ignores 30% DEF.",
+     "Ultimate": "Deadeye"
+    },
+    {
+     "Name": "Trapper",
+     "Element": "dark",
+     "Bonus": "Snares last 2 turns",
+     "Passive": "Hunter's Mark: snared or stunned enemies take 30% more damage from you.",
+     "Ultimate": "Snare Field"
+    },
+    {
+     "Name": "Tempest Archer",
+     "Element": "elec",
+     "Bonus": "+2 Move",
+     "Passive": "Hit and Run: you can still move after attacking if you haven't moved yet.",
+     "Ultimate": "Gale Volley"
+    }
+   ],
+   "Prof": [
+    [
+     "1",
+     "⚔ Bow C (max S) · Sword D (max A) · 🛡 Light \u0026 Medium armor"
+    ],
+    [
+     "8",
+     "⚔ Bow B (max S) · Sword D (max A) · 🛡 Light \u0026 Medium armor"
+    ],
+    [
+     "18",
+     "⚔ Bow A (max S) · Sword C (max A) · 🛡 Light \u0026 Medium armor"
+    ],
+    [
+     "30",
+     "⚔ Bow S (max S) · Sword B (max A) · 🛡 Light \u0026 Medium armor"
+    ]
+   ],
+   "Dual": false
+  },
+  "Tank": {
+   "Role": "Heavy armor, stuns",
+   "Stages": [
+    {
+     "Key": "0",
+     "Label": "Lv 1",
+     "Name": "Tank",
+     "Pic": "Tank form1",
+     "Lv": 1,
+     "HP": 36,
+     "Atk": 10,
+     "Def": 8,
+     "Mov": 3
+    },
+    {
+     "Key": "1",
+     "Label": "Lv 5",
+     "Name": "Ironclad",
+     "Pic": "Tank form2",
+     "Lv": 5,
+     "HP": 52,
+     "Atk": 15,
+     "Def": 10,
+     "Mov": 3
+    },
+    {
+     "Key": "2",
+     "Label": "Lv 20",
+     "Name": "Bastion",
+     "Pic": "Tank form3",
+     "Lv": 20,
+     "HP": 110,
+     "Atk": 34,
+     "Def": 15,
+     "Mov": 4
+    },
+    {
+     "Key": "Juggernaut",
+     "Label": "Lv 30 · Juggernaut",
+     "Name": "Juggernaut",
+     "Pic": "Tank Juggernaut",
+     "Lv": 30,
+     "HP": 216,
+     "Atk": 49,
+     "Def": 18,
+     "Mov": 4
+    },
+    {
+     "Key": "Guardian",
+     "Label": "Lv 30 · Guardian",
+     "Name": "Guardian",
+     "Pic": "Tank Guardian",
+     "Lv": 30,
+     "HP": 154,
+     "Atk": 49,
+     "Def": 22,
+     "Mov": 4
+    },
+    {
+     "Key": "Warlord",
+     "Label": "Lv 30 · Warlord",
+     "Name": "Warlord",
+     "Pic": "Tank Warlord",
+     "Lv": 30,
+     "HP": 154,
+     "Atk": 56,
+     "Def": 18,
+     "Mov": 4
+    }
+   ],
+   "Abilities": [
+    {
+     "Stage": "Lv 1",
+     "Name": "Iron Maiden",
+     "Text": "Next attack adds your full DEF to its damage. +25% DEF for 3 turns.",
+     "Cooldown": 4,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 5",
+     "Name": "Iron Maiden+",
+     "Text": "Next attack adds 1.5× your DEF. +30% DEF for 3 turns.",
+     "Cooldown": 4,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 20",
+     "Name": "Iron Maiden II",
+     "Text": "Next attack adds 2× your DEF and stuns. +35% DEF for 3 turns.",
+     "Cooldown": 4,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Juggernaut",
+     "Name": "Unbroken Maiden",
+     "Text": "Next attack adds 2.5× your DEF, stuns, and hits every adjacent enemy. +50% DEF for 3 turns, and the first killing blow on you leaves you at 1 HP.",
+     "Cooldown": 4,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Guardian",
+     "Name": "Frost Bulwark",
+     "Text": "For 3 turns, allies within 2 tiles of you get +30% DEF, and any enemy that hits one of them is rooted.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Warlord",
+     "Name": "War Banner",
+     "Text": "Plant a banner on a tile within 3: for 3 turns, allies within 3 tiles of it get +20% damage and +1 move, and enemies in range burn each turn.",
+     "Cooldown": 5,
+     "Free": false
+    }
+   ],
+   "Ascensions": [
+    {
+     "Name": "Juggernaut",
+     "Element": "dark",
+     "Bonus": "+40% HP",
+     "Passive": "Unstoppable: immune to stun, snare and armor break.",
+     "Ultimate": "Earthshatter"
+    },
+    {
+     "Name": "Guardian",
+     "Element": "ice",
+     "Bonus": "+4 DEF",
+     "Passive": "Bodyguard: you take hits aimed at adjacent allies, with 30% less damage.",
+     "Ultimate": "Bulwark"
+    },
+    {
+     "Name": "Warlord",
+     "Element": "fire",
+     "Bonus": "+15% ATK",
+     "Passive": "Battle Aura: allies within 2 tiles (and you) deal 15% more damage.",
+     "Ultimate": "War Cry"
+    }
+   ],
+   "Prof": [
+    [
+     "1",
+     "⚔ Axe C (max S) · Lance D (max A) · 🛡 Medium \u0026 Heavy armor"
+    ],
+    [
+     "8",
+     "⚔ Axe B (max S) · Lance D (max A) · 🛡 Medium \u0026 Heavy armor"
+    ],
+    [
+     "18",
+     "⚔ Axe A (max S) · Lance C (max A) · 🛡 Medium \u0026 Heavy armor"
+    ],
+    [
+     "30",
+     "⚔ Axe S (max S) · Lance B (max A) · 🛡 Medium \u0026 Heavy armor"
+    ]
+   ],
+   "Dual": false
+  },
+  "Warrior": {
+   "Role": "Sword fighter",
+   "Stages": [
+    {
+     "Key": "0",
+     "Label": "Lv 1",
+     "Name": "Warrior",
+     "Pic": "Warrior form1",
+     "Lv": 1,
+     "HP": 26,
+     "Atk": 9,
+     "Def": 4,
+     "Mov": 4
+    },
+    {
+     "Key": "1",
+     "Label": "Lv 5",
+     "Name": "Vanguard",
+     "Pic": "Warrior form2",
+     "Lv": 5,
+     "HP": 41,
+     "Atk": 14,
+     "Def": 6,
+     "Mov": 4
+    },
+    {
+     "Key": "2",
+     "Label": "Lv 20",
+     "Name": "Champion",
+     "Pic": "Warrior form3",
+     "Lv": 20,
+     "HP": 98,
+     "Atk": 33,
+     "Def": 11,
+     "Mov": 5
+    },
+    {
+     "Key": "Berserker",
+     "Label": "Lv 30 · Berserker",
+     "Name": "Berserker",
+     "Pic": "Warrior Berserker",
+     "Lv": 30,
+     "HP": 141,
+     "Atk": 62,
+     "Def": 11,
+     "Mov": 5
+    },
+    {
+     "Key": "Paladin",
+     "Label": "Lv 30 · Paladin",
+     "Name": "Paladin",
+     "Pic": "Warrior Paladin",
+     "Lv": 30,
+     "HP": 176,
+     "Atk": 48,
+     "Def": 17,
+     "Mov": 5
+    },
+    {
+     "Key": "Duelist",
+     "Label": "Lv 30 · Duelist",
+     "Name": "Duelist",
+     "Pic": "Warrior Duelist",
+     "Lv": 30,
+     "HP": 141,
+     "Atk": 48,
+     "Def": 14,
+     "Mov": 7
+    }
+   ],
+   "Abilities": [
+    {
+     "Stage": "Lv 1",
+     "Name": "Double Strike",
+     "Text": "Your next skill (not ultimates) hits twice.",
+     "Cooldown": 3,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 5",
+     "Name": "Double Strike+",
+     "Text": "Next skill hits twice; the second hit can't miss and deals +15%.",
+     "Cooldown": 3,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 20",
+     "Name": "Triple Strike",
+     "Text": "Next skill hits three times; the extra hits can't miss.",
+     "Cooldown": 3,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Berserker",
+     "Name": "Blood Frenzy",
+     "Text": "Spend 20% of your HP: for 3 turns, +50% damage and 25% life steal. Each kill adds a turn.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Paladin",
+     "Name": "Oath of Protection",
+     "Text": "For 2 turns, enemies within 4 tiles must attack you. You take 30% less damage and heal 10% of max HP each time you're hit.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Duelist",
+     "Name": "Flurry of Blades",
+     "Text": "Next skill hits four times, extra hits can't miss, +15% crit chance per hit, and Riposte counters hit twice this turn.",
+     "Cooldown": 3,
+     "Free": false
+    }
+   ],
+   "Ascensions": [
+    {
+     "Name": "Berserker",
+     "Element": "fire",
+     "Bonus": "+30% ATK, −20% DEF",
+     "Passive": "Bloodlust: +40% damage while below half HP. Kills heal you 15%.",
+     "Ultimate": "Blood Rage"
+    },
+    {
+     "Name": "Paladin",
+     "Element": "light",
+     "Bonus": "+25% HP, +3 DEF",
+     "Passive": "Aegis: allies next to you take 20% less damage. Your hits heal you for 20%.",
+     "Ultimate": "Holy Judgment"
+    },
+    {
+     "Name": "Duelist",
+     "Element": "elec",
+     "Bonus": "+2 Move",
+     "Passive": "Riposte: when hit in melee, you strike back for 60%.",
+     "Ultimate": "Thousand Cuts"
+    }
+   ],
+   "Prof": [
+    [
+     "1",
+     "⚔ Sword C (max S) · Axe D (max A) · 🛡 Medium \u0026 Heavy armor"
+    ],
+    [
+     "8",
+     "⚔ Sword B (max S) · Axe D (max A) · 🛡 Medium \u0026 Heavy armor"
+    ],
+    [
+     "18",
+     "⚔ Sword A (max S) · Axe C (max A) · 🛡 Medium \u0026 Heavy armor"
+    ],
+    [
+     "30",
+     "⚔ Sword S (max S) · Axe B (max A) · 🛡 Medium \u0026 Heavy armor"
+    ]
+   ],
+   "Dual": false
+  },
+  "Witch": {
+   "Role": "Poison and curses",
+   "Stages": [
+    {
+     "Key": "0",
+     "Label": "Lv 1",
+     "Name": "Witch",
+     "Pic": "Witch form1",
+     "Lv": 1,
+     "HP": 18,
+     "Atk": 11,
+     "Def": 1,
+     "Mov": 4
+    },
+    {
+     "Key": "1",
+     "Label": "Lv 5",
+     "Name": "Hexer",
+     "Pic": "Witch form2",
+     "Lv": 5,
+     "HP": 32,
+     "Atk": 16,
+     "Def": 3,
+     "Mov": 4
+    },
+    {
+     "Key": "2",
+     "Label": "Lv 20",
+     "Name": "Coven Mistress",
+     "Pic": "Witch form3",
+     "Lv": 20,
+     "HP": 89,
+     "Atk": 35,
+     "Def": 8,
+     "Mov": 5
+    },
+    {
+     "Key": "Necromancer",
+     "Label": "Lv 30 · Necromancer",
+     "Name": "Necromancer",
+     "Pic": "Witch Necromancer",
+     "Lv": 30,
+     "HP": 144,
+     "Atk": 50,
+     "Def": 11,
+     "Mov": 5
+    },
+    {
+     "Key": "Blood Witch",
+     "Label": "Lv 30 · Blood Witch",
+     "Name": "Blood Witch",
+     "Pic": "Witch Blood Witch",
+     "Lv": 30,
+     "HP": 131,
+     "Atk": 60,
+     "Def": 11,
+     "Mov": 5
+    },
+    {
+     "Key": "Hex Queen",
+     "Label": "Lv 30 · Hex Queen",
+     "Name": "Hex Queen",
+     "Pic": "Witch Hex Queen",
+     "Lv": 30,
+     "HP": 131,
+     "Atk": 50,
+     "Def": 11,
+     "Mov": 5
+    }
+   ],
+   "Abilities": [
+    {
+     "Stage": "Lv 1",
+     "Name": "Poison Ivy",
+     "Text": "2 turns: every hit makes the target Immobile for 2 turns and applies Ivy (−30% ATK and DEF), stacking.",
+     "Cooldown": 4,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 5",
+     "Name": "Poison Ivy+",
+     "Text": "3 turns: Immobile and Ivy, and Ivy also poisons.",
+     "Cooldown": 4,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 20",
+     "Name": "Poison Ivy II",
+     "Text": "3 turns: Immobile, poisoning Ivy at −40%, and each hit spreads Ivy to one enemy next to the target.",
+     "Cooldown": 4,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Necromancer",
+     "Name": "Grave Bloom",
+     "Text": "Raise a skeleton for every monster killed on this floor. For 3 turns every new kill rises too. Skeletons fight on their own for the rest of the floor and explode when destroyed, poisoning and applying Ivy to adjacent enemies.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Blood Witch",
+     "Name": "Blood Pact",
+     "Text": "3 turns: move to any open tile, heal for 20% of all damage you deal, and every hit causes Heavy Bleed (5 turns, double damage) whose damage heals you.",
+     "Cooldown": 5,
+     "Free": false
+    },
+    {
+     "Stage": "Lv 30 · Hex Queen",
+     "Name": "Queen's Garden",
+     "Text": "3 turns: Immobile, poisoning Ivy at −50%, spreading to every enemy next to the target, and all your debuffs last 1 turn longer.",
+     "Cooldown": 4,
+     "Free": false
+    }
+   ],
+   "Ascensions": [
+    {
+     "Name": "Necromancer",
+     "Element": "dark",
+     "Bonus": "+10% HP",
+     "Passive": "Soul Harvest: each new kind of normal monster you kill can become a Raise skill on one of your 4 skill buttons. A raised monster spawns once per floor; if it moves or attacks you can't, and vice versa.",
+     "Ultimate": "Soul Nova"
+    },
+    {
+     "Name": "Blood Witch",
+     "Element": "fire",
+     "Bonus": "+20% ATK",
+     "Passive": "Blood Magic: spells cost 5% HP but deal 40% more and heal you for 20% of the damage.",
+     "Ultimate": "Blood Moon"
+    },
+    {
+     "Name": "Hex Queen",
+     "Element": "ice",
+     "Bonus": "+1 range",
+     "Passive": "Queen of Curses: your debuffs last 1 turn longer, and every enemy with a debuff takes 25% more damage from your whole party.",
+     "Ultimate": "Grand Hex"
+    }
+   ],
+   "Prof": [
+    [
+     "1",
+     "⚔ Staff C (max S) · Dagger D (max A) · 🛡 Light \u0026 Medium armor"
+    ],
+    [
+     "8",
+     "⚔ Staff B (max S) · Dagger D (max A) · 🛡 Light \u0026 Medium armor"
+    ],
+    [
+     "18",
+     "⚔ Staff A (max S) · Dagger C (max A) · 🛡 Light \u0026 Medium armor"
+    ],
+    [
+     "30",
+     "⚔ Staff S (max S) · Dagger B (max A) · 🛡 Light \u0026 Medium armor"
+    ]
+   ],
+   "Dual": false
+  }
+ },
+ "Order": [
+  "Warrior",
+  "Tank",
+  "Mage",
+  "Healer",
+  "Ranger",
+  "Assassin",
+  "Gunslinger",
+  "Dragon Knight",
+  "Witch",
+  "Knight"
+ ],
+ "Skills": [
+  {
+   "Name": "Absolute Zero",
+   "Class": "Mage",
+   "Kind": "u",
+   "Ascension": "Cryomancer",
+   "Type": "Ice magic",
+   "Text": "Freezes a wide area solid: stun 1 turn.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 5,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 1.8,
+   "Effects": {
+    "stun": 1
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Aftershock",
+   "Class": "Tank",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Hits the target and its neighbors and snares them; at the start of the next enemy turn the ground shakes again for half damage.",
+   "Aim": "",
+   "Level": 24,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 3,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 1,
+   "Effects": {
+    "snare": 1
+   },
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Ambush",
+   "Class": "Assassin",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "+50% damage against enemies at full HP.",
+   "Aim": "",
+   "Level": 3,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 2,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.2,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Arcane Nova",
+   "Class": "Mage",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Arcane magic",
+   "Text": "Pure arcane blast hitting everything within 2 tiles.",
+   "Aim": "",
+   "Level": 20,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 4,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 2,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Assassinate",
+   "Class": "Assassin",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "A killing strike: +50% damage on enemies under 40% HP.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.8,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Bait and Switch",
+   "Class": "Assassin",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Swap places with any unit, friend or foe, within 3 tiles.",
+   "Aim": "any",
+   "Level": 18,
+   "Min": 1,
+   "Max": 3,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Bash",
+   "Class": "Tank",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "A solid shield-and-axe hit.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.1,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Battle Trance",
+   "Class": "Warrior",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "For 2 turns: +25% damage and +1 Move, but you take 15% more damage.",
+   "Aim": "self",
+   "Level": 24,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": {
+    "trance": 2
+   },
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Blessing",
+   "Class": "Healer",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Buff",
+   "Text": "You and allies within 4 tiles deal 25% more damage for 2 turns.",
+   "Aim": "",
+   "Level": 6,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 3,
+   "Area": 4,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": {
+    "rally": 2
+   },
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Blink",
+   "Class": "Mage",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Teleport to an open tile up to 4 away. You can still attack this turn.",
+   "Aim": "tile",
+   "Level": 15,
+   "Min": 1,
+   "Max": 4,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": true
+  },
+  {
+   "Name": "Blizzard",
+   "Class": "Mage",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Ice magic",
+   "Text": "Snowstorm on an area that snares everything hit.",
+   "Aim": "",
+   "Level": 12,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 1.1,
+   "Effects": {
+    "snare": 1
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Blood Moon",
+   "Class": "Witch",
+   "Kind": "u",
+   "Ascension": "Blood Witch",
+   "Type": "Dark magic",
+   "Text": "Costs 20% HP: a crimson blast within 2 tiles.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 4,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 2,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Blood Rage",
+   "Class": "Warrior",
+   "Kind": "u",
+   "Ascension": "Berserker",
+   "Type": "Physical",
+   "Text": "A frenzied blow that heals you for 30% of the damage.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 2.6,
+   "Effects": {
+    "bleed": 3
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Bodyguard",
+   "Class": "Tank",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Pick an ally within 3 tiles. For 2 turns, hits aimed at them hit you instead, for 70% of the damage.",
+   "Aim": "ally",
+   "Level": 12,
+   "Min": 1,
+   "Max": 3,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Bog of Despair",
+   "Class": "Witch",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "A swamp 1 tile around a spot for 3 turns: enemies inside are snared and poisoned.",
+   "Aim": "tile",
+   "Level": 27,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Boot Shot",
+   "Class": "Gunslinger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Kick an enemy next to you 2 tiles away and fire as it flies.",
+   "Aim": "",
+   "Level": 12,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 2,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Bullet Hell",
+   "Class": "Gunslinger",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Unload on up to 6 enemies in range.",
+   "Aim": "",
+   "Level": 20,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.5,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Bulwark",
+   "Class": "Tank",
+   "Kind": "u",
+   "Ascension": "Guardian",
+   "Type": "Buff",
+   "Text": "You and allies within 3 tiles take 40% less damage.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 5,
+   "Area": 3,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": {
+    "grd": 2
+   },
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Cavalry Breaker",
+   "Class": "Knight",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "A devastating single-target charge.",
+   "Aim": "",
+   "Level": 20,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 5,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 2.6,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Chain Lightning",
+   "Class": "Mage",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Thunder magic",
+   "Text": "Lightning jumps to every enemy next to the target.",
+   "Aim": "",
+   "Level": 9,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 2,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Charge",
+   "Class": "Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "+12% damage for every tile you moved this turn (max +60%).",
+   "Aim": "",
+   "Level": 1,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Cleanse",
+   "Class": "Healer",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Support",
+   "Text": "Removes bleed, snare, stun and armor break.",
+   "Aim": "",
+   "Level": 9,
+   "Min": 0,
+   "Max": 3,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Cloak",
+   "Class": "",
+   "Kind": "",
+   "Ascension": "",
+   "Type": "Buff",
+   "Text": "Turn invisible: enemies can't target you for 2 enemy turns. Attacking breaks the cloak. After it ends, Cloak recharges for 2 turns.",
+   "Aim": "",
+   "Level": 0,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Concussive Arrow",
+   "Class": "Ranger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Knocks the target 2 tiles back.",
+   "Aim": "",
+   "Level": 24,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 2,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Contagion",
+   "Class": "Witch",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Copies every curse and poison on the target onto enemies within 2 tiles of it.",
+   "Aim": "",
+   "Level": 24,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Crescent Wave",
+   "Class": "Warrior",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Throws a blade of energy 2–3 tiles away.",
+   "Aim": "",
+   "Level": 6,
+   "Min": 2,
+   "Max": 3,
+   "Cooldown": 2,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.3,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Crimson Waltz",
+   "Class": "Assassin",
+   "Kind": "u",
+   "Ascension": "Blade Dancer",
+   "Type": "Physical",
+   "Text": "Five dancing slashes on one target.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 5,
+   "Power": 0.55,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Crippling Cut",
+   "Class": "Assassin",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Target bleeds 2 turns and loses 2 Move for 2 turns.",
+   "Aim": "",
+   "Level": 21,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 2,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": {
+    "bleed": 2,
+    "slow": 2
+   },
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Crusade",
+   "Class": "Knight",
+   "Kind": "u",
+   "Ascension": "Templar",
+   "Type": "Light weapon art",
+   "Text": "A holy charge that heals allies next to you 20%.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 2.2,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Crushing Blow",
+   "Class": "Tank",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Smashes armor: the target loses 30% DEF for 2 turns.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.8,
+   "Effects": {
+    "brk": 2
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Curse of Frailty",
+   "Class": "Witch",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Arcane magic",
+   "Text": "A long curse: −30% DEF and −30% damage for 3 turns.",
+   "Aim": "",
+   "Level": 6,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.3,
+   "Effects": {
+    "brk": 3,
+    "weak": 3
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Dead or Alive",
+   "Class": "Gunslinger",
+   "Kind": "u",
+   "Ascension": "Bounty Hunter",
+   "Type": "Physical",
+   "Text": "A bounty shot: +50% on enemies under 40% HP.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 2.6,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Deadeye",
+   "Class": "Ranger",
+   "Kind": "u",
+   "Ascension": "Sniper",
+   "Type": "Physical",
+   "Text": "A perfect shot from up to 12 tiles. Ignores all DEF.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 2,
+   "Max": 12,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 3.2,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Death Blossom",
+   "Class": "Assassin",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Four spinning slashes that also hit enemies next to the target.",
+   "Aim": "",
+   "Level": 20,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 4,
+   "Area": 1,
+   "Hits": 4,
+   "Power": 0.6,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Disarming Shot",
+   "Class": "Gunslinger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Shoots the weapon hand: target deals 30% less damage for 2 turns.",
+   "Aim": "",
+   "Level": 15,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.8,
+   "Effects": {
+    "weak": 2
+   },
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Disengage",
+   "Class": "Ranger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Shoot, then leap 2 tiles directly away from the target.",
+   "Aim": "",
+   "Level": 18,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.8,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Divine Grace",
+   "Class": "Healer",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Heal",
+   "Text": "Huge heal anywhere on the map, but you cannot move for 2 turns.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 0,
+   "Max": 99,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 3,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Doom Lance",
+   "Class": "Knight",
+   "Kind": "u",
+   "Ascension": "Black Knight",
+   "Type": "Physical",
+   "Text": "A crushing single-target lance from up to 2 tiles.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 1,
+   "Max": 2,
+   "Cooldown": 5,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 3,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Double Tap",
+   "Class": "Gunslinger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Two quick shots at one target.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 2,
+   "Power": 0.6,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Dragon Claw",
+   "Class": "Dragon Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "The dragon rakes the target: bleed 2.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.1,
+   "Effects": {
+    "bleed": 2
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Dragon Scales",
+   "Class": "Dragon Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "For 2 turns take 30% less spell damage and reflect 20% of melee damage back.",
+   "Aim": "self",
+   "Level": 15,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": {
+    "dscale": 2
+   },
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Dragon Slash",
+   "Class": "Warrior",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Fire weapon art",
+   "Text": "A blazing fire slash that leaves a 4-turn burn.",
+   "Aim": "",
+   "Level": 20,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 5,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 3,
+   "Effects": {
+    "bleed": 4
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Dragon's Fury",
+   "Class": "Dragon Knight",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Fire magic",
+   "Text": "A firestorm on everything within 2 tiles of the target.",
+   "Aim": "",
+   "Level": 20,
+   "Min": 1,
+   "Max": 4,
+   "Cooldown": 5,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 2,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Dragonfire",
+   "Class": "Dragon Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Fire magic",
+   "Text": "The dragon breathes fire on an area.",
+   "Aim": "",
+   "Level": 3,
+   "Min": 1,
+   "Max": 3,
+   "Cooldown": 2,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Earthshatter",
+   "Class": "Tank",
+   "Kind": "u",
+   "Ascension": "Juggernaut",
+   "Type": "Physical",
+   "Text": "Splits the ground: stuns everything within 2 tiles.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 5,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 1.8,
+   "Effects": {
+    "stun": 1
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Echo",
+   "Class": "Mage",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Cast the last spell you used again at 60% power on a new target, without starting its cooldown.",
+   "Aim": "echo",
+   "Level": 27,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Ember Trail",
+   "Class": "Dragon Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Fly up to 4 tiles in a line; every tile you pass over burns for 2 turns.",
+   "Aim": "line",
+   "Level": 21,
+   "Min": 0,
+   "Max": 4,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Execution",
+   "Class": "Warrior",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Finishing blow: +50% damage on enemies under 40% HP.",
+   "Aim": "",
+   "Level": 12,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 2.2,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Fan of Knives",
+   "Class": "Assassin",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Knives hit the target and every enemy next to it.",
+   "Aim": "",
+   "Level": 6,
+   "Min": 1,
+   "Max": 2,
+   "Cooldown": 2,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 0.8,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Fireball",
+   "Class": "Mage",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Fire magic",
+   "Text": "Fire magic. Ignores half of armor.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.2,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Flaming Volley",
+   "Class": "Ranger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Fire weapon art",
+   "Text": "Fire arrows on the target and its neighbors; the ground burns for 2 turns.",
+   "Aim": "",
+   "Level": 27,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 0.7,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Flash Bang",
+   "Class": "Gunslinger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Stuns the target for 1 turn.",
+   "Aim": "",
+   "Level": 6,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.4,
+   "Effects": {
+    "stun": 1
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Fortress Slam",
+   "Class": "Tank",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Shockwave that stuns everything within 2 tiles of the target.",
+   "Aim": "",
+   "Level": 15,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 4,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 1.2,
+   "Effects": {
+    "stun": 1
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Frost Bolt",
+   "Class": "Mage",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Ice magic",
+   "Text": "Ice magic that snares for 1 turn.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1,
+   "Effects": {
+    "snare": 1
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Gale Volley",
+   "Class": "Ranger",
+   "Kind": "u",
+   "Ascension": "Tempest Archer",
+   "Type": "Thunder weapon art",
+   "Text": "Storm arrows hit up to 3 enemies in range.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Garrote",
+   "Class": "Assassin",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Silences the target for 2 turns: it can only use its most basic attack.",
+   "Aim": "",
+   "Level": 15,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.7,
+   "Effects": {
+    "silence": 2
+   },
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Glacial Breath",
+   "Class": "Dragon Knight",
+   "Kind": "u",
+   "Ascension": "Frost Wyrm",
+   "Type": "Ice magic",
+   "Text": "Freezing breath that stuns.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 1,
+   "Max": 4,
+   "Cooldown": 5,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 1.6,
+   "Effects": {
+    "stun": 1
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Grand Charge",
+   "Class": "Knight",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "An all-out charge. Gains charge damage.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.8,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Grand Hex",
+   "Class": "Witch",
+   "Kind": "u",
+   "Ascension": "Hex Queen",
+   "Type": "Arcane magic",
+   "Text": "Curses everything within 2 tiles: weak, armor break and snare.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 5,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 0.8,
+   "Effects": {
+    "brk": 3,
+    "snare": 1,
+    "weak": 3
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Gravity Well",
+   "Class": "Mage",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Arcane magic",
+   "Text": "Arcane hit on an area that pulls every enemy within 2 tiles one step toward the center.",
+   "Aim": "",
+   "Level": 24,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 0.7,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Ground Pound",
+   "Class": "Tank",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Hits the target and its neighbors and snares them.",
+   "Aim": "",
+   "Level": 3,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 2,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 0.8,
+   "Effects": {
+    "snare": 1
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Heal Ally",
+   "Class": "Healer",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Heal",
+   "Text": "Heals one ally up to 3 tiles away.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 1,
+   "Max": 3,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.2,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Hellfire Dive",
+   "Class": "Dragon Knight",
+   "Kind": "u",
+   "Ascension": "Inferno Rider",
+   "Type": "Fire magic",
+   "Text": "A flaming dive bomb on an area.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 2,
+   "Max": 5,
+   "Cooldown": 5,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 2.2,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Hex",
+   "Class": "Witch",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Arcane magic",
+   "Text": "Weakens the target: it deals 30% less damage and loses 30% DEF for 2 turns.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 2,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.4,
+   "Effects": {
+    "brk": 2,
+    "weak": 2
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Hex Storm",
+   "Class": "Witch",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Dark magic",
+   "Text": "A storm of curses within 2 tiles: poison 4 and armor break.",
+   "Aim": "",
+   "Level": 20,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 5,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 1.5,
+   "Effects": {
+    "brk": 2,
+    "poison": 4
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "High Noon",
+   "Class": "Gunslinger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "+10% damage for every enemy in your range (max +60%).",
+   "Aim": "",
+   "Level": 27,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.3,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Hollow Point",
+   "Class": "Gunslinger",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Heavy round that breaks armor (−30% DEF) for 2 turns.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.7,
+   "Effects": {
+    "brk": 2
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Holy Judgment",
+   "Class": "Warrior",
+   "Kind": "u",
+   "Ascension": "Paladin",
+   "Type": "Light weapon art",
+   "Text": "Holy strike. Heals adjacent allies 20% of their max HP.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 1,
+   "Max": 2,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 2.2,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Holy Siphon",
+   "Class": "Healer",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Light magic",
+   "Text": "Light damage, then heals your most hurt ally for 100% of the damage dealt.",
+   "Aim": "",
+   "Level": 12,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 2,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Hook Chain",
+   "Class": "Tank",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Throw a chain 2-3 tiles and drag the target to the tile next to you.",
+   "Aim": "",
+   "Level": 9,
+   "Min": 2,
+   "Max": 3,
+   "Cooldown": 2,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.7,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Hunter's Mark",
+   "Class": "Ranger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Marks the target for 3 turns: everyone on your side deals it +20% damage.",
+   "Aim": "",
+   "Level": 21,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.5,
+   "Effects": {
+    "hmark": 3
+   },
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Ice Lance",
+   "Class": "Mage",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Ice magic",
+   "Text": "A long-range spear of ice.",
+   "Aim": "",
+   "Level": 6,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.3,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Impale",
+   "Class": "Dragon Knight",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "A lance thrust that pierces 1 tile behind the target.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 1,
+   "Max": 2,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.6,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Inferno",
+   "Class": "Mage",
+   "Kind": "u",
+   "Ascension": "Pyromancer",
+   "Type": "Fire magic",
+   "Text": "A sea of fire over a wide area.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 5,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 2.2,
+   "Effects": {
+    "bleed": 2
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Iron Shell",
+   "Class": "Tank",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Gain a shield worth 25% of your max HP.",
+   "Aim": "self",
+   "Level": 18,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Ironhide",
+   "Class": "Tank",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Buff",
+   "Text": "Brace: take 40% less damage until your next turn ends.",
+   "Aim": "",
+   "Level": 6,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": {
+    "grd": 2
+   },
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Lance Break",
+   "Class": "Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Breaks armor: −30% DEF for 2 turns.",
+   "Aim": "",
+   "Level": 3,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 2,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.3,
+   "Effects": {
+    "brk": 2
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Lance Strike",
+   "Class": "Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "A heavy mounted lance hit.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.1,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Lance Wall",
+   "Class": "Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Until your next turn, any enemy that steps next to you is struck first (power 0.9).",
+   "Aim": "self",
+   "Level": 21,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": null,
+   "Buffs": {
+    "lwall": 2
+   },
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Last Light",
+   "Class": "Healer",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Buff",
+   "Text": "You and allies within 3 tiles are healed 30% and, for 2 turns, a blow that would defeat them leaves them at 1 HP instead.",
+   "Aim": "self",
+   "Level": 20,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 6,
+   "Area": 3,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": {
+    "lastlight": 2
+   },
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Leaping Cleave",
+   "Class": "Warrior",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Leap up to 3 tiles to land next to the target, then hit it and every enemy next to you.",
+   "Aim": "",
+   "Level": 18,
+   "Min": 1,
+   "Max": 4,
+   "Cooldown": 3,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 1.1,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Lightning Charge",
+   "Class": "Knight",
+   "Kind": "u",
+   "Ascension": "Storm Rider",
+   "Type": "Thunder weapon art",
+   "Text": "A lightning-fast charge. Gains charge damage.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 2,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Lucky Coin",
+   "Class": "Gunslinger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Your next 2 shots are sure critical hits.",
+   "Aim": "self",
+   "Level": 24,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 5,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": {
+    "coin": 2
+   },
+   "New": true,
+   "Free": true
+  },
+  {
+   "Name": "Mana Burn",
+   "Class": "Mage",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Arcane magic",
+   "Text": "Arcane hit that adds 1 turn to every cooldown the target has.",
+   "Aim": "",
+   "Level": 18,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.8,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Mass Heal",
+   "Class": "Healer",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Heal",
+   "Text": "Heals the target and every ally within 2 tiles of it.",
+   "Aim": "",
+   "Level": 15,
+   "Min": 1,
+   "Max": 4,
+   "Cooldown": 3,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 1,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Mend Self",
+   "Class": "Healer",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Heal",
+   "Text": "Heals yourself.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.8,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Meteor",
+   "Class": "Mage",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Fire magic",
+   "Text": "Calls a flaming rock down on an area.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 4,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 1.5,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Miasma",
+   "Class": "Witch",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Arcane magic",
+   "Text": "A poison cloud on the target and enemies next to it.",
+   "Aim": "",
+   "Level": 3,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 2,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 0.7,
+   "Effects": {
+    "poison": 3
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Momentum",
+   "Class": "Warrior",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "If it defeats the target you may act once more this turn (once per turn).",
+   "Aim": "",
+   "Level": 27,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Multishot",
+   "Class": "Ranger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Three arrows: hits the target and enemies next to it.",
+   "Aim": "",
+   "Level": 3,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 0,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 0.7,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Open Veins",
+   "Class": "Assassin",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Every bleed and poison on the target ticks right now, and their turns left double.",
+   "Aim": "",
+   "Level": 24,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.6,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Pandemic",
+   "Class": "Healer",
+   "Kind": "u",
+   "Ascension": "Plague Doctor",
+   "Type": "Dark magic",
+   "Text": "A plague cloud: dark damage and bleed 4 in a wide area.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 4,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 1,
+   "Effects": {
+    "bleed": 4
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Phantom Rush",
+   "Class": "Assassin",
+   "Kind": "u",
+   "Ascension": "Phantom",
+   "Type": "Physical",
+   "Text": "Blink between up to 4 enemies in range, striking each.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 1,
+   "Max": 3,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Piercing Shot",
+   "Class": "Ranger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Passes through and hits the next 2 tiles behind the target.",
+   "Aim": "",
+   "Level": 12,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 2,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.4,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Pinning Shot",
+   "Class": "Ranger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Pins the target in place: stun 1 turn.",
+   "Aim": "",
+   "Level": 9,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.7,
+   "Effects": {
+    "stun": 1
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Plague Swarm",
+   "Class": "Witch",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Dark magic",
+   "Text": "Poison insects attack up to 3 enemies in range.",
+   "Aim": "",
+   "Level": 9,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": {
+    "poison": 2
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Poison Arrow",
+   "Class": "Ranger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Poisons the target for 4 turns.",
+   "Aim": "",
+   "Level": 6,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.8,
+   "Effects": {
+    "bleed": 4
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Powder Keg",
+   "Class": "Gunslinger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Fire weapon art",
+   "Text": "Toss a keg on a tile up to 4 away. It blows up at the start of the next enemy turn: fire on everything within 1 tile.",
+   "Aim": "tile",
+   "Level": 21,
+   "Min": 1,
+   "Max": 4,
+   "Cooldown": 4,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 1.6,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Power Shot",
+   "Class": "Ranger",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "A fully drawn heavy arrow.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.6,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Power Strike",
+   "Class": "Warrior",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "A heavy two-handed blow.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.6,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Prism Aura",
+   "Class": "Healer",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Buff",
+   "Text": "You and allies within 4 tiles ignore enemy typing: every hit lands with advantage (×1.5) for 2 turns.",
+   "Aim": "",
+   "Level": 18,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 5,
+   "Area": 4,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": {
+    "prism": 2
+   },
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Puppet Strings",
+   "Class": "Witch",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Move an enemy within 4 tiles up to 2 tiles wherever you choose.",
+   "Aim": "foeThenTile",
+   "Level": 18,
+   "Min": 1,
+   "Max": 4,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Quick Shot",
+   "Class": "Gunslinger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "A fast pistol shot. Cannot hit adjacent enemies.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Radiant Burst",
+   "Class": "Healer",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Light magic",
+   "Text": "Holy light damage. Strong against dark enemies.",
+   "Aim": "",
+   "Level": 3,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Rain of Arrows",
+   "Class": "Ranger",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Arrows rain on everything within 2 tiles of the target.",
+   "Aim": "",
+   "Level": 20,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 4,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 1.2,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Relentless Charge",
+   "Class": "Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "A charge (charge damage); afterwards you may keep moving with the Move you have left.",
+   "Aim": "",
+   "Level": 27,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.3,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Rend",
+   "Class": "Warrior",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "A cut that makes the target bleed for 3 turns.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.8,
+   "Effects": {
+    "bleed": 3
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Renewal",
+   "Class": "Healer",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Buff",
+   "Text": "You and allies within 4 tiles regenerate 12% HP at the start of each turn for 3 turns.",
+   "Aim": "",
+   "Level": 27,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 4,
+   "Area": 4,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": {
+    "regen": 3
+   },
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Rescue",
+   "Class": "Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Pull an ally within 4 tiles to a tile next to you; they take 20% less damage for 1 turn.",
+   "Aim": "ally",
+   "Level": 24,
+   "Min": 2,
+   "Max": 4,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Resurrection",
+   "Class": "Healer",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Revive",
+   "Text": "Revives the most recently fallen ally next to you at 40% HP. Once per battle.",
+   "Aim": "",
+   "Level": 24,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 99,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Ricochet",
+   "Class": "Gunslinger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "The bullet bounces to a second enemy in range.",
+   "Aim": "",
+   "Level": 3,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 2,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.8,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Ricochet Storm",
+   "Class": "Gunslinger",
+   "Kind": "u",
+   "Ascension": "Trickshot",
+   "Type": "Physical",
+   "Text": "Bullets bounce between up to 5 enemies.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Riposte Stance",
+   "Class": "Warrior",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Until your next turn, strike back at every enemy that hits you in melee (power 0.8).",
+   "Aim": "self",
+   "Level": 15,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": {
+    "riposte": 2
+   },
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Roll Out",
+   "Class": "Gunslinger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Dive-roll up to 3 tiles, then shoot.",
+   "Aim": "rollThenFoe",
+   "Level": 18,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Running Thrust",
+   "Class": "Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "A charging thrust from up to 2 tiles away. Gains charge damage.",
+   "Aim": "",
+   "Level": 6,
+   "Min": 1,
+   "Max": 2,
+   "Cooldown": 2,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.5,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Sacred Flame",
+   "Class": "Healer",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Light magic",
+   "Text": "Holy fire on the target and enemies next to it.",
+   "Aim": "",
+   "Level": 21,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 2,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 1.1,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Sanctuary",
+   "Class": "Healer",
+   "Kind": "u",
+   "Ascension": "Saint",
+   "Type": "Heal",
+   "Text": "Heals every ally on the map.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 5,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.5,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Scatter Shot",
+   "Class": "Gunslinger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Shotgun blast on the target and enemies next to it. Works up close.",
+   "Aim": "",
+   "Level": 9,
+   "Min": 1,
+   "Max": 3,
+   "Cooldown": 2,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Shadowstep",
+   "Class": "Assassin",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Teleport to the far side of an enemy within 4 tiles and stab it in the back.",
+   "Aim": "",
+   "Level": 9,
+   "Min": 1,
+   "Max": 4,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Shield Bash",
+   "Class": "Tank",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Stuns the target for 1 turn.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": {
+    "stun": 1
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Shield of Faith",
+   "Class": "Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Give an ally within 3 tiles a shield worth 20% of your max HP.",
+   "Aim": "ally",
+   "Level": 15,
+   "Min": 1,
+   "Max": 3,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Shot",
+   "Class": "Ranger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "A standard arrow. Cannot hit adjacent enemies.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Shoulder Check",
+   "Class": "Warrior",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Shoves the target 2 tiles back. If it slams into a wall or another unit it takes +50% and is stunned 1 turn.",
+   "Aim": "",
+   "Level": 9,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 2,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Six Shooter",
+   "Class": "Gunslinger",
+   "Kind": "u",
+   "Ascension": "Outlaw",
+   "Type": "Physical",
+   "Text": "Empties the cylinder into one target.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 6,
+   "Power": 0.45,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Skewer",
+   "Class": "Dragon Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Lance a target 2 tiles away and drag it next to you.",
+   "Aim": "",
+   "Level": 24,
+   "Min": 2,
+   "Max": 2,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.2,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Sky Dive",
+   "Class": "Dragon Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Dive from the sky onto a target 2–4 tiles away.",
+   "Aim": "",
+   "Level": 9,
+   "Min": 2,
+   "Max": 4,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.5,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Slash",
+   "Class": "Warrior",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "A quick sword cut.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Smoke Bomb",
+   "Class": "Assassin",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Buff",
+   "Text": "Vanish in smoke: 40% less damage taken and +2 Move for 2 turns.",
+   "Aim": "",
+   "Level": 12,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": {
+    "grd": 2,
+    "haste": 2
+   },
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Snare Field",
+   "Class": "Ranger",
+   "Kind": "u",
+   "Ascension": "Trapper",
+   "Type": "Physical",
+   "Text": "Traps everything within 2 tiles of the target.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 4,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 0.8,
+   "Effects": {
+    "snare": 2
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Snaring Shot",
+   "Class": "Ranger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Snares the target for 1 turn.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.6,
+   "Effects": {
+    "snare": 1
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Soul Nova",
+   "Class": "Witch",
+   "Kind": "u",
+   "Ascension": "Necromancer",
+   "Type": "Dark magic",
+   "Text": "An explosion of souls that heals you for 20% of the damage.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 4,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 1.3,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Soul Siphon",
+   "Class": "Witch",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Dark magic",
+   "Text": "Dark hit that heals you for half the damage.",
+   "Aim": "",
+   "Level": 21,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 2,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Spear Thrust",
+   "Class": "Dragon Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "A spear thrust from dragonback.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Stab",
+   "Class": "Assassin",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "A quick dagger strike.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Static Field",
+   "Class": "Mage",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Thunder magic",
+   "Text": "Lightning within 2 tiles of the target; those tiles stay charged for 2 turns and shock any enemy that ends its turn on them.",
+   "Aim": "",
+   "Level": 21,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 0.6,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Steady Aim",
+   "Class": "Ranger",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Stand still this turn: your next shot gets +2 range and cannot miss.",
+   "Aim": "self",
+   "Level": 15,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": {
+    "aim": 1
+   },
+   "New": true,
+   "Free": true
+  },
+  {
+   "Name": "Strike",
+   "Class": "",
+   "Kind": "",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "A basic attack with your selected weapon set. Melee weapons hit 1 tile, bows and guns 2–6, staffs and wands 2–6 as magic.",
+   "Aim": "",
+   "Level": 0,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Sunder",
+   "Class": "Warrior",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Strips every buff and shield from the target.",
+   "Aim": "",
+   "Level": 21,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.2,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Tail Sweep",
+   "Class": "Dragon Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Hits every enemy next to you and shoves each 1 tile away.",
+   "Aim": "self",
+   "Level": 12,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 2,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 0.8,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Taunting Roar",
+   "Class": "Tank",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Every enemy within 3 tiles must attack you on its next turn.",
+   "Aim": "self",
+   "Level": 21,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 4,
+   "Area": 3,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Thousand Cuts",
+   "Class": "Warrior",
+   "Kind": "u",
+   "Ascension": "Duelist",
+   "Type": "Physical",
+   "Text": "Five lightning-fast slashes.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 5,
+   "Power": 0.6,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Thunder",
+   "Class": "Mage",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Thunder magic",
+   "Text": "Thunder magic. Ignores half of armor.",
+   "Aim": "",
+   "Level": 3,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.2,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Thunder Lance",
+   "Class": "Dragon Knight",
+   "Kind": "u",
+   "Ascension": "Storm Dragoon",
+   "Type": "Thunder weapon art",
+   "Text": "A lightning lance that pierces 3 tiles behind the target.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 1,
+   "Max": 6,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 2,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Thunderstorm",
+   "Class": "Mage",
+   "Kind": "u",
+   "Ascension": "Stormcaller",
+   "Type": "Thunder magic",
+   "Text": "Lightning strikes up to 4 enemies in range.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.4,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Time Warp",
+   "Class": "Healer",
+   "Kind": "u",
+   "Ascension": "Oracle",
+   "Type": "Buff",
+   "Text": "Allies within 4 tiles get Haste and their cooldowns reset.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 6,
+   "Area": 4,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": {
+    "haste": 2
+   },
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Titan's Wrath",
+   "Class": "Tank",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Golden smash that stuns the target and its neighbors.",
+   "Aim": "",
+   "Level": 20,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 5,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 2.6,
+   "Effects": {
+    "stun": 1
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Toxic Bolt",
+   "Class": "Witch",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Dark magic",
+   "Text": "Dark magic that poisons for 2 turns.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1,
+   "Effects": {
+    "poison": 2
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Trample",
+   "Class": "Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Ride straight through up to 3 tiles of enemies to an open tile, hitting each one.",
+   "Aim": "line",
+   "Level": 12,
+   "Min": 0,
+   "Max": 4,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.8,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Twin Fangs",
+   "Class": "Assassin",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Strike two different enemies next to you.",
+   "Aim": "",
+   "Level": 27,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 2,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Unhorse",
+   "Class": "Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Knocks the target 1 tile back and it can't move next turn.",
+   "Aim": "",
+   "Level": 18,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 1.2,
+   "Effects": {
+    "snare": 1
+   },
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Unstoppable",
+   "Class": "Tank",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Bulldoze up to 4 tiles in a straight line. Every enemy in the way is hit and shoved to the side.",
+   "Aim": "line",
+   "Level": 27,
+   "Min": 0,
+   "Max": 4,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Valor",
+   "Class": "Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Buff",
+   "Text": "Steel yourself: +25% damage and 40% less damage taken for 2 turns.",
+   "Aim": "",
+   "Level": 9,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": {
+    "grd": 2,
+    "rally": 2
+   },
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Venom Edge",
+   "Class": "Assassin",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Poisoned blade: bleed 3 turns.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 0,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.8,
+   "Effects": {
+    "bleed": 3
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Venom Storm",
+   "Class": "Assassin",
+   "Kind": "u",
+   "Ascension": "Viper",
+   "Type": "Physical",
+   "Text": "A toxic cloud: bleed 5 on everything within 2 tiles.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 1,
+   "Max": 3,
+   "Cooldown": 4,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": {
+    "bleed": 5
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Voodoo Link",
+   "Class": "Witch",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Bind two enemies in range for 3 turns: half of any damage one takes also hits the other.",
+   "Aim": "twoFoes",
+   "Level": 12,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 4,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "War Cry",
+   "Class": "Tank",
+   "Kind": "u",
+   "Ascension": "Warlord",
+   "Type": "Buff",
+   "Text": "You and allies within 4 tiles deal 25% more damage.",
+   "Aim": "",
+   "Level": 30,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 5,
+   "Area": 4,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": null,
+   "Buffs": {
+    "rally": 2
+   },
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Whirlwind",
+   "Class": "Warrior",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Spin attack: hits the target and every enemy next to it.",
+   "Aim": "",
+   "Level": 3,
+   "Min": 1,
+   "Max": 1,
+   "Cooldown": 2,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": null,
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Wing Gust",
+   "Class": "Dragon Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "A blast of wind that snares the target and its neighbors.",
+   "Aim": "",
+   "Level": 6,
+   "Min": 1,
+   "Max": 2,
+   "Cooldown": 2,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 0.7,
+   "Effects": {
+    "snare": 1
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Witch's Brew",
+   "Class": "Witch",
+   "Kind": "u",
+   "Ascension": "",
+   "Type": "Dark magic",
+   "Text": "A boiling brew: poison and weakness on an area.",
+   "Aim": "",
+   "Level": 1,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 4,
+   "Area": 1,
+   "Hits": 0,
+   "Power": 1.4,
+   "Effects": {
+    "poison": 3,
+    "weak": 2
+   },
+   "Buffs": null,
+   "New": false,
+   "Free": false
+  },
+  {
+   "Name": "Wither",
+   "Class": "Witch",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Dark magic",
+   "Text": "For 3 turns the target heals only half and can't gain buffs.",
+   "Aim": "",
+   "Level": 15,
+   "Min": 2,
+   "Max": 6,
+   "Cooldown": 3,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.6,
+   "Effects": {
+    "wither": 3
+   },
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Wyrm Roar",
+   "Class": "Dragon Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "Enemies within 2 tiles are pushed 1 tile away and deal 30% less damage for 2 turns.",
+   "Aim": "self",
+   "Level": 18,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 4,
+   "Area": 2,
+   "Hits": 0,
+   "Power": 0,
+   "Effects": {
+    "weak": 2
+   },
+   "Buffs": null,
+   "New": true,
+   "Free": false
+  },
+  {
+   "Name": "Wyrmbond",
+   "Class": "Dragon Knight",
+   "Kind": "n",
+   "Ascension": "",
+   "Type": "Physical",
+   "Text": "For 3 turns your dragon claws an enemy next to you at the end of each of your turns (power 0.9).",
+   "Aim": "self",
+   "Level": 27,
+   "Min": 0,
+   "Max": 0,
+   "Cooldown": 5,
+   "Area": 0,
+   "Hits": 0,
+   "Power": 0.9,
+   "Effects": null,
+   "Buffs": {
+    "wyrm": 3
+   },
+   "New": true,
+   "Free": false
+  }
+ ],
+ "Monsters": [
+  {
+   "Name": "Slime",
+   "Class": "Healer",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Spore Bolt"
+    ],
+    [
+     1,
+     "Heal Ally"
+    ],
+    [
+     1,
+     "Divine Grace"
+    ],
+    [
+     3,
+     "Mend Self"
+    ],
+    [
+     6,
+     "Radiant Burst"
+    ],
+    [
+     9,
+     "Mass Mend"
+    ],
+    [
+     12,
+     "Cleanse"
+    ],
+    [
+     15,
+     "Toxic Spores"
+    ],
+    [
+     18,
+     "Holy Siphon"
+    ],
+    [
+     20,
+     "Last Light"
+    ],
+    [
+     21,
+     "Blessing"
+    ],
+    [
+     24,
+     "Renewal"
+    ],
+    [
+     27,
+     "Resurrection"
+    ]
+   ]
+  },
+  {
+   "Name": "Carrion Strider",
+   "Class": "Ranger",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Shot"
+    ],
+    [
+     1,
+     "Snaring Shot"
+    ],
+    [
+     1,
+     "Power Shot"
+    ],
+    [
+     3,
+     "Multishot"
+    ],
+    [
+     6,
+     "Venom Spit"
+    ],
+    [
+     9,
+     "Pinning Shot"
+    ],
+    [
+     12,
+     "Piercing Shot"
+    ],
+    [
+     15,
+     "Disengage"
+    ],
+    [
+     18,
+     "Hunter's Mark"
+    ],
+    [
+     20,
+     "Barrage"
+    ],
+    [
+     21,
+     "Concussive Arrow"
+    ],
+    [
+     24,
+     "Flaming Volley"
+    ],
+    [
+     27,
+     "Steady Aim"
+    ]
+   ]
+  },
+  {
+   "Name": "Goblin",
+   "Class": "Warrior",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Slash"
+    ],
+    [
+     1,
+     "Rend"
+    ],
+    [
+     1,
+     "Power Strike"
+    ],
+    [
+     3,
+     "Whirlwind"
+    ],
+    [
+     6,
+     "Savage Claw"
+    ],
+    [
+     9,
+     "Shoulder Check"
+    ],
+    [
+     12,
+     "Crescent Wave"
+    ],
+    [
+     15,
+     "Riposte Stance"
+    ],
+    [
+     18,
+     "Leaping Cleave"
+    ],
+    [
+     20,
+     "Rampage"
+    ],
+    [
+     21,
+     "Sunder"
+    ],
+    [
+     24,
+     "Battle Trance"
+    ],
+    [
+     27,
+     "Momentum"
+    ]
+   ]
+  },
+  {
+   "Name": "Skeleton",
+   "Class": "Tank",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Bash"
+    ],
+    [
+     1,
+     "Shield Bash"
+    ],
+    [
+     1,
+     "Crushing Blow"
+    ],
+    [
+     3,
+     "Ground Pound"
+    ],
+    [
+     6,
+     "Shell Slam"
+    ],
+    [
+     9,
+     "Hook Chain"
+    ],
+    [
+     12,
+     "Ironhide"
+    ],
+    [
+     15,
+     "Fortress Slam"
+    ],
+    [
+     18,
+     "Iron Shell"
+    ],
+    [
+     20,
+     "Stone Quake"
+    ],
+    [
+     21,
+     "Taunting Roar"
+    ],
+    [
+     24,
+     "Aftershock"
+    ],
+    [
+     27,
+     "Unstoppable"
+    ]
+   ]
+  },
+  {
+   "Name": "Zombie",
+   "Class": "Warrior",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Slash"
+    ],
+    [
+     1,
+     "Rend"
+    ],
+    [
+     1,
+     "Power Strike"
+    ],
+    [
+     3,
+     "Whirlwind"
+    ],
+    [
+     6,
+     "Savage Claw"
+    ],
+    [
+     9,
+     "Shoulder Check"
+    ],
+    [
+     12,
+     "Crescent Wave"
+    ],
+    [
+     15,
+     "Riposte Stance"
+    ],
+    [
+     18,
+     "Leaping Cleave"
+    ],
+    [
+     20,
+     "Rampage"
+    ],
+    [
+     21,
+     "Sunder"
+    ],
+    [
+     24,
+     "Battle Trance"
+    ],
+    [
+     27,
+     "Momentum"
+    ]
+   ]
+  },
+  {
+   "Name": "Rogue",
+   "Class": "Mage",
+   "Element": "dark",
+   "Schedule": [
+    [
+     1,
+     "Fireball"
+    ],
+    [
+     1,
+     "Frost Bolt"
+    ],
+    [
+     1,
+     "Meteor"
+    ],
+    [
+     3,
+     "Thunder"
+    ],
+    [
+     6,
+     "Ice Lance"
+    ],
+    [
+     9,
+     "Chain Lightning"
+    ],
+    [
+     12,
+     "Greater Spell"
+    ],
+    [
+     15,
+     "Blizzard"
+    ],
+    [
+     18,
+     "Mana Burn"
+    ],
+    [
+     20,
+     "Cataclysm"
+    ],
+    [
+     21,
+     "Static Field"
+    ],
+    [
+     24,
+     "Gravity Well"
+    ],
+    [
+     27,
+     "Echo"
+    ]
+   ]
+  },
+  {
+   "Name": "Imp Bat",
+   "Class": "Ranger",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Shot"
+    ],
+    [
+     1,
+     "Snaring Shot"
+    ],
+    [
+     1,
+     "Power Shot"
+    ],
+    [
+     3,
+     "Multishot"
+    ],
+    [
+     6,
+     "Venom Spit"
+    ],
+    [
+     9,
+     "Pinning Shot"
+    ],
+    [
+     12,
+     "Piercing Shot"
+    ],
+    [
+     15,
+     "Disengage"
+    ],
+    [
+     18,
+     "Hunter's Mark"
+    ],
+    [
+     20,
+     "Barrage"
+    ],
+    [
+     21,
+     "Concussive Arrow"
+    ],
+    [
+     24,
+     "Flaming Volley"
+    ],
+    [
+     27,
+     "Steady Aim"
+    ]
+   ]
+  },
+  {
+   "Name": "Wolf",
+   "Class": "Warrior",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Slash"
+    ],
+    [
+     1,
+     "Rend"
+    ],
+    [
+     1,
+     "Power Strike"
+    ],
+    [
+     3,
+     "Whirlwind"
+    ],
+    [
+     6,
+     "Savage Claw"
+    ],
+    [
+     9,
+     "Shoulder Check"
+    ],
+    [
+     12,
+     "Crescent Wave"
+    ],
+    [
+     15,
+     "Riposte Stance"
+    ],
+    [
+     18,
+     "Leaping Cleave"
+    ],
+    [
+     20,
+     "Rampage"
+    ],
+    [
+     21,
+     "Sunder"
+    ],
+    [
+     24,
+     "Battle Trance"
+    ],
+    [
+     27,
+     "Momentum"
+    ]
+   ]
+  },
+  {
+   "Name": "Man-Eater",
+   "Class": "Healer",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Spore Bolt"
+    ],
+    [
+     1,
+     "Heal Ally"
+    ],
+    [
+     1,
+     "Divine Grace"
+    ],
+    [
+     3,
+     "Mend Self"
+    ],
+    [
+     6,
+     "Radiant Burst"
+    ],
+    [
+     9,
+     "Mass Mend"
+    ],
+    [
+     12,
+     "Cleanse"
+    ],
+    [
+     15,
+     "Toxic Spores"
+    ],
+    [
+     18,
+     "Holy Siphon"
+    ],
+    [
+     20,
+     "Last Light"
+    ],
+    [
+     21,
+     "Blessing"
+    ],
+    [
+     24,
+     "Renewal"
+    ],
+    [
+     27,
+     "Resurrection"
+    ]
+   ]
+  },
+  {
+   "Name": "Eyeball",
+   "Class": "Mage",
+   "Element": "elec",
+   "Schedule": [
+    [
+     1,
+     "Fireball"
+    ],
+    [
+     1,
+     "Frost Bolt"
+    ],
+    [
+     1,
+     "Meteor"
+    ],
+    [
+     3,
+     "Thunder"
+    ],
+    [
+     6,
+     "Ice Lance"
+    ],
+    [
+     9,
+     "Chain Lightning"
+    ],
+    [
+     12,
+     "Greater Spell"
+    ],
+    [
+     15,
+     "Blizzard"
+    ],
+    [
+     18,
+     "Mana Burn"
+    ],
+    [
+     20,
+     "Cataclysm"
+    ],
+    [
+     21,
+     "Static Field"
+    ],
+    [
+     24,
+     "Gravity Well"
+    ],
+    [
+     27,
+     "Echo"
+    ]
+   ]
+  },
+  {
+   "Name": "Rock Golem",
+   "Class": "Tank",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Bash"
+    ],
+    [
+     1,
+     "Shield Bash"
+    ],
+    [
+     1,
+     "Crushing Blow"
+    ],
+    [
+     3,
+     "Ground Pound"
+    ],
+    [
+     6,
+     "Shell Slam"
+    ],
+    [
+     9,
+     "Hook Chain"
+    ],
+    [
+     12,
+     "Ironhide"
+    ],
+    [
+     15,
+     "Fortress Slam"
+    ],
+    [
+     18,
+     "Iron Shell"
+    ],
+    [
+     20,
+     "Stone Quake"
+    ],
+    [
+     21,
+     "Taunting Roar"
+    ],
+    [
+     24,
+     "Aftershock"
+    ],
+    [
+     27,
+     "Unstoppable"
+    ]
+   ]
+  },
+  {
+   "Name": "Hedgehog",
+   "Class": "Tank",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Bash"
+    ],
+    [
+     1,
+     "Shield Bash"
+    ],
+    [
+     1,
+     "Crushing Blow"
+    ],
+    [
+     3,
+     "Ground Pound"
+    ],
+    [
+     6,
+     "Shell Slam"
+    ],
+    [
+     9,
+     "Hook Chain"
+    ],
+    [
+     12,
+     "Ironhide"
+    ],
+    [
+     15,
+     "Fortress Slam"
+    ],
+    [
+     18,
+     "Iron Shell"
+    ],
+    [
+     20,
+     "Stone Quake"
+    ],
+    [
+     21,
+     "Taunting Roar"
+    ],
+    [
+     24,
+     "Aftershock"
+    ],
+    [
+     27,
+     "Unstoppable"
+    ]
+   ]
+  },
+  {
+   "Name": "Lizardman",
+   "Class": "Tank",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Bash"
+    ],
+    [
+     1,
+     "Shield Bash"
+    ],
+    [
+     1,
+     "Crushing Blow"
+    ],
+    [
+     3,
+     "Ground Pound"
+    ],
+    [
+     6,
+     "Shell Slam"
+    ],
+    [
+     9,
+     "Hook Chain"
+    ],
+    [
+     12,
+     "Ironhide"
+    ],
+    [
+     15,
+     "Fortress Slam"
+    ],
+    [
+     18,
+     "Iron Shell"
+    ],
+    [
+     20,
+     "Stone Quake"
+    ],
+    [
+     21,
+     "Taunting Roar"
+    ],
+    [
+     24,
+     "Aftershock"
+    ],
+    [
+     27,
+     "Unstoppable"
+    ]
+   ]
+  },
+  {
+   "Name": "Mushroom",
+   "Class": "Healer",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Spore Bolt"
+    ],
+    [
+     1,
+     "Heal Ally"
+    ],
+    [
+     1,
+     "Divine Grace"
+    ],
+    [
+     3,
+     "Mend Self"
+    ],
+    [
+     6,
+     "Radiant Burst"
+    ],
+    [
+     9,
+     "Mass Mend"
+    ],
+    [
+     12,
+     "Cleanse"
+    ],
+    [
+     15,
+     "Toxic Spores"
+    ],
+    [
+     18,
+     "Holy Siphon"
+    ],
+    [
+     20,
+     "Last Light"
+    ],
+    [
+     21,
+     "Blessing"
+    ],
+    [
+     24,
+     "Renewal"
+    ],
+    [
+     27,
+     "Resurrection"
+    ]
+   ]
+  },
+  {
+   "Name": "Flame Spirit",
+   "Class": "Mage",
+   "Element": "fire",
+   "Schedule": [
+    [
+     1,
+     "Fireball"
+    ],
+    [
+     1,
+     "Frost Bolt"
+    ],
+    [
+     1,
+     "Meteor"
+    ],
+    [
+     3,
+     "Thunder"
+    ],
+    [
+     6,
+     "Ice Lance"
+    ],
+    [
+     9,
+     "Chain Lightning"
+    ],
+    [
+     12,
+     "Greater Spell"
+    ],
+    [
+     15,
+     "Blizzard"
+    ],
+    [
+     18,
+     "Mana Burn"
+    ],
+    [
+     20,
+     "Cataclysm"
+    ],
+    [
+     21,
+     "Static Field"
+    ],
+    [
+     24,
+     "Gravity Well"
+    ],
+    [
+     27,
+     "Echo"
+    ]
+   ]
+  },
+  {
+   "Name": "Ice Drop",
+   "Class": "Mage",
+   "Element": "ice",
+   "Schedule": [
+    [
+     1,
+     "Fireball"
+    ],
+    [
+     1,
+     "Frost Bolt"
+    ],
+    [
+     1,
+     "Meteor"
+    ],
+    [
+     3,
+     "Thunder"
+    ],
+    [
+     6,
+     "Ice Lance"
+    ],
+    [
+     9,
+     "Chain Lightning"
+    ],
+    [
+     12,
+     "Greater Spell"
+    ],
+    [
+     15,
+     "Blizzard"
+    ],
+    [
+     18,
+     "Mana Burn"
+    ],
+    [
+     20,
+     "Cataclysm"
+    ],
+    [
+     21,
+     "Static Field"
+    ],
+    [
+     24,
+     "Gravity Well"
+    ],
+    [
+     27,
+     "Echo"
+    ]
+   ]
+  },
+  {
+   "Name": "Spider",
+   "Class": "Ranger",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Shot"
+    ],
+    [
+     1,
+     "Snaring Shot"
+    ],
+    [
+     1,
+     "Power Shot"
+    ],
+    [
+     3,
+     "Multishot"
+    ],
+    [
+     6,
+     "Venom Spit"
+    ],
+    [
+     9,
+     "Pinning Shot"
+    ],
+    [
+     12,
+     "Piercing Shot"
+    ],
+    [
+     15,
+     "Disengage"
+    ],
+    [
+     18,
+     "Hunter's Mark"
+    ],
+    [
+     20,
+     "Barrage"
+    ],
+    [
+     21,
+     "Concussive Arrow"
+    ],
+    [
+     24,
+     "Flaming Volley"
+    ],
+    [
+     27,
+     "Steady Aim"
+    ]
+   ]
+  },
+  {
+   "Name": "Minotaur",
+   "Class": "Warrior",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Slash"
+    ],
+    [
+     1,
+     "Rend"
+    ],
+    [
+     1,
+     "Power Strike"
+    ],
+    [
+     3,
+     "Whirlwind"
+    ],
+    [
+     6,
+     "Savage Claw"
+    ],
+    [
+     9,
+     "Shoulder Check"
+    ],
+    [
+     12,
+     "Crescent Wave"
+    ],
+    [
+     15,
+     "Riposte Stance"
+    ],
+    [
+     18,
+     "Leaping Cleave"
+    ],
+    [
+     20,
+     "Rampage"
+    ],
+    [
+     21,
+     "Sunder"
+    ],
+    [
+     24,
+     "Battle Trance"
+    ],
+    [
+     27,
+     "Momentum"
+    ]
+   ]
+  },
+  {
+   "Name": "Bone Wyvern",
+   "Class": "Ranger",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Shot"
+    ],
+    [
+     1,
+     "Snaring Shot"
+    ],
+    [
+     1,
+     "Power Shot"
+    ],
+    [
+     3,
+     "Multishot"
+    ],
+    [
+     6,
+     "Venom Spit"
+    ],
+    [
+     9,
+     "Pinning Shot"
+    ],
+    [
+     12,
+     "Piercing Shot"
+    ],
+    [
+     15,
+     "Disengage"
+    ],
+    [
+     18,
+     "Hunter's Mark"
+    ],
+    [
+     20,
+     "Barrage"
+    ],
+    [
+     21,
+     "Concussive Arrow"
+    ],
+    [
+     24,
+     "Flaming Volley"
+    ],
+    [
+     27,
+     "Steady Aim"
+    ]
+   ]
+  },
+  {
+   "Name": "Ghost",
+   "Class": "Mage",
+   "Element": "dark",
+   "Schedule": [
+    [
+     1,
+     "Fireball"
+    ],
+    [
+     1,
+     "Frost Bolt"
+    ],
+    [
+     1,
+     "Meteor"
+    ],
+    [
+     3,
+     "Thunder"
+    ],
+    [
+     6,
+     "Ice Lance"
+    ],
+    [
+     9,
+     "Chain Lightning"
+    ],
+    [
+     12,
+     "Greater Spell"
+    ],
+    [
+     15,
+     "Blizzard"
+    ],
+    [
+     18,
+     "Mana Burn"
+    ],
+    [
+     20,
+     "Cataclysm"
+    ],
+    [
+     21,
+     "Static Field"
+    ],
+    [
+     24,
+     "Gravity Well"
+    ],
+    [
+     27,
+     "Echo"
+    ]
+   ]
+  },
+  {
+   "Name": "Reaper",
+   "Class": "Mage",
+   "Element": "dark",
+   "Schedule": [
+    [
+     1,
+     "Fireball"
+    ],
+    [
+     1,
+     "Frost Bolt"
+    ],
+    [
+     1,
+     "Meteor"
+    ],
+    [
+     3,
+     "Thunder"
+    ],
+    [
+     6,
+     "Ice Lance"
+    ],
+    [
+     9,
+     "Chain Lightning"
+    ],
+    [
+     12,
+     "Greater Spell"
+    ],
+    [
+     15,
+     "Blizzard"
+    ],
+    [
+     18,
+     "Mana Burn"
+    ],
+    [
+     20,
+     "Cataclysm"
+    ],
+    [
+     21,
+     "Static Field"
+    ],
+    [
+     24,
+     "Gravity Well"
+    ],
+    [
+     27,
+     "Echo"
+    ]
+   ]
+  },
+  {
+   "Name": "Crystal",
+   "Class": "Mage",
+   "Element": "ice",
+   "Schedule": [
+    [
+     1,
+     "Fireball"
+    ],
+    [
+     1,
+     "Frost Bolt"
+    ],
+    [
+     1,
+     "Meteor"
+    ],
+    [
+     3,
+     "Thunder"
+    ],
+    [
+     6,
+     "Ice Lance"
+    ],
+    [
+     9,
+     "Chain Lightning"
+    ],
+    [
+     12,
+     "Greater Spell"
+    ],
+    [
+     15,
+     "Blizzard"
+    ],
+    [
+     18,
+     "Mana Burn"
+    ],
+    [
+     20,
+     "Cataclysm"
+    ],
+    [
+     21,
+     "Static Field"
+    ],
+    [
+     24,
+     "Gravity Well"
+    ],
+    [
+     27,
+     "Echo"
+    ]
+   ]
+  },
+  {
+   "Name": "Mimic",
+   "Class": "Tank",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Bash"
+    ],
+    [
+     1,
+     "Shield Bash"
+    ],
+    [
+     1,
+     "Crushing Blow"
+    ],
+    [
+     3,
+     "Ground Pound"
+    ],
+    [
+     6,
+     "Shell Slam"
+    ],
+    [
+     9,
+     "Hook Chain"
+    ],
+    [
+     12,
+     "Ironhide"
+    ],
+    [
+     15,
+     "Fortress Slam"
+    ],
+    [
+     18,
+     "Iron Shell"
+    ],
+    [
+     20,
+     "Stone Quake"
+    ],
+    [
+     21,
+     "Taunting Roar"
+    ],
+    [
+     24,
+     "Aftershock"
+    ],
+    [
+     27,
+     "Unstoppable"
+    ]
+   ]
+  },
+  {
+   "Name": "Bomb",
+   "Class": "Warrior",
+   "Element": "fire",
+   "Schedule": [
+    [
+     1,
+     "Slash"
+    ],
+    [
+     1,
+     "Rend"
+    ],
+    [
+     1,
+     "Power Strike"
+    ],
+    [
+     3,
+     "Whirlwind"
+    ],
+    [
+     6,
+     "Savage Claw"
+    ],
+    [
+     9,
+     "Shoulder Check"
+    ],
+    [
+     12,
+     "Crescent Wave"
+    ],
+    [
+     15,
+     "Riposte Stance"
+    ],
+    [
+     18,
+     "Leaping Cleave"
+    ],
+    [
+     20,
+     "Rampage"
+    ],
+    [
+     21,
+     "Sunder"
+    ],
+    [
+     24,
+     "Battle Trance"
+    ],
+    [
+     27,
+     "Momentum"
+    ]
+   ]
+  },
+  {
+   "Name": "Rat",
+   "Class": "Warrior",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Slash"
+    ],
+    [
+     1,
+     "Rend"
+    ],
+    [
+     1,
+     "Power Strike"
+    ],
+    [
+     3,
+     "Whirlwind"
+    ],
+    [
+     6,
+     "Savage Claw"
+    ],
+    [
+     9,
+     "Shoulder Check"
+    ],
+    [
+     12,
+     "Crescent Wave"
+    ],
+    [
+     15,
+     "Riposte Stance"
+    ],
+    [
+     18,
+     "Leaping Cleave"
+    ],
+    [
+     20,
+     "Rampage"
+    ],
+    [
+     21,
+     "Sunder"
+    ],
+    [
+     24,
+     "Battle Trance"
+    ],
+    [
+     27,
+     "Momentum"
+    ]
+   ]
+  },
+  {
+   "Name": "Scorpion",
+   "Class": "Warrior",
+   "Element": "dark",
+   "Schedule": [
+    [
+     1,
+     "Slash"
+    ],
+    [
+     1,
+     "Rend"
+    ],
+    [
+     1,
+     "Power Strike"
+    ],
+    [
+     3,
+     "Whirlwind"
+    ],
+    [
+     6,
+     "Savage Claw"
+    ],
+    [
+     9,
+     "Shoulder Check"
+    ],
+    [
+     12,
+     "Crescent Wave"
+    ],
+    [
+     15,
+     "Riposte Stance"
+    ],
+    [
+     18,
+     "Leaping Cleave"
+    ],
+    [
+     20,
+     "Rampage"
+    ],
+    [
+     21,
+     "Sunder"
+    ],
+    [
+     24,
+     "Battle Trance"
+    ],
+    [
+     27,
+     "Momentum"
+    ]
+   ]
+  },
+  {
+   "Name": "Sludge",
+   "Class": "Mage",
+   "Element": "dark",
+   "Schedule": [
+    [
+     1,
+     "Fireball"
+    ],
+    [
+     1,
+     "Frost Bolt"
+    ],
+    [
+     1,
+     "Meteor"
+    ],
+    [
+     3,
+     "Thunder"
+    ],
+    [
+     6,
+     "Ice Lance"
+    ],
+    [
+     9,
+     "Chain Lightning"
+    ],
+    [
+     12,
+     "Greater Spell"
+    ],
+    [
+     15,
+     "Blizzard"
+    ],
+    [
+     18,
+     "Mana Burn"
+    ],
+    [
+     20,
+     "Cataclysm"
+    ],
+    [
+     21,
+     "Static Field"
+    ],
+    [
+     24,
+     "Gravity Well"
+    ],
+    [
+     27,
+     "Echo"
+    ]
+   ]
+  },
+  {
+   "Name": "Worm",
+   "Class": "Tank",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Bash"
+    ],
+    [
+     1,
+     "Shield Bash"
+    ],
+    [
+     1,
+     "Crushing Blow"
+    ],
+    [
+     3,
+     "Ground Pound"
+    ],
+    [
+     6,
+     "Shell Slam"
+    ],
+    [
+     9,
+     "Hook Chain"
+    ],
+    [
+     12,
+     "Ironhide"
+    ],
+    [
+     15,
+     "Fortress Slam"
+    ],
+    [
+     18,
+     "Iron Shell"
+    ],
+    [
+     20,
+     "Stone Quake"
+    ],
+    [
+     21,
+     "Taunting Roar"
+    ],
+    [
+     24,
+     "Aftershock"
+    ],
+    [
+     27,
+     "Unstoppable"
+    ]
+   ]
+  },
+  {
+   "Name": "Horned Skull",
+   "Class": "Mage",
+   "Element": "dark",
+   "Schedule": [
+    [
+     1,
+     "Fireball"
+    ],
+    [
+     1,
+     "Frost Bolt"
+    ],
+    [
+     1,
+     "Meteor"
+    ],
+    [
+     3,
+     "Thunder"
+    ],
+    [
+     6,
+     "Ice Lance"
+    ],
+    [
+     9,
+     "Chain Lightning"
+    ],
+    [
+     12,
+     "Greater Spell"
+    ],
+    [
+     15,
+     "Blizzard"
+    ],
+    [
+     18,
+     "Mana Burn"
+    ],
+    [
+     20,
+     "Cataclysm"
+    ],
+    [
+     21,
+     "Static Field"
+    ],
+    [
+     24,
+     "Gravity Well"
+    ],
+    [
+     27,
+     "Echo"
+    ]
+   ]
+  },
+  {
+   "Name": "Bone Hound",
+   "Class": "Warrior",
+   "Element": "",
+   "Schedule": [
+    [
+     1,
+     "Slash"
+    ],
+    [
+     1,
+     "Rend"
+    ],
+    [
+     1,
+     "Power Strike"
+    ],
+    [
+     3,
+     "Whirlwind"
+    ],
+    [
+     6,
+     "Savage Claw"
+    ],
+    [
+     9,
+     "Shoulder Check"
+    ],
+    [
+     12,
+     "Crescent Wave"
+    ],
+    [
+     15,
+     "Riposte Stance"
+    ],
+    [
+     18,
+     "Leaping Cleave"
+    ],
+    [
+     20,
+     "Rampage"
+    ],
+    [
+     21,
+     "Sunder"
+    ],
+    [
+     24,
+     "Battle Trance"
+    ],
+    [
+     27,
+     "Momentum"
+    ]
+   ]
+  }
+ ],
+ "Elites": [
+  {
+   "Name": "Dark Knight",
+   "Class": "",
+   "Element": "dark",
+   "Skills": [
+    "Heavy Slash",
+    "Shield Crush"
+   ]
+  },
+  {
+   "Name": "Golden Drake",
+   "Class": "",
+   "Element": "fire",
+   "Skills": [
+    "Claw",
+    "Fire Breath"
+   ]
+  },
+  {
+   "Name": "Shadow Assassin",
+   "Class": "",
+   "Element": "dark",
+   "Skills": [
+    "Backstab",
+    "Poison Blade"
+   ]
+  },
+  {
+   "Name": "Orc Brute",
+   "Class": "",
+   "Element": "ice",
+   "Skills": [
+    "Smash",
+    "Ground Slam"
+   ]
+  },
+  {
+   "Name": "Dread Brute",
+   "Class": "",
+   "Element": "dark",
+   "Skills": [
+    "Flail Smash",
+    "Shackle"
+   ]
+  },
+  {
+   "Name": "Orc Chieftain",
+   "Class": "",
+   "Element": "fire",
+   "Skills": [
+    "Club Smash",
+    "War Stomp"
+   ]
+  },
+  {
+   "Name": "Plague Reaper",
+   "Class": "",
+   "Element": "dark",
+   "Skills": [
+    "Grave Bolt",
+    "Plague Mist"
+   ]
+  },
+  {
+   "Name": "Bone Gargoyle",
+   "Class": "",
+   "Element": "elec",
+   "Skills": [
+    "Dive Claw",
+    "Bone Storm"
+   ]
+  },
+  {
+   "Name": "Frost Titan",
+   "Class": "",
+   "Element": "ice",
+   "Skills": [
+    "Glacier Fist",
+    "Frost Nova"
+   ]
+  }
+ ],
+ "Bosses": [
+  {
+   "Name": "Bat Lord",
+   "Class": "",
+   "Element": "ice",
+   "Skills": [
+    "Wing Slash",
+    "Blood Drain",
+    "Dive Strike"
+   ],
+   "Floors": [
+    10,
+    70,
+    130
+   ]
+  },
+  {
+   "Name": "Lich King",
+   "Class": "",
+   "Element": "elec",
+   "Skills": [
+    "Soul Bolt",
+    "Withering Curse",
+    "Shadow Nova"
+   ],
+   "Floors": [
+    20,
+    80,
+    140
+   ]
+  },
+  {
+   "Name": "Elder Dragon",
+   "Class": "",
+   "Element": "fire",
+   "Skills": [
+    "Claw Swipe",
+    "Flame Breath",
+    "Tail Slam"
+   ],
+   "Floors": [
+    30,
+    90,
+    150
+   ]
+  },
+  {
+   "Name": "Grave Lord",
+   "Class": "",
+   "Element": "dark",
+   "Skills": [
+    "Death Bolt",
+    "Soul Rend",
+    "Grave Nova"
+   ],
+   "Floors": [
+    40,
+    100,
+    160
+   ]
+  },
+  {
+   "Name": "Abyss Serpent",
+   "Class": "",
+   "Element": "ice",
+   "Skills": [
+    "Constrict",
+    "Venom Wave",
+    "Tidal Crush"
+   ],
+   "Floors": [
+    50,
+    110,
+    170
+   ]
+  },
+  {
+   "Name": "Demon Lord",
+   "Class": "",
+   "Element": "fire",
+   "Skills": [
+    "Infernal Claw",
+    "Hellfire",
+    "Dark Pact"
+   ],
+   "Floors": [
+    60,
+    120,
+    180
+   ]
+  }
+ ],
+ "Gear": {
+  "_about": "Gear: weapon ranks, what each class can carry, rarities, item names, the bonuses items can roll, legendary items and armor sets. From the old game's WPN, AFX, SETS, UNQ, RANKS and RREQ tables and its gear code.",
+  "ranks": [
+   "E",
+   "D",
+   "C",
+   "B",
+   "A",
+   "S"
+  ],
+  "rankDamage": [
+   0.9,
+   0.95,
+   1,
+   1.05,
+   1.1,
+   1.2
+  ],
+  "rankHit": [
+   -10,
+   -5,
+   0,
+   5,
+   10,
+   15
+  ],
+  "rarityRank": [
+   0,
+   1,
+   3,
+   4,
+   5
+  ],
+  "rankSteps": {
+   "P": {
+    "start": 2,
+    "levels": [
+     8,
+     18,
+     30
+    ]
+   },
+   "P2": {
+    "start": 2,
+    "levels": [
+     10,
+     20,
+     32
+    ]
+   },
+   "S": {
+    "start": 1,
+    "levels": [
+     10,
+     20,
+     32
+    ]
+   }
+  },
+  "classes": {
+   "Assassin": {
+    "weapons": [
+     {
+      "type": "dagger",
+      "role": "P"
+     },
+     {
+      "type": "dagger",
+      "role": "P"
+     }
+    ],
+    "armor": [
+     "L",
+     "M"
+    ],
+    "dual": true
+   },
+   "Dragon Knight": {
+    "weapons": [
+     {
+      "type": "lance",
+      "role": "P"
+     },
+     {
+      "type": "axe",
+      "role": "P2"
+     },
+     {
+      "type": "sword",
+      "role": "S"
+     }
+    ],
+    "armor": [
+     "M",
+     "H"
+    ]
+   },
+   "Gunslinger": {
+    "weapons": [
+     {
+      "type": "gun",
+      "role": "P"
+     },
+     {
+      "type": "gun",
+      "role": "P"
+     }
+    ],
+    "armor": [
+     "L",
+     "M"
+    ],
+    "dual": true
+   },
+   "Healer": {
+    "weapons": [
+     {
+      "type": "staff",
+      "role": "P"
+     },
+     {
+      "type": "wand",
+      "role": "S"
+     }
+    ],
+    "armor": [
+     "L",
+     "M"
+    ]
+   },
+   "Knight": {
+    "weapons": [
+     {
+      "type": "lance",
+      "role": "P"
+     },
+     {
+      "type": "sword",
+      "role": "S"
+     }
+    ],
+    "armor": [
+     "M",
+     "H"
+    ]
+   },
+   "Mage": {
+    "weapons": [
+     {
+      "type": "wand",
+      "role": "P"
+     },
+     {
+      "type": "staff",
+      "role": "S"
+     }
+    ],
+    "armor": [
+     "L",
+     "M"
+    ]
+   },
+   "Ranger": {
+    "weapons": [
+     {
+      "type": "bow",
+      "role": "P"
+     },
+     {
+      "type": "sword",
+      "role": "S"
+     }
+    ],
+    "armor": [
+     "L",
+     "M"
+    ]
+   },
+   "Tank": {
+    "weapons": [
+     {
+      "type": "axe",
+      "role": "P"
+     },
+     {
+      "type": "lance",
+      "role": "S"
+     }
+    ],
+    "armor": [
+     "M",
+     "H"
+    ]
+   },
+   "Warrior": {
+    "weapons": [
+     {
+      "type": "sword",
+      "role": "P"
+     },
+     {
+      "type": "axe",
+      "role": "S"
+     }
+    ],
+    "armor": [
+     "M",
+     "H"
+    ]
+   },
+   "Witch": {
+    "weapons": [
+     {
+      "type": "staff",
+      "role": "P"
+     },
+     {
+      "type": "dagger",
+      "role": "S"
+     }
+    ],
+    "armor": [
+     "L",
+     "M"
+    ]
+   }
+  },
+  "weaponCategory": {
+   "axe": "m",
+   "bow": "r",
+   "dagger": "m",
+   "gun": "r",
+   "lance": "m",
+   "staff": "g",
+   "sword": "m",
+   "wand": "g"
+  },
+  "weaponNames": {
+   "axe": "Axe",
+   "bow": "Bow",
+   "dagger": "Dagger",
+   "gun": "Gun",
+   "lance": "Lance",
+   "staff": "Staff",
+   "sword": "Sword",
+   "wand": "Wand"
+  },
+  "staffHeal": 0.5,
+  "maxDamageReduction": 50,
+  "doubleStrike": 0.6,
+  "addedElements": {
+   "addElec": "elec",
+   "addFire": "fire"
+  },
+  "statusChances": {
+   "bleedCh": {
+    "key": "bleed",
+    "value": 3
+   },
+   "poisonCh": {
+    "key": "poison",
+    "value": 3
+   },
+   "stunCh": {
+    "key": "stun",
+    "value": 1
+   }
+  },
+  "rarities": [
+   {
+    "name": "common",
+    "power": 1,
+    "color": "#cfd3e6"
+   },
+   {
+    "name": "uncommon",
+    "power": 2,
+    "color": "#7be0a8"
+   },
+   {
+    "name": "rare",
+    "power": 4,
+    "color": "#5da8ff"
+   },
+   {
+    "name": "epic",
+    "power": 6,
+    "color": "#b46cf0"
+   },
+   {
+    "name": "legendary",
+    "power": 10,
+    "color": "#f2b84b"
+   }
+  ],
+  "weapons": [
+   {
+    "name": "Rusty Blade",
+    "type": "sword",
+    "rarity": 0
+   },
+   {
+    "name": "Hunting Bow",
+    "type": "bow",
+    "rarity": 0
+   },
+   {
+    "name": "Oak Staff",
+    "type": "staff",
+    "rarity": 0
+   },
+   {
+    "name": "Iron Axe",
+    "type": "axe",
+    "rarity": 0
+   },
+   {
+    "name": "Iron Lance",
+    "type": "lance",
+    "rarity": 0
+   },
+   {
+    "name": "Steel Sword",
+    "type": "sword",
+    "rarity": 1
+   },
+   {
+    "name": "Yew Bow",
+    "type": "bow",
+    "rarity": 1
+   },
+   {
+    "name": "Battle Axe",
+    "type": "axe",
+    "rarity": 1
+   },
+   {
+    "name": "Ash Staff",
+    "type": "staff",
+    "rarity": 1
+   },
+   {
+    "name": "Steel Lance",
+    "type": "lance",
+    "rarity": 1
+   },
+   {
+    "name": "Mythril Blade",
+    "type": "sword",
+    "rarity": 2
+   },
+   {
+    "name": "Elven Longbow",
+    "type": "bow",
+    "rarity": 2
+   },
+   {
+    "name": "Frostbite Axe",
+    "type": "axe",
+    "rarity": 2
+   },
+   {
+    "name": "Emberwood Staff",
+    "type": "staff",
+    "rarity": 2
+   },
+   {
+    "name": "Silver Lance",
+    "type": "lance",
+    "rarity": 2
+   },
+   {
+    "name": "Dawnbreaker",
+    "type": "sword",
+    "rarity": 4
+   },
+   {
+    "name": "Voidreaver",
+    "type": "axe",
+    "rarity": 4
+   },
+   {
+    "name": "Heavensfall",
+    "type": "lance",
+    "rarity": 4
+   },
+   {
+    "name": "Gale Piercer",
+    "type": "bow",
+    "rarity": 4
+   },
+   {
+    "name": "Staff of Eternity",
+    "type": "staff",
+    "rarity": 4
+   },
+   {
+    "name": "Flintlock",
+    "type": "gun",
+    "rarity": 0
+   },
+   {
+    "name": "Revolver",
+    "type": "gun",
+    "rarity": 1
+   },
+   {
+    "name": "Silver Six",
+    "type": "gun",
+    "rarity": 2
+   },
+   {
+    "name": "Thunderhowl",
+    "type": "gun",
+    "rarity": 4
+   },
+   {
+    "name": "Twig Wand",
+    "type": "wand",
+    "rarity": 0
+   },
+   {
+    "name": "Crystal Wand",
+    "type": "wand",
+    "rarity": 1
+   },
+   {
+    "name": "Runic Wand",
+    "type": "wand",
+    "rarity": 2
+   },
+   {
+    "name": "Emberheart Scepter",
+    "type": "wand",
+    "rarity": 4
+   },
+   {
+    "name": "Rusty Knife",
+    "type": "dagger",
+    "rarity": 0
+   },
+   {
+    "name": "Steel Dagger",
+    "type": "dagger",
+    "rarity": 1
+   },
+   {
+    "name": "Shadow Kris",
+    "type": "dagger",
+    "rarity": 2
+   },
+   {
+    "name": "Nightfang",
+    "type": "dagger",
+    "rarity": 4
+   },
+   {
+    "name": "Gravewarden Blade",
+    "type": "sword",
+    "rarity": 3
+   },
+   {
+    "name": "Bloodmoon Cleaver",
+    "type": "axe",
+    "rarity": 3
+   },
+   {
+    "name": "Wyrmspine Pike",
+    "type": "lance",
+    "rarity": 3
+   },
+   {
+    "name": "Duskwind Recurve",
+    "type": "bow",
+    "rarity": 3
+   },
+   {
+    "name": "Ashen Repeater",
+    "type": "gun",
+    "rarity": 3
+   },
+   {
+    "name": "Candlewood Crozier",
+    "type": "staff",
+    "rarity": 3
+   },
+   {
+    "name": "Starfall Rod",
+    "type": "wand",
+    "rarity": 3
+   },
+   {
+    "name": "Widow's Kiss",
+    "type": "dagger",
+    "rarity": 3
+   }
+  ],
+  "armorNames": {
+   "H": {
+    "a": [
+     "Plate Armor",
+     "Full Plate",
+     "Cathedral Plate"
+    ],
+    "b": [
+     "Iron Greaves",
+     "Plate Sabatons",
+     "Rampart Sabatons"
+    ],
+    "h": [
+     "Iron Helm",
+     "Steel Helm",
+     "Vigil Greathelm"
+    ]
+   },
+   "L": {
+    "a": [
+     "Cloth Tunic",
+     "Leather Vest",
+     "Shadowweave Jerkin"
+    ],
+    "b": [
+     "Worn Boots",
+     "Leather Boots",
+     "Moonstep Boots"
+    ],
+    "h": [
+     "Cloth Hood",
+     "Leather Cap",
+     "Silk Cowl"
+    ]
+   },
+   "M": {
+    "a": [
+     "Chain Mail",
+     "Scale Mail",
+     "Brigandine"
+    ],
+    "b": [
+     "Chain Boots",
+     "Scale Greaves",
+     "Pathfinder Greaves"
+    ],
+    "h": [
+     "Chain Coif",
+     "Scale Helm",
+     "Wolfsteel Coif"
+    ]
+   }
+  },
+  "charmNames": [
+   "Bone Charm",
+   "Lucky Coin",
+   "Wolf Fang"
+  ],
+  "epicCharms": [
+   "Saint's Reliquary",
+   "Blood Ruby",
+   "Hourglass of Ash"
+  ],
+  "affixes": [
+   {
+    "key": "dmg",
+    "text": "% increased damage",
+    "ranges": [
+     [
+      3,
+      6
+     ],
+     [
+      6,
+      10
+     ],
+     [
+      10,
+      16
+     ],
+     [
+      13,
+      20
+     ],
+     [
+      16,
+      25
+     ]
+    ],
+    "slots": "wac"
+   },
+   {
+    "key": "fire",
+    "text": "% more fire damage",
+    "ranges": [
+     [
+      5,
+      8
+     ],
+     [
+      8,
+      14
+     ],
+     [
+      14,
+      22
+     ],
+     [
+      18,
+      28
+     ],
+     [
+      22,
+      35
+     ]
+    ],
+    "slots": "wc"
+   },
+   {
+    "key": "ice",
+    "text": "% more ice damage",
+    "ranges": [
+     [
+      5,
+      8
+     ],
+     [
+      8,
+      14
+     ],
+     [
+      14,
+      22
+     ],
+     [
+      18,
+      28
+     ],
+     [
+      22,
+      35
+     ]
+    ],
+    "slots": "wc"
+   },
+   {
+    "key": "elec",
+    "text": "% more thunder damage",
+    "ranges": [
+     [
+      5,
+      8
+     ],
+     [
+      8,
+      14
+     ],
+     [
+      14,
+      22
+     ],
+     [
+      18,
+      28
+     ],
+     [
+      22,
+      35
+     ]
+    ],
+    "slots": "wc"
+   },
+   {
+    "key": "light",
+    "text": "% more light damage",
+    "ranges": [
+     [
+      5,
+      8
+     ],
+     [
+      8,
+      14
+     ],
+     [
+      14,
+      22
+     ],
+     [
+      18,
+      28
+     ],
+     [
+      22,
+      35
+     ]
+    ],
+    "slots": "wc"
+   },
+   {
+    "key": "dark",
+    "text": "% more dark damage",
+    "ranges": [
+     [
+      5,
+      8
+     ],
+     [
+      8,
+      14
+     ],
+     [
+      14,
+      22
+     ],
+     [
+      18,
+      28
+     ],
+     [
+      22,
+      35
+     ]
+    ],
+    "slots": "wc"
+   },
+   {
+    "key": "phys",
+    "text": "% increased physical damage",
+    "ranges": [
+     [
+      4,
+      7
+     ],
+     [
+      7,
+      12
+     ],
+     [
+      12,
+      18
+     ],
+     [
+      15,
+      23
+     ],
+     [
+      18,
+      28
+     ]
+    ],
+    "slots": "w"
+   },
+   {
+    "key": "addFire",
+    "text": "% of damage added as fire",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      5,
+      8
+     ],
+     [
+      8,
+      14
+     ],
+     [
+      11,
+      18
+     ],
+     [
+      14,
+      22
+     ]
+    ],
+    "slots": "wc"
+   },
+   {
+    "key": "addElec",
+    "text": "% of damage added as thunder",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      5,
+      8
+     ],
+     [
+      8,
+      14
+     ],
+     [
+      11,
+      18
+     ],
+     [
+      14,
+      22
+     ]
+    ],
+    "slots": "wc"
+   },
+   {
+    "key": "crit",
+    "text": "% chance to critically hit",
+    "ranges": [
+     [
+      2,
+      4
+     ],
+     [
+      4,
+      7
+     ],
+     [
+      7,
+      11
+     ],
+     [
+      9,
+      14
+     ],
+     [
+      11,
+      16
+     ]
+    ],
+    "slots": "wcb"
+   },
+   {
+    "key": "critDmg",
+    "text": "% increased critical damage",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      10,
+      20
+     ],
+     [
+      20,
+      35
+     ],
+     [
+      28,
+      48
+     ],
+     [
+      35,
+      60
+     ]
+    ],
+    "slots": "wc"
+   },
+   {
+    "key": "hpPct",
+    "text": "% increased max HP",
+    "ranges": [
+     [
+      3,
+      6
+     ],
+     [
+      6,
+      10
+     ],
+     [
+      10,
+      15
+     ],
+     [
+      12,
+      20
+     ],
+     [
+      15,
+      24
+     ]
+    ],
+    "slots": "ahbc"
+   },
+   {
+    "key": "defPct",
+    "text": "% increased DEF",
+    "ranges": [
+     [
+      4,
+      8
+     ],
+     [
+      8,
+      14
+     ],
+     [
+      14,
+      22
+     ],
+     [
+      18,
+      27
+     ],
+     [
+      22,
+      32
+     ]
+    ],
+    "slots": "ahb"
+   },
+   {
+    "key": "dr",
+    "text": "% less damage taken",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      4,
+      7
+     ],
+     [
+      6,
+      10
+     ],
+     [
+      7,
+      12
+     ]
+    ],
+    "slots": "ahc"
+   },
+   {
+    "key": "leech",
+    "text": "% life steal",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      4,
+      7
+     ],
+     [
+      6,
+      10
+     ],
+     [
+      7,
+      12
+     ]
+    ],
+    "slots": "wc"
+   },
+   {
+    "key": "evade",
+    "text": "% chance to dodge",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      4,
+      7
+     ],
+     [
+      6,
+      9
+     ],
+     [
+      7,
+      11
+     ]
+    ],
+    "slots": "bc"
+   },
+   {
+    "key": "healPct",
+    "text": "% increased healing",
+    "ranges": [
+     [
+      4,
+      8
+     ],
+     [
+      8,
+      14
+     ],
+     [
+      14,
+      22
+     ],
+     [
+      18,
+      28
+     ],
+     [
+      22,
+      35
+     ]
+    ],
+    "slots": "wc"
+   },
+   {
+    "key": "bossDmg",
+    "text": "% more damage to elites and bosses",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      8,
+      14
+     ],
+     [
+      14,
+      24
+     ],
+     [
+      19,
+      32
+     ],
+     [
+      24,
+      40
+     ]
+    ],
+    "slots": "w"
+   },
+   {
+    "key": "bleedCh",
+    "text": "% chance to cause bleed on hit",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      6,
+      10
+     ],
+     [
+      10,
+      16
+     ],
+     [
+      13,
+      20
+     ],
+     [
+      16,
+      25
+     ]
+    ],
+    "slots": "w"
+   },
+   {
+    "key": "poisonCh",
+    "text": "% chance to poison on hit",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      6,
+      10
+     ],
+     [
+      10,
+      16
+     ],
+     [
+      13,
+      20
+     ],
+     [
+      16,
+      25
+     ]
+    ],
+    "slots": "wc"
+   },
+   {
+    "key": "thorns",
+    "text": "% of damage taken reflected",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      5,
+      10
+     ],
+     [
+      10,
+      18
+     ],
+     [
+      14,
+      24
+     ],
+     [
+      18,
+      30
+     ]
+    ],
+    "slots": "ah"
+   },
+   {
+    "key": "regen",
+    "text": "% max HP regenerated per turn",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      5
+     ],
+     [
+      4,
+      6
+     ]
+    ],
+    "slots": "ac"
+   },
+   {
+    "key": "stunCh",
+    "text": "% chance to stun on hit (legendary)",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      8,
+      15
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true
+   },
+   {
+    "key": "double",
+    "text": "% chance to strike twice (legendary)",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      10,
+      20
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true
+   },
+   {
+    "key": "cdr",
+    "text": "cooldown reduction on all skills (legendary)",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ],
+    "slots": "ch",
+    "legendaryOnly": true
+   },
+   {
+    "key": "movA",
+    "text": "movement (legendary)",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      1,
+      1
+     ]
+    ],
+    "slots": "b",
+    "legendaryOnly": true
+   },
+   {
+    "key": "hit",
+    "text": "% increased hit chance",
+    "ranges": [
+     [
+      3,
+      5
+     ],
+     [
+      5,
+      8
+     ],
+     [
+      8,
+      12
+     ],
+     [
+      10,
+      15
+     ],
+     [
+      12,
+      18
+     ]
+    ],
+    "slots": "whb"
+   },
+   {
+    "key": "execute",
+    "text": "% more damage to a target below 30% HP (epic)",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true
+   },
+   {
+    "key": "ward",
+    "text": "% chance to shrug off a harmful status (epic)",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "ahbc",
+    "legendaryOnly": true
+   }
+  ],
+  "uniques": [
+   {
+    "name": "Dawnbreaker",
+    "slot": "w",
+    "weaponType": "sword",
+    "affixes": [
+     {
+      "key": "light",
+      "value": 30
+     },
+     {
+      "key": "addFire",
+      "value": 15
+     },
+     {
+      "key": "crit",
+      "value": 10
+     },
+     {
+      "key": "stunCh",
+      "value": 10
+     }
+    ],
+    "lore": "Forged at the first sunrise; it burns what it cuts."
+   },
+   {
+    "name": "Voidreaver",
+    "slot": "w",
+    "weaponType": "axe",
+    "affixes": [
+     {
+      "key": "dark",
+      "value": 30
+     },
+     {
+      "key": "leech",
+      "value": 12
+     },
+     {
+      "key": "double",
+      "value": 15
+     },
+     {
+      "key": "bossDmg",
+      "value": 30
+     }
+    ],
+    "lore": "Each swing drinks from the dark between stars."
+   },
+   {
+    "name": "Heavensfall",
+    "slot": "w",
+    "weaponType": "lance",
+    "affixes": [
+     {
+      "key": "dmg",
+      "value": 25
+     },
+     {
+      "key": "hit",
+      "value": 15
+     },
+     {
+      "key": "stunCh",
+      "value": 12
+     },
+     {
+      "key": "defPct",
+      "value": 15
+     }
+    ],
+    "lore": "Said to have pinned a falling star."
+   },
+   {
+    "name": "Gale Piercer",
+    "slot": "w",
+    "weaponType": "bow",
+    "affixes": [
+     {
+      "key": "elec",
+      "value": 30
+     },
+     {
+      "key": "addElec",
+      "value": 20
+     },
+     {
+      "key": "crit",
+      "value": 15
+     },
+     {
+      "key": "movA",
+      "value": 1
+     }
+    ],
+    "lore": "Its string hums with the storm."
+   },
+   {
+    "name": "Staff of Eternity",
+    "slot": "w",
+    "weaponType": "staff",
+    "affixes": [
+     {
+      "key": "healPct",
+      "value": 40
+     },
+     {
+      "key": "regen",
+      "value": 6
+     },
+     {
+      "key": "cdr",
+      "value": 1
+     },
+     {
+      "key": "light",
+      "value": 20
+     }
+    ],
+    "lore": "Time bends gently around its bearer."
+   },
+   {
+    "name": "Thunderhowl",
+    "slot": "w",
+    "weaponType": "gun",
+    "affixes": [
+     {
+      "key": "addElec",
+      "value": 25
+     },
+     {
+      "key": "double",
+      "value": 20
+     },
+     {
+      "key": "crit",
+      "value": 12
+     },
+     {
+      "key": "elec",
+      "value": 20
+     }
+    ],
+    "lore": "Every shot arrives with its own thunderclap."
+   },
+   {
+    "name": "Emberheart Scepter",
+    "slot": "w",
+    "weaponType": "wand",
+    "affixes": [
+     {
+      "key": "fire",
+      "value": 40
+     },
+     {
+      "key": "addFire",
+      "value": 20
+     },
+     {
+      "key": "critDmg",
+      "value": 50
+     },
+     {
+      "key": "cdr",
+      "value": 1
+     }
+    ],
+    "lore": "A dragon's heart still beats in the gem."
+   },
+   {
+    "name": "Nightfang",
+    "slot": "w",
+    "weaponType": "dagger",
+    "affixes": [
+     {
+      "key": "poisonCh",
+      "value": 30
+     },
+     {
+      "key": "bleedCh",
+      "value": 30
+     },
+     {
+      "key": "crit",
+      "value": 20
+     },
+     {
+      "key": "double",
+      "value": 15
+     }
+    ],
+    "lore": "It bites twice, and the second bite is poison."
+   },
+   {
+    "name": "Dawnguard Helm",
+    "slot": "h",
+    "weight": "H",
+    "set": "H",
+    "affixes": [
+     {
+      "key": "hpPct",
+      "value": 15
+     },
+     {
+      "key": "defPct",
+      "value": 20
+     }
+    ]
+   },
+   {
+    "name": "Aegis of Dawn",
+    "slot": "a",
+    "weight": "H",
+    "set": "H",
+    "affixes": [
+     {
+      "key": "defPct",
+      "value": 30
+     },
+     {
+      "key": "dr",
+      "value": 10
+     }
+    ]
+   },
+   {
+    "name": "Dawnstride Greaves",
+    "slot": "b",
+    "weight": "H",
+    "set": "H",
+    "affixes": [
+     {
+      "key": "defPct",
+      "value": 15
+     },
+     {
+      "key": "thorns",
+      "value": 20
+     }
+    ]
+   },
+   {
+    "name": "Stormweave Coif",
+    "slot": "h",
+    "weight": "M",
+    "set": "M",
+    "affixes": [
+     {
+      "key": "crit",
+      "value": 8
+     },
+     {
+      "key": "elec",
+      "value": 15
+     }
+    ]
+   },
+   {
+    "name": "Stormweave Mail",
+    "slot": "a",
+    "weight": "M",
+    "set": "M",
+    "affixes": [
+     {
+      "key": "hpPct",
+      "value": 12
+     },
+     {
+      "key": "dr",
+      "value": 6
+     },
+     {
+      "key": "elec",
+      "value": 15
+     }
+    ]
+   },
+   {
+    "name": "Stormweave Treads",
+    "slot": "b",
+    "weight": "M",
+    "set": "M",
+    "affixes": [
+     {
+      "key": "evade",
+      "value": 6
+     },
+     {
+      "key": "movA",
+      "value": 1
+     }
+    ]
+   },
+   {
+    "name": "Nightbloom Hood",
+    "slot": "h",
+    "weight": "L",
+    "set": "L",
+    "affixes": [
+     {
+      "key": "evade",
+      "value": 8
+     },
+     {
+      "key": "dark",
+      "value": 15
+     }
+    ]
+   },
+   {
+    "name": "Nightbloom Robe",
+    "slot": "a",
+    "weight": "L",
+    "set": "L",
+    "affixes": [
+     {
+      "key": "hpPct",
+      "value": 10
+     },
+     {
+      "key": "regen",
+      "value": 3
+     },
+     {
+      "key": "evade",
+      "value": 6
+     }
+    ]
+   },
+   {
+    "name": "Nightbloom Slippers",
+    "slot": "b",
+    "weight": "L",
+    "set": "L",
+    "affixes": [
+     {
+      "key": "evade",
+      "value": 6
+     },
+     {
+      "key": "movA",
+      "value": 1
+     }
+    ]
+   },
+   {
+    "name": "Heart of the Stair",
+    "slot": "c",
+    "affixes": [
+     {
+      "key": "hpPct",
+      "value": 20
+     },
+     {
+      "key": "regen",
+      "value": 4
+     },
+     {
+      "key": "dmg",
+      "value": 10
+     }
+    ],
+    "lore": "Pulses once for every floor you climb."
+   },
+   {
+    "name": "Phoenix Feather",
+    "slot": "c",
+    "affixes": [
+     {
+      "key": "leech",
+      "value": 8
+     },
+     {
+      "key": "healPct",
+      "value": 25
+     },
+     {
+      "key": "regen",
+      "value": 4
+     }
+    ],
+    "lore": "Warm to the touch, even in the crypts."
+   }
+  ],
+  "sets": {
+   "H": {
+    "name": "Aegis of Dawn (heavy set)",
+    "two": [
+     {
+      "key": "dr",
+      "value": 8
+     }
+    ],
+    "three": [
+     {
+      "key": "thorns",
+      "value": 25
+     },
+     {
+      "key": "hpPct",
+      "value": 15
+     }
+    ]
+   },
+   "L": {
+    "name": "Nightbloom (light set)",
+    "two": [
+     {
+      "key": "poisonCh",
+      "value": 15
+     }
+    ],
+    "three": [
+     {
+      "key": "evade",
+      "value": 8
+     },
+     {
+      "key": "regen",
+      "value": 3
+     },
+     {
+      "key": "dark",
+      "value": 20
+     }
+    ]
+   },
+   "M": {
+    "name": "Stormweave (medium set)",
+    "two": [
+     {
+      "key": "addElec",
+      "value": 10
+     }
+    ],
+    "three": [
+     {
+      "key": "crit",
+      "value": 10
+     },
+     {
+      "key": "double",
+      "value": 10
+     }
+    ]
+   }
+  },
+  "armorWeights": {
+   "H": {
+    "def": 1.35,
+    "hp": 0.9
+   },
+   "L": {
+    "def": 0.7,
+    "hp": 1.2
+   },
+   "M": {
+    "def": 1,
+    "hp": 1
+   }
+  },
+  "loot": {
+   "power": 0.8,
+   "bands": [
+    {
+     "upToFloor": 10,
+     "odds": [
+      {
+       "below": 0.7,
+       "rarity": 0
+      },
+      {
+       "below": 1,
+       "rarity": 1
+      }
+     ]
+    },
+    {
+     "upToFloor": 20,
+     "odds": [
+      {
+       "below": 0.7,
+       "rarity": 1
+      },
+      {
+       "below": 1,
+       "rarity": 2
+      }
+     ]
+    },
+    {
+     "upToFloor": 30,
+     "odds": [
+      {
+       "below": 0.5,
+       "rarity": 1
+      },
+      {
+       "below": 0.9,
+       "rarity": 2
+      },
+      {
+       "below": 1,
+       "rarity": 3
+      }
+     ]
+    },
+    {
+     "upToFloor": 60,
+     "odds": [
+      {
+       "below": 0.55,
+       "rarity": 2
+      },
+      {
+       "below": 0.95,
+       "rarity": 3
+      },
+      {
+       "below": 1,
+       "rarity": 4
+      }
+     ]
+    },
+    {
+     "upToFloor": 0,
+     "odds": [
+      {
+       "below": 0.3,
+       "rarity": 2
+      },
+      {
+       "below": 0.8,
+       "rarity": 3
+      },
+      {
+       "below": 1,
+       "rarity": 4
+      }
+     ]
+    }
+   ],
+   "dropChance": 0.6,
+   "bossLegendary": 0.25,
+   "eliteBetter": 0.3,
+   "forKiller": 0.5,
+   "emptySlot": 0.75,
+   "mainWeapon": 0.6,
+   "chests": {
+    "gold": [
+     {
+      "below": 0.65,
+      "rarity": 2
+     },
+     {
+      "below": 0.95,
+      "rarity": 3
+     },
+     {
+      "below": 1,
+      "rarity": 4
+     }
+    ],
+    "silver": [
+     {
+      "below": 0.7,
+      "rarity": 1
+     },
+     {
+      "below": 1,
+      "rarity": 2
+     }
+    ],
+    "wood": [
+     {
+      "below": 0.7,
+      "rarity": 0
+     },
+     {
+      "below": 1,
+      "rarity": 1
+     }
+    ]
+   },
+   "classAffixes": {
+    "Assassin": [
+     "dmg",
+     "phys",
+     "crit",
+     "critDmg",
+     "hit",
+     "poisonCh",
+     "bleedCh",
+     "leech",
+     "evade",
+     "dark",
+     "elec",
+     "fire",
+     "hpPct",
+     "bossDmg",
+     "execute",
+     "ward"
+    ],
+    "Dragon Knight": [
+     "dmg",
+     "phys",
+     "crit",
+     "critDmg",
+     "leech",
+     "bossDmg",
+     "hit",
+     "addFire",
+     "fire",
+     "ice",
+     "elec",
+     "hpPct",
+     "defPct",
+     "dr",
+     "thorns",
+     "execute",
+     "ward"
+    ],
+    "Gunslinger": [
+     "dmg",
+     "phys",
+     "crit",
+     "critDmg",
+     "hit",
+     "bossDmg",
+     "addFire",
+     "addElec",
+     "bleedCh",
+     "fire",
+     "dark",
+     "elec",
+     "evade",
+     "hpPct",
+     "dr",
+     "execute",
+     "ward"
+    ],
+    "Healer": [
+     "healPct",
+     "regen",
+     "light",
+     "elec",
+     "dark",
+     "dmg",
+     "hpPct",
+     "defPct",
+     "dr",
+     "evade",
+     "hit",
+     "ward"
+    ],
+    "Knight": [
+     "dmg",
+     "phys",
+     "crit",
+     "critDmg",
+     "leech",
+     "bossDmg",
+     "hit",
+     "hpPct",
+     "defPct",
+     "dr",
+     "thorns",
+     "light",
+     "dark",
+     "elec",
+     "execute",
+     "ward"
+    ],
+    "Mage": [
+     "dmg",
+     "fire",
+     "ice",
+     "elec",
+     "addFire",
+     "addElec",
+     "crit",
+     "critDmg",
+     "hit",
+     "hpPct",
+     "evade",
+     "dr",
+     "regen",
+     "execute",
+     "ward"
+    ],
+    "Ranger": [
+     "dmg",
+     "phys",
+     "crit",
+     "critDmg",
+     "hit",
+     "bossDmg",
+     "bleedCh",
+     "poisonCh",
+     "addElec",
+     "ice",
+     "dark",
+     "elec",
+     "evade",
+     "hpPct",
+     "dr",
+     "execute",
+     "ward"
+    ],
+    "Tank": [
+     "dmg",
+     "phys",
+     "crit",
+     "hpPct",
+     "defPct",
+     "dr",
+     "thorns",
+     "regen",
+     "leech",
+     "hit",
+     "bossDmg",
+     "dark",
+     "ice",
+     "fire",
+     "execute",
+     "ward"
+    ],
+    "Warrior": [
+     "dmg",
+     "phys",
+     "crit",
+     "critDmg",
+     "leech",
+     "bleedCh",
+     "bossDmg",
+     "hit",
+     "hpPct",
+     "defPct",
+     "dr",
+     "thorns",
+     "regen",
+     "fire",
+     "light",
+     "elec",
+     "execute",
+     "ward"
+    ],
+    "Witch": [
+     "dmg",
+     "dark",
+     "poisonCh",
+     "fire",
+     "ice",
+     "crit",
+     "critDmg",
+     "hit",
+     "hpPct",
+     "evade",
+     "dr",
+     "regen",
+     "leech",
+     "execute",
+     "ward"
+    ]
+   },
+   "legendaryFromLevel": 30,
+   "goldBase": 2,
+   "goldPerLevel": 0.6,
+   "goldBoss": 8,
+   "goldElite": 3,
+   "goldBounty": 2,
+   "goldWanted": 3,
+   "goldReplayed": 0.5
+  },
+  "prefixes": [
+   {
+    "name": "Vampiric",
+    "slots": "wc",
+    "bonuses": [
+     {
+      "key": "leech",
+      "low": 9,
+      "high": 11
+     }
+    ]
+   },
+   {
+    "name": "Searing",
+    "slots": "wc",
+    "bonuses": [
+     {
+      "key": "addFire",
+      "low": 16,
+      "high": 20
+     }
+    ]
+   },
+   {
+    "name": "Thundering",
+    "slots": "wc",
+    "bonuses": [
+     {
+      "key": "addElec",
+      "low": 16,
+      "high": 20
+     }
+    ]
+   },
+   {
+    "name": "Keen",
+    "slots": "wbc",
+    "bonuses": [
+     {
+      "key": "crit",
+      "low": 13,
+      "high": 15
+     }
+    ]
+   },
+   {
+    "name": "Brutal",
+    "slots": "wc",
+    "bonuses": [
+     {
+      "key": "critDmg",
+      "low": 45,
+      "high": 55
+     }
+    ]
+   },
+   {
+    "name": "Huntsman's",
+    "slots": "w",
+    "bonuses": [
+     {
+      "key": "bossDmg",
+      "low": 30,
+      "high": 36
+     }
+    ]
+   },
+   {
+    "name": "Venomous",
+    "slots": "wc",
+    "bonuses": [
+     {
+      "key": "poisonCh",
+      "low": 20,
+      "high": 24
+     }
+    ]
+   },
+   {
+    "name": "Serrated",
+    "slots": "w",
+    "bonuses": [
+     {
+      "key": "bleedCh",
+      "low": 20,
+      "high": 24
+     }
+    ]
+   },
+   {
+    "name": "Echoing",
+    "slots": "w",
+    "bonuses": [
+     {
+      "key": "double",
+      "low": 6,
+      "high": 8
+     }
+    ]
+   },
+   {
+    "name": "Bulwark",
+    "slots": "ahc",
+    "bonuses": [
+     {
+      "key": "dr",
+      "low": 9,
+      "high": 11
+     }
+    ]
+   },
+   {
+    "name": "Thorned",
+    "slots": "ah",
+    "bonuses": [
+     {
+      "key": "thorns",
+      "low": 22,
+      "high": 26
+     }
+    ]
+   },
+   {
+    "name": "Mending",
+    "slots": "wc",
+    "bonuses": [
+     {
+      "key": "healPct",
+      "low": 28,
+      "high": 32
+     },
+     {
+      "key": "regen",
+      "low": 3,
+      "high": 3
+     }
+    ]
+   },
+   {
+    "name": "Executioner's",
+    "slots": "w",
+    "bonuses": [
+     {
+      "key": "execute",
+      "low": 25,
+      "high": 25
+     }
+    ]
+   },
+   {
+    "name": "Warding",
+    "slots": "ahbc",
+    "bonuses": [
+     {
+      "key": "ward",
+      "low": 25,
+      "high": 25
+     }
+    ]
+   }
+  ]
+ },
+ "Terrain": [
+  {
+   "letter": "g",
+   "name": "Plains",
+   "moveCost": 2,
+   "damageTaken": 1,
+   "heal": 0
+  },
+  {
+   "letter": "r",
+   "name": "Road",
+   "moveCost": 1,
+   "damageTaken": 1,
+   "heal": 0
+  },
+  {
+   "letter": "f",
+   "name": "Forest",
+   "moveCost": 4,
+   "damageTaken": 0.85,
+   "heal": 0
+  },
+  {
+   "letter": "h",
+   "name": "Hill",
+   "moveCost": 3,
+   "damageTaken": 0.9,
+   "heal": 0
+  },
+  {
+   "letter": "t",
+   "name": "Fort",
+   "moveCost": 2,
+   "damageTaken": 0.75,
+   "heal": 0.1
+  },
+  {
+   "letter": "T",
+   "name": "Throne",
+   "moveCost": 2,
+   "damageTaken": 0.75,
+   "heal": 0.1
+  },
+  {
+   "letter": "b",
+   "name": "Bridge",
+   "moveCost": 2,
+   "damageTaken": 1,
+   "heal": 0
+  },
+  {
+   "letter": "w",
+   "name": "Water",
+   "moveCost": 99,
+   "damageTaken": 1,
+   "heal": 0
+  },
+  {
+   "letter": "m",
+   "name": "Mountain",
+   "moveCost": 99,
+   "damageTaken": 1,
+   "heal": 0
+  }
+ ],
+ "Biomes": [
+  "Grasslands",
+  "Forest",
+  "Swamp",
+  "Desert",
+  "Tundra",
+  "Volcanic",
+  "Crypt"
+ ],
+ "Floors": {
+  "_about": "How floors are built: size, monsters and their level, bosses, elites, thrones, reinforcements, chests and biomes. From the old game's TUNE, BOSS, ELT, BIOMES, EB and AFW tables and its floor code.",
+  "mapStart": 14,
+  "mapEvery": 4,
+  "mapMax": 32,
+  "monstersStart": 4,
+  "monstersEvery": 4,
+  "monstersMax": 16,
+  "partyBase": 5,
+  "perExtraHero": 1,
+  "levelPerFloor": 0.7,
+  "lateFrom": 30,
+  "latePerFloor": 0.4,
+  "levelPerPower": 0.63,
+  "gearPerLevel": 2.5,
+  "gearFloorShare": 40,
+  "perExtraFoe": 1.5,
+  "gearWeights": {
+   "addElec": 0.3,
+   "addFire": 0.3,
+   "bleedCh": 0.1,
+   "bossDmg": 0.1,
+   "cdr": 6,
+   "crit": 0.4,
+   "critDmg": 0.1,
+   "dark": 0.2,
+   "defPct": 0.2,
+   "dmg": 0.35,
+   "double": 0.4,
+   "dr": 0.5,
+   "elec": 0.2,
+   "evade": 0.4,
+   "fire": 0.2,
+   "healPct": 0.1,
+   "hpPct": 0.25,
+   "ice": 0.2,
+   "leech": 0.2,
+   "light": 0.2,
+   "movA": 3,
+   "phys": 0.3,
+   "poisonCh": 0.1,
+   "regen": 0.8,
+   "stunCh": 0.4,
+   "thorns": 0.1
+  },
+  "monsterGrowth": 1.25,
+  "monsterGrowthLv": 0.004,
+  "monsterGrowthCap": 0.8,
+  "bossEvery": 10,
+  "eliteEvery": 5,
+  "eliteBossFloors": 50,
+  "shopEvery": 0,
+  "throneEvery": 3,
+  "throneAt": 2,
+  "reinforceEvery": 4,
+  "reinforceAt": 3,
+  "reinforceTurns": [
+   3,
+   5
+  ],
+  "reinforceMax": 2,
+  "maxHealers": 1,
+  "enemyRows": 3,
+  "allyChance": 0.06,
+  "chests": [
+   {
+    "kind": "wood",
+    "chance": 0.4
+   },
+   {
+    "kind": "silver",
+    "chance": 0.18
+   },
+   {
+    "kind": "gold",
+    "chance": 0.06
+   }
+  ],
+  "startRows": 2,
+  "shopBefore": 7,
+  "shop": {
+   "stock": 6,
+   "betterChance": 0.15,
+   "prices": [
+    12,
+    35,
+    100,
+    200,
+    400
+   ],
+   "perPoint": 3,
+   "sellShare": 0.5
+  },
+  "bosses": [
+   {
+    "name": "Bat Lord",
+    "element": "ice"
+   },
+   {
+    "name": "Lich King",
+    "element": "elec"
+   },
+   {
+    "name": "Elder Dragon",
+    "element": "fire"
+   },
+   {
+    "name": "Grave Lord",
+    "element": "dark"
+   },
+   {
+    "name": "Abyss Serpent",
+    "element": "ice"
+   },
+   {
+    "name": "Demon Lord",
+    "element": "fire"
+   }
+  ],
+  "elites": [
+   {
+    "name": "Dark Knight",
+    "element": "dark"
+   },
+   {
+    "name": "Golden Drake",
+    "element": "fire"
+   },
+   {
+    "name": "Shadow Assassin",
+    "element": "dark"
+   },
+   {
+    "name": "Orc Brute",
+    "element": "ice"
+   },
+   {
+    "name": "Dread Brute",
+    "element": "dark"
+   },
+   {
+    "name": "Orc Chieftain",
+    "element": "fire"
+   },
+   {
+    "name": "Plague Reaper",
+    "element": "dark"
+   },
+   {
+    "name": "Bone Gargoyle",
+    "element": "elec"
+   },
+   {
+    "name": "Frost Titan",
+    "element": "ice"
+   }
+  ],
+  "biomes": [
+   "Grasslands",
+   "Forest",
+   "Swamp",
+   "Desert",
+   "Tundra",
+   "Volcanic",
+   "Crypt"
+  ],
+  "elements": [
+   "fire",
+   "ice",
+   "elec",
+   "light",
+   "dark"
+  ]
+ },
+ "Progress": {
+  "xpRate": 0.5,
+  "xpPerLevel": 6,
+  "killShare": 0.4,
+  "killBase": 3,
+  "killBoss": 4,
+  "killElite": 2,
+  "missXP": 1,
+  "hitBase": 2,
+  "hitPerDamage": 12,
+  "hitStatusBonus": 2,
+  "supportXP": 4,
+  "healBase": 2,
+  "healPer": 8,
+  "healMax": 8,
+  "capAboveFloor": 5,
+  "growthHP": 3,
+  "growthAtk": 1,
+  "growthDef": 0.25,
+  "atkBonus": 1,
+  "formLevels": [
+   1,
+   5,
+   20
+  ],
+  "forms": [
+   {
+    "hp": 1,
+    "atk": 1,
+    "def": 0,
+    "mov": 0
+   },
+   {
+    "hp": 1.08,
+    "atk": 1.08,
+    "def": 1,
+    "mov": 0
+   },
+   {
+    "hp": 1.18,
+    "atk": 1.18,
+    "def": 2,
+    "mov": 1
+   },
+   {
+    "hp": 1.25,
+    "atk": 1.25,
+    "def": 3,
+    "mov": 1
+   }
+  ],
+  "ascendAt": 30,
+  "formNames": {
+   "Assassin": [
+    "Assassin",
+    "Shadow",
+    "Nightblade"
+   ],
+   "Dragon Knight": [
+    "Dragon Knight",
+    "Wyvern Knight",
+    "Dragoon"
+   ],
+   "Gunslinger": [
+    "Gunslinger",
+    "Desperado",
+    "Gunmaster"
+   ],
+   "Healer": [
+    "Healer",
+    "Cleric",
+    "High Priest"
+   ],
+   "Knight": [
+    "Knight",
+    "Cavalier",
+    "Knight Commander"
+   ],
+   "Mage": [
+    "Mage",
+    "Sorcerer",
+    "Archmage"
+   ],
+   "Ranger": [
+    "Ranger",
+    "Hunter",
+    "Sharpshooter"
+   ],
+   "Tank": [
+    "Tank",
+    "Ironclad",
+    "Bastion"
+   ],
+   "Warrior": [
+    "Warrior",
+    "Vanguard",
+    "Champion"
+   ],
+   "Witch": [
+    "Witch",
+    "Hexer",
+    "Coven Mistress"
+   ]
+  }
+ },
+ "Slots": [
+  [
+   1,
+   5
+  ],
+  [
+   25,
+   6
+  ],
+  [
+   50,
+   7
+  ],
+  [
+   75,
+   8
+  ]
+ ],
+ "Changes": {
+  "Decided and in place": [
+   "The damage forecast runs the same math as the real hit, so the numbers you see before attacking are the numbers you get. (Agreed fix: the old forecast ignored crits and bonus damage, up to 54% off.)",
+   "Every fight gets a new battle seed, and loading a save rolls a new one, so reloading never replays the same dice. (Agreed.)",
+   "Shuffles are fair: when a multi-target skill picks its extra targets, every enemy in range has an equal chance. The old game used a shortcut that favoured some picks and could differ between browsers. (Approved 2026-10-09.)",
+   "Monsters use the same version of a skill as heroes. In the old game six differed: monster Fireball, Thunder and Frost Bolt reached 1–3 tiles instead of 2–6, and monster Shot, Snaring Shot and Power Shot reached 7 tiles instead of 6. One version for everyone now (approved 2026-10-10). Their look will differ, not their rules.",
+   "A fallen hero can be revived however they died. In the old game, heroes killed by poison or bleeding could not be revived. (Approved 2026-10-10.)",
+   "Formulas that were written in several places in the old code (XP needed, potion healing, monster level, \"is this skill usable?\") exist exactly once. This changes no numbers.",
+   "A Trapper's traps spring on any tile a monster walks over. The old game only noticed a trap on the tile a monster stopped on, because it checked after the walking animation. (Agreed fix; in place since Phase 6.)",
+   "Every class learns the same number of skills on one schedule: two normal skills and an ultimate at Lv 1, a normal skill at Lv 3, 6, 9, 12, 15, 18, 21, 24 and 27, a second ultimate at Lv 20 and the ascension ultimate at Lv 30. All skills are learned by Lv 30. In the old game the Healer had 12 skills and most classes 7, with nothing new between Lv 20 and 30. 53 new skills and the Healer's new ultimate Last Light were added; Execution, Fortress Slam and Resurrection became normal skills (Resurrection is still once per battle); the Mage's Thunder moved to Lv 3; most old skills now arrive a little later. The full list is in skill-plan.md. (Approved skill by skill 2026-10-10; in place since Phase 6.)",
+   "Monster types learn on the same schedule, from the hero skills plus their old monster skills, and fight with their 4 newest normal skills, their newest ultimate and Strike. Elites follow the schedule too; bosses keep their own kits. Monster healers can bring back a fallen monster with Resurrection. In the old game a monster had a fixed list plus 2-3 skills at set levels, and elites got none of the level skills. (Approved 2026-10-10; in place since Phase 6.)",
+   "A hero with no weapon in hand counts as their class's usual weapon in the weapon triangle (Warrior sword, Tank axe, Knight and Dragon Knight lance), both when attacking and when attacked. The old game skipped the triangle for unarmed heroes. (Approved 2026-10-10; in place since Phase 6.)",
+   "Putting on gear in the middle of a battle uses up the hero's turn. The old game let you swap gear any number of times for free. Switching weapon sets is still free. (Approved 2026-10-11.)",
+   "After a level-up, a hero's attack counts the weapons in hand. The old game quietly went back to weapon set 1's weapons until the next set switch. (Approved 2026-10-11.)",
+   "Legendaries only drop once any one hero reaches Lv 30; before that, a roll that would give a legendary gives a purple item. Legendary weapons a hero can't use yet still turn into legendary armor or charms, as in the old game. The old game dropped legendaries from bosses and gold chests at any floor. (Approved 2026-10-11; in place since 6d.)",
+   "A purple (epic) tier sits between rare and legendary: power 6, weapons need rank A, and each item carries one purple bonus that names it (\"Vampiric Gravewarden Blade\") plus 2-3 ordinary bonuses. 8 weapons, 9 armor pieces, 3 charms and 14 purple bonuses, two of them new (Executioner's: more damage to a target below 30% HP; Warding: a chance to shrug off a harmful status). Purple drops from floor 21; before any hero is Lv 30 a legendary roll gives purple; gold chests give 65% rare, 30% purple, 5% legendary. Combining in the shop (Phase 7): two rares make a purple, two purples a legendary. The old game had four tiers. (Approved 2026-10-11; in place since 6d.)",
+   "A hero can change its skills once per floor: one change can swap any number of skills and the ultimate, then they stay until the next floor. It doesn't use up the turn; a skill kept on the bar keeps its cooldown and one brought in starts ready. The old game let you swap skills from the gear sheet any number of times, even mid-fight. (Owner's rule, 2026-10-11; in place since 6d.)",
+   "A Necromancer's Grave Bloom raises the skeleton right after the kill. The old game raised it on a half-second timer, so it could appear in the middle of the enemy turn depending on how fast you played. (The referee has no clock; in place since Phase 6.)",
+   "Each skill's stack of attack-effect pictures is picked once, in a fixed order, so a skill always looks the same. The old game picked a stack the first time a skill was used in a session, so a few skills could look different from one session to the next. Same pictures, same rule for picking them. (Claude's call while porting the effects, 2026-10-11; the owner can ask for it back.)",
+   "The 53 new skills and Last Light each have their own drawn effect and pose, chosen to fit the skill (listed as NEW in `web/game/js/fxbook.js`). The old game had no such skills; it drew a plain white slash for any skill it had no entry for. (2026-10-11, for the owner to check.)"
+  ],
+  "Decided, arriving with later phases": [
+   "Team select and deployment: all 10 heroes (one of each class) are yours from the start, and there is no recruiting; the old game started with one hero and offered a new one every 25 floors (up to 8). Start with 5 hero slots; one more slot at floors 25, 50 and 75 (8 is the most). Each floor: look at the map, choose who to bring from all 10 heroes, fill every slot, then place them. Only the heroes who fight on a floor earn its XP. You place them yourself on blue starting tiles, and each map has more blue tiles than heroes, so where you start is a real choice. If you don't choose, the game brings your highest-level heroes. Monster level is set when the map is made, from your strongest heroes for that many slots (the old game used the whole party). The old game took the whole party into every fight. (Approved 2026-10-10; arrives in Phase 7, screen in Phase 8.)",
+   "Monster level on a floor is set when the map is made, from your strongest heroes for that many slots, since you now see the map before choosing your team. The old game used the team you brought, which was always the whole party. (Owner, 2026-10-11; arrives in 7c.)",
+   "Changing ascension (once per floor) happens between battles, not in the middle of one. Purple items cost 200 gold before their numbers (rare 100, legendary 400). The shop stocks items for your strongest heroes (the old game: for its whole party, which was always the team). (Approved by the owner, 2026-10-11, with the other Phase 7 calls: leaving a battle keeps what was earned; winning a cleared floor stays on it to farm; pre-battle gear and skill changes for team heroes only; a defeat doesn't give back once-per-floor changes; the 100-floor gift goes in a random slot; saves stay in the browser (export to move them); only a climb autosaves; a loaded battle uses fresh dice.)",
+   "Shops no longer take a floor number: every 7 floors the shop comes up between floors (before floors 7, 14, 21...); you shop, then go on to that floor and fight it. In the old game floors 7, 14, 21... were shop floors that counted as cleared without a fight. (Owner, 2026-10-11; arrives in Phase 7.)",
+   "A battle ends the moment it is won (the old game let heroes keep acting until the next floor loaded), and an undo that can't happen says why. (Approved 2026-10-11; both already work this way in the new referee.)"
+  ],
+  "Kept on purpose": [
+   "A defeat re-runs the same floor with no penalty. The game is built around reaching a floor you can't beat yet, then going back to earlier floors to farm XP and gear, so losing is not punished (owner, 2026-10-11). The balance autoplayer will report how often runs get stuck, without making the game harder."
+  ]
+ },
+ "Abilities": {
+  "Absolute Freeze": "Mage",
+  "Beast Mode": "Dragon Knight",
+  "Beast Mode II": "Dragon Knight",
+  "Beast Mode+": "Dragon Knight",
+  "Blood Frenzy": "Warrior",
+  "Blood Pact": "Witch",
+  "Bloodlust": "Assassin",
+  "Bloodlust II": "Assassin",
+  "Bloodlust+": "Assassin",
+  "Crash Down": "Dragon Knight",
+  "Crimson Bloodlust": "Assassin",
+  "Dead Man's Hand": "Gunslinger",
+  "Deadeye Focus": "Ranger",
+  "Death Mark": "Assassin",
+  "Divine Choir": "Healer",
+  "Double Strike": "Warrior",
+  "Double Strike+": "Warrior",
+  "Elemental Overload": "Mage",
+  "Enlightenment": "Healer",
+  "Enlightenment II": "Healer",
+  "Enlightenment+": "Healer",
+  "Firestorm Field": "Mage",
+  "Flurry of Blades": "Warrior",
+  "Frost Bulwark": "Tank",
+  "Glacial Scales": "Dragon Knight",
+  "Grave Bloom": "Witch",
+  "Hunter's Eye": "Ranger",
+  "Hunter's Eye II": "Ranger",
+  "Hunter's Eye+": "Ranger",
+  "Inferno Beast": "Dragon Knight",
+  "Inner Element": "Mage",
+  "Inner Element II": "Mage",
+  "Inner Element+": "Mage",
+  "Iron Maiden": "Tank",
+  "Iron Maiden II": "Tank",
+  "Iron Maiden+": "Tank",
+  "Oath of Protection": "Warrior",
+  "Oath of Ruin": "Knight",
+  "Overwatch": "Gunslinger",
+  "Plague Bloom": "Healer",
+  "Poison Ivy": "Witch",
+  "Poison Ivy II": "Witch",
+  "Poison Ivy+": "Witch",
+  "Queen's Garden": "Witch",
+  "Quick Draw": "Gunslinger",
+  "Quick Draw II": "Gunslinger",
+  "Quick Draw+": "Gunslinger",
+  "Sacred Vow": "Knight",
+  "Shadow Clones": "Assassin",
+  "Sky Lord": "Dragon Knight",
+  "Snare Field": "Ranger",
+  "Storm Eye": "Ranger",
+  "Thunderous Oath": "Knight",
+  "Time Shift": "Healer",
+  "Triple Strike": "Warrior",
+  "Unbroken Maiden": "Tank",
+  "Vow of Honor": "Knight",
+  "Vow of Honor II": "Knight",
+  "Vow of Honor+": "Knight",
+  "Wanted Poster": "Gunslinger",
+  "War Banner": "Tank"
+ }
+}
