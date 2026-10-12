@@ -21,15 +21,9 @@ Written 2026-10-11 for the owner and Grok. The full plan is in `roadmap.md`, and
 The owner signed off design B with a skill-name box (no count) and ◀ ▶ to cycle attacks; built in `battle.js` (forecast, placeForecast) and `style.css`.
 
 ## Next session, first thing: missing from the old build (owner, 2026-10-12)
-Match the old game (screen only; check against papigetbusy/crusader-tactics):
-1. **Done heroes dim:** when a hero can't do anything else this turn, it is drawn dimmed, showing it has made its turn.
-2. **Health bars drain as damage lands:** the lost part of the bar should slide down when the hit lands (old shp/sh/sht, about 350 ms), not jump at the end of the turn. Today `st.shownHp` is just `u.hp` and the bar only changes when the new View is shown.
-3. **Weakness indicator:** show that one of your moves does bonus damage (WEAK) to a monster, the way the old game marked it (before choosing the attack, not only in the forecast).
-
-## Next session, first thing: missing from the old build (owner, 2026-10-12)
 Noticed by the owner while playtesting. Notes only, nothing changed yet. Check each against the old game, then fix:
 1. **A hero who can't do anything else should dim**, showing it has made its turn (as in the old game).
-2. **Health bars should drain as damage lands.** In the old game the bar slid down with each hit; now the lost health only shows at the end of the action.
+2. **Health bars should drain as damage lands.** In the old game the bar slid down with each hit; now the lost health only shows at the end of the action (old shp/sh/sht, about 350 ms; today `st.shownHp` is just `u.hp`).
 3. **The weakness indicator is missing.** The old game showed when one of your moves does bonus damage (a WEAK mark on the move or target) before you choose it.
 4. **Redesign the ☰ menu's map controls (owner's sketch, 2026-10-12):** drop the full panel of rows and labels. Keep only a narrow strip of the icons (zoom −/+, view, minimap, danger zone, battle speed, rotate, next hero...), each a tap-to-toggle on/off, placed in the space outside the map's borders, never over the map. The owner's screenshot shows the current panel and a crop of just the icon column he wants.
 
