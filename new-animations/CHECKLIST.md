@@ -7,6 +7,7 @@ Not in the game yet. The code is waiting in `code/`.
 
 - [x] Blood Moon (Blood Witch) — `code/blood-moon.js`
 - [x] Grand Hex (Hex Queen) — `code/grand-hex.js`
+- [x] Blood Frenzy (Berserker) — `code/blood-frenzy.js`
 
 ## How this works
 
@@ -18,7 +19,7 @@ Not in the game yet. The code is waiting in `code/`.
 6. The code and that GIF stay here. The play page does not load them.
 7. When every row below is signed off, they all go into the game in one pass. Not before.
 
-Look, from 2026-10-12 on. The body can stay a small motion. The power is effects the game already has, recolored, plus the hero glow (a colored blur, a pool under the feet, sparks). The effect does not cover the attacker. The last frames are the idle body, with the glow gone. She does not stay on the attack pose. Blood Moon was signed before this rule, so its ending is still the swing until it is updated.
+Look, from 2026-10-12 on. Blood Frenzy is the lock. The prompt is in `PROMPT.md`. Eight cells, two rows, the hero called with @, every pose and every effect step written out. The review uses that sheet's own effect. A power-up stays on him. A hit travels to the enemy. Either way the effect is behind him and does not cover his face. The last three frames are body 1 with the glow gone. He does not stay on the attack pose. Blood Moon was signed before this rule, so its ending is still the swing until it is updated.
 
 A shared skill can be used by every form of that class, so it needs a signed GIF on each body (the base forms and the ascensions). An ascension skill needs a GIF only on the body that learns it. One code file still covers the attack. The extra GIFs are the same move on the other bodies.
 
@@ -38,7 +39,7 @@ A counterattack uses the Strike or Defend GIF. It does not get its own animation
 - [ ] Strike — gif: none — code: waiting
 - [ ] Defend — gif: none — code: waiting
 - [ ] Double Strike (the class ability; Double Strike+, Triple Strike use this same GIF unless we split them) — gif: none — code: waiting
-- [ ] Blood Frenzy (Berserker ability only) — review GIF made, not signed off (`gifs/warrior/blood-frenzy/review.gif`) — code: waiting
+- [x] Blood Frenzy (Berserker ability only) — approved. Code is in `code/blood-frenzy.js`. Not in the game.
 - [ ] Flurry of Blades (Duelist ability only) — gif: none — code: waiting
 - [ ] Oath of Protection (Paladin ability only) — gif: none — code: waiting
 

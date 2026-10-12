@@ -26,6 +26,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-12 · Grok · Blood Frenzy signed off. The prompt rule is locked to that sheet. Not in the game.
 - 2026-10-12 · Grok · Idle sprites are also in new-animations/Idle, one file per hero, so they can be opened from the repo. Not in the game.
 - 2026-10-12 · Grok · Blood Frenzy review GIF. The ring stays on the Berserker. Not signed off. Not in the game.
 - 2026-10-12 · Grok · Named idle sprites for the art AI are in new-animations/idle-sprites.zip. First prompt batch is prompts/01-warrior-ascension.md. Not in the game.
