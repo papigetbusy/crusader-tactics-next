@@ -26,6 +26,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-12 · Grok · A separate attack preview (not in the game) is at assets/preview, so the witch GIFs can be opened and saved.
 - 2026-10-12 · Grok · On the place-your-heroes screen, 1 2 3 save a starting formation. An empty number saves where they stand and turns gold. Tap a gold number to put them back. Hold a gold number to overwrite it; Cancel does nothing, Yes replaces it. Formations are kept in that save.
 - 2026-10-12 · Grok · Each save file remembers its own settings (isometric or flat, danger zone, minimap and the rest). Loading a save puts that look back. An older save with no settings keeps whatever is on screen.
 - 2026-10-12 · Grok · Floor 41 was redrawing the whole map every moment, and pinch-zoom on a phone snapped instead of zooming. The ground is now painted once and moved, pinch zooms smoothly from the whole map to up close, and the picture is drawn a bit softer on a sharp phone so it keeps up.
