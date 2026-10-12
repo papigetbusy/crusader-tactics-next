@@ -6,6 +6,7 @@ This folder is not part of the game. Nothing here is loaded by the play page.
 Not in the game yet. The code is waiting in `code/`.
 
 - [x] Blood Moon (Blood Witch) — `code/blood-moon.js`
+- [x] Soul Nova (Necromancer) — `code/soul-nova.js`
 
 ## How this works
 
@@ -277,8 +278,8 @@ Shared skills (every form of this class):
 Ascension skills (one body only):
 
 - [x] Blood Moon (Blood Witch only) — approved. Code is in `code/blood-moon.js`. Not in the game.
-- [ ] Grand Hex (Hex Queen only) — gif: v1 made, not signed off (`gifs/witch/grand-hex/v1.gif`) — code: waiting
-- [ ] Soul Nova (Necromancer only) — glow look, idle ending, and the black ball from the first GIF. Not signed off (`gifs/witch/soul-nova/review-glow.gif`) — code: waiting
+- [ ] Grand Hex (Hex Queen only) — review GIF made, not signed off (`gifs/witch/grand-hex/review.gif`) — code: waiting
+- [x] Soul Nova (Necromancer only) — approved. Code is in `code/soul-nova.js`. Not in the game.
 
 ### Healer
 

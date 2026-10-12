@@ -26,6 +26,8 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-12 · Grok · Grand Hex has a review GIF. The seal hits the enemy, the circle is centered on it, and she returns to idle. Not signed off. Not in the game.
+- 2026-10-12 · Grok · Soul Nova is signed off. Code is in new-animations/code/soul-nova.js. It is not in the game. Grand Hex is next.
 - 2026-10-12 · Grok · Soul Nova's opening circle is centered on the black ball and drawn behind it. Not signed off. Not in the game.
 - 2026-10-12 · Grok · Soul Nova's hit now uses the black ball from the first GIF, on the glow version. She still returns to idle. Not signed off. Not in the game.
 - 2026-10-12 · Grok · Animation rule: small body motion, recolored effects the game already has, the hero glow, and the last frames back on idle. Soul Nova's glow GIF now ends on idle. Not in the game.

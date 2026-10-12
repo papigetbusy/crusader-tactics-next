@@ -15,7 +15,7 @@ How every attack is made, in this order. Do not skip a step.
 
 ## Look rules (owner, 2026-10-12)
 
-Soul Nova's glow test is the pattern from here on. Blood Moon stays as it was signed.
+Soul Nova is the look from here on. `soul-nova.js` and `../gifs/witch/soul-nova/in-game.gif`. Blood Moon was signed before the idle rule, so it still ends on the swing. It gets an idle ending before it goes into the game.
 
 - The body can be a small motion. Do not invent new poses to fake a bigger swing.
 - The power is effects the game already has, recolored to that skill, plus the hero glow: a colored blur around the sprite, a pool of that color under the feet, and the little sparks a powered-up hero already gets.
