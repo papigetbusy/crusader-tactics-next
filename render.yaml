@@ -1,0 +1,9 @@
+# Render reads this to set up the online server (online step 3).
+# In Render: New → Blueprint → pick this repository → Apply.
+services:
+  - type: web
+    name: crusader-tactics
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/ping
+    autoDeploy: true

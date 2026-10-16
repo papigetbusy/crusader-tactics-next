@@ -174,15 +174,27 @@ Estimate: about 3 sessions once the game matches the original.
   - `web/game/js/versus.js` and `side.js`. In versus, "my heroes" are the side to move: `mine()` in battle, gear, skills and next hero.
   - The View marks versus heroes (`pvp`), so both sides are drawn as heroes.
 
-**Next: step 3, online rooms (owner's design, 2026-10-16).**
-- **Joining:** a player makes a room with a password and sends it to friends. Anyone with the password joins, and a room can hold many friends.
-- **Playing:** two of them pick a side, Red or Blue, and the match starts. Everyone in the room watches the fight live.
-- **Waiting:** the rest wait in line for the next match.
-- **Still to ask the owner:**
-  - Does the winner stay on?
-  - What is the most people a room can hold?
-  - Can watchers chat?
-- **Needs:** a small server running the same referee (a host like Render or Fly.io; the owner makes the account), and the Online button.
+**Step 3 done (2026-10-16): online rooms (owner's design).**
+- **Rooms:** a room is its password; spaces and capitals don't matter. Up to 4 people (owner).
+  - Two take Blue and Red and choose their heroes, and the match starts.
+  - Everyone in the room watches live. The others wait in line.
+  - The winner stays on (owner). The loser goes to the back of the line and the first in line takes their side. With nobody waiting, the same two play again ("Play with the same heroes").
+  - Chat and emojis come later (owner).
+- **The server (`adapters/server`):**
+  - It uses Go's standard library only, runs the same referee, and keeps the clocks itself. Phones can't send clock actions.
+  - It charges each player the real time since their last move, and ends turns and matches when time runs out.
+  - It keeps each match's seeds and actions, so a match replays exactly.
+  - Phones talk to it with plain HTTP POSTs and one live stream each (Server-Sent Events). It also serves the game's pages.
+  - Tests in `room_test.go` and `http_test.go` cover the room rules and two phones playing over real HTTP.
+- **The phone (`web/game/js/online.js`):**
+  - Versus → Online gives the join screen and then the room.
+  - Moves go to the server. Everything comes back on the stream and plays on every phone.
+  - The phone loads the server's match into its own copy of the referee only to answer "where can I walk" and the attack window.
+  - Only the side to move can act, and a watcher can't act at all. Gear and skill changes also go through the server.
+- **Hosting:** `Dockerfile`, `render.yaml` and `adapters/server/build-site.sh`. The owner's steps are in `online-setup.md`.
+- **Tested here:** three phone-sized browsers in one room against the real server. Sides, teams, a move shown on all three, the turn passing, the watcher only watching, and the server ending a turn when the 30 seconds ran out.
+
+**Next:** the owner sets up Render (`online-setup.md`) and plays with friends. Then chat and emojis, and after that the ideas list (chess feel first).
 
 ### 7. After the full build (owner's reminders)
 - More gear: named sets with play styles at every level

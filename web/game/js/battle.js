@@ -12,8 +12,9 @@ import * as shop from './shop.js';
 import * as playback from './playback.js';
 import { check as capCheck } from './capnotice.js';
 import { autosave } from './sysmenu.js';
-import { mine, mySide, isVersus } from './side.js';
+import { mine, mySide, isVersus, myTurn } from './side.js';
 import * as vs from './versus.js';
+import * as online from './online.js';
 import { filled, remember, spotsFor } from './formations.js';
 
 const $ = (id) => document.getElementById(id);
@@ -40,15 +41,17 @@ export function wire(s) {
 const st = () => screen.st;
 const view = () => st().view;
 const phase = () => (view().climb ? view().climb.phase : 'battle');
-const ready = (u) => mine(u, view()) && !u.done && !u.companion && !u.decoy && !u.pet;
+const ready = (u) => mine(u, view()) && myTurn(view()) && !u.done && !u.companion && !u.decoy && !u.pet;
 const key = (x, y) => x + ',' + y;
 
 // ---------- sending an action ----------
 
 // send asks the referee to do something; its events play, then its answer
-// is shown.
+// is shown. In an online match the action goes to the server instead, and its
+// answer comes back on the room's stream (online.js calls playOut).
 function send(action, message, then) {
   if (playback.playing()) return false;
+  if (online.on()) return online.act(action, message, then);
   const sideBefore = view() ? view().side : 0;
   const r = referee.act(vs.stamp(action));
   if (!r) return false;
@@ -57,6 +60,12 @@ function send(action, message, then) {
     return false;
   }
   vs.charged();
+  playOut(r, message, then, sideBefore);
+  return true;
+}
+
+// playOut plays an answer's events, then shows its View.
+export function playOut(r, message, then, sideBefore) {
   clear();
   $('endTurn').hidden = true;
   const finish = () => {
@@ -67,15 +76,15 @@ function send(action, message, then) {
     after();
     capCheck(r.events || [], r.view, before);
     if (then) then();
-    vs.after(r.events || [], sideBefore);
+    if (online.on()) online.played(r);
+    else vs.after(r.events || [], sideBefore);
   };
   playback.play(st().units, r.events || [], st().opt.speed, finish, () => {
-    if (isVersus(view())) return; // the other player's turn: the phone is handed over instead
+    if (isVersus(view())) return; // versus: the other player's turn is shown its own way
     screen.log('Enemy turn.');
     $('skip').hidden = st().opt.speed === 3;
   }, st().opt.calm, r.view.bag || []);
   screen.kick();
-  return true;
 }
 
 // clear forgets what the player was pointing at.
@@ -99,7 +108,7 @@ function clear() {
   $('einfo').hidden = true;
   stopDrag();
   $('terr').hidden = true;
-  if (view()) $('endTurn').hidden = phase() !== 'battle' || !!view().outcome || playback.playing();
+  if (view()) $('endTurn').hidden = phase() !== 'battle' || !!view().outcome || playback.playing() || !myTurn(view());
   $('forecast').hidden = true;
 }
 
@@ -123,7 +132,7 @@ export function after() {
     screen.log(`${v.throne ? 'Seize the throne or defeat every enemy' : 'Defeat every enemy'} to climb. ${foes.length} enemies · Lv ${lv} · ${v.n}×${v.n} ${v.biome || ''}${(v.chests || []).length ? ` · ${v.chests.length} chest${v.chests.length > 1 ? 's' : ''} on the map: walk onto them!` : ''}`);
   }
   seen = here;
-  $('endTurn').hidden = p !== 'battle' || !!v.outcome;
+  $('endTurn').hidden = p !== 'battle' || !!v.outcome || !myTurn(v);
   decision();
   summary();
   if (p !== 'prepare') $('formAsk').hidden = true;

@@ -6,7 +6,7 @@ import * as referee from './referee.js';
 import * as playback from './playback.js';
 import { heroPicUrl } from './team.js';
 import { cover } from './sysmenu.js';
-import { isVersus } from './side.js';
+import { isVersus, onlineSeat } from './side.js';
 
 const $ = (id) => document.getElementById(id);
 const NAME = ['Player 1 · Blue', 'Player 2 · Red'], SHORT = ['BLUE', 'RED'], COL = ['#4fa8ff', '#ff5d5d'];
@@ -26,15 +26,25 @@ export function menu() {
   $('titleStart').hidden = true;
   $('vsMenu').hidden = false;
   $('vsLocal').onclick = () => { $('vsMenu').hidden = true; teams = [[], []]; pick(0); };
-  $('vsOnline').onclick = () => screen.log('Online comes next: a room password for your friends, Red or Blue, and everyone else watches and waits in line.');
+  $('vsOnline').onclick = () => { $('vsMenu').hidden = true; screen.lobby(); };
   $('vsBack').onclick = () => { $('vsMenu').hidden = true; $('titleStart').hidden = false; };
 }
 
 // ---------- picking 8 heroes and their ascensions ----------
 
 function pick(side) {
+  chooseTeam(side, teams[side], () => { if (side === 0) $('vsMenu').hidden = false; else pick(0); }, (team) => {
+    teams[side] = team;
+    if (side === 0) return handOver(1, 'Hand the phone to Player 2 to choose their heroes.', 'I\'m Player 2 · Choose', () => pick(1));
+    begin();
+  }, side === 0 ? 'Done → Player 2' : 'Start the match');
+}
+
+// chooseTeam is the picker: 8 heroes and an ascension each. done(team) gets
+// the picks; back() leaves. Online uses it too.
+export function chooseTeam(side, start, back, done, goText) {
   rules = rules || referee.versusRules();
-  const w = cover('vsPick'), team = teams[side];
+  const w = cover('vsPick'), team = (start || []).map((p) => Object.assign({}, p));
   const draw = () => {
     const n = team.length, need = rules.team;
     w.innerHTML = `<div class="panel picker vsp"><div class="vsP" style="color:${COL[side]}">${NAME[side].toUpperCase()}</div>
@@ -44,7 +54,7 @@ function pick(side) {
         const img = p ? heroPicUrl({ class: c.class, stage: 3, ascension: p.ascension }) : heroPicUrl({ class: c.class, stage: 0 });
         return `<button class="card${p ? ' on' : ''}" data-c="${c.class}"><img src="${img}" alt=""><b>${c.class}</b><small>Lv ${rules.level} · purple set</small>${p ? `<div class="asc">${c.ascensions.map((x) => `<i data-a="${x.name}" class="${x.name === p.ascension ? 'on' : ''}">${x.name}</i>`).join('')}</div><span class="pas">${a.passive}${a.bonus ? ` <em>${a.bonus}</em>` : ''}</span>` : ''}</button>`;
       }).join('')}</div>
-      <div class="btns"><button class="b" id="vsPBack">Back</button><button class="b" id="vsPGo" ${n === need ? '' : 'disabled'}>${side === 0 ? 'Done → Player 2' : 'Start the match'}</button></div></div>`;
+      <div class="btns"><button class="b" id="vsPBack">Back</button><button class="b" id="vsPGo" ${n === need ? '' : 'disabled'}>${goText}</button></div></div>`;
     w.hidden = false;
     w.querySelectorAll('[data-c]').forEach((b) => (b.onclick = () => {
       const cl = b.dataset.c, i = team.findIndex((x) => x.class === cl);
@@ -58,12 +68,8 @@ function pick(side) {
       team.find((x) => x.class === t.closest('[data-c]').dataset.c).ascension = t.dataset.a;
       draw();
     }));
-    $('vsPBack').onclick = () => { w.hidden = true; if (side === 0) $('vsMenu').hidden = false; else pick(0); };
-    $('vsPGo').onclick = () => {
-      w.hidden = true;
-      if (side === 0) return handOver(1, 'Hand the phone to Player 2 to choose their heroes.', 'I\'m Player 2 · Choose', () => pick(1));
-      begin();
-    };
+    $('vsPBack').onclick = () => { w.hidden = true; back(); };
+    $('vsPGo').onclick = () => { w.hidden = true; done(team.slice()); };
   };
   draw();
 }
@@ -140,7 +146,8 @@ const mmss = (ms) => { const s = Math.max(0, Math.ceil(ms / 1000)); return `${Ma
 export function tick(now) {
   const bar = $('vsClock'), v = view();
   if (!isVersus(v)) { if (bar) bar.hidden = true; return; }
-  const counting = live() && !held && !playback.playing() && $('vsHand') && $('vsHand').hidden;
+  const net = onlineSeat() !== null; // online the server keeps time; this only shows it
+  const counting = live() && !playback.playing() && (net || (!held && $('vsHand') && $('vsHand').hidden));
   if (counting) pending += now - (last || now);
   last = now;
   const c = v.versus, side = v.side, used = c.usedMs + pending;
@@ -154,7 +161,7 @@ export function tick(now) {
       return `<div class="vsc${on ? ' on' : ''}" style="--c:${COL[s]}"><div class="who">${SHORT[s]}</div><div class="t">${mmss(bank(s))}</div>${on ? `<div class="tb"><i style="width:${(100 * left) / c.turnMs}%;${left < 10000 ? 'background:#ff5d5d' : ''}"></i></div><div class="tt">turn ${mmss(left)}</div>` : '<div class="tt">waiting</div>'}</div>`;
     }).join('');
   }
-  if (counting && !asked && sendIt && (used >= c.turnMs || bank(side) <= 0)) {
+  if (counting && !net && !asked && sendIt && (used >= c.turnMs || bank(side) <= 0)) {
     asked = true;
     sendIt({ kind: 'clock' });
   }

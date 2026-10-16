@@ -186,3 +186,7 @@ func versusView(b *state.Battle) *VersusView {
 	}
 	return v
 }
+
+// CheckTeam is the versus team rule for a server or a picker: the right
+// number of different classes, each with one of its own ascensions.
+func CheckTeam(c *content.Content, team []Pick) error { return checkPicks(c, team, c.Versus.Team) }

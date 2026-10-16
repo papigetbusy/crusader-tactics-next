@@ -3,6 +3,7 @@
 // action; the sheet is redrawn from the referee's answer.
 import * as referee from './referee.js';
 import { mine } from './side.js';
+import * as online from './online.js';
 import { heroPicUrl } from './team.js';
 import { icon } from './icons.js';
 
@@ -24,6 +25,10 @@ export function open(className) {
 }
 
 function act(a) {
+  if (online.on()) { // online: the server does it, and everyone sees it
+    $('gearWin').hidden = true;
+    return online.act(a);
+  }
   const r = referee.act(a);
   if (!r || r.refused) {
     screen.log(r ? r.refused.reason : 'The referee did not answer.');

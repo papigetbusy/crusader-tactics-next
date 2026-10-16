@@ -16,6 +16,7 @@ import * as title from './title.js';
 import * as gear from './gear.js';
 import { mine, isVersus } from './side.js';
 import * as versus from './versus.js';
+import * as online from './online.js';
 import * as skills from './skills.js';
 import * as shop from './shop.js';
 import * as lag from './lag.js';
@@ -160,7 +161,8 @@ export async function boot(build) {
     closeUp(h.x, h.y);
   };
   battle.wire({ st, show, kick, log });
-  versus.wire({ st, show, kick, log, start });
+  versus.wire({ st, show, kick, log, start, lobby: online.lobby });
+  online.wire({ st, show, kick, log, start });
   gear.wire({ st, show, kick, log, after: battle.after, skills: (c) => skills.open(c) });
   skills.wire({ st, show, kick, log, after: battle.after });
   shop.wire({ st, show, kick, log, after: battle.after });

@@ -4,6 +4,7 @@
 // referee's "bring" action; the window is redrawn from its answer.
 import * as referee from './referee.js';
 import { mine } from './side.js';
+import * as online from './online.js';
 import { heroPicUrl } from './team.js';
 import { cover } from './sysmenu.js';
 import { ELEMENT } from './look.js';
@@ -98,7 +99,9 @@ function render() {
   on('skGo', () => {
     if (!picked.length) return screen.log('Pick at least one skill.');
     if (!confirm('Change skills now? You can only do this once on this floor.')) return;
-    const r = referee.act({ kind: 'bring', unit: u.id, bar: picked, choice: ult && (!now || ult !== now.name) ? ult : '' });
+    const a = { kind: 'bring', unit: u.id, bar: picked, choice: ult && (!now || ult !== now.name) ? ult : '' };
+    if (online.on()) { w.hidden = true; editing = false; online.act(a); return; }
+    const r = referee.act(a);
     if (!r || r.refused) return screen.log(r ? r.refused.reason : 'The referee did not answer.');
     editing = false;
     screen.show(r.view);
