@@ -27,6 +27,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-16 · Claude · Wrote the owner's playtest list into docs/next-steps.md as the fixing stage (bugs, polish, ideas). It all gets done before online.
 - 2026-10-16 · Claude · Online-ready check done (docs/online-ready.md). New tests: a climb replays exactly from its seeds and actions, and the screen may only reach the referee through referee.js. The lag tool now goes through that doorway too.
 - 2026-10-16 · Claude · A Duelist no longer does the new counterattack; his Riposte replaces it (owner's choice). The forecast says "ripostes instead".
 - 2026-10-16 · Claude · Audited Grok's 39 commits: tests, format and checks all pass; rules stay in the referee. Wrote down the play-without-internet task for Grok in docs/next-steps.md.

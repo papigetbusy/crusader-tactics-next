@@ -81,6 +81,57 @@ Rebuild the old game's skilled autoplayer in Go. Tune the new skills, the purple
 ### 6. Phase 10: online-ready check: done 2026-10-16
 The screen only talks to the referee through `web/game/js/referee.js` (a house-rule test now enforces it), and a climb replays exactly from its seeds and actions. What online still needs, and what the owner must set up, is in `online-ready.md`.
 
+### 6b. The fixing stage: before online (owner's playtest list, 2026-10-16)
+The owner's order: Phase 9 is finished, then this whole list gets done, and online starts only once the game feels good. Bugs first. Anything that changes how the game plays needs the owner's OK (a proposal like `phase9-proposal.md`), and screen changes get a picture first.
+
+**Fixes (bugs)**
+- A monster raised by the Necromancer's raise skill is drawn as a hero (it is on the heroes' side and not marked as a companion, so `units.js` `picture()` picks a hero sprite). Grave Bloom's own skeletons draw right.
+- A window has to be scrolled to the bottom to close it: pin the ✕ at the top. (Ask: which windows.)
+- Terrain buffs and debuffs need fixing. (Ask the owner what he saw go wrong.)
+
+**Quick polish (screen only, picture first)**
+- A white glow on a cloaked hero (the old game only made it see-through).
+- A small item picture with a + when loot is picked up.
+- Bigger heroes and monsters, and bigger tap squares, for the iPhone.
+- A skill window, and a Skills tab in the menu.
+
+**Ideas (change how the game plays; owner OK needed)**
+- Gear and gold:
+  - each hero has their own bag, whose rarity sets the space (legendary holds the most)
+  - more legendary weapons and armor
+  - sets of every rarity, with new bonuses when a whole set is worn
+  - exotic weapons: a 1–3% drop from certain bosses past a level, crafted into one exotic, with no other way to get one; the rarest thing in the game
+  - a crafting system
+  - a shop before every battle in team setup, plus a special shop every 7th floor that sells rare and above at a high price
+  - more ways to earn gold
+- Skills:
+  - skills have their own level and get stronger as it rises
+  - a passive tree for each class (Path of Exile style)
+  - stamina and magic bars for every hero, to stop spamming one spell
+  - run the numbers on every skill so each one is worth taking and fits a build or play style (the balance autoplayer; Grok reads its reports)
+- Battlefield:
+  - more terrains, and fixed terrain bonuses and penalties
+  - each hero owns a terrain (the owner said "not now" in Phase 9; now on the list)
+  - weather and fog of war
+  - more random height on maps, so they aren't a flat perfect square (height itself is in, from Phase 9)
+  - more movement for every class
+- Content:
+  - 5 new classes
+  - a giant boss on floor 100
+  - new weapon and gear sprites and new boss animations (Grok, art)
+- The chess feel ("you think of moves and set your opponent up"). Claude's suggestions, for a proposal:
+  - show what each enemy will do next turn
+  - zones of control (a unit walking next to an enemy must stop)
+  - facing, with flanking and backstabs
+  - pushes into water, lava or off ledges
+  - team-up attacks when allies are next to the target
+  - goals other than "kill everything"
+  - fog of war
+
+  Claude's pick: the first three together.
+
+Suggested order: bugs, then polish, then the chess-feel proposal, then gear, bags, shops and gold together, then skills, then battlefield, then new classes and the floor-100 boss.
+
 ### Online 1v1 versus (owner, 2026-10-11)
 The owner's order: first iron out every flaw and match the original game as closely as possible, then go online. Online needs:
 - versus rules in the referee (two player sides), tested first as "pass the phone" on one device
