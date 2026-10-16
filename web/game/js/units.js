@@ -172,25 +172,27 @@ function outlined(g, text, x, y, color, size = 12) {
   g.fillText(text, x, y);
 }
 
-// badges stacks status badges above the unit you are looking at.
+// badges stacks status badges above the unit you are looking at, then what
+// the ground under it does (from the referee, owner 2026-10-16), in green.
 function badges(g, u, cx, y, k) {
-  const a = active(u);
-  if (!a.length) return;
+  const list = active(u).map((q) => ({ txt: label(u, q), bad: STATUS[q].bad, n: u.statuses[q] }))
+    .concat((u.ground || []).map((e) => ({ txt: e.label, bad: !e.good, ground: true })));
+  if (!list.length) return;
   const fs = Math.max(11, 10 / k), h = fs * 1.35;
   g.textAlign = 'center';
   let yy = y;
-  a.slice(0, 4).forEach((q) => {
-    const S = STATUS[q], txt = label(u, q);
+  list.slice(0, 5).forEach((q) => {
     g.font = `bold ${fs}px ${MONO}`;
-    const w = g.measureText(txt).width + fs * 0.9;
+    const w = g.measureText(q.txt).width + fs * 0.9;
     yy -= h + fs * 0.45;
-    g.fillStyle = S.bad ? 'rgba(50,0,6,.9)' : 'rgba(3,18,58,.9)';
+    g.fillStyle = q.ground ? 'rgba(4,34,18,.9)' : q.bad ? 'rgba(50,0,6,.9)' : 'rgba(3,18,58,.9)';
     g.fillRect(cx - w / 2, yy, w, h);
-    g.strokeStyle = S.bad ? '#ff5d5d' : '#6ab8ff';
+    g.strokeStyle = q.ground ? '#5fd38a' : q.bad ? '#ff5d5d' : '#6ab8ff';
     g.lineWidth = 1.5;
     g.strokeRect(cx - w / 2, yy, w, h);
-    g.fillStyle = S.bad ? '#ff6a6a' : '#8fc8ff';
-    g.fillText(txt, cx, yy + h * 0.76);
+    g.fillStyle = q.ground ? '#9af0b8' : q.bad ? '#ff6a6a' : '#8fc8ff';
+    g.fillText(q.txt, cx, yy + h * 0.76);
+    if (q.n == null) return;
     const r = fs * 0.62, bx = cx + w / 2;
     g.fillStyle = '#fff';
     g.beginPath();
@@ -198,12 +200,12 @@ function badges(g, u, cx, y, k) {
     g.fill();
     g.fillStyle = '#000';
     g.font = `bold ${fs * 0.78}px ${MONO}`;
-    g.fillText(u.statuses[q], bx, yy + r * 0.42);
+    g.fillText(q.n, bx, yy + r * 0.42);
   });
-  if (a.length > 4) {
+  if (list.length > 5) {
     g.font = `bold ${fs}px ${MONO}`;
     g.fillStyle = '#fff';
-    g.fillText('+' + (a.length - 4), cx, yy - 4);
+    g.fillText('+' + (list.length - 5), cx, yy - 4);
   }
 }
 

@@ -27,6 +27,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-16 · Claude · Ground bonuses are shown: tapping a unit shows a green badge for what its tile does (forest, hill, fort, high ground; numbers from the referee), and bonus tiles show 🛡 and ✚ numbers on the map. A shield button in the eye strip turns the tile numbers on and off (saved per save).
 - 2026-10-16 · Claude · Fix: the Settings, Gear, Floor travel and Save windows have a round ✕ pinned in the top corner, so they close without scrolling to the bottom. The Close button at the bottom stays.
 - 2026-10-16 · Claude · Fix: monsters raised for the heroes (Grave Bloom and the raise skill) now keep their monster name, so they show as a Skeleton with a monster's moves instead of a hero picture. Test added.
 - 2026-10-16 · Claude · Wrote the owner's playtest list into docs/next-steps.md as the fixing stage (bugs, polish, ideas). It all gets done before online.

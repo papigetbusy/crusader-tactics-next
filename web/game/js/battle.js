@@ -29,6 +29,7 @@ export function wire(s) {
   $('summaryGo').onclick = () => send({ kind: 'continue' }, '', autosave);
   $('skip').onclick = () => { playback.skip(); $('skip').hidden = true; };
   rules = referee.guide();
+  screen.st.groundTags = groundTags(rules);
   $('teamButton').onclick = () => team.open(view(), (v) => { clear(); screen.show(v); after(); }, screen.log);
   wireForms();
 }
@@ -224,6 +225,19 @@ function look(u) {
     ${st2.length ? `<div class="pills">${st2.map((q) => `<span class="pill ${STATUS[q].bad ? 'd' : 'b'}">${label(u, q)} · ${u.statuses[q]}</span>`).join('')}</div>` : ''}
     ${u.team ? `<div class="ei-sk">${(u.skills || []).map((k) => k.name).join(' · ')}</div>` : ''}`;
   $('einfo').hidden = false;
+}
+
+// groundTags is the short label drawn on each tile that helps or hurts, by
+// ground letter, from the referee's terrain numbers (owner, 2026-10-16).
+function groundTags(r) {
+  const out = {};
+  for (const t of (r && r.terrain) || []) {
+    const parts = [];
+    if (t.damageTaken > 0 && t.damageTaken < 1) parts.push('🛡' + Math.round((1 - t.damageTaken) * 100) + '%');
+    if (t.heal) parts.push('✚' + Math.round(t.heal * 100) + '%');
+    if (parts.length) out[t.letter] = parts.join(' ');
+  }
+  return out;
 }
 
 // terrainBox shows what the ground under the chosen hero does [old terr L1523-1524].

@@ -1,6 +1,6 @@
 // One picture of the battle each frame: ground, tile highlights, chests,
 // units, effects and the minimap. Reads the screen state (st); never rules.
-import { map, tiles, drawWater, drawTile, objects, vignette, poly, top, turnStep, pj, height } from './board.js';
+import { map, tiles, drawWater, drawTile, objects, vignette, poly, top, turnStep, pj, height, ground } from './board.js';
 import { cam, layout, moving, gesturing } from './camera.js';
 import * as units from './units.js';
 import { CHEST, TS } from './look.js';
@@ -151,6 +151,7 @@ function marks(g, x, y, p, st, now, here, traps, kegs) {
     rect(g, p.x + 2, p.y - h - 40, 20, 13, '#c8102e');
     rect(g, p.x + 6, p.y - h - 37, 6, 6, '#f2c14e');
   }
+  if (st.opt.groundTips && st.groundTags && cam.k >= 0.3) groundTag(g, st.groundTags[ground(x, y)], t, height(x, y) > 0);
   if (st.danger && st.danger.has(key) && !st.zone) poly(g, t, cb ? 'rgba(255,215,60,.2)' : 'rgba(200,30,70,.22)');
   if (st.starts && st.starts.has(key)) poly(g, t, 'rgba(110,210,255,.5)');
   if (st.reach.has(key)) poly(g, t, 'rgba(110,210,255,.5)');
@@ -160,6 +161,22 @@ function marks(g, x, y, p, st, now, here, traps, kegs) {
   if (o && o === st.aim) poly(g, t, 'rgba(255,215,0,.55)');
   if (o && st.inReach && st.inReach.has(o.id) && !st.targets.has(o.id)) poly(g, t, 'rgba(255,90,90,.35)');
   if (o && st.targets.has(o.id)) poly(g, t, st.sel && o.team === st.sel.team ? (cb ? 'rgba(255,255,255,.55)' : 'rgba(110,255,150,.55)') : 'rgba(255,90,90,.55)');
+}
+
+// groundTag is the small label on a tile that helps or hurts: 🛡 less damage
+// taken, ✚ healing each turn, ▲ high ground. The ground-numbers button turns
+// them off.
+function groundTag(g, tag, t, high) {
+  if (!tag && !high) return;
+  const txt = (tag || '') + (high ? (tag ? ' ▲' : '▲') : '');
+  const cx = (t[0][0] + t[1][0] + t[2][0] + t[3][0]) / 4, by = Math.max(t[0][1], t[1][1], t[2][1], t[3][1]);
+  g.font = 'bold 13px ui-monospace, Menlo, monospace';
+  g.textAlign = 'center';
+  const w = g.measureText(txt).width + 8;
+  g.fillStyle = 'rgba(3,18,40,.72)';
+  g.fillRect(cx - w / 2, by - 19, w, 16);
+  g.fillStyle = '#bfe3ff';
+  g.fillText(txt, cx, by - 6);
 }
 
 function rect(g, x, y, w, h, c) {

@@ -10,6 +10,7 @@ const defaults = {
   danger: false, // shade every tile monsters can reach
   flat: true, // flat or isometric map
   minimap: true,
+  groundTips: true, // numbers on tiles that help or hurt (owner, 2026-10-16)
   autoZoom: false, // zoom in on the selected hero
   calm: false, // fewer flashes
   lowGraphics: false, // still water and trees, no vignette

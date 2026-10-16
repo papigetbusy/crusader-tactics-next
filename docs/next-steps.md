@@ -87,7 +87,7 @@ The owner's order: Phase 9 is finished, then this whole list gets done, and onli
 **Fixes (bugs)**
 - Done 2026-10-16: monsters raised for the heroes (Grave Bloom and the raise skill) were drawn as heroes because the referee left out their monster name. They now rise as a Skeleton with its moves, as in the old game (old raiseSkel).
 - Done 2026-10-16: Settings and Gear (and Floor travel and Save, to match) have a ✕ pinned in the top corner that stays while scrolling.
-- Terrain buffs and debuffs need fixing. (Ask the owner what he saw go wrong.)
+- Done 2026-10-16: ground bonuses were invisible. A unit's badges now show what its tile does (from the referee, `combat.GroundEffects`), bonus tiles show their numbers, and a shield button in the eye strip hides the numbers.
 
 **Quick polish (screen only, picture first)**
 - A white glow on a cloaked hero (the old game only made it see-through).

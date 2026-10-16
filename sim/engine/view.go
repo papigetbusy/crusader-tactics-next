@@ -38,45 +38,46 @@ type View struct {
 
 // UnitView is one unit as the screen sees it.
 type UnitView struct {
-	ID        int            `json:"id"`
-	Team      int            `json:"team"`
-	Class     string         `json:"class"`
-	X         int            `json:"x"`
-	Y         int            `json:"y"`
-	HP        int            `json:"hp"`
-	MaxHP     int            `json:"maxHp"`
-	Atk       int            `json:"atk"`
-	Def       int            `json:"def"`
-	Mov       int            `json:"mov"`
-	Level     int            `json:"level"`
-	XP        int            `json:"xp,omitempty"`     // heroes: experience toward the next level
-	XPNext    int            `json:"xpNext,omitempty"` // heroes: experience the next level needs
-	Form      string         `json:"form,omitempty"`   // heroes: the form's name ("Vanguard")
-	Stage     int            `json:"stage,omitempty"`  // heroes: which form, 0 base, 1-2 evolved, 3 ascended (picks the picture)
-	Ascension string         `json:"ascension,omitempty"`
-	Ability   *AbilityView   `json:"ability,omitempty"` // heroes: the class ability
-	Decoy     bool           `json:"decoy,omitempty"`
-	Companion bool           `json:"companion,omitempty"`
-	Pet       bool           `json:"pet,omitempty"`
-	Element   string         `json:"element,omitempty"`
-	Weapon    string         `json:"weapon,omitempty"` // the weapon it counts as in the triangle
-	Boss      bool           `json:"boss,omitempty"`
-	Elite     bool           `json:"elite,omitempty"`
-	Statuses  map[string]int `json:"statuses,omitempty"`
-	Ticks     map[string]int `json:"ticks,omitempty"` // bleed, burn, poison: HP lost per turn; regen: HP healed per turn
-	Enraged   bool           `json:"enraged,omitempty"`
-	Potions   int            `json:"potions"`
-	CanUndo   bool           `json:"canUndo"`
-	Done      bool           `json:"done"`
-	CanMove   bool           `json:"canMove"`
-	Acted     bool           `json:"acted,omitempty"` // used its action but may still move (Hit and Run)
-	Skills    []SkillView    `json:"skills"`
-	Gear      *GearView      `json:"gear,omitempty"`    // heroes: what they wear
-	Bond      *state.Bond    `json:"bond,omitempty"`    // heroes: their companion spirit
-	Kind      string         `json:"kind,omitempty"`    // monsters: what kind (Goblin, Slime...)
-	Ally      bool           `json:"ally,omitempty"`    // monsters: a companion spirit (blue glow)
-	Library   []LibraryView  `json:"library,omitempty"` // heroes: learned skills not on the bar
-	Swapped   bool           `json:"swapped,omitempty"` // heroes: skills already changed on this floor
+	ID        int                   `json:"id"`
+	Team      int                   `json:"team"`
+	Class     string                `json:"class"`
+	X         int                   `json:"x"`
+	Y         int                   `json:"y"`
+	HP        int                   `json:"hp"`
+	MaxHP     int                   `json:"maxHp"`
+	Atk       int                   `json:"atk"`
+	Def       int                   `json:"def"`
+	Mov       int                   `json:"mov"`
+	Level     int                   `json:"level"`
+	XP        int                   `json:"xp,omitempty"`     // heroes: experience toward the next level
+	XPNext    int                   `json:"xpNext,omitempty"` // heroes: experience the next level needs
+	Form      string                `json:"form,omitempty"`   // heroes: the form's name ("Vanguard")
+	Stage     int                   `json:"stage,omitempty"`  // heroes: which form, 0 base, 1-2 evolved, 3 ascended (picks the picture)
+	Ascension string                `json:"ascension,omitempty"`
+	Ability   *AbilityView          `json:"ability,omitempty"` // heroes: the class ability
+	Decoy     bool                  `json:"decoy,omitempty"`
+	Companion bool                  `json:"companion,omitempty"`
+	Pet       bool                  `json:"pet,omitempty"`
+	Element   string                `json:"element,omitempty"`
+	Weapon    string                `json:"weapon,omitempty"` // the weapon it counts as in the triangle
+	Boss      bool                  `json:"boss,omitempty"`
+	Elite     bool                  `json:"elite,omitempty"`
+	Statuses  map[string]int        `json:"statuses,omitempty"`
+	Ticks     map[string]int        `json:"ticks,omitempty"`  // bleed, burn, poison: HP lost per turn; regen: HP healed per turn
+	Ground    []combat.GroundEffect `json:"ground,omitempty"` // what the tile under it does (forest, fort, high ground)
+	Enraged   bool                  `json:"enraged,omitempty"`
+	Potions   int                   `json:"potions"`
+	CanUndo   bool                  `json:"canUndo"`
+	Done      bool                  `json:"done"`
+	CanMove   bool                  `json:"canMove"`
+	Acted     bool                  `json:"acted,omitempty"` // used its action but may still move (Hit and Run)
+	Skills    []SkillView           `json:"skills"`
+	Gear      *GearView             `json:"gear,omitempty"`    // heroes: what they wear
+	Bond      *state.Bond           `json:"bond,omitempty"`    // heroes: their companion spirit
+	Kind      string                `json:"kind,omitempty"`    // monsters: what kind (Goblin, Slime...)
+	Ally      bool                  `json:"ally,omitempty"`    // monsters: a companion spirit (blue glow)
+	Library   []LibraryView         `json:"library,omitempty"` // heroes: learned skills not on the bar
+	Swapped   bool                  `json:"swapped,omitempty"` // heroes: skills already changed on this floor
 }
 
 // LibraryView is a learned skill a hero could bring instead.
@@ -175,6 +176,7 @@ func (g *Game) View() View {
 			}
 		}
 		uv.Ascension, uv.Decoy, uv.Companion, uv.Pet, uv.Kind, uv.Ally = u.Ascension, u.Decoy, u.Companion, u.Summoned, u.Kind, u.Ally
+		uv.Ground = combat.GroundEffects(g.C, g.B, u)
 		for k, n := range u.Status {
 			if n > 0 {
 				uv.Statuses[k] = n

@@ -50,6 +50,7 @@ const IC = {
   map: '<path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z M9 4v14 M15 6v14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
   view: '<path d="M12 3l9 5-9 5-9-5z M3 12l9 5 9-5 M3 16l9 5 9-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
   danger: '<path d="M12 3l10 18H2z M12 10v5 M12 18v.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>',
+  ground: '<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 12h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
   speed: '<circle cx="12" cy="13" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 13l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
   floors: '<path d="M4 20h16M6 16h12M8 12h8M10 8h4M12 4v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
 };
@@ -88,6 +89,7 @@ function mountMapbar() {
     b('mbView', 'Flat or isometric', 'view', options.flat),
     b('mbMap', 'Minimap', 'map', options.minimap),
     b('mbDanger', 'Danger zone', 'danger', options.danger),
+    b('mbGround', 'Ground bonuses', 'ground', options.groundTips),
     `<button type="button" class="mb2${options.speed > 1 ? ' on' : ''}" id="mbSpeed" aria-label="Battle speed" title="Battle speed">${speed}</button>`,
     b('mbRot', 'Rotate', 'rot', false),
     b('mbNext', 'Next hero', 'next', false),
@@ -98,6 +100,7 @@ function mountMapbar() {
   on('mbView', () => { screen.setView(!options.flat); saveOptions(); mountMapbar(); });
   on('mbMap', () => { options.minimap = !options.minimap; saveOptions(); screen.after(); mountMapbar(); });
   on('mbDanger', () => { options.danger = !options.danger; saveOptions(); screen.after(); mountMapbar(); });
+  on('mbGround', () => { options.groundTips = !options.groundTips; saveOptions(); screen.kick(); mountMapbar(); });
   on('mbSpeed', () => { options.speed = options.speed === 3 ? 1 : options.speed + 1; saveOptions(); mountMapbar(); });
   on('mbRot', () => { rotate(); screen.kick(); });
   on('mbNext', () => screen.nextHero());
