@@ -161,7 +161,28 @@ Estimate: about 3 sessions once the game matches the original.
 - The screen starts a match with `referee.versus({teams})`. The View has `versus` (both clocks, the turn time used, the winner).
 - Tests: the 13 versus rules, 12 whole bot matches, a replay that comes out identical, and both players using every skill and ability over 30 matches.
 
-**Next: step 2, pass the phone** (a Versus button, the team and ascension picker, the clocks on screen, and handing the phone over between turns).
+**Step 2 done (2026-10-16): pass the phone.** The owner signed off the mockup.
+- **Title and picking:**
+  - The title screen has **Versus** under Start, which opens a menu: Pass the phone, Online (says it comes next) and Back.
+  - Each player picks 8 heroes on cards like the team picker, then one of the 3 ascensions under each card, with its passive and bonus from the referee (`referee.versusRules()`).
+- **Taking turns:**
+  - Between picks and between turns, a hand-over screen hides the map. It says whose turn it is, what happened to their heroes last turn, and their time left. Their clock starts when they tap.
+  - Two clocks sit at the top. The one counting glows, with a turn bar that turns red in the last 10 seconds.
+  - The screen counts the time used and sends it with each action (`ms`). When the turn or the total time runs out it sends `clock`, and the referee ends the turn or the match.
+- **The end:** the end screen names the winner and why, with Rematch and Title.
+- **Code:**
+  - `web/game/js/versus.js` and `side.js`. In versus, "my heroes" are the side to move: `mine()` in battle, gear, skills and next hero.
+  - The View marks versus heroes (`pvp`), so both sides are drawn as heroes.
+
+**Next: step 3, online rooms (owner's design, 2026-10-16).**
+- **Joining:** a player makes a room with a password and sends it to friends. Anyone with the password joins, and a room can hold many friends.
+- **Playing:** two of them pick a side, Red or Blue, and the match starts. Everyone in the room watches the fight live.
+- **Waiting:** the rest wait in line for the next match.
+- **Still to ask the owner:**
+  - Does the winner stay on?
+  - What is the most people a room can hold?
+  - Can watchers chat?
+- **Needs:** a small server running the same referee (a host like Render or Fly.io; the owner makes the account), and the Online button.
 
 ### 7. After the full build (owner's reminders)
 - More gear: named sets with play styles at every level

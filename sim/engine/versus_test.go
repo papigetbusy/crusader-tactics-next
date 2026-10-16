@@ -217,3 +217,23 @@ func TestVersus(t *testing.T) {
 func statsOf(c *content.Content, class string, gear map[string]content.Item) (stats.Numbers, int) {
 	return stats.Geared(c, class, c.Versus.Level, "", gear)
 }
+
+func TestVersusRules(t *testing.T) {
+	c := content.MustDefault()
+	t.Run("The versus picker is told the team size, level, clocks and every class's three ascensions in words", func(t *testing.T) {
+		r := VersusRules(c)
+		if r.Team != 8 || r.Level != 30 || r.TurnSeconds != 30 || r.BankSeconds != 150 || len(r.Classes) != 10 {
+			t.Fatalf("%+v", r)
+		}
+		for _, cl := range r.Classes {
+			if len(cl.Ascensions) != 3 {
+				t.Fatalf("%s: %d ascensions", cl.Class, len(cl.Ascensions))
+			}
+			for _, a := range cl.Ascensions {
+				if a.Passive == "" || a.Ultimate == "" {
+					t.Fatalf("%s %s has no words", cl.Class, a.Name)
+				}
+			}
+		}
+	})
+}

@@ -27,6 +27,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-16 · Claude · Online step 2, pass the phone: Versus on the title screen (Pass the phone / Online soon), pick 8 heroes and ascensions per player, hand-over screens between turns, both clocks on screen (turn and match time, enforced by the referee), and a winner screen with Rematch. Also a restart note for Claude (CLAUDE.md, .claude-wip.md).
 - 2026-10-16 · Claude · Online step 1: versus rules in the referee. Two players, 8 heroes each at Lv 30 with ascensions and a fixed purple set per class, a mirrored 12×12 map, turn and match clocks, win by wipe-out or time. Player 2's heroes keep every hero power (about 100 team checks now ask "is this a player's unit?"). Single player is unchanged. New tests include whole bot matches, an exact replay, and every skill used by both sides. Nothing on screen yet: that is step 2.
 - 2026-10-16 · Claude · Plan: the playtest bugs and polish are done. The owner moved the ideas (chess feel first) to after online 1v1, so online is next.
 - 2026-10-16 · Claude · The red attack window says what the chosen attack does besides its numbers (its words, plus element, area, cooldown, free action). It now never covers the target or any enemy it could hit: it tries beside the hero, then the screen's corners and edges, and may cover heroes.

@@ -3,6 +3,7 @@
 // changing which skills a hero brings (once per floor). Every change is the
 // referee's "bring" action; the window is redrawn from its answer.
 import * as referee from './referee.js';
+import { mine } from './side.js';
 import { heroPicUrl } from './team.js';
 import { cover } from './sysmenu.js';
 import { ELEMENT } from './look.js';
@@ -13,7 +14,7 @@ let screen = null, cls = null, editing = false, picked = null, ult = '';
 
 export const wire = (s) => { screen = s; };
 
-const heroes = () => screen.st.units.filter((u) => u.team === 0 && u.gear && !u.companion && !u.decoy && !u.pet);
+const heroes = () => screen.st.units.filter((u) => mine(u, screen.st.view) && u.gear && !u.companion && !u.decoy && !u.pet);
 
 // open shows the window for a hero (the chosen one, else the first).
 export function open(className) {

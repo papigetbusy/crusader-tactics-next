@@ -79,6 +79,7 @@ type UnitView struct {
 	Ally      bool                  `json:"ally,omitempty"`    // monsters: a companion spirit (blue glow)
 	Library   []LibraryView         `json:"library,omitempty"` // heroes: learned skills not on the bar
 	Swapped   bool                  `json:"swapped,omitempty"` // heroes: skills already changed on this floor
+	PvP       bool                  `json:"pvp,omitempty"`     // versus: a player's hero on either side
 }
 
 // LibraryView is a learned skill a hero could bring instead.
@@ -192,6 +193,7 @@ func (g *Game) View() View {
 		}
 		uv.Ascension, uv.Decoy, uv.Companion, uv.Pet, uv.Kind, uv.Ally = u.Ascension, u.Decoy, u.Companion, u.Summoned, u.Kind, u.Ally
 		uv.Ground = combat.GroundEffects(g.C, g.B, u)
+		uv.PvP = u.PvP
 		for k, n := range u.Status {
 			if n > 0 {
 				uv.Statuses[k] = n

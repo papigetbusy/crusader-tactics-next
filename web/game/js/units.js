@@ -44,8 +44,8 @@ function blue(im) {
   return c;
 }
 
-const isHero = (u) => u.team === 0 && !u.companion && !u.decoy && !u.pet && !u.ally;
-const monster = (u) => u.companion || u.pet || u.ally || u.team === 1;
+const isHero = (u) => (u.team === 0 || u.pvp) && !u.companion && !u.decoy && !u.pet && !u.ally;
+const monster = (u) => u.companion || u.pet || u.ally || (u.team === 1 && !u.pvp);
 
 // picture is what a unit looks like.
 export function picture(u) {
@@ -229,7 +229,7 @@ export function draw(g, units, s) {
     g.save();
     g.translate(an.x, an.y);
     const stt = u.statuses || {};
-    const spent = u.done && u.team === 0;
+    const spent = u.done && (u.team === 0 || u.pvp);
     g.globalAlpha = (stt.cloak > 0 || stt.blood > 0 || stt.sky > 0 ? 0.45 : u.decoy ? 0.7 : 1) * (spent ? 0.8 : 1) * (an.a == null ? 1 : an.a);
     if (spent) g.filter = 'grayscale(1) brightness(0.55)';
     if (s.k * (map.flat ? TS : 96) < 15) {

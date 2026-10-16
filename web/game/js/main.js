@@ -14,6 +14,8 @@ import * as sysmenu from './sysmenu.js';
 import * as tips from './tips.js';
 import * as title from './title.js';
 import * as gear from './gear.js';
+import { mine, isVersus } from './side.js';
+import * as versus from './versus.js';
 import * as skills from './skills.js';
 import * as shop from './shop.js';
 import * as lag from './lag.js';
@@ -45,6 +47,7 @@ function loop(now) {
     if (lag.on) lag.end(null);
     return;
   }
+  versus.tick(now);
   const t = performance.now();
   // busy: draw every frame; quiet: a few frames a second for water and trees
   if (t > wake && !moving() && t - (loop.last || 0) < 120) {
@@ -106,7 +109,7 @@ export function setView(flat) {
 function chip() {
   const v = st.view, c = v.climb;
   $('chip').hidden = false;
-  $('chipText').textContent = `Floor ${c ? c.floor : v.floor || 1} · Turn ${v.turn}`;
+  $('chipText').textContent = isVersus(v) ? `Round ${v.turn}` : `Floor ${c ? c.floor : v.floor || 1} · Turn ${v.turn}`;
 }
 
 // log shows a message for 3 seconds, then it fades away (owner, 2026-10-11:
@@ -145,17 +148,19 @@ export async function boot(build) {
   $('newGame').onclick = () => start(referee.newClimb());
   $('startButton').onclick = () => { $('titleStart').hidden = true; $('titleMenu').hidden = false; $('continueGame').disabled = !sysmenu.anySave(); };
   $('continueGame').onclick = () => sysmenu.slots('load');
+  $('versusGame').onclick = () => versus.menu();
   controls($('map'), keys, (on) => log(on ? 'Map overview. Pinch in or tap + to zoom back in.' : ''));
   $('mini').addEventListener('pointerdown', (e) => minimap.tap($('mini'), e));
   $('nextHero').onclick = () => nextHero();
   const nextHero = () => {
-    const hs = st.units.filter((u) => u.team === 0 && !u.done && !u.companion && !u.decoy && !u.pet);
+    const hs = st.units.filter((u) => mine(u, st.view) && !u.done && !u.companion && !u.decoy && !u.pet);
     if (!hs.length) return log('Everyone has acted. Tap End Turn.');
     const h = hs[(hs.indexOf(st.sel) + 1) % hs.length];
     st.sel = h;
     closeUp(h.x, h.y);
   };
   battle.wire({ st, show, kick, log });
+  versus.wire({ st, show, kick, log, start });
   gear.wire({ st, show, kick, log, after: battle.after, skills: (c) => skills.open(c) });
   skills.wire({ st, show, kick, log, after: battle.after });
   shop.wire({ st, show, kick, log, after: battle.after });

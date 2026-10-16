@@ -58,6 +58,9 @@ export function floor(n) {
   return json(window.ctFloor(n, run, hi, lo));
 }
 
+// versusRules is the versus picker's numbers and each class's ascensions in words.
+export const versusRules = () => json(window.ctVersusRules());
+
 // versus starts a 1v1 match: setup is {teams: [[{class, ascension}...], [...]]}.
 // It returns the View, or {error}.
 export function versus(setup) {

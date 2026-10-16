@@ -76,6 +76,8 @@ func main() {
 		game = engine.NewFight(rules, practice[i], seed)
 		return text(game.View())
 	}))
+	// ctVersusRules() -> the versus picker's numbers and every class's ascensions
+	g.Set("ctVersusRules", fn(func([]js.Value) any { return text(engine.VersusRules(rules)) }))
 	// ctVersus(setupJSON, mapSeed, seedHigh, seedLow) -> view or {"error"}: a 1v1 match
 	g.Set("ctVersus", fn(func(a []js.Value) any {
 		var s engine.VersusSetup

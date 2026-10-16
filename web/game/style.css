@@ -340,3 +340,34 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
 #forecast.atk .does i { font: 700 10px ui-monospace, Menlo, monospace; font-style: normal; padding: 0 5px; border-radius: 3px; background: rgba(255,255,255,.1); color: #ffe6a8; }
 #forecast.atk .does .el-fire { color: #ff8a5e; } #forecast.atk .does .el-ice { color: #9fe0ff; } #forecast.atk .does .el-elec { color: #f7ea6a; }
 #forecast.atk .does .el-light { color: #fff6c8; } #forecast.atk .does .el-dark { color: #c4a4ff; }
+
+/* ---------- versus: picker, hand-over, clocks (owner signed off, 2026-10-16) ---------- */
+#vsMenu .dim { opacity: .6; }
+#vsPick { z-index: 30; }
+.vsp { position: relative; width: min(560px, 96vw); max-height: 92vh; display: flex; flex-direction: column; padding: 12px; }
+.vsP { font: 700 14px 'EB Garamond', Georgia, serif; letter-spacing: .14em; text-align: center; }
+.vsp h3 { margin: 0; text-align: center; font: 800 30px 'Grenze Gotisch', Georgia, serif; color: #e8bf5e; }
+.vsCount { text-align: center; color: #ffd45a; font-size: 15px; margin: 2px 0 8px; }
+.vsGrid { flex: 1 1 auto; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; align-content: start; padding: 2px; }
+.vsGrid .card img { height: 64px; image-rendering: pixelated; }
+.vsp .asc { display: flex; gap: 3px; margin-top: 6px; flex-wrap: wrap; }
+.vsp .asc i { flex: 1 1 30%; font: 600 11px 'EB Garamond', Georgia, serif; font-style: normal; padding: 5px 2px; border: 1px solid rgba(201,162,74,.5); border-radius: 4px; color: #efe3c8; background: rgba(30,6,8,.6); text-align: center; }
+.vsp .asc i.on { background: linear-gradient(#8a6a1a, #4a3008); border-color: #ffe6a8; color: #ffe6a8; }
+.vsp .pas { display: block; font-size: 11px; line-height: 13px; color: #ffd77a; margin-top: 4px; }
+.vsp .pas em { display: block; color: #c9b89a; font-style: normal; }
+.vsp .btns { display: flex; gap: 8px; justify-content: center; margin-top: 8px; }
+.vsHand { z-index: 40; flex-direction: column; gap: 12px; background: radial-gradient(circle at 50% 40%, #3a0c14, #05030a 70%) !important; text-align: center; padding: 24px; color: #efe3c8; }
+.vsHand .vsWho { font: 700 15px system-ui, sans-serif; letter-spacing: .2em; }
+.vsHand .vsBig { font: 800 42px 'Grenze Gotisch', Georgia, serif; color: #e8bf5e; line-height: 1.05; }
+.vsHand .vsTxt { font-size: 18px; max-width: 340px; }
+.vsHand .vsBank { font: 700 26px ui-monospace, Menlo, monospace; }
+.vsHand .vsSmall { font-size: 14px; color: #c9b89a; }
+.vsHand .b { min-width: 240px; min-height: 56px; font-size: 19px; }
+#vsClock { position: fixed; z-index: 9; left: 56px; top: calc(8px + var(--safe-t)); display: flex; gap: 5px; pointer-events: none; }
+#vsClock .vsc { flex: 1; min-width: 0; padding: 3px 7px; border: 2px solid rgba(255,255,255,.15); background: rgba(10,4,6,.9); border-radius: 6px; opacity: .6; }
+#vsClock .vsc.on { border-color: var(--c); box-shadow: 0 0 10px var(--c); opacity: 1; }
+#vsClock .who { font: 700 10px system-ui, sans-serif; letter-spacing: .12em; color: var(--c); }
+#vsClock .t { font: 700 18px ui-monospace, Menlo, monospace; color: #fff; line-height: 20px; }
+#vsClock .tb { height: 4px; background: #333; border-radius: 3px; margin-top: 2px; }
+#vsClock .tb i { display: block; height: 100%; background: var(--c); border-radius: 3px; }
+#vsClock .tt { font: 600 10px system-ui, sans-serif; color: #ddd; }

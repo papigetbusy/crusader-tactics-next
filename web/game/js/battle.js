@@ -12,6 +12,8 @@ import * as shop from './shop.js';
 import * as playback from './playback.js';
 import { check as capCheck } from './capnotice.js';
 import { autosave } from './sysmenu.js';
+import { mine, mySide, isVersus } from './side.js';
+import * as vs from './versus.js';
 import { filled, remember, spotsFor } from './formations.js';
 
 const $ = (id) => document.getElementById(id);
@@ -21,6 +23,7 @@ let rules = null; // the fixed rules guide (terrain, element wheel, weapon trian
 
 export function wire(s) {
   screen = s;
+  vs.useSend((a) => send(a));
   const c = $('map');
   c.addEventListener('click', tap);
   dragging(c);
@@ -37,7 +40,7 @@ export function wire(s) {
 const st = () => screen.st;
 const view = () => st().view;
 const phase = () => (view().climb ? view().climb.phase : 'battle');
-const ready = (u) => u && u.team === 0 && !u.done && !u.companion && !u.decoy && !u.pet;
+const ready = (u) => mine(u, view()) && !u.done && !u.companion && !u.decoy && !u.pet;
 const key = (x, y) => x + ',' + y;
 
 // ---------- sending an action ----------
@@ -46,12 +49,14 @@ const key = (x, y) => x + ',' + y;
 // is shown.
 function send(action, message, then) {
   if (playback.playing()) return false;
-  const r = referee.act(action);
+  const sideBefore = view() ? view().side : 0;
+  const r = referee.act(vs.stamp(action));
   if (!r) return false;
   if (r.refused) {
     screen.log(r.refused.reason);
     return false;
   }
+  vs.charged();
   clear();
   $('endTurn').hidden = true;
   const finish = () => {
@@ -62,8 +67,10 @@ function send(action, message, then) {
     after();
     capCheck(r.events || [], r.view, before);
     if (then) then();
+    vs.after(r.events || [], sideBefore);
   };
   playback.play(st().units, r.events || [], st().opt.speed, finish, () => {
+    if (isVersus(view())) return; // the other player's turn: the phone is handed over instead
     screen.log('Enemy turn.');
     $('skip').hidden = st().opt.speed === 3;
   }, st().opt.calm, r.view.bag || []);
@@ -110,9 +117,9 @@ export function after() {
     const f = feet((Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2);
     requestAnimationFrame(() => focusOn(f.x, f.y - 40, $('prepare').getBoundingClientRect().top - 20));
   }
-  if (p === 'battle' && seen.startsWith('prepare')) {
+  if (p === 'battle' && seen.startsWith('prepare') && !isVersus(v)) {
     fill();
-    const foes = st().units.filter((u) => u.team === 1), lv = Math.max(...foes.map((u) => u.level), 1);
+    const foes = st().units.filter((u) => u.team === 1 && !isVersus(v)), lv = Math.max(...foes.map((u) => u.level), 1);
     screen.log(`${v.throne ? 'Seize the throne or defeat every enemy' : 'Defeat every enemy'} to climb. ${foes.length} enemies · Lv ${lv} · ${v.n}×${v.n} ${v.biome || ''}${(v.chests || []).length ? ` · ${v.chests.length} chest${v.chests.length > 1 ? 's' : ''} on the map: walk onto them!` : ''}`);
   }
   seen = here;
@@ -129,9 +136,9 @@ export function after() {
   $('endTurn').classList.toggle('pulse', p === 'battle' && !readyHeroes.length);
   // the danger zone: every tile a monster could walk to next turn
   s.danger = s.opt.danger && p === 'battle' && !v.outcome
-    ? new Set(st().units.filter((u) => u.team === 1).flatMap((u) => referee.threat(u.id).map(([x, y]) => key(x, y))))
+    ? new Set(st().units.filter((u) => u.team !== mySide(v)).flatMap((u) => referee.threat(u.id).map(([x, y]) => key(x, y))))
     : null;
-  if (s.opt.autoEnd && p === 'battle' && !v.outcome && !readyHeroes.length && st().units.some((u) => u.team === 1))
+  if (s.opt.autoEnd && p === 'battle' && !v.outcome && !readyHeroes.length && st().units.some((u) => u.team !== mySide(v)))
     setTimeout(() => { if (!playback.playing() && !st().units.some(ready)) send({ kind: 'endturn' }, 'Your turn.', autosave); }, 800);
   screen.kick();
 }

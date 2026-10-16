@@ -2,6 +2,7 @@
 // to its skills (the Skills window) and its ascension. Every change is an
 // action; the sheet is redrawn from the referee's answer.
 import * as referee from './referee.js';
+import { mine } from './side.js';
 import { heroPicUrl } from './team.js';
 import { icon } from './icons.js';
 
@@ -11,7 +12,7 @@ let screen = null, cls = null, sortBy = 'new';
 
 export const wire = (s) => { screen = s; };
 
-const heroes = () => screen.st.units.filter((u) => u.team === 0 && u.gear && !u.companion && !u.decoy && !u.pet);
+const heroes = () => screen.st.units.filter((u) => mine(u, screen.st.view) && u.gear && !u.companion && !u.decoy && !u.pet);
 
 // open shows the sheet for a hero (the chosen one, else the first).
 export function open(className) {
