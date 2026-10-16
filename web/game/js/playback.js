@@ -13,6 +13,7 @@ import { drawOlder } from './fxpixel.js';
 import { drawP } from './fxskill.js';
 import { setup } from './fxsprite.js';
 import { options } from './options.js';
+import { icon } from './icons.js';
 
 let ready = false;
 const skillOf = (name) => (book.skills || {})[name] || {};
@@ -46,6 +47,7 @@ function look(u, name) {
 
 let run = null; // { items, units, end, done, clock }
 const pops = [];
+const loots = []; // item cards floating up where loot dropped (owner's pick B, 2026-10-16)
 const fx = [];
 const bars = new Map(); // id -> { from, to, t0, dur } while a health bar slides
 export const shake = { amp: 0, t0: 0 };
@@ -64,8 +66,9 @@ export function shownHp(u) {
 }
 
 // play shows events one after another on the previous answer's units, then
-// calls done (which shows the new answer). speed: 1, 2 or 3 (instant).
-export function play(units, events, speed, done, onEnemyTurn, calm) {
+// calls done (which shows the new answer). speed: 1, 2 or 3 (instant). bag is
+// the new answer's bag, for the pictures of items picked up.
+export function play(units, events, speed, done, onEnemyTurn, calm, bag = []) {
   if (!ready) { setup(book); ready = true; }
   skipped = false;
   const k = () => (skipped ? 40 : speed === 3 ? 12 : speed === 2 ? 2.2 : 1);
@@ -77,7 +80,7 @@ export function play(units, events, speed, done, onEnemyTurn, calm) {
   const spot = new Map(); // where each unit stands on screen now (it may have walked)
   const at = (id) => spot.get(id) || (byId.get(id) ? [byId.get(id).x, byId.get(id).y] : null);
   const items = [];
-  let t = 0, busyUntil = 0, actor = null, cur = null;
+  let t = 0, busyUntil = 0, actor = null, cur = null, fell = null, lootN = 0;
   const busy = (x) => { busyUntil = Math.max(busyUntil, x); };
   // A new unit starts acting: wait until the last animation has finished,
   // then move the camera to it, then act (the camera never jumps away
@@ -185,8 +188,15 @@ export function play(units, events, speed, done, onEnemyTurn, calm) {
         if (!who) break;
         const ft = (cur ? cur.last : t) + 250; // [old hurt L1704: fades 250 ms after the hit]
         items.push({ t: ft, kind: 'fade', id: who.id, dur: 450 });
+        if (who.team === 1) { fell = { at: at(who.id), t: ft + 300 }; lootN = 0; }
         busy(ft + 450);
         if (!cur) t += 200;
+        break;
+      }
+      case 'loot': { // an item went into the bag: its card floats up where it dropped
+        const it = [...bag].reverse().find((b) => b.name === e.skill);
+        const where = fell ? fell.at : actor ? at(actor) : null;
+        if (it && where) items.push({ t: Math.max(t, fell ? fell.t : t), kind: 'loot', at: where, it, n: lootN++ });
         break;
       }
       case 'turn-start':
@@ -209,6 +219,11 @@ function step(now) {
   for (const i of run.items) {
     if (i.started || c < i.t) continue;
     i.started = now;
+    if (i.kind === 'loot') {
+      const f = feet(...i.at), im = new Image();
+      im.src = icon(i.it);
+      loots.push({ x: f.x, y: f.y - 80 - i.n * 50, t0: now, im, name: i.it.name, col: i.it.color || '#efe3c8' });
+    }
     if (i.kind === 'pop' && i.at) {
       const f = feet(...i.at);
       pops.push({ x: f.x, y: f.y - 72, t0: now, txt: i.txt, col: i.col, big: i.big });
@@ -300,6 +315,24 @@ export function draw(g, now) {
     if (f.k.startsWith('P:')) drawP(g, f, p, now, f.calm);
     else drawOlder(g, f, p, now);
   }
+  for (let i = loots.length; i--; ) if (now > loots[i].t0 + 1600) loots.splice(i, 1);
+  for (const L of loots) {
+    const p = (now - L.t0) / 1600, y = L.y - p * 34;
+    g.save();
+    g.globalAlpha = p > 0.75 ? (1 - p) / 0.25 : Math.min(1, p * 8);
+    g.font = 'bold 15px ui-monospace,Menlo,monospace';
+    g.textAlign = 'left';
+    const t = '+ ' + L.name, w = g.measureText(t).width + 58;
+    g.fillStyle = 'rgba(14,5,8,.92)';
+    g.fillRect(L.x - w / 2, y - 22, w, 44);
+    g.strokeStyle = L.col;
+    g.lineWidth = 2;
+    g.strokeRect(L.x - w / 2, y - 22, w, 44);
+    if (L.im.complete) g.drawImage(L.im, L.x - w / 2 + 4, y - 18, 36, 36);
+    g.fillStyle = L.col;
+    g.fillText(t, L.x - w / 2 + 46, y + 5);
+    g.restore();
+  }
   for (let i = pops.length; i--; ) if (now > pops[i].t0 + 1000) pops.splice(i, 1);
   for (const o of pops) {
     // The damage-numbers option hides numbers, not words like MISS [old L1661].
@@ -318,5 +351,5 @@ export function draw(g, now) {
     g.fillText(o.txt, o.x, y);
     g.restore();
   }
-  return !!run || fx.length > 0 || pops.length > 0;
+  return !!run || fx.length > 0 || pops.length > 0 || loots.length > 0;
 }

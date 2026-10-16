@@ -115,6 +115,11 @@ function sprite(g, u, sx, by, s) {
     g.shadowColor = sh;
     g.shadowBlur = 12;
   }
+  const cs = u.statuses || {};
+  if (cs.cloak > 0 || cs.blood > 0) { // cloaked: a soft white glow that pulses (owner's pick B, 2026-10-16)
+    g.shadowColor = '#ffffff';
+    g.shadowBlur = 20 + 8 * Math.sin(s.now / 300);
+  }
   if (flash) g.filter = 'brightness(2.6)';
   if (im.bw) g.drawImage(im, sx - (w / 2 + im.px) * k, by + 8 - (h + im.py) * k, im.width * k, im.height * k);
   else g.drawImage(im, sx - (w * k) / 2, by + 8 - h * k, w * k, h * k);

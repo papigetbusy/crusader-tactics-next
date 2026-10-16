@@ -66,7 +66,7 @@ function send(action, message, then) {
   playback.play(st().units, r.events || [], st().opt.speed, finish, () => {
     screen.log('Enemy turn.');
     $('skip').hidden = st().opt.speed === 3;
-  }, st().opt.calm);
+  }, st().opt.calm, r.view.bag || []);
   screen.kick();
   return true;
 }

@@ -90,8 +90,8 @@ The owner's order: Phase 9 is finished, then this whole list gets done, and onli
 - Done 2026-10-16: ground bonuses were invisible. A unit's badges now show what its tile does (from the referee, `combat.GroundEffects`), bonus tiles show their numbers, and a shield button in the eye strip hides the numbers.
 
 **Quick polish (screen only, picture first)**
-- A white glow on a cloaked hero (the old game only made it see-through).
-- A small item picture with a + when loot is picked up.
+- Done 2026-10-16 (owner picked B): a cloaked hero keeps its colors with a soft white glow that pulses.
+- Done 2026-10-16 (owner picked B): loot shows a card with the item picture, + and its name in the rarity color, floating up where the monster fell.
 - Bigger heroes and monsters, and bigger tap squares, for the iPhone.
 - A skill window, and a Skills tab in the menu.
 
