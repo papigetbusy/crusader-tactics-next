@@ -78,8 +78,8 @@ Rebuild the old game's skilled autoplayer in Go. Tune the new skills, the purple
 - Class-owned terrain: not now (owner)
 - The owner moved the balance autoplayer and his new art to the end; these numbers get tuned by the autoplayer then.
 
-### 6. Phase 10: online-ready check
-Prove the screen only talks to the referee through `web/game/js/referee.js`, so the same screen can talk to a server.
+### 6. Phase 10: online-ready check: done 2026-10-16
+The screen only talks to the referee through `web/game/js/referee.js` (a house-rule test now enforces it), and a climb replays exactly from its seeds and actions. What online still needs, and what the owner must set up, is in `online-ready.md`.
 
 ### Online 1v1 versus (owner, 2026-10-11)
 The owner's order: first iron out every flaw and match the original game as closely as possible, then go online. Online needs:

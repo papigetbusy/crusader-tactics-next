@@ -145,4 +145,25 @@ func TestHouseRules(t *testing.T) {
 			t.Fatal(err)
 		}
 	})
+	t.Run("The game screen reaches the referee only through referee.js", func(t *testing.T) {
+		dir := filepath.Join(root(), "web", "game", "js")
+		files, err := os.ReadDir(dir)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, f := range files {
+			if f.Name() == "referee.js" || !strings.HasSuffix(f.Name(), ".js") {
+				continue
+			}
+			b, err := os.ReadFile(filepath.Join(dir, f.Name()))
+			if err != nil {
+				t.Fatal(err)
+			}
+			for i, line := range strings.Split(string(b), "\n") {
+				if strings.Contains(line, "window.ct") || strings.Contains(line, "globalThis.ct") {
+					t.Errorf("web/game/js/%s line %d calls the referee directly: go through referee.js", f.Name(), i+1)
+				}
+			}
+		}
+	})
 }

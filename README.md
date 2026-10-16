@@ -27,6 +27,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-16 · Claude · Online-ready check done (docs/online-ready.md). New tests: a climb replays exactly from its seeds and actions, and the screen may only reach the referee through referee.js. The lag tool now goes through that doorway too.
 - 2026-10-16 · Claude · A Duelist no longer does the new counterattack; his Riposte replaces it (owner's choice). The forecast says "ripostes instead".
 - 2026-10-16 · Claude · Audited Grok's 39 commits: tests, format and checks all pass; rules stay in the referee. Wrote down the play-without-internet task for Grok in docs/next-steps.md.
 - 2026-10-12 · Grok · Lag watch. Open the game with ?lag=1 and it records slow frames and which part of the picture was slow. A normal game does not run it. The probe is tools/lag/probe.mjs.

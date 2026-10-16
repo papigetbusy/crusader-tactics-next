@@ -52,6 +52,12 @@ export function practice(i) {
   return json(window.ctNew(i, hi, lo));
 }
 
+// floor builds floor n of a fresh run and fights there at once (the lag tool's test floors).
+export function floor(n) {
+  const [run, hi, lo] = seeds(3);
+  return json(window.ctFloor(n, run, hi, lo));
+}
+
 // save is the game as text, to keep; load starts from such a text with fresh
 // dice. load returns {view} or {error}.
 export const save = () => window.ctSave();

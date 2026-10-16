@@ -164,8 +164,7 @@ export async function boot(build) {
       report: lag.report,
       reset: lag.reset,
       floor(n) {
-        const [run, hi, lo] = crypto.getRandomValues(new Uint32Array(3));
-        const pack = JSON.parse(window.ctFloor(n, run, hi, lo));
+        const pack = referee.floor(n);
         $('title').hidden = true;
         sysmenu.mapOn(true);
         show(pack.view);
