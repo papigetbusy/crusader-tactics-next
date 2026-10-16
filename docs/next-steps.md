@@ -130,7 +130,7 @@ The owner's order: Phase 9 is finished, then this whole list gets done, and onli
 
   Claude's pick: the first three together.
 
-Suggested order: bugs, then polish, then the chess-feel proposal, then gear, bags, shops and gold together, then skills, then battlefield, then new classes and the floor-100 boss.
+Bugs and polish are done (2026-10-16). The owner moved the ideas, starting with the chess-feel proposal, to after online 1v1 (2026-10-16). Suggested order for them: the chess-feel proposal, then gear, bags, shops and gold together, then skills, then battlefield, then new classes and the floor-100 boss.
 
 ### Online 1v1 versus (owner, 2026-10-11)
 The owner's order: first iron out every flaw and match the original game as closely as possible, then go online. Online needs:
