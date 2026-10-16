@@ -520,6 +520,19 @@ function aimWith(slot, target) {
   forecast();
 }
 
+// does is what the chosen skill does besides its numbers: its words and a few
+// tags (owner, 2026-10-16: "you only see the numbers").
+const ELN = { fire: 'Fire', ice: 'Ice', elec: 'Thunder', light: 'Light', dark: 'Dark' };
+function does(sk) {
+  const t = [];
+  if (sk.element) t.push(`<i class="el-${sk.element}">${ELN[sk.element] || sk.element}</i>`);
+  if (sk.area) t.push(`<i>Area ${sk.area}</i>`);
+  if (sk.cooldown) t.push(`<i>Cooldown ${sk.cooldown}</i>`);
+  if (sk.free) t.push('<i>Free action</i>');
+  if (!t.length && !sk.text) return '';
+  return `<div class="does">${t.length ? `<div class="tags">${t.join('')}</div>` : ''}${sk.text ? `<div>${sk.text}</div>` : ''}</div>`;
+}
+
 // forecast shows what the attack will do, from the referee's preview: the
 // target before → after, damage, hit chance, a skill switcher, ◀ ▶ to change
 // target, ⇄ to change weapon set [old dAforecast L1532-1549, v24strip L2081].
@@ -555,7 +568,7 @@ function forecast() {
   F.innerHTML = `<div class="frame"></div><div class="fh">${v.kind || v.class} · Lv ${v.level}${v.boss ? ' · Boss' : v.elite ? ' · Elite' : ''}</div>${bar}
     <div>HP <b>${v.hp}</b>${after ? ` → <b class="af">${after}</b>` : ''} ${ko}</div>
     <div>${line}</div>${ctr}${pills ? `<div class="pills">${pills}</div>` : ''}
-    <div class="sk"><button id="fSkPrev" aria-label="Previous skill">◀</button><span>${nm(sk)}</span><button id="fSkNext" aria-label="Next skill">▶</button></div>
+    <div class="sk"><button id="fSkPrev" aria-label="Previous skill">◀</button><span>${nm(sk)}</span><button id="fSkNext" aria-label="Next skill">▶</button></div>${does(sk)}
     <div class="icons"><button id="fPrev" aria-label="Previous enemy">◀</button><button id="fSet" aria-label="Swap weapon set">⇄</button><button id="fNo" aria-label="Cancel">✕</button><button id="fNext" aria-label="Next enemy">▶</button></div>
     <div class="cap">◀ ▶ ${foe ? 'enemies' : 'allies'} in range</div>
     <button class="b go" id="fGo">${sk.heal ? '✚ Heal' : sk.support ? '✦ Cast' : sk.revive ? '✦ Revive' : '⚔ Attack'}</button>`;
@@ -597,20 +610,27 @@ function placeForecast() {
   const W = innerWidth, H = innerHeight, w = F.offsetWidth || 196, h = F.offsetHeight || 260, t = TS * cam.k, top0 = safeTop() + 52;
   const at = (x, y) => { const p = feet(x, y); return [cam.offX + p.x * cam.k, cam.offY + p.y * cam.k]; };
   const [hx, hy] = at(s.sel.x, s.sel.y);
-  const spots = [[hx + t * 0.62, hy - t * 0.5 - h / 2], [hx - t * 0.62 - w, hy - t * 0.5 - h / 2], [hx - w / 2, hy - t * 1.25 - h], [hx - w / 2, hy + t * 0.3]];
+  // Beside the hero first, then the screen's corners and edges.
+  const spots = [[hx + t * 0.62, hy - t * 0.5 - h / 2], [hx - t * 0.62 - w, hy - t * 0.5 - h / 2], [hx - w / 2, hy - t * 1.25 - h], [hx - w / 2, hy + t * 0.3],
+    [6, top0], [W - w - 6, top0], [6, H - h - 8], [W - w - 6, H - h - 8], [6, (top0 + H - h) / 2], [W - w - 6, (top0 + H - h) / 2]];
+  // It must never cover the target or another enemy it could hit (owner,
+  // 2026-10-16); covering heroes is fine.
   const cost = ([l, tp]) => {
     let n = 0;
     for (const z of s.units) {
-      const [ux, uy] = at(z.x, z.y), cy = uy - t * 0.45;
-      if (ux > l - t * 0.4 && ux < l + w + t * 0.4 && cy > tp - t * 0.5 && cy < tp + h + t * 0.5) n += z === s.sel || z === s.aim ? 10 : 3;
+      const [ux, uy] = at(z.x, z.y);
+      const over = ux + t * 0.45 > l && ux - t * 0.45 < l + w && uy > tp && uy - t * 1.4 < tp + h; // the unit's whole picture
+      if (!over) continue;
+      n += z === s.aim ? 1000 : s.targets.has(z.id) ? 200 : z.team !== s.sel.team ? 20 : z === s.sel ? 5 : 1;
     }
-    if (l < 6 || l + w > W - 6 || tp < top0 || tp + h > H - 8) n += 50;
     return n;
   };
-  let best = spots[0], bc = Infinity;
-  for (const p of spots) { const c = cost(p); if (c < bc) { bc = c; best = p; } }
-  F.style.left = Math.max(6, Math.min(W - w - 6, best[0])) + 'px';
-  F.style.top = Math.max(top0, Math.min(H - h - 8, best[1])) + 'px';
+  // Each spot is first pushed onto the screen, then judged where it really lands.
+  const fit = ([l, tp]) => [Math.max(6, Math.min(W - w - 6, l)), Math.max(top0, Math.min(H - h - 8, tp))];
+  let best = fit(spots[0]), bc = Infinity;
+  for (const p of spots.map(fit)) { const c = cost(p); if (c < bc) { bc = c; best = p; } }
+  F.style.left = best[0] + 'px';
+  F.style.top = best[1] + 'px';
 }
 export { placeForecast };
 

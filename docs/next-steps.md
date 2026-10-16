@@ -93,7 +93,7 @@ The owner's order: Phase 9 is finished, then this whole list gets done, and onli
 - Done 2026-10-16 (owner picked B): a cloaked hero keeps its colors with a soft white glow that pulses.
 - Done 2026-10-16 (owner picked B): loot shows a card with the item picture, + and its name in the rarity color, floating up where the monster fell.
 - Done 2026-10-16 (owner picked B): the phone starts 30% closer (`camera.js` frame and closeUp), and the camera fills the screen when the battle starts. Tapping a unit's picture already selected it.
-- Done 2026-10-16: the Skills window (`skills.js`), opened from ☰ → Skills and from Gear: every skill with its numbers, and changing skills once per floor. Still to show the owner: a bigger skill picker in battle (mockup first).
+- Done 2026-10-16: the Skills window (`skills.js`), opened from ☰ → Skills and from Gear: every skill with its numbers, and changing skills once per floor. In battle the owner kept his original fly-out; instead the attack window now says what each attack does, and never covers an enemy you can hit (2026-10-16).
 
 **Ideas (change how the game plays; owner OK needed)**
 - Gear and gold:

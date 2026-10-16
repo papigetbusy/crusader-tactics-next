@@ -27,6 +27,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-16 · Claude · The red attack window says what the chosen attack does besides its numbers (its words, plus element, area, cooldown, free action). It now never covers the target or any enemy it could hit: it tries beside the hero, then the screen's corners and edges, and may cover heroes.
 - 2026-10-16 · Claude · New Skills window (☰ → Skills, and Skills ▸ in Gear): each hero's class ability, brought skills, ultimate and learned skills, with range, power, area, element, cooldown, the level learned and turns until ready. Changing skills (once per floor) moved here from Gear: tap cards to pick up to 4 and an ultimate. The referee now sends cooldowns and levels.
 - 2026-10-16 · Claude · Owner's pick B: on a phone the map starts 30% closer, so heroes, monsters and squares are bigger to tap. When the battle starts the camera slides so the map fills the screen (no empty band under the heroes). Pinch and zoom work as before.
 - 2026-10-16 · Claude · Owner's picks: a cloaked hero gets a soft white glow that pulses (still see-through), and loot shows a small card (item picture, + and name in its rarity color) floating up where the monster fell.

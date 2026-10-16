@@ -333,3 +333,10 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
 .skc .rdy { font: 600 11px system-ui, sans-serif; color: #6ee7a0; }
 .skw .btns { display: flex; gap: 8px; justify-content: center; }
 .skw .btns .b { min-width: 120px; }
+
+/* what the chosen skill does, in the attack window (owner, 2026-10-16) */
+#forecast.atk .does { margin: 2px 0 4px; padding: 4px 6px; font-size: 12px; line-height: 15px; color: #f3dccf; background: rgba(0,0,0,.28); border: 1px solid rgba(255,190,170,.25); border-radius: 4px; text-align: left; }
+#forecast.atk .does .tags { display: flex; flex-wrap: wrap; gap: 3px; margin-bottom: 3px; }
+#forecast.atk .does i { font: 700 10px ui-monospace, Menlo, monospace; font-style: normal; padding: 0 5px; border-radius: 3px; background: rgba(255,255,255,.1); color: #ffe6a8; }
+#forecast.atk .does .el-fire { color: #ff8a5e; } #forecast.atk .does .el-ice { color: #9fe0ff; } #forecast.atk .does .el-elec { color: #f7ea6a; }
+#forecast.atk .does .el-light { color: #fff6c8; } #forecast.atk .does .el-dark { color: #c4a4ff; }
