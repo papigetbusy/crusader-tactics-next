@@ -2,7 +2,7 @@
 // View) and what the player is pointing at; every move, attack and turn is
 // an action sent to the referee, and its answer is drawn.
 import * as referee from './referee.js';
-import { tileAt, unitAt, closeUp, focusOn, lookAt, cam, safeTop } from './camera.js';
+import { tileAt, unitAt, closeUp, focusOn, lookAt, cam, safeTop, fill } from './camera.js';
 import { TS } from './look.js';
 import { active, label, STATUS } from './statuses.js';
 import { picture } from './units.js';
@@ -111,6 +111,7 @@ export function after() {
     requestAnimationFrame(() => focusOn(f.x, f.y - 40, $('prepare').getBoundingClientRect().top - 20));
   }
   if (p === 'battle' && seen.startsWith('prepare')) {
+    fill();
     const foes = st().units.filter((u) => u.team === 1), lv = Math.max(...foes.map((u) => u.level), 1);
     screen.log(`${v.throne ? 'Seize the throne or defeat every enemy' : 'Defeat every enemy'} to climb. ${foes.length} enemies · Lv ${lv} · ${v.n}×${v.n} ${v.biome || ''}${(v.chests || []).length ? ` · ${v.chests.length} chest${v.chests.length > 1 ? 's' : ''} on the map: walk onto them!` : ''}`);
   }

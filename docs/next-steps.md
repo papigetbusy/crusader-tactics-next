@@ -92,7 +92,7 @@ The owner's order: Phase 9 is finished, then this whole list gets done, and onli
 **Quick polish (screen only, picture first)**
 - Done 2026-10-16 (owner picked B): a cloaked hero keeps its colors with a soft white glow that pulses.
 - Done 2026-10-16 (owner picked B): loot shows a card with the item picture, + and its name in the rarity color, floating up where the monster fell.
-- Bigger heroes and monsters, and bigger tap squares, for the iPhone.
+- Done 2026-10-16 (owner picked B): the phone starts 30% closer (`camera.js` frame and closeUp), and the camera fills the screen when the battle starts. Tapping a unit's picture already selected it.
 - A skill window, and a Skills tab in the menu.
 
 **Ideas (change how the game plays; owner OK needed)**

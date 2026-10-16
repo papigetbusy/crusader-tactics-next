@@ -31,10 +31,11 @@ export function safeTop() {
   return safe.offsetHeight || 0;
 }
 
-// frame points the camera at the heroes, at a finger-friendly zoom.
+// frame points the camera at the heroes, at a finger-friendly zoom. On a
+// phone it starts 30% closer than the old game (owner's pick B, 2026-10-16).
 export function frame(heroes, chosen) {
   cam.k0 = Math.min(cam.w / map.ww, Math.max(200, cam.h) / map.wh);
-  cam.zt = cam.z = Math.max(1, Math.min(4, (TOUCH ? 0.62 : 0.7) / cam.k0));
+  cam.zt = cam.z = Math.max(1, Math.min(4, (TOUCH ? 0.8 : 0.7) / cam.k0));
   const h = chosen || heroes[Math.min(heroes.length - 1, (heroes.length / 2) | 0)];
   if (!h) {
     cam.x = cam.tx = map.ww / 2;
@@ -44,6 +45,9 @@ export function frame(heroes, chosen) {
   const b = feet(h.x, h.y);
   cam.x = cam.tx = b.x;
   cam.y = cam.ty = b.y - 120;
+  // Start with the map filling the screen: no empty band past its edge.
+  const vh = cam.h / (cam.k0 * cam.z);
+  if (vh < map.wh) cam.y = cam.ty = Math.max(vh / 2, Math.min(map.wh - vh / 2, cam.y));
   // As in the old game, the first look is worked out before the
   // finger-friendly zoom applies, which settles the camera's height.
   layout(heroes, chosen, true);
@@ -78,6 +82,16 @@ export function layout(heroes = [], chosen = null, first = false) {
 export const moving = () => Math.abs(cam.tx - cam.x) > 0.5 || Math.abs(cam.ty - cam.y) > 0.5 || Math.abs(cam.zt - cam.z) > 0.003;
 export const gesturing = () => performance.now() - cam.touch < 220;
 
+// fill eases the camera so the map covers the screen, with no empty band past
+// its edge (after placing heroes, whose view leaves room for the buttons).
+export function fill() {
+  const k = cam.k0 * cam.zt, vw = cam.w / k, vh = cam.h / k;
+  const top = (safeTop() + 70) / k, bottom = 110 / k; // room for the top bar and End Turn
+  if (vh < map.wh) cam.ty = Math.max(vh / 2 - top, Math.min(map.wh - vh / 2 + bottom, cam.ty));
+  if (vw < map.ww) cam.tx = Math.max(vw / 2, Math.min(map.ww - vw / 2, cam.tx));
+  kick();
+}
+
 // lookAt eases the camera to a map spot.
 export function lookAt(x, y) {
   cam.tx = x;
@@ -94,7 +108,7 @@ export function focusOn(fx, fy, barTop) {
 // closeUp zooms in to at least a comfortable size (for the minimap and
 // next hero) and looks at a tile.
 export function closeUp(x, y) {
-  if (cam.zt < 1.3) cam.zt = Math.min(3.4, Math.max(1.3, (TOUCH ? 0.66 : 0.75) / cam.k0));
+  if (cam.zt < 1.3) cam.zt = Math.min(3.4, Math.max(1.3, (TOUCH ? 0.86 : 0.75) / cam.k0));
   const b = feet(x, y);
   lookAt(b.x, b.y - 20);
 }
