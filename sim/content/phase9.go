@@ -20,7 +20,7 @@ func init() {
 		Date: "2026-10-11",
 		What: "Fire Emblem counterattacks: a unit hit by a single-target attack that survives strikes back once with " +
 			"a full Strike if the attacker is within its Strike range. Not when stunned, frozen, rooted or cloaked, and " +
-			"not against area skills, ultimates, heals or buffs. Before, only a Duelist (and Riposte Stance) struck back.",
+			"not against area skills, ultimates, heals or buffs. A Duelist ripostes instead. Before, only a Duelist (and Riposte Stance) struck back.",
 		Apply: func(c *Content) { c.Combat.Counterattacks, c.Combat.CounterPower = true, 1 },
 	})
 }

@@ -67,6 +67,9 @@ func CanCounter(c *content.Content, u, v *state.Unit, s content.Skill, x, y int)
 	if ok, why := Countered(s); !ok {
 		return false, why
 	}
+	if v.Ascension == "Duelist" { // design-lock 20: Riposte replaces the counter (owner, 2026-10-16)
+		return false, "ripostes instead"
+	}
 	for _, st := range counterStatuses {
 		if v.Status[st] > 0 {
 			return false, stName(st)

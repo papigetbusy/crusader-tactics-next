@@ -30,6 +30,17 @@ func TestCounterattacks(t *testing.T) {
 			t.Fatalf("%d counters, hero lost %d (a full Strike is %d)", n, lost, want)
 		}
 	})
+	t.Run("A Duelist ripostes instead of striking back with a counter", func(t *testing.T) {
+		c, b, h, f := arena('g')
+		h.HP, h.MaxHP = 400, 400
+		h.Ascension = "Duelist"
+		if n, _ := strikes(c, b, f, h, plain(1)); n != 0 {
+			t.Fatalf("%d counters", n)
+		}
+		if ok, why := CanCounter(c, f, h, plain(1), f.X, f.Y); ok || why != "ripostes instead" {
+			t.Fatalf("CanCounter %v %q", ok, why)
+		}
+	})
 	t.Run("Heroes strike back at monsters too", func(t *testing.T) {
 		c, b, h, f := arena('g')
 		h.HP, h.MaxHP = 400, 400
