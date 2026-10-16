@@ -147,7 +147,11 @@ Versus rules (owner, 2026-10-11):
 Rules for the online work (owner, 2026-10-11). Do not build these now:
 - A whole climb must replay from its seed plus the list of actions and come out identical.
 - The turn clock and the match clock live in the referee and are shown in the View. The screen only displays them. Running out of time is the referee's decision.
-- Still to settle with the owner: the seconds per turn and per player, the map (fixed or random, and how big), which purple set each class gets, and what happens when a clock runs out.
+- Settled by the owner (2026-10-16):
+  - Clocks: 30 seconds per turn, and 2½ minutes in total for each player.
+  - Map: random but mirrored, 12×12, so neither side gets better ground.
+  - Gear: one fixed best purple set per class, chosen by Claude, so every match is even.
+  - Time out: running out of turn time ends the turn. Running out of your total time loses the match.
 
 Estimate: about 3 sessions once the game matches the original.
 
