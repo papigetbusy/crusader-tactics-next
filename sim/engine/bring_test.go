@@ -85,3 +85,33 @@ func TestBringSkills(t *testing.T) {
 		}
 	})
 }
+
+func TestSkillDetails(t *testing.T) {
+	t.Run("Every skill a hero knows tells the screen its range, power, cooldown and level", func(t *testing.T) {
+		g := prepared()
+		h := g.B.Unit(1)
+		lib := g.library(h)
+		if len(lib) == 0 {
+			t.Fatal("no learned skills off the bar")
+		}
+		for _, l := range lib {
+			s, _ := g.C.SkillNamed(l.Name)
+			if l.MaxRange != s.MaxRange || l.Power != s.Power || l.Cooldown != s.Cooldown || l.Level != s.Level {
+				t.Fatalf("%s: view %+v, skill range %d power %v cooldown %d level %d", l.Name, l, s.MaxRange, s.Power, s.Cooldown, s.Level)
+			}
+		}
+		for _, u := range g.View().Units {
+			if u.ID != 1 {
+				continue
+			}
+			if ab, _ := g.C.AbilityFor(h.Class, h.Level, h.Ascension, false); u.Ability == nil || u.Ability.Cooldown != ab.Cooldown {
+				t.Fatalf("ability view %+v, cooldown %d", u.Ability, ab.Cooldown)
+			}
+			for i, sv := range u.Skills {
+				if sv.Cooldown != h.Skills[i].Cooldown || sv.Level != h.Skills[i].Level {
+					t.Fatalf("%s: view cooldown %d level %d", sv.Name, sv.Cooldown, sv.Level)
+				}
+			}
+		}
+	})
+}

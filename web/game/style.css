@@ -315,3 +315,21 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
 #forecast.atk button:disabled { opacity: .35; }
 #forecast.atk .cap { text-align: center; font-size: 10px; color: #e8cfc0; margin-top: 1px; }
 #forecast.atk .go { display: block; width: 100%; margin-top: 4px; min-height: 0; height: 30px; padding: 0; border: 7px solid transparent; border-image: url(../assets/ui/btnt.png) 48 fill / 7px stretch; background: none; color: #2a1606; text-shadow: 0 1px 0 #ffe6a8; font: 700 13px 'EB Garamond', Georgia, serif; line-height: 14px; }
+
+/* ---------- the Skills window (owner, 2026-10-16) ---------- */
+.skw h4 { margin: 12px 0 4px; }
+.skc { text-align: left; padding: 8px 10px; margin: 6px 0; border: 1px solid rgba(201,162,74,.35); border-radius: 6px; background: rgba(40,10,14,.45); }
+.skc.ult { border-color: rgba(242,193,78,.7); }
+.skc.ult .skn b { color: #f2c14e; }
+.skc[data-pick] { cursor: pointer; }
+.skc.on { border-color: #6ee7a0; background: rgba(10,50,28,.55); }
+.skc .skn { display: flex; align-items: center; gap: 8px; }
+.skc .skn b { flex: 1; }
+.skc .tick { width: 24px; height: 24px; border: 1px solid #c9a24a; border-radius: 4px; text-align: center; line-height: 22px; color: #6ee7a0; font-weight: 700; }
+.skc .chips { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0; }
+.skc .chips i { font: 600 11px ui-monospace, Menlo, monospace; font-style: normal; color: #cfe3ff; background: rgba(3,18,58,.7); border: 1px solid rgba(106,184,255,.35); border-radius: 4px; padding: 1px 6px; }
+.skc small { display: block; color: #e6d8b8; line-height: 17px; }
+.skc .wait { font: 600 11px system-ui, sans-serif; color: #ffb36a; }
+.skc .rdy { font: 600 11px system-ui, sans-serif; color: #6ee7a0; }
+.skw .btns { display: flex; gap: 8px; justify-content: center; }
+.skw .btns .b { min-width: 120px; }

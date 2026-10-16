@@ -78,7 +78,9 @@ func (g *Game) library(u *state.Unit) []LibraryView {
 			continue
 		}
 		if s, ok := g.C.SkillNamed(n); ok {
-			out = append(out, LibraryView{Name: n, Text: s.Text, Ultimate: s.Kind == "u"})
+			out = append(out, LibraryView{Name: n, Text: s.Text, Ultimate: s.Kind == "u", MinRange: s.MinRange, MaxRange: s.MaxRange,
+				Power: s.Power, Element: s.Element, Area: s.Area, Heal: s.Heal, Support: s.Support, Revive: s.Revive,
+				Cooldown: s.Cooldown, Level: s.Level})
 		}
 	}
 	return out

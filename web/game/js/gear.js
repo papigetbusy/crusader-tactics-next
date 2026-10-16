@@ -1,5 +1,5 @@
-// The gear sheet: a hero's numbers, weapon sets, worn gear, the bag, its
-// skills (changed once per floor) and its ascension. Every change is an
+// The gear sheet: a hero's numbers, weapon sets, worn gear, the bag, a link
+// to its skills (the Skills window) and its ascension. Every change is an
 // action; the sheet is redrawn from the referee's answer.
 import * as referee from './referee.js';
 import { heroPicUrl } from './team.js';
@@ -7,7 +7,7 @@ import { icon } from './icons.js';
 
 const $ = (id) => document.getElementById(id);
 const SLOT = { w: 'Set 1', w2: 'Set 2', w3: 'Set 3', h: 'Helm', a: 'Armor', b: 'Boots', c: 'Charm' };
-let screen = null, cls = null, skillsOpen = false, sortBy = 'new';
+let screen = null, cls = null, sortBy = 'new';
 
 export const wire = (s) => { screen = s; };
 
@@ -68,18 +68,7 @@ function render() {
     return row(it, eq + `<button class="b" data-drop="${i}">Drop</button>`, note);
   }).join('') || '<p><small>The bag is empty.</small></p>';
   const bar = (u.skills || []).filter((s) => s.name !== 'Strike' && !s.ultimate), ult = (u.skills || []).find((s) => s.ultimate);
-  h += `<h4>Skills</h4><p><small>${bar.map((s) => s.name).join(', ')}${ult ? ' · ★ ' + ult.name : ''}</small></p>`;
-  if (u.swapped) h += '<p><small>Skills already changed on this floor.</small></p>';
-  else if ((u.library || []).length && !locked) {
-    h += `<button class="b" id="skToggle">${skillsOpen ? 'Hide' : 'Change skills (once per floor)'}</button>`;
-    if (skillsOpen) {
-      const normals = bar.map((s) => ({ name: s.name, on: 1 })).concat(u.library.filter((s) => !s.ultimate));
-      const ults = (ult ? [{ name: ult.name, on: 1 }] : []).concat(u.library.filter((s) => s.ultimate));
-      h += normals.map((s) => `<label class="pick"><input type="checkbox" class="skPick" value="${s.name}" ${s.on ? 'checked' : ''}> ${s.name}</label>`).join('');
-      h += ults.map((s) => `<label class="pick"><input type="radio" name="ultPick" value="${s.name}" ${s.on ? 'checked' : ''}> ★ ${s.name}</label>`).join('');
-      h += '<button class="b" id="skGo">Change skills</button>';
-    }
-  }
+  h += `<h4>Skills</h4><p><small>${bar.map((s) => s.name).join(', ')}${ult ? ' · ★ ' + ult.name : ''}</small></p><button class="b" id="skOpen">Skills ▸</button>`;
   const hr = c && c.heroes.find((x) => x.class === cls);
   if (hr && hr.canAscend && phase !== 'battle') h += '<h4>Ascension</h4><p><small>Change once per floor: learned skills stay; the ultimate switches.</small></p><div class="btns">' + hr.canAscend.map((a) => `<button class="b" data-asc="${a}">${a}</button>`).join('') + '</div>';
   h += '<button class="b" id="gearClose">Close</button></div>';
@@ -87,19 +76,13 @@ function render() {
   w.hidden = false;
   const q = (s) => w.querySelectorAll(s);
   q('#bagSort button').forEach((b) => (b.onclick = () => { sortBy = b.dataset.v; render(); }));
-  q('[data-h]').forEach((b) => (b.onclick = () => { cls = b.dataset.h; skillsOpen = false; render(); }));
+  q('[data-h]').forEach((b) => (b.onclick = () => { cls = b.dataset.h; render(); }));
   q('[data-set]').forEach((b) => (b.onclick = () => act({ kind: 'set', unit: u.id, set: +b.dataset.set })));
   q('[data-off]').forEach((b) => (b.onclick = () => act({ kind: 'unequip', unit: u.id, slot: b.dataset.off })));
   q('[data-eq]').forEach((b) => (b.onclick = () => act({ kind: 'equip', unit: u.id, item: +b.dataset.eq, slot: b.dataset.slot || '' })));
   q('[data-drop]').forEach((b) => (b.onclick = () => { const it = v.bag[+b.dataset.drop]; if (confirm(`Drop ${it.name}? It will be gone for good.`)) act({ kind: 'drop', item: +b.dataset.drop }); }));
   q('[data-asc]').forEach((b) => (b.onclick = () => act({ kind: 'ascend', hero: cls, choice: b.dataset.asc })));
-  q('.skPick').forEach((cb) => (cb.onchange = () => { if (w.querySelectorAll('.skPick:checked').length > 4) cb.checked = false; }));
-  if ($('skToggle')) $('skToggle').onclick = () => { skillsOpen = !skillsOpen; render(); };
-  if ($('skGo')) $('skGo').onclick = () => {
-    const picked = [...w.querySelectorAll('.skPick:checked')].map((x) => x.value), ultimate = (w.querySelector('[name=ultPick]:checked') || {}).value || '';
-    if (!picked.length) return alert('Pick at least one skill.');
-    if (confirm('Change skills now? You can only do this once on this floor.')) { skillsOpen = false; act({ kind: 'bring', unit: u.id, bar: picked, choice: ultimate }); }
-  };
+  if ($('skOpen')) $('skOpen').onclick = () => { w.hidden = true; screen.skills(cls); };
   $('gearClose').onclick = () => { w.hidden = true; };
   w.querySelector('.xclose').onclick = () => $('gearClose').click();
 }

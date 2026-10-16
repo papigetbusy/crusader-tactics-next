@@ -63,13 +63,14 @@ export function open() {
   const battle = !c || c.phase === 'battle';
   w.innerHTML = `<div class="sysh"><img src="${url('ui', 'coin')}" alt=""> ${c ? c.gold : v.gold} gold</div>
     ${battle ? '<button class="row" id="sEnd">End Turn</button>' : ''}
-    <button class="row" id="sGear">Gear</button><button class="row" id="sSave">Save</button>
+    <button class="row" id="sGear">Gear</button><button class="row" id="sSkills">Skills</button><button class="row" id="sSave">Save</button>
     <button class="row" id="sSet">Settings</button><button class="row" id="sClose">✕ Close</button>
     ${c ? `<div class="lbl">Floors</div><button class="b wide" id="sFloors">${ic('floors', 18)} Floor list</button>` : ''}`;
   w.hidden = false;
   const on = (id, f) => { if ($(id)) $(id).onclick = f; };
   on('sEnd', () => { close(); screen.endTurn(); });
   on('sGear', () => { close(); screen.gear(); });
+  on('sSkills', () => { close(); screen.skills(); });
   on('sSave', () => { close(); slots('save'); });
   on('sSet', () => { close(); settings(); });
   on('sClose', close);

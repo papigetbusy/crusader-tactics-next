@@ -82,18 +82,29 @@ type UnitView struct {
 
 // LibraryView is a learned skill a hero could bring instead.
 type LibraryView struct {
-	Name     string `json:"name"`
-	Text     string `json:"text,omitempty"`
-	Ultimate bool   `json:"ultimate,omitempty"`
+	Name     string  `json:"name"`
+	Text     string  `json:"text,omitempty"`
+	Ultimate bool    `json:"ultimate,omitempty"`
+	MinRange int     `json:"minRange"`
+	MaxRange int     `json:"maxRange"`
+	Power    float64 `json:"power"`
+	Element  string  `json:"element,omitempty"`
+	Area     int     `json:"area,omitempty"`
+	Heal     bool    `json:"heal,omitempty"`
+	Support  bool    `json:"support,omitempty"`
+	Revive   bool    `json:"revive,omitempty"`
+	Cooldown int     `json:"cooldown,omitempty"` // turns to wait after using it
+	Level    int     `json:"level,omitempty"`    // the level it is learned at
 }
 
 // AbilityView is a hero's class ability as the screen shows it.
 type AbilityView struct {
-	Name   string                 `json:"name"`
-	Text   string                 `json:"text"`
-	Wait   int                    `json:"wait"` // turns until ready
-	Free   bool                   `json:"free,omitempty"`
-	Target *content.AbilityTarget `json:"target,omitempty"`
+	Name     string                 `json:"name"`
+	Text     string                 `json:"text"`
+	Wait     int                    `json:"wait"`               // turns until ready
+	Cooldown int                    `json:"cooldown,omitempty"` // turns to wait after using it
+	Free     bool                   `json:"free,omitempty"`
+	Target   *content.AbilityTarget `json:"target,omitempty"`
 }
 
 // DecisionView is a waiting choice, with every option spelled out.
@@ -128,7 +139,9 @@ type SkillView struct {
 	Aim      string  `json:"aim,omitempty"`  // how it is aimed (content.Aim...); "" = tap a unit
 	Free     bool    `json:"free,omitempty"` // does not use up the turn
 	Ultimate bool    `json:"ultimate,omitempty"`
-	Wait     int     `json:"wait"` // turns until ready (0 = ready)
+	Wait     int     `json:"wait"`               // turns until ready (0 = ready)
+	Cooldown int     `json:"cooldown,omitempty"` // turns to wait after using it
+	Level    int     `json:"level,omitempty"`    // the level it is learned at
 }
 
 // View returns the current board.
@@ -172,7 +185,7 @@ func (g *Game) View() View {
 				if ab.Free {
 					wait = 0
 				}
-				uv.Ability = &AbilityView{Name: ab.Name, Text: ab.Text, Wait: wait, Free: ab.Free, Target: ab.Target}
+				uv.Ability = &AbilityView{Name: ab.Name, Text: ab.Text, Wait: wait, Free: ab.Free, Target: ab.Target, Cooldown: ab.Cooldown}
 			}
 		}
 		uv.Ascension, uv.Decoy, uv.Companion, uv.Pet, uv.Kind, uv.Ally = u.Ascension, u.Decoy, u.Companion, u.Summoned, u.Kind, u.Ally
@@ -190,7 +203,7 @@ func (g *Game) View() View {
 		}
 		for i, s := range u.Skills {
 			uv.Skills = append(uv.Skills, SkillView{Name: s.Name, Text: s.Text, MinRange: s.MinRange, MaxRange: s.MaxRange,
-				Power: s.Power, Element: s.Element, Area: s.Area, Heal: s.Heal, Revive: s.Revive, Support: s.Support, Aim: s.Aim, Free: s.Free, Wait: u.Cooldowns[i], Ultimate: s.Kind == "u"})
+				Power: s.Power, Element: s.Element, Area: s.Area, Heal: s.Heal, Revive: s.Revive, Support: s.Support, Aim: s.Aim, Free: s.Free, Wait: u.Cooldowns[i], Ultimate: s.Kind == "u", Cooldown: s.Cooldown, Level: s.Level})
 		}
 		v.Units = append(v.Units, uv)
 	}

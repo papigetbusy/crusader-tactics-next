@@ -14,6 +14,7 @@ import * as sysmenu from './sysmenu.js';
 import * as tips from './tips.js';
 import * as title from './title.js';
 import * as gear from './gear.js';
+import * as skills from './skills.js';
 import * as shop from './shop.js';
 import * as lag from './lag.js';
 
@@ -155,9 +156,10 @@ export async function boot(build) {
     closeUp(h.x, h.y);
   };
   battle.wire({ st, show, kick, log });
-  gear.wire({ st, show, kick, log, after: battle.after });
+  gear.wire({ st, show, kick, log, after: battle.after, skills: (c) => skills.open(c) });
+  skills.wire({ st, show, kick, log, after: battle.after });
   shop.wire({ st, show, kick, log, after: battle.after });
-  sysmenu.wire({ st, show, kick, log, setView, after: battle.after, gear: () => gear.open(), endTurn: battle.endTurn, nextHero });
+  sysmenu.wire({ st, show, kick, log, setView, after: battle.after, gear: () => gear.open(), skills: () => skills.open(), endTurn: battle.endTurn, nextHero });
   tips.watch(st);
   if (lag.on) {
     window.crusaderLag = {
