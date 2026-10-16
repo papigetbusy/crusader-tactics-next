@@ -13,7 +13,7 @@ import (
 
 // AbilityOf is the class ability a hero can use now (old abOf, line 1191).
 func AbilityOf(c *content.Content, u *state.Unit) (content.Ability, bool) {
-	if u.Team != state.Heroes || u.Summoned || u.Companion || u.Decoy {
+	if !u.Player() || u.Summoned || u.Companion || u.Decoy {
 		return content.Ability{}, false
 	}
 	return c.AbilityFor(u.Class, u.Level, u.Ascension, u.SkyReady && u.Status["sky"] > 0)
@@ -86,12 +86,12 @@ func UseAbility(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Uni
 		u.Moved = true
 	case "traps":
 		for _, t := range tiles {
-			b.Traps = append(b.Traps, state.Trap{X: t.X, Y: t.Y, Owner: u.ID})
+			b.Traps = append(b.Traps, state.Trap{X: t.X, Y: t.Y, Owner: u.ID, Team: u.Team})
 		}
 	case "banner":
-		b.Fields = append(b.Fields, state.Field{X: tiles[0].X, Y: tiles[0].Y, Range: 3, Turns: 3, Kind: "banner", Owner: u.ID})
+		b.Fields = append(b.Fields, state.Field{X: tiles[0].X, Y: tiles[0].Y, Range: 3, Turns: 3, Kind: "banner", Owner: u.ID, Team: u.Team})
 	case "fireField":
-		b.Fields = append(b.Fields, state.Field{X: tiles[0].X, Y: tiles[0].Y, Range: 1, Square: true, Turns: 3, Kind: "fire", Owner: u.ID})
+		b.Fields = append(b.Fields, state.Field{X: tiles[0].X, Y: tiles[0].Y, Range: 1, Square: true, Turns: 3, Kind: "fire", Owner: u.ID, Team: u.Team})
 	case "overwatch":
 		dx, dy := tiles[0].X-u.X, tiles[0].Y-u.Y
 		if abs(dx) >= abs(dy) {
@@ -226,7 +226,7 @@ func RaiseSkeleton(c *content.Content, b *state.Battle, u *state.Unit, x, y int,
 			}
 		}
 	}
-	z := monsterUnit(c, b, m, max(1, u.Level-1), "dark", state.Heroes, t)
+	z := monsterUnit(c, b, m, max(1, u.Level-1), "dark", u.Team, t)
 	z.Companion, z.Undead, z.Done = true, true, true
 	b.Units = append(b.Units, z)
 	emit(action.Event{Kind: action.Summoned, Unit: u.ID, Target: z.ID})
@@ -244,7 +244,8 @@ func monsterUnit(c *content.Content, b *state.Battle, m content.Monster, level i
 	z := &state.Unit{ID: b.NextID, Team: team, Class: m.Class, Kind: m.Name, X: t.X, Y: t.Y, Level: level,
 		HP: n.MaxHP, MaxHP: n.MaxHP, Atk: n.Atk, Def: n.Def, Mov: n.Mov, Element: element,
 		Status: map[string]int{}}
-	if team != state.Heroes {
+	z.PvP = b.Versus != nil
+	if team != state.Heroes && !z.PvP {
 		z.Weapon = c.Classes[m.Class].Weapon
 	}
 	b.NextID++
@@ -277,7 +278,7 @@ func SpawnCompanion(c *content.Content, b *state.Battle, h *state.Unit) {
 	for _, d := range [][2]int{{0, -1}, {1, -1}, {-1, -1}, {1, 0}, {-1, 0}} {
 		x, y := h.X+d[0], h.Y+d[1]
 		if b.Inside(x, y) && heightAt(b, x, y) >= 0 && b.UnitAt(x, y) == nil {
-			z := monsterUnit(c, b, m, max(1, h.Level-2), h.Bond.Element, state.Heroes, state.Tile{X: x, Y: y})
+			z := monsterUnit(c, b, m, max(1, h.Level-2), h.Bond.Element, h.Team, state.Tile{X: x, Y: y})
 			z.Element, z.Kind = h.Bond.Element, m.Name
 			z.Companion, z.Owner = true, h.ID
 			b.Units = append(b.Units, z)

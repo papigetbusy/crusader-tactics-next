@@ -46,7 +46,19 @@ func (g *Game) Apply(a action.Action) ([]action.Event, error) {
 		err := g.climbAction(a, emit)
 		return events, err
 	}
-	if err := g.check(a); err != nil {
+	if v := g.B.Versus; v != nil { // a refused action charges no time: the screen keeps counting
+		before := *v
+		if stop, err := g.clock(a, emit); err != nil || stop {
+			if err != nil {
+				*v = before
+			}
+			return events, err
+		}
+		if err := g.check(a); err != nil {
+			*v = before
+			return nil, err
+		}
+	} else if err := g.check(a); err != nil {
 		return nil, err
 	}
 	b := g.B
@@ -146,7 +158,7 @@ func seizeThrone(b *state.Battle, u *state.Unit, emit action.Emit) {
 	}
 	emit(action.Event{Kind: action.Seized, Unit: u.ID})
 	for _, e := range append([]*state.Unit(nil), b.Units...) {
-		if e.Team != state.Heroes {
+		if e.Team != u.Team {
 			b.Remove(e.ID)
 		}
 	}
@@ -171,7 +183,7 @@ func (g *Game) check(a action.Action) error {
 	if len(b.Decisions) > 0 {
 		return no("decide-first", "Answer the waiting choice first.")
 	}
-	if b.Side != state.Heroes {
+	if b.Side != state.Heroes && b.Versus == nil {
 		return no("not-your-turn", "It is not your turn.")
 	}
 	if a.Kind == action.EndTurn {
@@ -187,7 +199,7 @@ func (g *Game) check(a action.Action) error {
 		return g.checkSet(a)
 	}
 	u := b.Unit(a.Unit)
-	if u == nil || u.Team != state.Heroes || u.Companion || u.Decoy {
+	if !g.mine(u) || u.Companion || u.Decoy {
 		return no("no-such-hero", "That is not one of your heroes.")
 	}
 	if a.Kind == action.Ability {
@@ -255,4 +267,16 @@ func (g *Game) checkAim(u *state.Unit, a action.Action) error {
 		}
 	}
 	return no("bad-target", "%s cannot reach that target.", s.Name)
+}
+
+// mine reports whether the player whose turn it is controls u: one of the
+// heroes in single player, the side to move in versus.
+func (g *Game) mine(u *state.Unit) bool {
+	if u == nil || !u.Player() {
+		return false
+	}
+	if g.B.Versus == nil {
+		return u.Team == state.Heroes
+	}
+	return u.Team == g.B.Side
 }

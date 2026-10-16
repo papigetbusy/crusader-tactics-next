@@ -14,7 +14,7 @@ import (
 
 func (g *Game) checkBring(a action.Action) error {
 	u := g.B.Unit(a.Unit)
-	if u == nil || u.Team != state.Heroes || u.Companion || u.Decoy || u.Summoned {
+	if !g.mine(u) || u.Companion || u.Decoy || u.Summoned {
 		return no("no-such-hero", "That is not one of your heroes.")
 	}
 	if u.Swapped {

@@ -58,7 +58,7 @@ func raise(c *content.Content, b *state.Battle, u *state.Unit, kind int, emit ac
 		if !b.Inside(t.X, t.Y) || heightAt(b, t.X, t.Y) < 0 || b.UnitAt(t.X, t.Y) != nil {
 			continue
 		}
-		z := monsterUnit(c, b, c.Monsters[kind], max(1, u.Level-1), "dark", state.Heroes, t)
+		z := monsterUnit(c, b, c.Monsters[kind], max(1, u.Level-1), "dark", u.Team, t)
 		z.Summoned, z.Undead, z.Owner, z.Done = true, true, u.ID, true
 		b.Units = append(b.Units, z)
 		emit(action.Event{Kind: action.Summoned, Unit: u.ID, Target: z.ID})
@@ -317,7 +317,7 @@ func finishSkill(c *content.Content, b *state.Battle, u *state.Unit, slot int, s
 	if s.Cooldown > 0 && !(u.Ascension == "Storm Dragoon" && s.Name == "Sky Dive") {
 		u.Cooldowns[slot] = max(1, s.Cooldown-u.Af("cdr"))
 	}
-	if u.Team == state.Heroes && u.Ascension == "Tempest Archer" && !u.Moved && offensive {
+	if u.Player() && u.Ascension == "Tempest Archer" && !u.Moved && offensive {
 		u.Acted, u.Done = true, false
 		emit(action.Event{Kind: action.ActAgain, Unit: u.ID, Skill: "Hit and Run"})
 	} else {
@@ -326,7 +326,7 @@ func finishSkill(c *content.Content, b *state.Battle, u *state.Unit, slot int, s
 	if s.Cloak {
 		u.Cooldowns[slot] = 99
 	}
-	if u.Team == state.Heroes && u.Status["qd"] > 0 && offensive {
+	if u.Player() && u.Status["qd"] > 0 && offensive {
 		u.QuickShots++
 		u.QuickUsed = append(u.QuickUsed, s.Name)
 		if float64(u.QuickShots) < u.P("qdN", 2) {
@@ -341,13 +341,13 @@ func finishSkill(c *content.Content, b *state.Battle, u *state.Unit, slot int, s
 		u.Done, u.Moved, u.Acted, u.Undo = false, false, false, nil
 		emit(action.Event{Kind: action.ActAgain, Unit: u.ID, Skill: "Oath of Ruin"})
 	}
-	if u.Team == state.Heroes && u.Ascension == "Blade Dancer" && u.KilledThisAction && !u.Danced {
+	if u.Player() && u.Ascension == "Blade Dancer" && u.KilledThisAction && !u.Danced {
 		u.Danced = true
 		u.Done, u.Moved, u.Undo = false, false, nil
 		emit(action.Event{Kind: action.ActAgain, Unit: u.ID, Skill: "Blade Dance"})
 	}
 	u.KilledThisAction = false
-	if u.Team == state.Heroes {
+	if u.Player() {
 		PairDone(b, u)
 	}
 }

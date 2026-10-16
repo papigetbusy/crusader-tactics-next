@@ -115,11 +115,11 @@ func Budget(b *state.Battle, u *state.Unit) int {
 
 // inBanner reports a hero standing inside a War Banner.
 func inBanner(b *state.Battle, u *state.Unit) bool {
-	if u.Team != state.Heroes {
+	if !u.Player() {
 		return false
 	}
 	for _, f := range b.Fields {
-		if f.Kind == "banner" && abs(f.X-u.X)+abs(f.Y-u.Y) <= f.Range {
+		if f.Kind == "banner" && f.Team == u.Team && abs(f.X-u.X)+abs(f.Y-u.Y) <= f.Range {
 			return true
 		}
 	}
@@ -136,8 +136,8 @@ func MoveUnit(c *content.Content, b *state.Battle, u *state.Unit, x, y int, emit
 	if n == 0 {
 		return nil
 	}
-	if u.Team == state.Heroes && u.Status["beast"] > 0 && u.P("bmT", 0) != 0 {
-		b.Fields = append(b.Fields, state.Field{X: x, Y: y, Turns: 2, Kind: "fire", Owner: u.ID})
+	if u.Player() && u.Status["beast"] > 0 && u.P("bmT", 0) != 0 {
+		b.Fields = append(b.Fields, state.Field{X: x, Y: y, Turns: 2, Kind: "fire", Owner: u.ID, Team: u.Team})
 	}
 	path := Path(c, b, u, x, y)
 	if len(path) < 2 {

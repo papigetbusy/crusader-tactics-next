@@ -230,7 +230,7 @@ func ClassCategory(c *content.Content, class string) string {
 // initSets, line 1058). Monsters, pets, companions and clones carry none.
 func InitSets(c *content.Content, u *state.Unit) {
 	_, ok := c.Gear.Classes[u.Class]
-	u.Armed = ok && u.Team == state.Heroes && !u.Companion && !u.Summoned && !u.Decoy
+	u.Armed = ok && u.Player() && !u.Companion && !u.Summoned && !u.Decoy
 	if !u.Armed {
 		return
 	}

@@ -87,7 +87,7 @@ func Bounty(c *content.Content, b *state.Battle, dice rng.Dice, killer *state.Un
 // OpenChest opens the chest a hero stops on (old openChest, line 1003):
 // usually the chest's lower rarity, sometimes its higher one.
 func OpenChest(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Unit, emit action.Emit) {
-	if u.Team != state.Heroes || u.Companion {
+	if !u.Player() || u.Companion {
 		return
 	}
 	i := slices.IndexFunc(b.Chests, func(ch state.Chest) bool { return ch.X == u.X && ch.Y == u.Y })

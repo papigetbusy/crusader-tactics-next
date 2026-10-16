@@ -15,10 +15,7 @@ var reviveSpots = [8][2]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {-1, -1}, 
 // with 40% of max HP, no statuses, finished for this turn. With no free
 // spot, nobody comes back.
 func revive(c *content.Content, b *state.Battle, u *state.Unit, emit action.Emit) {
-	fallen := &b.Fallen
-	if u.Team != state.Heroes {
-		fallen = &b.FallenFoes // a monster healer brings back a monster
-	}
+	fallen := FallenOf(b, u.Team) // a monster healer brings back a monster
 	if len(*fallen) == 0 {
 		return
 	}

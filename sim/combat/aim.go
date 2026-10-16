@@ -60,7 +60,7 @@ func newTargets(c *content.Content, b *state.Battle, u *state.Unit, s content.Sk
 	}
 	for _, z := range b.Units {
 		d := Distance(u, z)
-		if z.Team == u.Team || d < s.MinRange || d > hi || (u.Team == state.Enemies && hidden(z)) {
+		if z.Team == u.Team || d < s.MinRange || d > hi || ((u.Monster() || u.PvP) && hidden(z)) {
 			continue
 		}
 		if s.Leap > 0 {

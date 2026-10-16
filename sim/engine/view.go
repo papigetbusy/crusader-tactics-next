@@ -30,6 +30,7 @@ type View struct {
 	Gold      int           `json:"gold"`
 	Chests    []state.Chest `json:"chests,omitempty"`
 	Floor     int           `json:"floor,omitempty"`
+	Versus    *VersusView   `json:"versus,omitempty"` // a 1v1 match: whose turn and the clocks
 	Biome     string        `json:"biome,omitempty"`
 	Reinforce bool          `json:"reinforce,omitempty"` // monsters arrive on turns 3 and 5
 	Starts    []state.Tile  `json:"starts,omitempty"`    // blue starting tiles
@@ -152,6 +153,7 @@ func (g *Game) View() View {
 		v.Fallen = append(v.Fallen, f.Class)
 	}
 	v.Fields, v.Kegs, v.Traps = b.Fields, b.Kegs, len(b.Traps)
+	v.Versus = versusView(b)
 	for _, t := range b.Traps {
 		v.TrapTiles = append(v.TrapTiles, state.Tile{X: t.X, Y: t.Y})
 	}
@@ -173,7 +175,7 @@ func (g *Game) View() View {
 			Atk: u.Atk, Def: u.Def, Mov: u.Mov, Level: u.Level, Element: u.Element, Weapon: u.Weapon, Boss: u.Boss, Elite: u.Elite,
 			Enraged: combat.Enraged(g.C, u), Potions: u.Potions, CanUndo: u.Undo != nil && !u.Done,
 			Done: u.Done, CanMove: !u.Done && board.CanMove(u), Acted: u.Acted && !u.Done, Statuses: map[string]int{}}
-		if u.Team == state.Heroes && !u.Summoned && !u.Companion && !u.Decoy {
+		if u.Player() && !u.Summoned && !u.Companion && !u.Decoy {
 			uv.XP, uv.XPNext, uv.Form = u.XP, stats.XPToNext(g.C, u.Level), stats.FormName(g.C, u.Class, u.Level)
 			uv.Stage = stats.Form(g.C, u.Level, u.Ascension)
 			if u.Ascension != "" {
@@ -213,7 +215,7 @@ func (g *Game) View() View {
 // Reach is where a hero may walk now (empty if it cannot move).
 func (g *Game) Reach(unit int) []board.Tile {
 	u := g.B.Unit(unit)
-	if u == nil || u.Team != state.Heroes || u.Done || !board.CanMove(u) || g.B.Outcome != state.Ongoing {
+	if !g.mine(u) || u.Done || !board.CanMove(u) || g.B.Outcome != state.Ongoing {
 		return nil
 	}
 	return board.Reach(g.C, g.B, u)

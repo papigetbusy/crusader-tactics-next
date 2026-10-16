@@ -19,25 +19,26 @@ import (
 func died(c *content.Content, b *state.Battle, dice rng.Dice, u, v *state.Unit, emit action.Emit) {
 	b.Remove(v.ID)
 	emit(action.Event{Kind: action.Died, Unit: v.ID})
-	if v.Team == state.Heroes && !v.Companion && !v.Summoned && !v.Decoy {
-		b.Fallen = append(b.Fallen, v)
+	if v.Player() && !v.Companion && !v.Summoned && !v.Decoy {
+		f := FallenOf(b, v.Team)
+		*f = append(*f, v)
 	}
-	if v.Team == state.Enemies && c.Combat.MonstersRevive && !v.Summoned && !v.Decoy {
+	if v.Monster() && c.Combat.MonstersRevive && !v.Summoned && !v.Decoy {
 		b.FallenFoes = append(b.FallenFoes, v)
 	}
 	onDeath(c, b, dice, u, v, emit)
 	if v.Companion && !v.Undead {
-		if o := b.Unit(v.Owner); o != nil && o.Team == state.Heroes {
+		if o := b.Unit(v.Owner); o != nil && o.Player() {
 			o.Bond = nil // a fallen companion spirit is gone for good
 		}
 	}
-	if u.Team == state.Heroes {
+	if u.Player() {
 		u.KilledThisAction = true
 	}
-	if v.Team == state.Enemies && v.Ally && partyHero(u) {
+	if v.Monster() && v.Ally && partyHero(u) {
 		bond(b, u, v)
 	}
-	if v.Team == state.Enemies && isHero(u) && u.Ascension == "Necromancer" && v.Kind != "" && !v.Ally && !slices.Contains(u.Souls, v.Kind) {
+	if v.Monster() && isHero(u) && u.Ascension == "Necromancer" && v.Kind != "" && !v.Ally && !slices.Contains(u.Souls, v.Kind) {
 		// Soul Harvest: each new kind of monster becomes a raise skill (old hurt, line 1706).
 		u.Souls = append(u.Souls, v.Kind)
 		b.Decisions = append(b.Decisions, state.Decision{Kind: state.DecideLearn, Unit: u.ID, Skill: content.RaisePrefix + v.Kind})
@@ -49,7 +50,7 @@ func died(c *content.Content, b *state.Battle, dice rng.Dice, u, v *state.Unit, 
 			}
 		}
 	}
-	if v.Team == state.Enemies && u.Team == state.Heroes {
+	if v.Monster() && u.Player() {
 		g := items.Gold(c, b, u, v)
 		b.Gold += g
 		emit(action.Event{Kind: action.GoldGained, Unit: u.ID, Amount: g})
@@ -58,20 +59,22 @@ func died(c *content.Content, b *state.Battle, dice rng.Dice, u, v *state.Unit, 
 			items.Bounty(c, b, dice, u, emit)
 		}
 	}
-	if u.Team == state.Heroes {
-		stats.Share(c, b, u, stats.KillXP(c, v), emit)
+	if u.Player() {
+		if !u.PvP {
+			stats.Share(c, b, u, stats.KillXP(c, v), emit)
+		}
 		if u.Ascension == "Berserker" {
 			heal(u, float64(u.MaxHP)*c.Ascensions["Berserker"].N("killHeal"))
 		}
 	}
-	if v.Team == state.Enemies {
+	if v.Monster() {
 		items.Drop(c, b, dice, v, u, emit)
 	}
 }
 
 // partyHero is one of the player's own heroes (not a pet, companion or clone).
 func partyHero(u *state.Unit) bool {
-	return u.Team == state.Heroes && !u.Summoned && !u.Companion && !u.Decoy
+	return u.Player() && !u.Summoned && !u.Companion && !u.Decoy
 }
 
 // bond is a hero defeating a companion spirit (old bondComp, index.html line
@@ -91,21 +94,21 @@ func onDeath(c *content.Content, b *state.Battle, dice rng.Dice, u, v *state.Uni
 	if v.Undead || v.Decoy {
 		explode(c, b, dice, v, emit)
 	}
-	if v.Team == state.Enemies {
-		if nb := gravebloomer(b); nb != nil {
+	if v.Monster() || v.PvP {
+		if nb := gravebloomer(b); nb != nil && v.Monster() {
 			b.Raises = append(b.Raises, state.Raise{By: nb.ID, X: v.X, Y: v.Y})
 		} else {
 			b.FloorKills = append(b.FloorKills, state.Tile{X: v.X, Y: v.Y})
 		}
 		if v.Status["dmark"] > 0 {
 			for _, z := range b.Units {
-				if z.Team == state.Enemies && z != v && Distance(z, v) <= 2 {
+				if z.Team == v.Team && z != v && Distance(z, v) <= 2 {
 					z.Status["poison"] = max(z.Status["poison"], 3)
 				}
 			}
 		}
 	}
-	if u != nil && u.Team == state.Heroes && v.Team == state.Enemies {
+	if u != nil && u.Player() && v.Team != u.Team {
 		if u.Status["frenzy"] > 0 {
 			u.Status["frenzy"]++
 		}
@@ -122,7 +125,7 @@ func onDeath(c *content.Content, b *state.Battle, dice rng.Dice, u, v *state.Uni
 		if u.Status["ruin"] > 0 {
 			u.ExtraTurn = true
 			for _, z := range b.Units {
-				if z.Team == state.Enemies && z != v && Distance(z, v) <= 2 {
+				if z.Team == v.Team && z != v && Distance(z, v) <= 2 {
 					z.Status["stun"] = max(z.Status["stun"], 1)
 				}
 			}
@@ -133,7 +136,7 @@ func onDeath(c *content.Content, b *state.Battle, dice rng.Dice, u, v *state.Uni
 // gravebloomer is a Necromancer whose Grave Bloom is raising every kill.
 func gravebloomer(b *state.Battle) *state.Unit {
 	for _, z := range b.Units {
-		if z.Team == state.Heroes && z.Ascension == "Necromancer" && z.Status["gbloom"] > 0 {
+		if z.Player() && z.Ascension == "Necromancer" && z.Status["gbloom"] > 0 {
 			return z
 		}
 	}

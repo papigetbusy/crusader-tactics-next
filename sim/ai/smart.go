@@ -13,7 +13,7 @@ import (
 
 // smart reports whether monster e weighs who to hit on this floor.
 func smart(c *content.Content, b *state.Battle, e *state.Unit) bool {
-	if e.Team != state.Enemies {
+	if !e.Monster() {
 		return false
 	}
 	from := c.AI.SmartFrom
@@ -25,7 +25,7 @@ func smart(c *content.Content, b *state.Battle, e *state.Unit) bool {
 
 // cautious reports whether monster e avoids ending next to several heroes.
 func cautious(c *content.Content, b *state.Battle, e *state.Unit) bool {
-	return e.Team == state.Enemies && c.AI.CautiousFrom > 0 && b.Floor >= c.AI.CautiousFrom
+	return e.Monster() && c.AI.CautiousFrom > 0 && b.Floor >= c.AI.CautiousFrom
 }
 
 // healer is a hero who heals: a Healer, or anyone carrying a heal.
@@ -89,7 +89,7 @@ func tileBonus(c *content.Content, b *state.Battle, e *state.Unit, s content.Ski
 			inRange = true
 			best = max(best, pulls[f.ID])
 		}
-		if d <= 2 && f.Team == state.Heroes {
+		if d <= 2 && f.Team != e.Team {
 			near++
 		}
 	}

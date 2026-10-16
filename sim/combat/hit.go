@@ -28,10 +28,10 @@ func HitChance(c *content.Content, b *state.Battle, a Attack) int {
 	case s.MinRange >= 2:
 		h = k.HitRanged
 	}
-	if u.Team == state.Heroes {
+	if u.Player() {
 		h += k.HitHeroBonus
 	}
-	if u.Team == state.Heroes && u.Armed {
+	if u.Player() && u.Armed {
 		if rk := stats.SetRank(c, u); rk >= 0 {
 			h += c.Gear.RankHit[rk]
 		}

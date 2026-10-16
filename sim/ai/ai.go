@@ -99,7 +99,7 @@ func foes(b *state.Battle, e *state.Unit, s content.Skill) []*state.Unit {
 			if v.Team == e.Team && v != e && v.HP < v.MaxHP {
 				out = append(out, v)
 			}
-		} else if v.Team != e.Team && !(v.Team == state.Heroes && (v.Status["cloak"] > 0 || v.Status["blood"] > 0 || v.Status["sky"] > 0)) {
+		} else if v.Team != e.Team && !(v.Player() && (v.Status["cloak"] > 0 || v.Status["blood"] > 0 || v.Status["sky"] > 0)) {
 			out = append(out, v)
 		}
 	}
@@ -160,11 +160,11 @@ func taunter(b *state.Battle, e *state.Unit, s content.Skill) *state.Unit {
 	if t := b.Unit(e.TauntedBy); e.Status["taunted"] > 0 && t != nil && !s.Friendly() {
 		return t // Taunting Roar
 	}
-	if s.Heal || e.Team == state.Heroes {
+	if s.Heal || e.Player() {
 		return nil
 	}
 	for _, h := range b.Units {
-		if h.Team == state.Heroes && h.Status["taunt"] > 0 && abs(h.X-e.X)+abs(h.Y-e.Y) <= 4 {
+		if h.Team != e.Team && h.Status["taunt"] > 0 && abs(h.X-e.X)+abs(h.Y-e.Y) <= 4 {
 			return h
 		}
 	}
@@ -173,7 +173,7 @@ func taunter(b *state.Battle, e *state.Unit, s content.Skill) *state.Unit {
 
 // decoys are shadow clones within 8 tiles.
 func decoys(b *state.Battle, e *state.Unit, s content.Skill) []*state.Unit {
-	if s.Heal || e.Team == state.Heroes {
+	if s.Heal || e.Player() {
 		return nil
 	}
 	var out []*state.Unit
@@ -229,7 +229,7 @@ func Turn(c *content.Content, b *state.Battle, dice rng.Dice, e *state.Unit, emi
 	if t, ok := ChooseTile(c, b, e, s); ok {
 		path = board.MoveUnit(c, b, e, t.X, t.Y, emit)
 	}
-	if e.Team == state.Enemies {
+	if e.Monster() || e.PvP {
 		combat.Trap(c, b, e, path, emit)
 		combat.Overwatch(c, b, dice, e, emit)
 		combat.LanceWall(c, b, dice, e, path, emit)

@@ -54,7 +54,7 @@ func SkillLevel(c *content.Content, u *state.Unit, skill string) int {
 // attackElement is the element a hit uses: monsters hit with their own
 // element whenever the skill has one (old dcalc, line 445).
 func attackElement(a Attack) string {
-	if a.Skill.Element != "" && a.By.Team != state.Heroes {
+	if a.Skill.Element != "" && !a.By.Player() {
 		return a.By.Element
 	}
 	return a.Skill.Element
@@ -71,7 +71,7 @@ func Multiplier(c *content.Content, by, target *state.Unit, element string) floa
 		}
 	}
 	ee := element
-	if element == "" && by.Team == state.Heroes {
+	if element == "" && by.Player() {
 		ee = by.Element
 	}
 	if ee != "" && ee != content.UserElement && target.Element != "" {
@@ -110,7 +110,7 @@ func Damage(c *content.Content, b *state.Battle, a Attack, roll float64) (int, f
 	if Enraged(c, u) {
 		atk *= k.BossEnrage
 	}
-	if u.Team == state.Heroes && !u.Decoy {
+	if u.Player() && !u.Decoy {
 		atk = ascensionDamage(c, b, a, el, atk, &def)
 	}
 	if u.Status["rally"] > 0 {
@@ -140,10 +140,10 @@ func Damage(c *content.Content, b *state.Battle, a Attack, roll float64) (int, f
 	if u.Status["frenzy"] > 0 {
 		atk *= 1.5
 	}
-	if u.Team == state.Heroes {
+	if u.Player() {
 		va := 0.0
 		for _, z := range b.Units {
-			if z != u && z.Team == state.Heroes && z.Status["vow"] > 0 && z.P("vwA", 0) != 0 && Distance(z, u) <= 1 {
+			if z != u && z.Team == u.Team && z.Status["vow"] > 0 && z.P("vwA", 0) != 0 && Distance(z, u) <= 1 {
 				va = math.Max(va, z.P("vwA", 0))
 			}
 		}
@@ -171,7 +171,7 @@ func Damage(c *content.Content, b *state.Battle, a Attack, roll float64) (int, f
 	if v.Status["frozen"] > 0 && u.Team != v.Team {
 		atk *= 1.5
 	}
-	if v.Status["dmark"] > 0 && u.Team == state.Heroes {
+	if v.Status["dmark"] > 0 && u.Player() {
 		atk *= 1.5
 	}
 	if s.Charge {
@@ -211,10 +211,10 @@ func Damage(c *content.Content, b *state.Battle, a Attack, roll float64) (int, f
 	if u.Status["deadeye"] > 0 {
 		def = 0
 	}
-	if v.Team == state.Heroes && near(b, v, 2, true, func(z *state.Unit) bool { return z.Status["bulwark"] > 0 }) {
+	if v.Player() && near(b, v, 2, true, func(z *state.Unit) bool { return z.Status["bulwark"] > 0 }) {
 		def *= 1.3
 	}
-	if v.Team == state.Heroes && near(b, v, 2, false, func(z *state.Unit) bool { return z.Status["svow"] > 0 }) {
+	if v.Player() && near(b, v, 2, false, func(z *state.Unit) bool { return z.Status["svow"] > 0 }) {
 		def *= 1.2
 	}
 	defend := 1.0
@@ -239,7 +239,7 @@ func Damage(c *content.Content, b *state.Battle, a Attack, roll float64) (int, f
 	if dr := v.Af("dr"); dr != 0 {
 		r *= 1 - float64(min(c.Gear.MaxReduction, dr))/100
 	}
-	if v.Team == state.Heroes && paladinNext(b, v) {
+	if v.Player() && paladinNext(b, v) {
 		r *= c.Ascensions["Paladin"].N("aegis")
 	}
 	dm := int(Round(r * roll))
@@ -336,7 +336,7 @@ func anyAscension(b *state.Battle, team int, name string) bool {
 // whether v itself counts.
 func near(b *state.Battle, v *state.Unit, r int, self bool, test func(*state.Unit) bool) bool {
 	for _, z := range b.Units {
-		if z.Team == state.Heroes && (self || z != v) && Distance(z, v) <= r && test(z) {
+		if z.Team == v.Team && z.Player() && (self || z != v) && Distance(z, v) <= r && test(z) {
 			return true
 		}
 	}
@@ -346,7 +346,7 @@ func near(b *state.Battle, v *state.Unit, r int, self bool, test func(*state.Uni
 // paladinNext reports a Paladin standing right next to v (Aegis).
 func paladinNext(b *state.Battle, v *state.Unit) bool {
 	for _, z := range b.Units {
-		if z.Team == state.Heroes && z != v && z.Ascension == "Paladin" && Distance(z, v) == 1 {
+		if z.Team == v.Team && z != v && z.Ascension == "Paladin" && Distance(z, v) == 1 {
 			return true
 		}
 	}
@@ -355,11 +355,11 @@ func paladinNext(b *state.Battle, v *state.Unit) bool {
 
 // InBanner reports a hero standing inside a Warlord's War Banner.
 func InBanner(b *state.Battle, u *state.Unit) bool {
-	if u.Team != state.Heroes {
+	if !u.Player() {
 		return false
 	}
 	for _, f := range b.Fields {
-		if f.Kind == "banner" && abs(f.X-u.X)+abs(f.Y-u.Y) <= f.Range {
+		if f.Kind == "banner" && f.Team == u.Team && abs(f.X-u.X)+abs(f.Y-u.Y) <= f.Range {
 			return true
 		}
 	}
@@ -378,4 +378,4 @@ func damageTaken(c *content.Content, b *state.Battle, v *state.Unit) float64 {
 
 // isHero is a player's own hero (not a summon or companion): only heroes
 // level their skills.
-func isHero(u *state.Unit) bool { return u.Team == state.Heroes && !u.Summoned }
+func isHero(u *state.Unit) bool { return u.Player() && !u.Summoned }

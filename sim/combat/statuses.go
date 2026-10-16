@@ -35,7 +35,7 @@ func applyStatuses(c *content.Content, b *state.Battle, dice rng.Dice, a Attack,
 		fx[q] = n
 	}
 	el := s.Element
-	if el == content.UserElement || (el != "" && u.Team != state.Heroes && a.ClassBase) {
+	if el == content.UserElement || (el != "" && !u.Player() && a.ClassBase) {
 		el = u.Element
 	}
 	if el == "elec" {

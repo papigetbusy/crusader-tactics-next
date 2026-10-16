@@ -30,7 +30,7 @@ func usable(c *content.Content, b *state.Battle, e *state.Unit, i int) bool {
 		return e.LastSpell != ""
 	}
 	if s.Revive {
-		return len(b.FallenFoes) > 0 && e.Team == state.Enemies
+		return len(b.FallenFoes) > 0 && e.Monster()
 	}
 	return true
 }
@@ -141,7 +141,7 @@ func scheduledTurn(c *content.Content, b *state.Battle, dice rng.Dice, e *state.
 	if t, ok := ChooseTile(c, b, e, aimAt); ok && !e.Moved {
 		path = board.MoveUnit(c, b, e, t.X, t.Y, emit)
 	}
-	if e.Team == state.Enemies {
+	if e.Monster() || e.PvP {
 		combat.Trap(c, b, e, path, emit)
 		combat.Overwatch(c, b, dice, e, emit)
 		combat.LanceWall(c, b, dice, e, path, emit)
@@ -163,7 +163,7 @@ func scheduledTurn(c *content.Content, b *state.Battle, dice rng.Dice, e *state.
 	if err := combat.UseSkill(c, b, dice, e, slot, v, emit); err != nil {
 		return err
 	}
-	if b.Unit(e.ID) != nil && !e.Done && e.Team == state.Enemies {
+	if b.Unit(e.ID) != nil && !e.Done && e.Monster() {
 		return scheduledTurn(c, b, dice, e, emit) // Momentum
 	}
 	return nil

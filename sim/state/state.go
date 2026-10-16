@@ -17,6 +17,7 @@ type Unit struct {
 	Class  string         // "Knight", "Bat Lord"...
 	Kind   string         // monsters: which kind ("Goblin"), when known
 	Ally   bool           // a monster glowing blue: defeating it bonds it as a companion (Phase 7)
+	PvP    bool           // versus (online 1v1): a player owns this unit, on either side
 	X, Y   int            // position
 	HP     int            // current hit points
 	MaxHP  int            // maximum hit points
@@ -138,6 +139,7 @@ type Keg struct {
 type Trap struct {
 	X, Y  int
 	Owner int
+	Team  int // the side that set it: it springs on the other side
 }
 
 // Raise is a skeleton a Necromancer raises where a monster died.
@@ -167,6 +169,7 @@ type Battle struct {
 	Units      []*Unit  // in turn order; dead units are removed
 	Turn       int
 	Side       int            // whose turn it is: Heroes or Enemies
+	Versus     *Versus        // a 1v1 match between two players; nil in single player
 	Outcome    string         // Ongoing, Won or Lost
 	NextID     int            // the ID the next new unit gets
 	Throne     *Tile          // seize-the-throne floors: a hero standing here wins the fight

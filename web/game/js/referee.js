@@ -58,6 +58,13 @@ export function floor(n) {
   return json(window.ctFloor(n, run, hi, lo));
 }
 
+// versus starts a 1v1 match: setup is {teams: [[{class, ascension}...], [...]]}.
+// It returns the View, or {error}.
+export function versus(setup) {
+  const [map, hi, lo] = seeds(3);
+  return json(window.ctVersus(JSON.stringify(setup), map, hi, lo));
+}
+
 // save is the game as text, to keep; load starts from such a text with fresh
 // dice. load returns {view} or {error}.
 export const save = () => window.ctSave();

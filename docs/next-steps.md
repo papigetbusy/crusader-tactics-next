@@ -155,6 +155,14 @@ Rules for the online work (owner, 2026-10-11). Do not build these now:
 
 Estimate: about 3 sessions once the game matches the original.
 
+**Step 1 done (2026-10-16): versus rules in the referee.**
+- Every unit in a match is a player's (`state.Unit.PvP`). The ~100 checks that meant "side 1 = heroes" now ask "is this a player's unit?" (`Player()`), so player 2's heroes keep every hero power. Single player is unchanged: all old-game match tests still pass.
+- `engine.NewVersus` builds the match, `floor.NewArena` the mirrored map, `engine.PurpleSet` each class's set, and `turn` hands the turn back and forth. Clocks come in as `ms` on each action (plus a `clock` action that only reports time). A refused action charges no time, so the screen keeps counting until an action is accepted.
+- The screen starts a match with `referee.versus({teams})`. The View has `versus` (both clocks, the turn time used, the winner).
+- Tests: the 13 versus rules, 12 whole bot matches, a replay that comes out identical, and both players using every skill and ability over 30 matches.
+
+**Next: step 2, pass the phone** (a Versus button, the team and ascension picker, the clocks on screen, and handing the phone over between turns).
+
 ### 7. After the full build (owner's reminders)
 - More gear: named sets with play styles at every level
 - Better gear sprites

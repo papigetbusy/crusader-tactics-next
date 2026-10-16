@@ -106,12 +106,13 @@ func Start(c *content.Content, b *state.Battle, dice rng.Dice, side int, emit ac
 	for _, u := range slices.Clone(b.Units) {
 		if u.HP <= 0 {
 			b.Remove(u.ID)
-			if c.Combat.ReviveAnyDeath && u.Team == state.Heroes && !u.Summoned {
-				b.Fallen = append(b.Fallen, u)
+			if c.Combat.ReviveAnyDeath && u.Player() && !u.Summoned {
+				f := combat.FallenOf(b, u.Team)
+				*f = append(*f, u)
 			} else if slices.Contains(b.Party, u.ID) {
 				b.Lost = append(b.Lost, u)
 			}
-			if c.Combat.MonstersRevive && u.Team == state.Enemies && !u.Summoned {
+			if c.Combat.MonstersRevive && u.Monster() && !u.Summoned {
 				b.FallenFoes = append(b.FallenFoes, u)
 			}
 			emit(action.Event{Kind: action.Died, Unit: u.ID})
@@ -137,9 +138,9 @@ func End(c *content.Content, b *state.Battle, dice rng.Dice, side int, emit acti
 	}
 	combat.Charged(b, side, emit)
 	combat.FieldTick(b, side)
-	if side == state.Heroes {
+	if side == state.Heroes || b.Versus != nil {
 		for _, u := range slices.Clone(b.Units) {
-			if u.Decoy && u.Status["clone"] <= 0 {
+			if u.Decoy && u.Team == side && u.Status["clone"] <= 0 {
 				b.Remove(u.ID)
 				emit(action.Event{Kind: action.Faded, Unit: u.ID})
 			}
@@ -153,6 +154,10 @@ func End(c *content.Content, b *state.Battle, dice rng.Dice, side int, emit acti
 // summons and clones do not count).
 func Check(b *state.Battle, emit action.Emit) {
 	if b.Outcome != state.Ongoing {
+		return
+	}
+	if b.Versus != nil {
+		versusCheck(b, emit)
 		return
 	}
 	heroes := 0
@@ -173,6 +178,9 @@ func Check(b *state.Battle, emit action.Emit) {
 // EndTurn is the player ending their turn: the heroes' turn ends, every
 // monster acts in board order, then a new turn starts for the heroes.
 func EndTurn(c *content.Content, b *state.Battle, dice rng.Dice, emit action.Emit) error {
+	if b.Versus != nil {
+		return versusEnd(c, b, dice, emit)
+	}
 	End(c, b, dice, state.Heroes, emit)
 	// Companions (bonded monsters and raised skeletons) act on their own first
 	// (old enemyPhase, line 1747).

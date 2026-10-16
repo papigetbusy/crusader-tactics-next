@@ -76,7 +76,7 @@ func targets(c *content.Content, b *state.Battle, u *state.Unit, s content.Skill
 		}
 		return out
 	case s.Revive:
-		if (u.Team == state.Heroes && len(b.Fallen) > 0) || (u.Team != state.Heroes && len(b.FallenFoes) > 0) {
+		if len(*FallenOf(b, u.Team)) > 0 {
 			return []*state.Unit{u}
 		}
 		return nil
@@ -98,7 +98,7 @@ func targets(c *content.Content, b *state.Battle, u *state.Unit, s content.Skill
 			want = v.Team != u.Team
 		}
 		d := Distance(u, v)
-		if want && d >= lo && d <= hi && !(u.Team == state.Enemies && v.Team == state.Heroes && hidden(v)) {
+		if want && d >= lo && d <= hi && !((u.Monster() || u.PvP) && v.Team != u.Team && hidden(v)) {
 			out = append(out, v)
 		}
 	}

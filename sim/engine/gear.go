@@ -62,7 +62,7 @@ func (g *Game) checkGear(a action.Action) error {
 		return nil
 	}
 	u := b.Unit(a.Unit)
-	if u == nil || u.Team != state.Heroes || u.Companion || u.Decoy || u.Summoned {
+	if !g.mine(u) || u.Companion || u.Decoy || u.Summoned {
 		return no("no-such-hero", "That is not one of your heroes.")
 	}
 	if a.Kind == action.Unequip {
@@ -137,7 +137,7 @@ func (g *Game) equip(a action.Action, emit action.Emit) {
 // finished for the turn.
 func (g *Game) checkSet(a action.Action) error {
 	u := g.B.Unit(a.Unit)
-	if u == nil || u.Team != state.Heroes || !u.Armed {
+	if !g.mine(u) || !u.Armed {
 		return no("no-such-hero", "That is not one of your heroes.")
 	}
 	if u.Done {

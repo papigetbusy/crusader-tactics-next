@@ -76,6 +76,21 @@ func main() {
 		game = engine.NewFight(rules, practice[i], seed)
 		return text(game.View())
 	}))
+	// ctVersus(setupJSON, mapSeed, seedHigh, seedLow) -> view or {"error"}: a 1v1 match
+	g.Set("ctVersus", fn(func(a []js.Value) any {
+		var s engine.VersusSetup
+		if err := json.Unmarshal([]byte(a[0].String()), &s); err != nil {
+			return text(map[string]string{"error": err.Error()})
+		}
+		s.MapSeed = uint32(a[1].Float())
+		seed := uint64(uint32(a[2].Float()))<<32 | uint64(uint32(a[3].Float()))
+		v, err := engine.NewVersus(rules, s, seed)
+		if err != nil {
+			return text(map[string]string{"error": err.Error()})
+		}
+		game = v
+		return text(game.View())
+	}))
 	// ctFloor(floor, runSeed, seedHigh, seedLow) -> view: a built floor of a run
 	g.Set("ctFloor", fn(func(a []js.Value) any {
 		seed := uint64(uint32(a[2].Float()))<<32 | uint64(uint32(a[3].Float()))

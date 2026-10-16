@@ -35,6 +35,9 @@ const (
 	Sell     Kind = "sell"     // sell bag item Item
 	Combine  Kind = "combine"  // combine bag items Item and Second (two copies) into one a rarity higher
 	Ascend   Kind = "ascend"   // change hero Hero's ascension to Choice (once per floor)
+
+	// Versus (online 1v1).
+	Clock Kind = "clock" // only reports Ms, the time the player to move has used (their clocks may run out)
 )
 
 // Action is one request.
@@ -55,6 +58,7 @@ type Action struct {
 	Set    int      `json:"set,omitempty"`    // Attack: weapon set 1-3 to use (0 = the one in hand, or the first that fits the skill)
 	Item   int      `json:"item,omitempty"`   // Equip, Drop: index in the bag
 	Slot   string   `json:"slot,omitempty"`   // Equip: weapon slot for a weapon
+	Ms     int      `json:"ms,omitempty"`     // versus: milliseconds the player to move used since their last action (the server or screen measures it)
 }
 
 // Event is one fact, in the order it happened. The screen animates events;
@@ -118,6 +122,8 @@ const (
 	ActAgain      = "act-again"  // Unit may act again this turn, thanks to Skill (Hit and Run, Quick Draw...)
 	Learned       = "learned"    // Unit learned skill Skill
 	Ascended      = "ascended"   // Unit ascended to Skill
+	TimeUp        = "time-up"    // versus: player Side's match clock ran out; they lose
+	TurnTimeUp    = "turn-time"  // versus: player Side's turn clock ran out; their turn ends
 	Won           = "won"        // every enemy is gone
 	Lost          = "lost"       // every hero is gone
 )

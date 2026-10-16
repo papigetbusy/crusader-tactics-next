@@ -52,7 +52,7 @@ func (g *Game) firstSkillFor(u, v *state.Unit) int {
 // AttackPlan finds the skill and walk for a hero to use on the target unit.
 func (g *Game) AttackPlan(unit, target int) (Plan, bool) {
 	u, v := g.B.Unit(unit), g.B.Unit(target)
-	if u == nil || v == nil || u.Team != state.Heroes || u.Done || u.Acted || g.B.Outcome != state.Ongoing {
+	if u == nil || v == nil || !g.mine(u) || u.Done || u.Acted || g.B.Outcome != state.Ongoing {
 		return Plan{}, false
 	}
 	if s := g.firstSkillFor(u, v); s >= 0 {

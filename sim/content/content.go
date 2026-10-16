@@ -45,6 +45,7 @@ type Content struct {
 	Monsters  []Monster               // normal monster kinds, in the old game's order
 	Gear      Gear                    // weapons, armor, ranks, affixes and sets
 	Floors    Floors                  // how floors are built
+	Versus    Versus                  // the 1v1 match between two players
 }
 
 // Default loads the live data files built into the program.
@@ -100,6 +101,7 @@ func Load(fsys fs.FS) (*Content, error) {
 	}
 	var gear Gear
 	var floors Floors
+	var versus Versus
 	var mons struct {
 		Monsters []Monster `json:"monsters"`
 	}
@@ -109,7 +111,7 @@ func Load(fsys fs.FS) (*Content, error) {
 	}
 	for name, v := range map[string]any{"skills.json": &skills, "classes.json": &classes,
 		"elements.json": &elements, "rules/combat.json": &combat, "rules/turns.json": &turns, "rules/ai.json": &ai,
-		"rules/progress.json": &progress, "ascensions.json": &asc, "abilities.json": &abil, "monsters.json": &mons, "gear.json": &gear, "floors.json": &floors} {
+		"rules/progress.json": &progress, "ascensions.json": &asc, "abilities.json": &abil, "monsters.json": &mons, "gear.json": &gear, "floors.json": &floors, "rules/versus.json": &versus} {
 		if err := readJSON(fsys, name, v); err != nil {
 			return nil, err
 		}
@@ -133,6 +135,7 @@ func Load(fsys fs.FS) (*Content, error) {
 		Abilities:         abil.Classes,
 		CrashDown:         abil.CrashDown,
 		Monsters:          mons.Monsters,
+		Versus:            versus,
 		Gear:              gear,
 		Floors:            floors,
 	}

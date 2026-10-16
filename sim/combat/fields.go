@@ -12,7 +12,7 @@ import (
 // line 1126): rooted, poisoned and marked for the Trapper for 3 turns. The
 // old game only saw the tile the monster stopped on (unless TrapsOnPath).
 func Trap(c *content.Content, b *state.Battle, e *state.Unit, path []board.Tile, emit action.Emit) {
-	if len(b.Traps) == 0 || e.Team != state.Enemies {
+	if len(b.Traps) == 0 || (e.Player() && !e.PvP) {
 		return
 	}
 	if len(path) == 0 || !c.Combat.TrapsOnPath {
@@ -20,7 +20,7 @@ func Trap(c *content.Content, b *state.Battle, e *state.Unit, path []board.Tile,
 	}
 	for _, t := range path {
 		for i, tr := range b.Traps {
-			if tr.X == t.X && tr.Y == t.Y {
+			if tr.X == t.X && tr.Y == t.Y && tr.Team != e.Team {
 				b.Traps = append(b.Traps[:i:i], b.Traps[i+1:]...)
 				e.Status["snare"] = max(e.Status["snare"], 3)
 				e.Status["poison"] = max(e.Status["poison"], 3)

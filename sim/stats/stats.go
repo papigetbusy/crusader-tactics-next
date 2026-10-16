@@ -123,7 +123,7 @@ func XPToNext(c *content.Content, level int) int { return level * c.Progress.XPP
 // gains is whether this unit earns experience: heroes, not summons,
 // companions or shadow clones (old gain and xpShare, lines 779-780).
 func gains(u *state.Unit) bool {
-	return u.Team == state.Heroes && !u.Summoned && !u.Companion && !u.Decoy
+	return u.Player() && !u.PvP && !u.Summoned && !u.Companion && !u.Decoy
 }
 
 // Gain gives a hero experience and levels it up as often as it earns (old

@@ -42,9 +42,9 @@ func Hurt(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit act
 	if u.Status["aim"] > 0 && !s.Friendly() {
 		a.Sure = true // Steady Aim
 	}
-	if a.Target.Team == state.Heroes && a.Target.Ascension != "Guardian" && !a.NoRedirect {
+	if a.Target.Player() && a.Target.Ascension != "Guardian" && !a.NoRedirect {
 		for _, z := range b.Units {
-			if z.Team == state.Heroes && z.Ascension == "Guardian" && z != a.Target && Distance(z, a.Target) == 1 {
+			if z.Team == a.Target.Team && z.Player() && z.Ascension == "Guardian" && z != a.Target && Distance(z, a.Target) == 1 {
 				emit(action.Event{Kind: action.Guarded, Unit: z.ID, Target: a.Target.ID})
 				a.Target, a.Extra = z, extraOf(a)*c.Ascensions["Guardian"].N("bodyguard")
 				break
@@ -88,9 +88,9 @@ func Hurt(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit act
 		v.Shield -= absorbed
 		hp -= absorbed
 	}
-	if v.Team == state.Heroes && hp > 1 && !a.Counter {
+	if v.Player() && hp > 1 && !a.Counter {
 		for _, z := range b.Units {
-			if z.Team == state.Heroes && z != v && z.Status["svow"] > 0 && Distance(z, v) <= 2 {
+			if z.Team == v.Team && z != v && z.Status["svow"] > 0 && Distance(z, v) <= 2 {
 				half := hp / 2
 				hp -= half
 				z.HP = max(1, z.HP-half)
@@ -126,7 +126,7 @@ func Hurt(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit act
 		res.Killed = true
 		died(c, b, dice, u, v, emit)
 	}
-	if !res.Killed && u.Team == state.Heroes {
+	if !res.Killed && u.Player() && !u.PvP {
 		stats.Gain(c, b, u, stats.HitXP(c, dm, len(s.Effects) > 0), emit)
 	}
 	res.HPAfter = v.HP
@@ -204,7 +204,7 @@ func afterHit(c *content.Content, b *state.Battle, a Attack, v *state.Unit, dm i
 	if v.Status["taunt"] > 0 && v.HP > 0 {
 		heal(v, float64(v.MaxHP)*0.1)
 	}
-	if u.Team == state.Enemies && v.Team == state.Heroes && near(b, v, 2, true, func(z *state.Unit) bool { return z.Status["bulwark"] > 0 }) {
+	if u.Team != v.Team && v.Player() && near(b, v, 2, true, func(z *state.Unit) bool { return z.Status["bulwark"] > 0 }) {
 		u.Status["snare"] = max(u.Status["snare"], 1)
 	}
 	if v.Status["scales"] > 0 && Distance(u, v) <= 1 {
@@ -228,7 +228,7 @@ func afterHit(c *content.Content, b *state.Battle, a Attack, v *state.Unit, dm i
 		}
 	}
 	if u.Ascension == "Plague Doctor" {
-		if w := mostHurtAlly(b, state.Heroes); w != nil {
+		if w := mostHurtAlly(b, u.Team); w != nil {
 			heal(w, float64(dm)*c.Ascensions["Plague Doctor"].N("healShare"))
 		}
 	}
