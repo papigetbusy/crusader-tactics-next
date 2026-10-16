@@ -43,6 +43,7 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 
 ## Now working on
 (one line each: who · task · files · date; remove it when done)
+- Claude · Online step 1: versus rules in the referee · sim/ (new versus files), docs · 2026-10-16
 
 
 
