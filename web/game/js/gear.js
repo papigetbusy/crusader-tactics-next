@@ -45,7 +45,7 @@ function render() {
   const g = u.gear, phase = c ? c.phase : 'battle';
   const locked = u.done || v.side !== 0 || (phase !== 'battle' && phase !== 'prepare');
   const dis = locked ? 'disabled' : '';
-  let h = `<div class="panel box wide sheet"><div class="tabs">${heroes().map((x) => `<button class="${x.class === cls ? 'on' : ''}" data-h="${x.class}">${x.class}</button>`).join('')}</div>
+  let h = `<div class="panel box wide sheet"><button class="xclose" aria-label="Close">✕</button><div class="tabs">${heroes().map((x) => `<button class="${x.class === cls ? 'on' : ''}" data-h="${x.class}">${x.class}</button>`).join('')}</div>
     <div class="who"><img src="${heroPicUrl({ class: u.class, stage: u.stage, ascension: u.ascension })}" alt=""><div><div class="ttl">${u.class}</div>
     <small>${u.form || ''} · Lv ${u.level}${u.ascension ? ' · ' + u.ascension : ''}</small>${g.capped ? ' <span class="capt">CAPPED</span>' : ''}<br>
     <small>HP ${u.hp}/${u.maxHp} · ATK ${u.atk} · DEF ${u.def} · MOV ${u.mov}</small><br><small class="weap">${g.weapons}</small></div></div>`;
@@ -101,4 +101,5 @@ function render() {
     if (confirm('Change skills now? You can only do this once on this floor.')) { skillsOpen = false; act({ kind: 'bring', unit: u.id, bar: picked, choice: ultimate }); }
   };
   $('gearClose').onclick = () => { w.hidden = true; };
+  w.querySelector('.xclose').onclick = () => $('gearClose').click();
 }

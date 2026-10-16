@@ -27,6 +27,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-16 · Claude · Fix: the Settings, Gear, Floor travel and Save windows have a round ✕ pinned in the top corner, so they close without scrolling to the bottom. The Close button at the bottom stays.
 - 2026-10-16 · Claude · Fix: monsters raised for the heroes (Grave Bloom and the raise skill) now keep their monster name, so they show as a Skeleton with a monster's moves instead of a hero picture. Test added.
 - 2026-10-16 · Claude · Wrote the owner's playtest list into docs/next-steps.md as the fixing stage (bugs, polish, ideas). It all gets done before online.
 - 2026-10-16 · Claude · Online-ready check done (docs/online-ready.md). New tests: a climb replays exactly from its seeds and actions, and the screen may only reach the referee through referee.js. The lag tool now goes through that doorway too.

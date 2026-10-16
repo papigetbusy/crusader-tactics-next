@@ -130,10 +130,11 @@ export function floors() {
     ${f.here ? tag('t-c', 'here') : ''}${f.top ? tag('t-top', 'top') : ''}${f.cleared ? tag('t-ok', '✓ cleared') : ''}
     ${f.boss ? tag('t-b', f.bossLegendary ? 'boss · legendary taken' : 'boss') : f.elite ? tag('t-e', 'elite') : ''}
     ${f.shop ? tag('t-s', 'shop') : ''}${f.chestsLeft ? tag('t-ch', `${f.chestsLeft} chest${f.chestsLeft > 1 ? 's' : ''} left`) : ''}</span></button>`);
-  w.innerHTML = `<div class="panel box wide"><div class="ttl">Floor travel</div><p><small>Floors keep the same map and monsters. Opened chests stay opened; replays pay half gold and full XP.</small></p>
+  w.innerHTML = `<div class="panel box wide"><button class="xclose" aria-label="Close">✕</button><div class="ttl">Floor travel</div><p><small>Floors keep the same map and monsters. Opened chests stay opened; replays pay half gold and full XP.</small></p>
     <div class="list">${rows.join('')}</div><button class="b" id="flClose">Close</button></div>`;
   w.hidden = false;
   $('flClose').onclick = () => { w.hidden = true; };
+  w.querySelector('.xclose').onclick = () => $('flClose').click();
   w.querySelectorAll('.fl').forEach((b) => (b.onclick = () => {
     const f = +b.dataset.f;
     if (f === c.floor) return;
@@ -281,7 +282,7 @@ export function slots(mode) {
     ? `<div class="srow"><span><b>Purple team</b><br><small>Floor 40 · whole team in purple gear</small></span><button class="b" id="ldPurple">Load</button></div>`
     : '';
   const inGame = screen.st.view && $('title').hidden;
-  w.innerHTML = `<div class="panel box wide"><div class="ttl">${mode === 'save' ? 'Save your game' : 'Continue'}</div>${extra}${rows}
+  w.innerHTML = `<div class="panel box wide"><button class="xclose" aria-label="Close">✕</button><div class="ttl">${mode === 'save' ? 'Save your game' : 'Continue'}</div>${extra}${rows}
     <div class="btns">${inGame ? '<button class="b" id="svExp">Export</button>' : ''}<button class="b" id="svImp">Import</button></div>
     <button class="b" id="svClose">Close</button></div>`;
   w.hidden = false;
@@ -289,6 +290,7 @@ export function slots(mode) {
   w.querySelectorAll('[data-ld]').forEach((b) => (b.onclick = () => load(get(b.dataset.ld), b.dataset.ld === 'auto' ? 'the autosave' : 'slot ' + b.dataset.ld)));
   if ($('ldPurple')) $('ldPurple').onclick = () => load(purpleText, 'the purple team');
   $('svClose').onclick = () => { w.hidden = true; };
+  w.querySelector('.xclose').onclick = () => $('svClose').click();
   if ($('svExp')) $('svExp').onclick = () => { exportSave(); screen.log('Save copied and downloaded.'); };
   $('svImp').onclick = () => importer(mode);
 }
