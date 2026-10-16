@@ -30,6 +30,14 @@ The owner noticed these while playtesting. All four are on the screen only; the 
 6. **Settings travel with the save** (owner, 2026-10-12). Isometric or flat, the danger zone, the minimap and the other options are stored in that save file. Loading it puts them back. Another save can look different.
 7. **Formations** (owner, 2026-10-12). Before the battle, 1 2 3 remember where the heroes stand. Tap a gold number to place them. Hold a gold number to overwrite it, after a Yes. They are stored in that save, and they fit a different size floor.
 
+## Play without internet (owner, 2026-10-12): for Grok, not done yet
+The owner wants to play on the train with no signal. The old game did this with a helper file (`sw.js`, a service worker) that keeps a copy of the game on the phone. The new build has none yet, so it needs internet to open.
+- Add a small `sw.js` to the published site that saves play.html, `game/js`, `referee.wasm`, `wasm_exec.js`, the data and `assets/` on first visit, and serves them when offline.
+- Name its cache with the build number, so a new push replaces the old copy (the pages workflow already stamps `__BUILD__`).
+- Saves already live on the phone, so they work offline as they are.
+- Test: open the link once, turn on airplane mode, close and reopen the page, play a battle. Also add it to the home screen on the iPhone and open it from there.
+- Screen-only change: the referee does not change.
+
 ## New attack animations: not in the game yet
 The owner is rebuilding attack pictures in `new-animations/`. A bot (`python3 new-animations/bot/make.py`) can make the first review GIF for a pile of sheets dropped in `new-animations/inbox/`. It then stops. It must not write `new-animations/code/`, must not sign a row off, and must not load anything into the play page. A test GIF stays a test until the owner signs it off. Then one code file is written, and an in-game GIF is made of that move hitting an enemy. The effect plays with the sprite and must not cover the attacker. From 2026-10-12 the look is the signed Grand Hex: a small body motion, a game effect recolored to the skill, a black center fading out to that color, the color a little different on every frame, and the last frames back on the idle sprite with the glow gone. Nothing from that folder is loaded by the play page until every row of `new-animations/CHECKLIST.md` is signed off, and then they are added together. Blood Moon, Soul Nova and Grand Hex are signed off. Do not wire them in early.
 

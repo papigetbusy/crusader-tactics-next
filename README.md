@@ -27,6 +27,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-16 · Claude · Audited Grok's 39 commits: tests, format and checks all pass; rules stay in the referee. Wrote down the play-without-internet task for Grok in docs/next-steps.md.
 - 2026-10-12 · Grok · Lag watch. Open the game with ?lag=1 and it records slow frames and which part of the picture was slow. A normal game does not run it. The probe is tools/lag/probe.mjs.
 - 2026-10-12 · Grok · Job split: Claude builds systems. Grok handles feel, lag, art direction, and keeping the rules in the referee. New attack sheets wait until OpenArt credits are back.
 - 2026-10-12 · Grok · Blood Frenzy signed off. The prompt rule is locked to that sheet. Not in the game.
