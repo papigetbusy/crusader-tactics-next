@@ -113,3 +113,19 @@ func TestAbilities(t *testing.T) {
 		}
 	})
 }
+
+func TestRaisedMonsters(t *testing.T) {
+	t.Run("A skeleton raised for the heroes stays a Skeleton, with a monster's moves", func(t *testing.T) {
+		c, b, h, _ := arena('g')
+		h.Ascension = "Necromancer"
+		RaiseSkeleton(c, b, h, h.X, h.Y, false, nop)
+		z := b.Units[len(b.Units)-1]
+		if z.Kind != "Skeleton" || z.Team != state.Heroes || !z.Undead {
+			t.Fatalf("raised %+v", z)
+		}
+		want := c.MonsterSkills(z.Class, z.Level, false)
+		if len(z.Skills) != len(want) || (len(want) > 0 && z.Skills[0].Name != want[0].Name) {
+			t.Fatalf("moves %v, want a monster's %v", z.Skills, want)
+		}
+	})
+}

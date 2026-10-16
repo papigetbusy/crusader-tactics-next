@@ -85,7 +85,7 @@ The screen only talks to the referee through `web/game/js/referee.js` (a house-r
 The owner's order: Phase 9 is finished, then this whole list gets done, and online starts only once the game feels good. Bugs first. Anything that changes how the game plays needs the owner's OK (a proposal like `phase9-proposal.md`), and screen changes get a picture first.
 
 **Fixes (bugs)**
-- A monster raised by the Necromancer's raise skill is drawn as a hero (it is on the heroes' side and not marked as a companion, so `units.js` `picture()` picks a hero sprite). Grave Bloom's own skeletons draw right.
+- Done 2026-10-16: monsters raised for the heroes (Grave Bloom and the raise skill) were drawn as heroes because the referee left out their monster name. They now rise as a Skeleton with its moves, as in the old game (old raiseSkel).
 - A window has to be scrolled to the bottom to close it: pin the ✕ at the top. (Ask: which windows.)
 - Terrain buffs and debuffs need fixing. (Ask the owner what he saw go wrong.)
 

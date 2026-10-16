@@ -241,7 +241,7 @@ func monsterUnit(c *content.Content, b *state.Battle, m content.Monster, level i
 		element = m.Element
 	}
 	n := stats.Plain(c, m.Class, level)
-	z := &state.Unit{ID: b.NextID, Team: team, Class: m.Class, X: t.X, Y: t.Y, Level: level,
+	z := &state.Unit{ID: b.NextID, Team: team, Class: m.Class, Kind: m.Name, X: t.X, Y: t.Y, Level: level,
 		HP: n.MaxHP, MaxHP: n.MaxHP, Atk: n.Atk, Def: n.Def, Mov: n.Mov, Element: element,
 		Status: map[string]int{}}
 	if team != state.Heroes {
