@@ -27,6 +27,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-17 · Claude · Tests for Grok's new monsters: the 4 new bosses guard boss floors 70-100 in order, every new elite turns up on elite floors, and each of the 10 walks up to a hero and attacks.
 - 2026-10-17 · Claude · Fix: Wyrm's Hide now also stops burns from the Witch's Contagion (every way of putting on a status uses one shared check). Lifeline also saves an ally from dying of poison, burn or bleed at the start of their turn, still once per battle.
 - 2026-10-17 · Grok · Monster pictures recut from the sheets you already approved. The last cut chopped every sprite to 100 pixels and deleted the dark parts, so bodies, wings and weapons were missing. They are whole again. Same art, not new drawings.
 - 2026-10-17 · Claude · Legendary rework: one legendary weapon per class (Grok's pictures, the owner's picks) with 2 unique class powers and a 4-piece class bonus each, 5 bonuses on every legendary, exact bonus counts by rarity (1/2/3, epic 3 + its epic bonus), and set bonuses for epic armor by weight (legendary sets about double). Tests for every power; Codex updated.
