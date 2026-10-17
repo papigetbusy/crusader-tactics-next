@@ -2,3 +2,4 @@
 # publish them (owner, 2026-10-17). One folder per line. When the owner has
 # picked from a page, add its folder here.
 weapon-picks
+item-style
