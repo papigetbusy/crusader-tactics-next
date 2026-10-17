@@ -155,7 +155,7 @@ export function after() {
   summary();
   if (p !== 'prepare') $('formAsk').hidden = true;
   paintForms();
-  if (p === 'prepare') screen.log(`Floor ${v.climb.floor}: look at the map, tap Team to choose heroes, tap a hero then a blue tile to place them, then Start battle.`);
+  if (p === 'prepare') screen.log(`Floor ${v.climb.floor}: look at the map, tap Team to choose heroes, tap or drag a hero onto a blue tile to place them, then Start battle.`);
   if (p === 'shop' && $('shopWin').hidden) shop.open();
   const readyHeroes = st().units.filter(ready);
   // When a hero finishes, the camera stays where it is (owner, 2026-10-11);
@@ -196,15 +196,15 @@ function tap(e) {
     return send({ kind: 'move', unit: sel.id, x: t[0], y: t[1] }, '', () => reselect(sel.id));
   }
   if (sel && u && u.team !== sel.team && !u.ally) {
+    // Tap an enemy to attack it from where the hero stands. The hero never
+    // walks on its own: the player moves it (owner, 2026-10-17; the old game
+    // walked into range by itself).
     const plan = referee.plan(sel.id, u.id);
-    if (plan && plan.walk) {
-      const id = sel.id, foe = u.id;
-      return send({ kind: 'move', unit: id, x: plan.walk.x, y: plan.walk.y }, '', () => {
-        const me = st().units.find((x) => x.id === id), them = st().units.find((x) => x.id === foe);
-        if (me && them) { st().sel = me; aimWith(plan.slot, them); }
-      });
-    }
-    if (plan) return aimWith(plan.slot, u);
+    if (plan && !plan.walk) return aimWith(plan.slot, u);
+    look(u);
+    s.zone = null; // keep the hero's blue tiles on the map
+    screen.log('Out of reach. Move closer first.');
+    return screen.kick();
   }
   if (u && u === sel) return menu();
   if (ready(u)) return select(u);
@@ -720,7 +720,10 @@ let drag = null, eatClick = 0;
 function stopDrag() { if (drag) { drag = null; cam.held = false; st().overlayDrag = null; } }
 
 function dragging(c) {
-  const canDrag = (u) => ready(u) && u.canMove && phase() === 'battle' && !view().outcome;
+  // While placing heroes, any placed hero can be dragged to a blue starting
+  // tile; onto another hero, the two swap (owner, 2026-10-17).
+  const placing = () => phase() === 'prepare';
+  const canDrag = (u) => (placing() ? !!u && u.team === 0 : ready(u) && u.canMove && phase() === 'battle' && !view().outcome);
   c.addEventListener('pointerdown', (e) => {
     if (drag || playback.playing() || st().skill >= 0 || st().picking || (e.pointerType === 'mouse' && e.button !== 0)) return;
     const u = unitAt(st().units, e.clientX, e.clientY);
@@ -734,7 +737,8 @@ function dragging(c) {
     drag.y = e.clientY;
     if (!drag.on && Math.hypot(drag.x - drag.x0, drag.y - drag.y0) > 12) {
       const D = drag;
-      if (st().sel !== D.u || !st().reach.size) select(D.u); // (select clears, so keep the drag)
+      if (placing()) st().sel = D.u;
+      else if (st().sel !== D.u || !st().reach.size) select(D.u); // (select clears, so keep the drag)
       drag = D;
       cam.held = true;
       cam.tx = cam.x; // keep the map still under the finger
@@ -753,6 +757,13 @@ function dragging(c) {
     if (!D.on) return;
     eatClick = performance.now() + 350;
     const u = D.u, t = cancel ? null : tileAt(e.clientX, e.clientY);
+    if (placing()) {
+      if (t && (t[0] !== u.x || t[1] !== u.y) && st().starts.has(key(t[0], t[1]))) {
+        send({ kind: 'place', hero: u.class, x: t[0], y: t[1] });
+        st().starts = new Set((view().starts || []).map((q) => key(q.x, q.y)));
+      } else if (t && !cancel && (t[0] !== u.x || t[1] !== u.y)) screen.log('Drag the hero to a blue tile.');
+      return screen.kick();
+    }
     if (t && t[0] === u.x && t[1] === u.y) return menu();
     if (t && st().reach.has(key(t[0], t[1])) && !st().unitAt(t[0], t[1])) {
       return send({ kind: 'move', unit: u.id, x: t[0], y: t[1] }, '', () => reselect(u.id));
@@ -782,7 +793,8 @@ function edge() {
 // drawDrag draws the dashed line from the hero and the tile under the finger.
 function drawDrag(g) {
   if (!drag || !drag.on || !drag.t) return;
-  const u = drag.u, t = drag.t, ok = st().reach.has(key(t[0], t[1])) && !st().unitAt(t[0], t[1]), home = t[0] === u.x && t[1] === u.y;
+  const u = drag.u, t = drag.t, home = t[0] === u.x && t[1] === u.y;
+  const ok = phase() === 'prepare' ? st().starts.has(key(t[0], t[1])) && !home : st().reach.has(key(t[0], t[1])) && !st().unitAt(t[0], t[1]);
   const a = feet(u.x, u.y), b = feet(t[0], t[1]), col = ok ? '#d9c27a' : home ? '#ffffff' : '#e5484d';
   g.save();
   g.setLineDash([7, 6]);
