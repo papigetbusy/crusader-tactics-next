@@ -27,6 +27,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-17 · Grok · New pictures replace the old monsters. Four bosses and six elites are in the game: Bone Hydra, Fallen Seraph, Brood Matron, Ash Colossus, Crowned Slime, Goblin Captain, Grave Knight, Dire Wolf, Iron Minotaur, Blight Reaper. The huge demon is not in the game yet. Codex rebuilt from the data.
 - 2026-10-17 · Claude · Fix: online, the hero picker no longer "closes" when a friend joins, sits down or gets ready. The room screen was being redrawn over it; now it waits until the picker closes, then shows the latest.
 - 2026-10-17 · Claude · Versus leftovers fixed. An enemy coming out of the fog shows only the seen part of its walk. Watchers see the whole board one round behind (live again when the match ends). Grave Bloom raises only the other player's dead. Raised monsters are the same for both sides (test). The room's view code moved to `adapters/server/roomview.go`.
 - 2026-10-16 · Claude · Versus exploit fixes. Move-and-undo can't stop the clock any more (the free seconds only follow real turn actions), a move that uncovers an enemy can't be undone, the other player's traps stay hidden (their fire and kegs only in sight), and each player has their own bag. A test for each.

@@ -115,6 +115,22 @@
     {
       "name": "Demon Lord",
       "element": "fire"
+    },
+    {
+      "name": "Bone Hydra",
+      "element": "dark"
+    },
+    {
+      "name": "Fallen Seraph",
+      "element": "light"
+    },
+    {
+      "name": "Brood Matron",
+      "element": "dark"
+    },
+    {
+      "name": "Ash Colossus",
+      "element": "fire"
     }
   ],
   "elites": [
@@ -153,6 +169,30 @@
     {
       "name": "Frost Titan",
       "element": "ice"
+    },
+    {
+      "name": "Crowned Slime",
+      "element": "dark"
+    },
+    {
+      "name": "Goblin Captain",
+      "element": "dark"
+    },
+    {
+      "name": "Grave Knight",
+      "element": "dark"
+    },
+    {
+      "name": "Dire Wolf",
+      "element": "dark"
+    },
+    {
+      "name": "Iron Minotaur",
+      "element": "fire"
+    },
+    {
+      "name": "Blight Reaper",
+      "element": "dark"
     }
   ],
   "biomes": [

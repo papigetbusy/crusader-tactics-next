@@ -1,7 +1,7 @@
 {
   "_about": "Movement rules that were hidden in the old game's code (index.html lines 1217-1219, FLY and MOUNT). Costs are in half-steps, like terrain.json.",
   "blockedLetters": ["w", "m"],
-  "flyingClasses": ["Dragon Knight", "Demon Lord", "Bone Gargoyle", "Bat Lord", "Golden Drake"],
+  "flyingClasses": ["Dragon Knight", "Demon Lord", "Bone Gargoyle", "Bat Lord", "Golden Drake", "Fallen Seraph"],
   "flyingCost": 2,
   "mountedClasses": ["Knight"],
   "mountedForestCost": 6

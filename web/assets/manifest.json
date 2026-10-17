@@ -1,6 +1,15 @@
 {
  "bosses": {
-  "Abyss Serpent": "bosses/abyss-serpent.png",
+  "Ash Colossus": "bosses/ash-colossus.png",
+  "Blight Reaper": "bosses/blight-reaper.png",
+  "Bone Hydra": "bosses/bone-hydra.png",
+  "Brood Matron": "bosses/brood-matron.png",
+  "Crowned Slime": "bosses/crowned-slime.png",
+  "Dire Wolf": "bosses/dire-wolf.png",
+  "Fallen Seraph": "bosses/fallen-seraph.png",
+  "Goblin Captain": "bosses/goblin-captain.png",
+  "Grave Knight": "bosses/grave-knight.png",
+  "Iron Minotaur": "bosses/iron-minotaur.png",
   "Bat Lord": "bosses/bat-lord.png",
   "Bone Gargoyle": "bosses/bone-gargoyle.png",
   "Dark Knight": "bosses/dark-knight.png",

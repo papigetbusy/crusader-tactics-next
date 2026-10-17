@@ -227,6 +227,8 @@ Estimate: about 3 sessions once the game matches the original.
 
 **Close button (owner, 2026-10-17):** the ✕ stays at the top right of Gear, Skills and the other sheets. The floor bar hides while one of those is open, and comes back in the same place when it closes. The sheet itself sits below the phone's clock and battery.
 
+**Monsters (owner, 2026-10-17):** the redraws replaced the old monster pictures. Bone Hydra, Fallen Seraph (flies), Brood Matron and Ash Colossus are bosses after the old six. Crowned Slime, Goblin Captain, Grave Knight, Dire Wolf, Iron Minotaur and Blight Reaper are elites. The huge pit-lord demon is only a picture in `new-animations/monster-picks/pit-lord.png`. It is not a unit yet. It has to be fitted as something bigger than one tile.
+
 **Next:** the owner sets up Render (`online-setup.md`) and plays with friends. Then chat and emojis, and after that the ideas list (chess feel first).
 
 ### 7. After the full build (owner's reminders)
