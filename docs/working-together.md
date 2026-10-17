@@ -43,6 +43,7 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 
 ## Now working on
 (one line each: who · task · files · date; remove it when done)
+- Claude · Versus leftovers (fog paths, watcher delay, Grave Bloom, raised monsters) · sim/engine, sim/combat, adapters/server, web/game/js/online.js, docs · 2026-10-16
 
 
 
