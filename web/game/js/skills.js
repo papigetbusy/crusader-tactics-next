@@ -61,7 +61,7 @@ function render() {
   const bar = (u.skills || []).filter((s) => s.name !== 'Strike' && !s.ultimate), now = (u.skills || []).find((s) => s.ultimate);
   const lib = u.library || [];
   const canChange = !u.swapped && !locked && lib.length > 0;
-  let h = `<div class="panel box wide sheet skw"><button class="xclose" aria-label="Close">✕</button><div class="ttl">Skills</div>
+  let h = `<div class="panel box wide sheet skw"><div class="vscroll"><button class="xclose" aria-label="Close">✕</button><div class="ttl">Skills</div>
     <div class="tabs">${heroes().map((x) => `<button class="${x.class === cls ? 'on' : ''}" data-h="${x.class}">${x.class}</button>`).join('')}</div>
     <div class="who"><img src="${heroPicUrl({ class: u.class, stage: u.stage, ascension: u.ascension })}" alt=""><div><div class="ttl">${u.class}</div>
     <small>${u.form || ''} · Lv ${u.level}${u.ascension ? ' · ' + u.ascension : ''}</small><br>
@@ -80,7 +80,7 @@ function render() {
     h += `<h4>Pick 1 ultimate</h4>${ults.map((s) => card(s, '', { on: ult === s.name })).join('')}`;
     h += '<div class="btns"><button class="b" id="skCancel">Cancel</button><button class="b" id="skGo">Save changes</button></div>';
   }
-  h += '<button class="b" id="skClose">Close</button></div>';
+  h += '<button class="b" id="skClose">Close</button></div></div>';
   w.innerHTML = h;
   w.hidden = false;
   const q = (s) => w.querySelectorAll(s);

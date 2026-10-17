@@ -142,8 +142,8 @@ export function floors() {
     ${f.here ? tag('t-c', 'here') : ''}${f.top ? tag('t-top', 'top') : ''}${f.cleared ? tag('t-ok', '✓ cleared') : ''}
     ${f.boss ? tag('t-b', f.bossLegendary ? 'boss · legendary taken' : 'boss') : f.elite ? tag('t-e', 'elite') : ''}
     ${f.shop ? tag('t-s', 'shop') : ''}${f.chestsLeft ? tag('t-ch', `${f.chestsLeft} chest${f.chestsLeft > 1 ? 's' : ''} left`) : ''}</span></button>`);
-  w.innerHTML = `<div class="panel box wide"><button class="xclose" aria-label="Close">✕</button><div class="ttl">Floor travel</div><p><small>Floors keep the same map and monsters. Opened chests stay opened; replays pay half gold and full XP.</small></p>
-    <div class="list">${rows.join('')}</div><button class="b" id="flClose">Close</button></div>`;
+  w.innerHTML = `<div class="panel box wide"><div class="vscroll"><button class="xclose" aria-label="Close">✕</button><div class="ttl">Floor travel</div><p><small>Floors keep the same map and monsters. Opened chests stay opened; replays pay half gold and full XP.</small></p>
+    <div class="list">${rows.join('')}</div><button class="b" id="flClose">Close</button></div></div>`;
   w.hidden = false;
   $('flClose').onclick = () => { w.hidden = true; };
   w.querySelector('.xclose').onclick = () => $('flClose').click();
@@ -265,13 +265,13 @@ export function importer(mode) {
   const w = cover('slotsWin');
   let slot = [1, 2, 3].find((k) => !get(k)) || 3, text = '', name = '';
   const draw = () => {
-    w.innerHTML = `<div class="panel box wide"><div class="ttl">Import a save</div>
+    w.innerHTML = `<div class="panel box wide"><div class="vscroll"><div class="ttl">Import a save</div>
       <p><small>Choose a save file or paste a save code, pick a slot, then tap Import. <b>Importing replaces that slot.</b></small></p>
       <div class="mrow"><span>Slot</span>${seg('imSlot', [[1, '1'], [2, '2'], [3, '3']], slot)}</div>
       <input type="file" id="imFile" accept=".json,.txt,application/json,text/plain">
       <textarea id="imText" rows="3" placeholder="…or paste a save code here"></textarea>
       <p id="imMsg"><small>${name ? 'Ready: ' + name : ''}</small></p>
-      <div class="btns"><button class="b" id="imGo">Import</button><button class="b" id="imBack">Back</button></div></div>`;
+      <div class="btns"><button class="b" id="imGo">Import</button><button class="b" id="imBack">Back</button></div></div></div>`;
     w.hidden = false;
     const msg = (t, bad) => { $('imMsg').innerHTML = `<small style="color:${bad ? '#ff8a8a' : '#8ff0b0'}">${t}</small>`; };
     $('imSlot').querySelectorAll('button').forEach((b) => (b.onclick = () => { slot = +b.dataset.v; $('imSlot').querySelectorAll('button').forEach((x) => x.classList.toggle('on', x === b)); }));
@@ -306,9 +306,9 @@ export function slots(mode) {
     ? `<div class="srow"><span><b>Purple team</b><br><small>Floor 40 · whole team in purple gear</small></span><button class="b" id="ldPurple">Load</button></div>`
     : '';
   const inGame = screen.st.view && $('title').hidden;
-  w.innerHTML = `<div class="panel box wide"><button class="xclose" aria-label="Close">✕</button><div class="ttl">${mode === 'save' ? 'Save your game' : 'Continue'}</div>${extra}${rows}
+  w.innerHTML = `<div class="panel box wide"><div class="vscroll"><button class="xclose" aria-label="Close">✕</button><div class="ttl">${mode === 'save' ? 'Save your game' : 'Continue'}</div>${extra}${rows}
     <div class="btns">${inGame ? '<button class="b" id="svExp">Export</button>' : ''}<button class="b" id="svImp">Import</button></div>
-    <button class="b" id="svClose">Close</button></div>`;
+    <button class="b" id="svClose">Close</button></div></div>`;
   w.hidden = false;
   w.querySelectorAll('[data-sv]').forEach((b) => (b.onclick = () => { if (put(b.dataset.sv)) { screen.log('Saved to slot ' + b.dataset.sv + '.'); slots(mode); } }));
   w.querySelectorAll('[data-ld]').forEach((b) => (b.onclick = () => load(get(b.dataset.ld), b.dataset.ld === 'auto' ? 'the autosave' : 'slot ' + b.dataset.ld)));

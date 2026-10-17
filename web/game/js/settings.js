@@ -19,9 +19,9 @@ export function settings(t) {
   tab = t || tab;
   const w = cover('settingsWin');
   const tabs = [['opt', 'Options'], ['how', 'How to Play'], ['new', 'What’s New'], ['sav', 'Saves'], ['rep', 'Report']];
-  w.innerHTML = `<div class="panel box wide sets"><button class="xclose" aria-label="Close">✕</button><div class="ttl">Settings</div>
+  w.innerHTML = `<div class="panel box wide sets"><div class="vscroll"><button class="xclose" aria-label="Close">✕</button><div class="ttl">Settings</div>
     <div class="tabs">${tabs.map(([k, l]) => `<button data-t="${k}" class="${tab === k ? 'on' : ''}">${l}</button>`).join('')}</div>
-    <div id="setBody"></div><div class="btns"><button class="b" id="oClose">Close</button></div></div>`;
+    <div id="setBody"></div><div class="btns"><button class="b" id="oClose">Close</button></div></div></div>`;
   w.hidden = false;
   w.querySelectorAll('[data-t]').forEach((b) => (b.onclick = () => settings(b.dataset.t)));
   $('oClose').onclick = () => { w.hidden = true; };

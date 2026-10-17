@@ -53,7 +53,7 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 
 ## Now working on
 (one line each: who · task · files · date; remove it when done)
-- Grok · Pin the gold corner vines to the menu frame · web/game/style.css, web/game/js/gear.js, web/game/js/skills.js, web/game/js/settings.js, web/game/js/sysmenu.js · 2026-10-17
+
 
 
 

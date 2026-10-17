@@ -2,7 +2,7 @@
 
 Every finished piece of work, newest first: date · who · what changed, in plain words. Claude and Grok add one line here for each piece of work (moved out of the README on 2026-10-17, owner).
 
-- 2026-10-17 · Claude · Thunder Lance test v2: the Storm Dragoon's body now moves, using the four poses from the owner's mockup (stand, charge, wind-up, thrust), with the same code-made effects. Same page as v1. Not in the game.
+- 2026-10-17 · Grok · The gold corner vines stay on the menu border. A long gear list was dragging them into the middle.
 - 2026-10-17 · Grok · The owner signed off on the item icons. They are in the game now, in place of the paid pack. Epic has its own picture. The ten class legendaries are unchanged. The pick page is no longer published.
 - 2026-10-17 · Claude · A test of animating a move in code with no new art: Thunder Lance (Storm Dragoon) from the game's own sprite and lightning effects. Page: new-animations/gifs/dragon-knight/thunder-lance. Not in the game; waiting for the owner's look.
 - 2026-10-17 · Grok · Medium armor was redrawn. Common, uncommon, rare, and epic are four different designs. Everything else on the icon page stays.
