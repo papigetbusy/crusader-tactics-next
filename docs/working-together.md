@@ -16,7 +16,9 @@ Pictures pasted in the chat do not reach his phone. When he asks to see art, sav
 
 ## Item art style (owner, 2026-10-17)
 
-Item pictures are painted pixel art, the same kind as the class legendary weapons and the sheets the owner sent (swords, axes, lances, bows, daggers, staves, guns). Dark navy background. Each icon sits in its own rounded square frame. The object is fully drawn: metal shading, a dark outline, gems, glow, and small ornaments. Three different designs, not three recolors of one shape. No letters on the picture. Never draw flat shapes, stick figures, or simple blobs. The stick-figure icon page was rejected and removed.
+Item pictures are painted pixel art, the same kind as the class legendary weapons and the sheets the owner sent (swords, axes, lances, bows, daggers, staves, guns). Dark navy background. Each icon sits in its own rounded square frame. The object is fully drawn: metal shading, a dark outline, gems, glow, and small ornaments. No letters on the picture. Never draw flat shapes, stick figures, or simple blobs.
+
+The color is the rarity, and a rarer item is a better, more unique design, not a recolor of the plain one. Common is silver (#cfd3e6), the simplest. Uncommon is green (#7be0a8), clearly better. Rare is blue (#5da8ff), the richest of the three. Epic is purple (#b46cf0) and, on weapons and most armor, uses the rare picture. Legendary is gold (#f2b84b). The ten class legendary weapons already have their own pictures. Heart of the Stair and Phoenix Feather are one gold picture each, not a ladder. (Owner, 2026-10-17.)
 
 ## The prompt
 
@@ -52,6 +54,8 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 ## Now working on
 (one line each: who · task · files · date; remove it when done)
 - Claude · screen: no auto-walk when tapping an enemy; drag heroes while placing · web/game/js/battle.js, docs · 2026-10-17
+
+
 
 
 
