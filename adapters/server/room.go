@@ -223,6 +223,9 @@ func (r *Room) Act(id string, a action.Action, now time.Time) ([]action.Event, e
 	if a.Kind == action.Clock {
 		return nil, errClock
 	}
+	if a.Kind == action.Forfeit {
+		return nil, errors.New("Use give up.")
+	}
 	if r.seatOf(id) != r.Game.B.Side {
 		return nil, errNotTurn
 	}

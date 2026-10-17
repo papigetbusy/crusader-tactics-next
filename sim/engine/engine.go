@@ -42,6 +42,9 @@ func no(code, format string, a ...any) error {
 func (g *Game) Apply(a action.Action) ([]action.Event, error) {
 	var events []action.Event
 	emit := func(e action.Event) { events = append(events, e) }
+	if a.Kind == action.Forfeit {
+		return events, g.forfeit(a.Side, emit)
+	}
 	if g.climb != nil && climbKinds[a.Kind] {
 		err := g.climbAction(a, emit)
 		return events, err

@@ -18,10 +18,14 @@ const NAMES = ['Blue', 'Red'], COL = ['#4fa8ff', '#ff5d5d'];
 const SERVER = new URLSearchParams(location.search).get('server') ||
   (location.hostname.endsWith('github.io') ? 'https://crusader-tactics.onrender.com' : '');
 let screen = null, me = null, room = null, es = null, inMatch = false, queue = [], busy = false, mine = null, fails = 0;
-let seen = 0, inflight = false, clock = null, pendingClock = null;
+let seen = 0, inflight = false, clock = null, pendingClock = null, gone = false, endNote = '';
 
 export const wire = (s) => { screen = s; };
-export const on = () => inMatch && onlineSeat() !== null;
+export const on = () => !gone && inMatch && onlineSeat() !== null;
+// seated is a player in a match that is still going (not a watcher, not the lobby).
+export const seated = () => on() && onlineSeat() >= 0 && !!(room && room.playing);
+// live is a room this phone can still be pulled back into.
+export const live = () => !gone && !!(me || read('ctn-token'));
 // think is how much of the bank the server would charge right now.
 export function think() {
   if (!clock) return 0;
@@ -78,6 +82,7 @@ function listen() {
   if (es) { es.onerror = null; es.close(); }
   es = new EventSource(SERVER + '/api/stream?token=' + me);
   es.onmessage = (e) => {
+    if (gone) return;
     fails = 0;
     let m;
     try { m = JSON.parse(e.data); } catch (err) { return; }
@@ -101,14 +106,19 @@ function lost() {
     <div class="btns"><button class="b" id="olRe">Try again</button><button class="b" id="olT">Title screen</button></div></div>`;
   w.hidden = false;
   $('olRe').onclick = () => { w.hidden = true; fails = 0; resume(); };
-  $('olT').onclick = () => { store('ctn-token', null); location.reload(); };
+  $('olT').onclick = () => { leaveForLocal().then(() => location.reload()); };
 }
 
 // resume is the same person coming back after a refresh. A dead token is forgotten.
 export function resume() {
+  if (gone) return;
   const token = read('ctn-token'), pw = read('ctn-room');
   if (!token || !pw) return;
   post('/api/join', { room: pw, name: read('ctn-name'), token }).then((r) => {
+    if (gone) {
+      if (r && r.token) post('/api/leave', { token: r.token });
+      return;
+    }
     if (r.error || !r.token) {
       if (r.error && /not in this room|full/i.test(r.error)) store('ctn-token', null);
       return;
@@ -135,6 +145,8 @@ function result(r) {
   const missed = r.seq > seen + 1;
   seen = r.seq || seen;
   inflight = false;
+  if ((r.events || []).some((e) => e.kind === 'gave-up')) endNote = 'gave-up';
+  else if ((r.events || []).some((e) => e.kind === 'time-up')) endNote = 'time';
   sync(r.match.save);
   if (missed) {
     mine = null;
@@ -159,8 +171,8 @@ export function played(r) {
   charged();
   const v = r.view;
   if (v.outcome) {
-    const win = v.versus.winner, time = (r.events || []).some((e) => e.kind === 'time-up');
-    screen.log(`${NAMES[win]} wins${time ? ' on time' : ''}!`);
+    const win = v.versus.winner, time = (r.events || []).some((e) => e.kind === 'time-up'), gave = (r.events || []).some((e) => e.kind === 'gave-up');
+    screen.log(`${NAMES[win]} wins${time ? ' on time' : gave ? '. The other player gave up' : ''}!`);
   } else if (v.side === onlineSeat()) screen.log('Your turn!');
   pump();
 }
@@ -222,7 +234,7 @@ function roomPanel() {
   } else todo = `<p>${you.line ? `You are number ${you.line} in line.` : ''} Take a free side to play, or wait and watch.</p>`;
   w.innerHTML = `<div class="panel box wide"><div class="ttl">Room “${esc(room.room)}”</div>
     <p><small>${room.people.length} of ${room.max} people · send this password to friends so they can join</small></p>
-    ${room.matches && room.winner >= 0 ? `<p class="olWin" style="color:${COL[room.winner]}">${NAMES[room.winner]} won the last match.</p>` : ''}
+    ${room.matches && room.winner >= 0 ? `<p class="olWin" style="color:${COL[room.winner]}">${NAMES[room.winner]} won the last match.${endNote === 'gave-up' ? ' The other player gave up.' : ''}</p>` : ''}
     <div class="olSeats">${seat(0)}${seat(1)}</div>${todo}
     <h4>Waiting in line</h4>${line.map((p) => `<p>${p.line}. ${esc(p.name)}${p.you ? ' (you)' : ''}${p.online ? '' : ' · away'}</p>`).join('') || '<p><small>Nobody.</small></p>'}
     <button class="b" id="olLeave">Leave the room</button></div>`;
@@ -234,7 +246,34 @@ function roomPanel() {
     w.hidden = true;
     chooseTeam(side, room.yourTeam || [], () => { w.hidden = false; }, (team) => { w.hidden = false; call('/api/team', { team }); }, 'Ready');
   };
-  $('olLeave').onclick = async () => { store('ctn-token', null); if (es) es.close(); await post('/api/leave', { token: me }); location.reload(); };
+  $('olLeave').onclick = async () => { await leaveForLocal(); location.reload(); };
+}
+
+// giveUp ends the match for both players. This phone stays in the room, so
+// they can pick heroes and play again. The other player is told.
+export function giveUp() {
+  if (!me || !seated()) return;
+  post('/api/forfeit', { token: me });
+}
+
+// leaveForLocal drops this phone out of the room. A match that is still going
+// ends first, so the other player wins instead of waiting on a frozen game.
+export async function leaveForLocal() {
+  if (gone && !me && !read('ctn-token')) return;
+  gone = true;
+  const token = me || read('ctn-token');
+  store('ctn-token', null);
+  if (es) { es.onerror = null; es.close(); es = null; }
+  inMatch = false;
+  setSeat(null);
+  queue = [];
+  busy = false;
+  room = null;
+  me = null;
+  ['olRoomWin', 'olJoin'].forEach((id) => { const n = $(id); if (n) n.hidden = true; });
+  if (!token) return;
+  await post('/api/forfeit', { token });
+  await post('/api/leave', { token });
 }
 
 async function call(path, body) {

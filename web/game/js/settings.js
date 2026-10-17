@@ -48,7 +48,7 @@ function opt(B) {
   $('oView').querySelectorAll('button').forEach((b) => (b.onclick = () => { screen.setView(b.dataset.v === '1'); saveOptions(); settings(); }));
   $('oTips').onclick = () => { options.tipsOn = true; saveOptions(); resetTips(); $('oTips').textContent = 'Tips reset ✓'; };
   $('oCodex').onclick = () => window.open('codex.html', '_blank');
-  $('oTitle').onclick = () => { if (confirm('Go back to the title screen? Unsaved progress is lost (the autosave keeps your last turn).')) location.reload(); };
+  $('oTitle').onclick = () => { if (screen.title) screen.title(); };
 }
 
 function how(B) {

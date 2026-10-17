@@ -94,9 +94,10 @@ function handOver(side, text, button, then) {
   w.className = 'cover vsHand';
   w.innerHTML = `<div class="vsWho" style="color:${COL[side]}">${NAME[side].toUpperCase()}</div><div class="vsBig">Your turn</div>
     <div class="vsTxt">${text}</div>${bank ? `<div class="vsBank">⏱ ${mmss(bank)} left</div><div class="vsSmall">Your clock starts when you tap.</div>` : ''}
-    <button class="b" id="vsHGo">${button}</button>`;
+    <button class="b" id="vsHGo">${button}</button><button class="b ghost" id="vsHTitle">Title screen</button>`;
   w.hidden = false;
   $('vsHGo').onclick = () => { w.hidden = true; held = false; last = performance.now(); if (then) then(); screen.kick(); };
+  $('vsHTitle').onclick = () => { if (screen.title) screen.title(); };
 }
 
 // after looks at a played action: the match is over, or the other player's
@@ -131,7 +132,7 @@ function ended(events) {
     <button class="b" id="vsAgain">Rematch</button><button class="b" id="vsTitle">Title screen</button>`;
   w.hidden = false;
   $('vsAgain').onclick = () => { w.hidden = true; begin(); };
-  $('vsTitle').onclick = () => location.reload();
+  $('vsTitle').onclick = () => { if (screen.title) screen.title(); else location.reload(); };
 }
 
 // ---------- the clocks ----------

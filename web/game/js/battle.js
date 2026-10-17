@@ -163,7 +163,7 @@ export function after() {
   s.danger = s.opt.danger && p === 'battle' && !v.outcome
     ? new Set(st().units.filter((u) => u.team !== mySide(v)).flatMap((u) => referee.threat(u.id).map(([x, y]) => key(x, y))))
     : null;
-  if (s.opt.autoEnd && p === 'battle' && !v.outcome && !readyHeroes.length && st().units.some((u) => u.team !== mySide(v)))
+  if (s.opt.autoEnd && myTurn(v) && p === 'battle' && !v.outcome && !readyHeroes.length && st().units.some((u) => u.team !== mySide(v)))
     setTimeout(() => { if (!playback.playing() && !st().units.some(ready)) send({ kind: 'endturn' }, 'Your turn.', autosave); }, 800);
   screen.kick();
 }

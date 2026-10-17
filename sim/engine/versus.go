@@ -164,6 +164,30 @@ func (g *Game) clock(a action.Action, emit action.Emit) (bool, error) {
 	return a.Kind == action.Clock, nil
 }
 
+// forfeit ends a 1v1 match because one player gave up. Won means side 0 won;
+// Lost means side 1 won, the same as the rest of versus.
+func (g *Game) forfeit(side int, emit action.Emit) error {
+	b := g.B
+	if b.Versus == nil {
+		return no("no-match", "There is no match to give up.")
+	}
+	if b.Outcome != state.Ongoing {
+		return no("battle-over", "The battle is over.")
+	}
+	if side != state.Heroes && side != state.Enemies {
+		return no("no-seat", "You are not in this match.")
+	}
+	emit(action.Event{Kind: action.GaveUp, Side: side})
+	if side == state.Heroes {
+		b.Outcome = state.Lost
+		emit(action.Event{Kind: action.Lost, Side: state.Enemies})
+	} else {
+		b.Outcome = state.Won
+		emit(action.Event{Kind: action.Won, Side: state.Heroes})
+	}
+	return nil
+}
+
 // VersusView is a 1v1 match as the screen shows it. The screen counts the
 // seconds down between answers; the referee's numbers are the real ones.
 type VersusView struct {

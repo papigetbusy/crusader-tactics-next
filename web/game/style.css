@@ -36,7 +36,7 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
   color: #efe3c8; font-family: 'EB Garamond', Garamond, Georgia, serif;
 }
 #chip {
-  right: 8px; top: calc(8px + var(--safe-t)); display: flex; align-items: center; gap: 6px;
+  right: 8px; top: calc(8px + var(--safe-t)); z-index: 50; display: flex; align-items: center; gap: 6px;
   padding: 4px 6px 4px 12px; font: 600 13px 'EB Garamond', Georgia, serif; letter-spacing: .12em; text-transform: uppercase;
 }
 .ib { background: none; border: 1px solid #6a4a1a; color: #f2c14e; font-size: 18px; width: 36px; height: 34px; line-height: 1; padding: 0; }
@@ -149,7 +149,7 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
 #skip { position: fixed; right: 10px; bottom: calc(14px + var(--safe-b)); z-index: 6; min-height: 44px; padding: 0 16px; }
 
 /* ---------- system menu, settings, floor list, saves, gear sheet ---------- */
-#sys { right: 8px; top: calc(56px + var(--safe-t)); width: min(240px, calc(100vw - 16px)); max-height: calc(100vh - 70px); overflow: auto; z-index: 8; padding: 8px 0 10px; }
+#sys { right: 8px; top: calc(56px + var(--safe-t)); width: min(240px, calc(100vw - 16px)); max-height: calc(100vh - 70px); overflow: auto; z-index: 51; padding: 8px 0 10px; }
 .sysh { padding: 2px 14px 6px; font-size: 13px; color: #c9b89a; border-bottom: 1px solid rgba(201,162,74,.35); margin-bottom: 4px; }
 .sysh img { width: 18px; height: 18px; vertical-align: -4px; }
 #sys .row { display: block; width: 100%; border: 0; background: none; text-align: left; padding: 9px 16px 9px 26px; font: 600 15px 'EB Garamond', Georgia, serif; letter-spacing: .08em; text-transform: uppercase; color: #efe3c8; text-shadow: 0 1px 2px #000; }

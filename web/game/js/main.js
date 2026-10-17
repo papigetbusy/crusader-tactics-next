@@ -14,7 +14,7 @@ import * as sysmenu from './sysmenu.js';
 import * as tips from './tips.js';
 import * as title from './title.js';
 import * as gear from './gear.js';
-import { mine, isVersus, mySide } from './side.js';
+import { mine, isVersus, mySide, myTurn, onlineSeat } from './side.js';
 import * as versus from './versus.js';
 import * as online from './online.js';
 import * as skills from './skills.js';
@@ -151,7 +151,7 @@ export async function boot(build) {
   $('newGame').onclick = () => start(referee.newClimb());
   $('startButton').onclick = () => { $('titleStart').hidden = true; $('titleMenu').hidden = false; $('continueGame').disabled = !sysmenu.anySave(); };
   $('continueGame').onclick = () => sysmenu.slots('load');
-  $('versusGame').onclick = () => versus.menu();
+  $('versusGame').onclick = () => openLocal(versus.menu);
   controls($('map'), keys, (on) => log(on ? 'Map overview. Pinch in or tap + to zoom back in.' : ''));
   $('mini').addEventListener('pointerdown', (e) => minimap.tap($('mini'), e));
   $('nextHero').onclick = () => nextHero();
@@ -163,13 +163,13 @@ export async function boot(build) {
     closeUp(h.x, h.y);
   };
   battle.wire({ st, show, kick, log });
-  versus.wire({ st, show, kick, log, start, lobby: online.lobby });
+  versus.wire({ st, show, kick, log, start, lobby: online.lobby, title: titleScreen });
   online.wire({ st, show, kick, log, start });
   online.resume();
   gear.wire({ st, show, kick, log, after: battle.after, skills: (c) => skills.open(c) });
   skills.wire({ st, show, kick, log, after: battle.after });
   shop.wire({ st, show, kick, log, after: battle.after });
-  sysmenu.wire({ st, show, kick, log, setView, after: battle.after, gear: () => gear.open(), skills: () => skills.open(), endTurn: battle.endTurn, nextHero });
+  sysmenu.wire({ st, show, kick, log, setView, after: battle.after, gear: () => gear.open(), skills: () => skills.open(), endTurn: battle.endTurn, nextHero, title: titleScreen, giveUp: () => online.giveUp(), seated: () => online.seated(), myTurn: () => myTurn(st.view) });
   tips.watch(st);
   if (lag.on) {
     window.crusaderLag = {
@@ -203,10 +203,38 @@ export async function boot(build) {
 }
 
 function start(view) {
-  $('title').hidden = true;
-  sysmenu.mapOn(true);
-  show(view);
-  battle.after();
+  const go = () => {
+    $('title').hidden = true;
+    sysmenu.mapOn(true);
+    show(view);
+    battle.after();
+  };
+  // A climb, or pass-the-phone, must not share the screen with an online room.
+  const local = view && (view.climb || onlineSeat() === null);
+  if (local && online.live()) {
+    openLocal(go);
+    return;
+  }
+  go();
+}
+
+// openLocal leaves an online room before a single-player or pass-the-phone
+// game. A match that is still going ends, so the other player is not stuck.
+function openLocal(then) {
+  if (!online.live()) { then(); return; }
+  const msg = online.seated() ? 'Leave the online match? The other player wins.' : 'Leave the online room?';
+  if (!confirm(msg)) return;
+  online.leaveForLocal().then(then);
+}
+
+function titleScreen() {
+  const v = st.view;
+  let msg = 'Go back to the title screen? Unsaved progress is lost (the autosave keeps your last turn).';
+  if (online.seated()) msg = 'Leave this match? The other player wins, and you go back to the title.';
+  else if (online.live()) msg = 'Leave the online room and go back to the title?';
+  else if (v && v.versus) msg = 'Leave this match and go back to the title? This match is not saved.';
+  if (!confirm(msg)) return;
+  online.leaveForLocal().then(() => location.reload());
 }
 
 function keys(k) {

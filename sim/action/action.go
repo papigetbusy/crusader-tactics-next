@@ -37,7 +37,8 @@ const (
 	Ascend   Kind = "ascend"   // change hero Hero's ascension to Choice (once per floor)
 
 	// Versus (online 1v1).
-	Clock Kind = "clock" // only reports Ms, the time the player to move has used (their clocks may run out)
+	Clock   Kind = "clock"   // only reports Ms, the time the player to move has used (their clocks may run out)
+	Forfeit Kind = "forfeit" // the player on Side gives up; the other player wins at once
 )
 
 // Action is one request.
@@ -59,6 +60,7 @@ type Action struct {
 	Item   int      `json:"item,omitempty"`   // Equip, Drop: index in the bag
 	Slot   string   `json:"slot,omitempty"`   // Equip: weapon slot for a weapon
 	Ms     int      `json:"ms,omitempty"`     // versus: milliseconds the player to move used since their last action (the server or screen measures it)
+	Side   int      `json:"side,omitempty"`   // Forfeit: the player who gives up (0 or 1)
 }
 
 // Event is one fact, in the order it happened. The screen animates events;
@@ -124,6 +126,7 @@ const (
 	Ascended      = "ascended"   // Unit ascended to Skill
 	TimeUp        = "time-up"    // versus: player Side's match clock ran out; they lose
 	TurnTimeUp    = "turn-time"  // versus: player Side's turn clock ran out; their turn ends
+	GaveUp        = "gave-up"    // versus: player Side gave up; they lose
 	Won           = "won"        // every enemy is gone
 	Lost          = "lost"       // every hero is gone
 )

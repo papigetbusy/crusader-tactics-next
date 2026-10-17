@@ -198,6 +198,8 @@ Estimate: about 3 sessions once the game matches the original.
 
 **Tightened (owner, 2026-10-16), in the same rooms:** 5 minutes each and no per-turn limit. The server's clock is the one on screen, with 2 free seconds after every move. Refreshing the page keeps your seat. Missing a move snaps the board to the server instead of staying on the old one. A second tap is ignored while a move is in flight.
 
+**Leaving a mode (owner, 2026-10-16):** ☰ → Title screen is in every mode (also on the pass-the-phone hand-over, and in Settings). ☰ → Give up, only during an online match you are playing, ends it at once: the other player wins, and both of you can start another match from the room. Starting a single-player game or pass-the-phone while still in an online room asks first, then ends that match for both so the screen cannot freeze on "It is not your turn." Closing the page still only runs the clock out. A watcher leaving does not end the match.
+
 **Fog of war and the biggest map (2026-10-16, owner):**
 - **The map:** versus maps are 32×32, the climb's biggest.
 - **The fog:**

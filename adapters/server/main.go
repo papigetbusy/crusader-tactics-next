@@ -68,6 +68,7 @@ func (s *Server) routes() *http.ServeMux {
 	mux.HandleFunc("/api/team", s.post(s.team))
 	mux.HandleFunc("/api/again", s.post(s.again))
 	mux.HandleFunc("/api/act", s.post(s.act))
+	mux.HandleFunc("/api/forfeit", s.post(s.forfeit))
 	mux.HandleFunc("/api/leave", s.post(s.leave))
 	mux.HandleFunc("/api/stream", s.stream)
 	mux.HandleFunc("/api/ping", func(w http.ResponseWriter, r *http.Request) { cors(w); fmt.Fprint(w, "ok") })
@@ -219,6 +220,21 @@ func (s *Server) act(q req) (any, error) {
 		return nil, err
 	}
 	s.result(r, ev, side)
+	return nil, nil
+}
+
+func (s *Server) forfeit(q req) (any, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	r, err := s.in(q.Token)
+	if err != nil {
+		return nil, err
+	}
+	ev, err := r.Forfeit(q.Token, s.now())
+	if err != nil {
+		return nil, err
+	}
+	s.result(r, ev, r.seatOf(q.Token))
 	return nil, nil
 }
 

@@ -178,6 +178,25 @@ func TestRooms(t *testing.T) {
 			t.Fatalf("outcome %v, winner %d", r.Game.B.Outcome, r.Winner)
 		}
 	})
+	t.Run("Giving up ends the match at once and the other player wins", func(t *testing.T) {
+		r, a, _ := ready(t)
+		ev, err := r.Forfeit(a.ID, t0)
+		if err != nil || r.playing() || r.Winner != 1 || r.Game.B.Outcome != state.Lost {
+			t.Fatalf("err %v outcome %v winner %d playing %v", err, r.Game.B.Outcome, r.Winner, r.playing())
+		}
+		if len(ev) == 0 || ev[0].Kind != action.GaveUp || ev[0].Side != 0 {
+			t.Fatalf("events %v", ev)
+		}
+		r2, _, b := ready(t)
+		if _, err := r2.Forfeit(b.ID, t0); err != nil || r2.Winner != 0 || r2.Game.B.Outcome != state.Won {
+			t.Fatalf("red give up: %v winner %d outcome %v", err, r2.Winner, r2.Game.B.Outcome)
+		}
+		r3, _, _ := ready(t)
+		w, _ := r3.Join("Cy")
+		if _, err := r3.Forfeit(w.ID, t0); err == nil || !r3.playing() {
+			t.Fatalf("a watcher ended the match: %v playing %v", err, r3.playing())
+		}
+	})
 	t.Run("Through the fog each player is sent only the heroes they can see, and a watcher is sent everything", func(t *testing.T) {
 		r, a, b := ready(t)
 		cy, _ := r.Join("Cy")

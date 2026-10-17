@@ -205,6 +205,17 @@ func TestVersus(t *testing.T) {
 		}
 	})
 
+	t.Run("A player who gives up loses at once, and the other player wins", func(t *testing.T) {
+		g := versus(t)
+		ev, err := g.Apply(action.Action{Kind: action.Forfeit, Side: 1})
+		if err != nil || g.B.Outcome != state.Won || !has(ev, action.GaveUp) || !has(ev, action.Won) {
+			t.Fatalf("outcome %q events %v: %v", g.B.Outcome, ev, err)
+		}
+		if _, err := g.Apply(action.Action{Kind: action.Forfeit, Side: 0}); err == nil {
+			t.Fatal("a finished match accepted a second give-up")
+		}
+	})
+
 	t.Run("Time can't run backwards", func(t *testing.T) {
 		g := versus(t)
 		if _, err := g.Apply(action.Action{Kind: action.Clock, Ms: -5}); code(err) != "bad-clock" {
