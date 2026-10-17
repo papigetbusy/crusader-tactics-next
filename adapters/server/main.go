@@ -131,6 +131,12 @@ func (s *Server) join(q req) (any, error) {
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	if q.Token != "" {
+		if r := s.who[q.Token]; r != nil && r.Password == pw && r.member(q.Token) != nil {
+			s.roomChanged(r)
+			return map[string]string{"token": q.Token, "room": pw}, nil
+		}
+	}
 	r := s.rooms[pw]
 	if r == nil {
 		r = NewRoom(s.c, pw)
@@ -247,10 +253,13 @@ func (s *Server) tick() {
 	defer s.mu.Unlock()
 	now := s.now()
 	for _, r := range s.rooms {
-		if r.Game != nil {
+		if r.playing() {
 			side := r.Game.B.Side
 			if ev := r.Tick(now); ev != nil {
 				s.result(r, ev, side)
+			} else if now.Sub(r.ping) >= time.Second {
+				r.ping = now
+				s.clocks(r, now)
 			}
 		}
 		for _, m := range append([]*Member(nil), r.Members...) {
@@ -276,15 +285,25 @@ func send(m *Member, v any) {
 
 func (s *Server) roomChanged(r *Room) {
 	for _, m := range r.Members {
-		send(m, r.viewFor(m.ID))
+		send(m, r.viewFor(m.ID, s.now()))
 	}
 }
 
 func (s *Server) result(r *Room, ev []action.Event, sideBefore int) {
+	now := s.now()
+	r.ping = now
 	for _, m := range r.Members {
-		send(m, r.resultFor(m.ID, ev, sideBefore))
+		send(m, r.resultFor(m.ID, ev, sideBefore, now))
 	}
 	s.roomChanged(r)
+}
+
+func (s *Server) clocks(r *Room, now time.Time) {
+	v := r.Game.B.Versus
+	msg := ClockView{Type: "clock", Seq: r.Seq, ThinkMs: r.think(now), Side: r.Game.B.Side, BankMs: v.BankMs}
+	for _, m := range r.Members {
+		send(m, msg)
+	}
 }
 
 // stream is one phone's live line to its room (Server-Sent Events).
@@ -302,7 +321,7 @@ func (s *Server) stream(w http.ResponseWriter, hr *http.Request) {
 	if err == nil {
 		m = r.member(id)
 		m.Gone = time.Time{}
-		send(m, r.viewFor(id))
+		send(m, r.viewFor(id, s.now()))
 		s.roomChanged(r)
 	}
 	s.mu.Unlock()

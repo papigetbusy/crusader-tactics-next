@@ -27,6 +27,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-16 · Grok · Versus clocks are 5 minutes each with no per-turn limit. Online: the server's clock is the one on screen (2 free seconds after a move), a refresh keeps your seat, and a missed move snaps to the server's board.
 - 2026-10-16 · Claude · Versus and online: fog of war (see enemies within 6 steps of your units, can't target what you can't see, darkened tiles, each player's phone only gets what they can see, watchers see all, fog lifts at the end) and 32×32 maps, the climb's biggest. Each player's camera starts at their own edge of the map.
 - 2026-10-16 · Claude · Online step 3: online rooms. Versus → Online, a room password for up to 4 friends, Blue and Red play while the others watch and wait in line, and the winner stays on. A small Go server (`adapters/server`) runs the same referee and keeps the clocks. It's ready for Render (`render.yaml`, `Dockerfile`), with the owner's setup steps in `docs/online-setup.md`.
 - 2026-10-16 · Claude · Online step 2, pass the phone: Versus on the title screen (Pass the phone / Online soon), pick 8 heroes and ascensions per player, hand-over screens between turns, both clocks on screen (turn and match time, enforced by the referee), and a winner screen with Rematch. Also a restart note for Claude (CLAUDE.md, .claude-wip.md).

@@ -168,6 +168,7 @@ export async function boot(build) {
   battle.wire({ st, show, kick, log });
   versus.wire({ st, show, kick, log, start, lobby: online.lobby });
   online.wire({ st, show, kick, log, start });
+  online.resume();
   gear.wire({ st, show, kick, log, after: battle.after, skills: (c) => skills.open(c) });
   skills.wire({ st, show, kick, log, after: battle.after });
   shop.wire({ st, show, kick, log, after: battle.after });

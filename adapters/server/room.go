@@ -47,12 +47,15 @@ type Room struct {
 	Seed     engine.VersusSetup
 	Dice     uint64          // the match's battle seed: Seed, Dice and Log replay it exactly
 	Before   [2]map[int]bool // fog: what each side saw just before the last action
+	Seq      int             // how many actions this match has accepted
+	grace    time.Duration
+	ping     time.Time // when the clocks were last told to the phones
 	c        *content.Content
 }
 
 // NewRoom makes an empty room.
 func NewRoom(c *content.Content, password string) *Room {
-	return &Room{Password: password, Winner: -1, c: c}
+	return &Room{Password: password, Winner: -1, grace: time.Duration(c.Versus.GraceSeconds) * time.Second, c: c}
 }
 
 var (
@@ -201,7 +204,7 @@ func (r *Room) maybeStart(now time.Time) {
 	if err != nil {
 		return
 	}
-	r.Game, r.Seed, r.Dice, r.Last, r.Winner, r.Log = g, setup, dice, now, -1, nil
+	r.Game, r.Seed, r.Dice, r.Last, r.Winner, r.Log, r.Seq = g, setup, dice, now, -1, nil, 0
 	r.Matches++
 	for _, id := range r.Seats {
 		r.member(id).Ready = false
@@ -223,7 +226,7 @@ func (r *Room) Act(id string, a action.Action, now time.Time) ([]action.Event, e
 	if r.seatOf(id) != r.Game.B.Side {
 		return nil, errNotTurn
 	}
-	a.Ms = int(now.Sub(r.Last) / time.Millisecond)
+	a.Ms = chargeMs(r.Last, now, r.grace)
 	return r.apply(a, now)
 }
 
@@ -234,6 +237,7 @@ func (r *Room) apply(a action.Action, now time.Time) ([]action.Event, error) {
 		return nil, err
 	}
 	r.Last, r.Before = now, before
+	r.Seq++
 	r.Log = append(r.Log, a)
 	if !r.playing() {
 		r.over()
@@ -248,8 +252,9 @@ func (r *Room) Tick(now time.Time) []action.Event {
 		return nil
 	}
 	v, side := r.Game.B.Versus, r.Game.B.Side
-	used := int(now.Sub(r.Last) / time.Millisecond)
-	if v.UsedMs+used < v.TurnMs && v.BankMs[side]-used > 0 {
+	used := chargeMs(r.Last, now, r.grace)
+	turnLeft := v.TurnMs == 0 || v.UsedMs+used < v.TurnMs
+	if turnLeft && v.BankMs[side]-used > 0 {
 		return nil
 	}
 	ev, err := r.apply(action.Action{Kind: action.Clock, Ms: used}, now)
@@ -305,6 +310,8 @@ type RoomView struct {
 	Winner   int           `json:"winner"`
 	Matches  int           `json:"matches"`
 	Max      int           `json:"max"`
+	Seq      int           `json:"seq"`
+	ThinkMs  int           `json:"thinkMs"` // time the server would charge the player to move right now
 	Match    *MatchView    `json:"match,omitempty"`
 }
 
@@ -315,8 +322,8 @@ type MatchView struct {
 	Save json.RawMessage `json:"save"`
 }
 
-func (r *Room) viewFor(id string) RoomView {
-	rv := RoomView{Type: "room", Room: r.Password, YourSide: r.seatOf(id), Playing: r.playing(), Winner: r.Winner, Matches: r.Matches, Max: MaxPeople}
+func (r *Room) viewFor(id string, now time.Time) RoomView {
+	rv := RoomView{Type: "room", Room: r.Password, YourSide: r.seatOf(id), Playing: r.playing(), Winner: r.Winner, Matches: r.Matches, Max: MaxPeople, Seq: r.Seq, ThinkMs: r.think(now)}
 	for s, x := range r.Seats {
 		if m := r.member(x); m != nil {
 			rv.Seats[s] = m.Name
@@ -349,12 +356,12 @@ func (r *Room) matchFor(side int) *MatchView {
 }
 
 // resultFor is one action's outcome as one person sees it.
-func (r *Room) resultFor(id string, ev []action.Event, sideBefore int) ResultView {
+func (r *Room) resultFor(id string, ev []action.Event, sideBefore int, now time.Time) ResultView {
 	side := r.seatOf(id)
 	if side >= 0 && r.Before[side] != nil {
 		ev = r.Game.EventsFor(side, ev, r.Before[side])
 	}
-	return ResultView{Type: "result", Events: ev, SideBefore: sideBefore, Match: r.matchFor(side)}
+	return ResultView{Type: "result", Events: ev, SideBefore: sideBefore, Seq: r.Seq, ThinkMs: r.think(now), Match: r.matchFor(side)}
 }
 
 // ResultView is one action's outcome, sent to everyone in the room.
@@ -362,6 +369,8 @@ type ResultView struct {
 	Type       string         `json:"type"` // "result"
 	Events     []action.Event `json:"events"`
 	SideBefore int            `json:"sideBefore"`
+	Seq        int            `json:"seq"`
+	ThinkMs    int            `json:"thinkMs"`
 	Match      *MatchView     `json:"match"`
 }
 

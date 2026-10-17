@@ -139,9 +139,11 @@ func (g *Game) clock(a action.Action, emit action.Emit) (bool, error) {
 	side := b.Side
 	v.UsedMs += a.Ms
 	v.BankMs[side] -= a.Ms
-	if over := v.UsedMs - v.TurnMs; over > 0 { // the turn clock stops the match clock at its limit
-		v.BankMs[side] += over
-		v.UsedMs = v.TurnMs
+	if v.TurnMs > 0 { // a turn limit, when there is one, stops the match clock at that limit
+		if over := v.UsedMs - v.TurnMs; over > 0 {
+			v.BankMs[side] += over
+			v.UsedMs = v.TurnMs
+		}
 	}
 	if v.BankMs[side] <= 0 {
 		v.BankMs[side], v.TimedOut = 0, side
@@ -155,7 +157,7 @@ func (g *Game) clock(a action.Action, emit action.Emit) (bool, error) {
 		}
 		return true, nil
 	}
-	if v.UsedMs >= v.TurnMs {
+	if v.TurnMs > 0 && v.UsedMs >= v.TurnMs {
 		emit(action.Event{Kind: action.TurnTimeUp, Side: side})
 		return true, turn.EndTurn(g.C, b, g.Dice, emit)
 	}
@@ -165,7 +167,7 @@ func (g *Game) clock(a action.Action, emit action.Emit) (bool, error) {
 // VersusView is a 1v1 match as the screen shows it. The screen counts the
 // seconds down between answers; the referee's numbers are the real ones.
 type VersusView struct {
-	TurnMs   int    `json:"turnMs"`   // the most one turn may last
+	TurnMs   int    `json:"turnMs"`   // the most one turn may last; 0 means there is none
 	UsedMs   int    `json:"usedMs"`   // used so far in this turn
 	BankMs   [2]int `json:"bankMs"`   // each player's time left
 	TimedOut int    `json:"timedOut"` // -1, or the player whose match clock ran out

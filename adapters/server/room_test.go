@@ -105,24 +105,34 @@ func TestRooms(t *testing.T) {
 			t.Fatal(err)
 		}
 		v := r.Game.B.Versus
-		if r.Game.B.Side != 1 || v.BankMs[0] != 150000-7000 {
-			t.Fatalf("side %d, banks %v", r.Game.B.Side, v.BankMs)
+		charged := 7000 - r.c.Versus.GraceSeconds*1000
+		if r.Game.B.Side != 1 || v.BankMs[0] != r.c.Versus.BankSeconds*1000-charged || r.Seq != 1 {
+			t.Fatalf("side %d, banks %v, seq %d", r.Game.B.Side, v.BankMs, r.Seq)
+		}
+	})
+	t.Run("The first two seconds after a move are free", func(t *testing.T) {
+		r, a, _ := ready(t)
+		if _, err := r.Act(a.ID, action.Action{Kind: action.EndTurn}, t0.Add(time.Duration(r.c.Versus.GraceSeconds)*time.Second)); err != nil {
+			t.Fatal(err)
+		}
+		if r.Game.B.Versus.BankMs[0] != r.c.Versus.BankSeconds*1000 {
+			t.Fatalf("bank %d", r.Game.B.Versus.BankMs[0])
+		}
+	})
+	t.Run("A long think does not end the turn; running the 5 minutes out loses", func(t *testing.T) {
+		r, _, _ := ready(t)
+		if ev := r.Tick(t0.Add(30 * time.Second)); ev != nil || r.Game.B.Side != 0 {
+			t.Fatal("a short think ended the turn")
+		}
+		r.Tick(t0.Add(time.Duration(r.c.Versus.BankSeconds+r.c.Versus.GraceSeconds)*time.Second + time.Second))
+		if r.playing() || r.Game.B.Outcome != state.Lost || r.Winner != 1 {
+			t.Fatalf("outcome %v winner %d playing %v", r.Game.B.Outcome, r.Winner, r.playing())
 		}
 	})
 	t.Run("Phones can't send clock actions: the server keeps the clocks", func(t *testing.T) {
 		r, a, _ := ready(t)
 		if _, err := r.Act(a.ID, action.Action{Kind: action.Clock, Ms: 999999}, t0); err != errClock {
 			t.Fatalf("%v", err)
-		}
-	})
-	t.Run("When the player to move runs out of turn time, the server ends their turn", func(t *testing.T) {
-		r, _, _ := ready(t)
-		if ev := r.Tick(t0.Add(29 * time.Second)); ev != nil || r.Game.B.Side != 0 {
-			t.Fatal("ended early")
-		}
-		r.Tick(t0.Add(30 * time.Second))
-		if r.Game.B.Side != 1 || r.Game.B.Versus.BankMs[0] != 120000 {
-			t.Fatalf("side %d, banks %v", r.Game.B.Side, r.Game.B.Versus.BankMs)
 		}
 	})
 	t.Run("The winner stays on: the loser goes to the back of the line and the next in line takes their side", func(t *testing.T) {
@@ -172,7 +182,7 @@ func TestRooms(t *testing.T) {
 		r, a, b := ready(t)
 		cy, _ := r.Join("Cy")
 		count := func(id string) (mine, theirs int) {
-			v := r.viewFor(id).Match.View.(engine.View)
+			v := r.viewFor(id, t0).Match.View.(engine.View)
 			for _, u := range v.Units {
 				if u.Team == r.seatOf(id) || r.seatOf(id) < 0 && u.Team == 0 {
 					mine++

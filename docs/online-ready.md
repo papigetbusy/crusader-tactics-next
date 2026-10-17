@@ -10,17 +10,14 @@ The question: can the same game screen later play against a server instead of th
 - **Saves don't carry the dice.** A loaded save gets fresh dice, so a copy of the game on a player's phone cannot be used to see the next roll.
 
 ## What has to be built for online (in order)
-1. **Two player sides in the referee.** Today the second side is always the monsters' AI. Versus needs side 2 to wait for a player's actions. Tested first as "pass the phone" on one device. This is rules work, so it is Claude's.
-2. **Clocks in the referee.** The referee can't read a clock, so the server writes the seconds used on each action it passes on, and the referee keeps the turn and match clocks and decides when time runs out. They are shown in the View.
-3. **Waiting for answers.** Today every answer comes back instantly. Over the internet it takes a moment. The plan:
-   - Real actions (move, attack, end turn) go to the server, which is the only judge and rolls the dice.
-   - After each action the server sends back the events and the game (as save text). The phone loads it into its own copy of the referee, used only for "what if" questions (where can I walk, the attack window, the danger zone). Those stay instant and need no internet round trip.
-   - Only `referee.js` changes, plus the few places that send real actions waiting for the reply.
-4. **The server.** A small Go program that runs the same `sim/` referee, with room codes. GitHub Pages can't run it, so it needs a small host.
-5. **"Play online" on the screen.** Make a room, join with a code, then the match.
+1. **Two player sides in the referee.** Done 2026-10-16. Pass the phone is on the title screen.
+2. **Clocks in the referee.** Done. The server writes the time on each action. Each player has 5 minutes and there is no per-turn limit (owner, 2026-10-16). The first 2 seconds after a move are not charged. Running out of the 5 minutes loses.
+3. **Waiting for answers.** Done. Real moves go to the server. The phone's own copy only answers "where can I walk" and the attack window.
+4. **The server.** Done in `adapters/server`. It is not on Render until the owner follows `online-setup.md`.
+5. **"Play online" on the screen.** Done. Versus → Online. A refresh keeps the same seat. A missed move snaps to the server's board.
 
-## What the owner needs to set up (when we get to step 4)
-- **An account on a small host** for the server, such as Render or Fly.io. We'll check current prices together then. A free plan that sleeps when nobody plays is fine for testing with friends.
-- **Decisions still open** (from `next-steps.md`): seconds per turn and per player, the map (fixed or random, and its size), which purple set each class gets, and what happens when a clock runs out.
+## What the owner needs to set up (step 4, still open)
+- **An account on Render**, following `docs/online-setup.md`. A free plan that sleeps when nobody plays is fine for testing with friends. The first person to join after a sleep waits up to a minute.
+- Rooms live in the server's memory. A restart wipes a match in progress. That is accepted for these first games.
 
-Nothing else is needed from the owner. No extra accounts or keys are needed for steps 1 to 3.
+Settled by the owner (2026-10-16): 5 minutes each, no per-turn limit, a mirrored 12×12 map, one fixed purple set per class, and running out of the 5 minutes loses.

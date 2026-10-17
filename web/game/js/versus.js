@@ -7,6 +7,7 @@ import * as playback from './playback.js';
 import { heroPicUrl } from './team.js';
 import { cover } from './sysmenu.js';
 import { isVersus, onlineSeat } from './side.js';
+import { think } from './online.js';
 
 const $ = (id) => document.getElementById(id);
 const NAME = ['Player 1 · Blue', 'Player 2 · Red'], SHORT = ['BLUE', 'RED'], COL = ['#4fa8ff', '#ff5d5d'];
@@ -148,21 +149,23 @@ export function tick(now) {
   const bar = $('vsClock'), v = view();
   if (!isVersus(v)) { if (bar) bar.hidden = true; return; }
   const net = onlineSeat() !== null; // online the server keeps time; this only shows it
-  const counting = live() && !playback.playing() && (net || (!held && $('vsHand') && $('vsHand').hidden));
-  if (counting) pending += now - (last || now);
+  const counting = live() && (net || (!playback.playing() && !held && $('vsHand') && $('vsHand').hidden));
+  if (counting && !net) pending += now - (last || now);
   last = now;
-  const c = v.versus, side = v.side, used = c.usedMs + pending;
-  const bank = (s) => (s === side ? c.bankMs[s] - Math.min(pending, Math.max(0, c.turnMs - c.usedMs)) : c.bankMs[s]);
+  const c = v.versus, side = v.side;
+  const spend = net ? think() : pending;
+  const leftBank = (s) => Math.max(0, s === side ? c.bankMs[s] - spend : c.bankMs[s]);
   if (bar) {
     bar.hidden = false;
     const chip = $('chip');
     if (chip) bar.style.right = Math.max(8, innerWidth - chip.getBoundingClientRect().left + 6) + 'px';
     bar.innerHTML = [0, 1].map((s) => {
-      const on = s === side && !v.outcome, left = Math.max(0, c.turnMs - used);
-      return `<div class="vsc${on ? ' on' : ''}" style="--c:${COL[s]}"><div class="who">${SHORT[s]}</div><div class="t">${mmss(bank(s))}</div>${on ? `<div class="tb"><i style="width:${(100 * left) / c.turnMs}%;${left < 10000 ? 'background:#ff5d5d' : ''}"></i></div><div class="tt">turn ${mmss(left)}</div>` : '<div class="tt">waiting</div>'}</div>`;
+      const on = s === side && !v.outcome, left = leftBank(s);
+      const turn = c.turnMs > 0 && on ? `<div class="tb"><i style="width:${(100 * Math.max(0, c.turnMs - c.usedMs - spend)) / c.turnMs}%;${c.turnMs - c.usedMs - spend < 10000 ? 'background:#ff5d5d' : ''}"></i></div><div class="tt">turn ${mmss(Math.max(0, c.turnMs - c.usedMs - spend))}</div>` : `<div class="tt">${on ? 'your time' : 'waiting'}</div>`;
+      return `<div class="vsc${on ? ' on' : ''}" style="--c:${COL[s]}"><div class="who">${SHORT[s]}</div><div class="t">${mmss(left)}</div>${turn}</div>`;
     }).join('');
   }
-  if (counting && !net && !asked && sendIt && (used >= c.turnMs || bank(side) <= 0)) {
+  if (counting && !net && !asked && sendIt && leftBank(side) <= 0) {
     asked = true;
     sendIt({ kind: 'clock' });
   }

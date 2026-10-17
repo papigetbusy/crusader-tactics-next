@@ -4,7 +4,7 @@ package state
 // players' heroes, there are no monsters, and each player has clocks. The
 // referee never reads a clock; the time used comes with each action.
 type Versus struct {
-	TurnMs   int    // the most one turn may last
+	TurnMs   int    // the most one turn may last; 0 means no per-turn limit
 	BankMs   [2]int // each player's time left for the whole match
 	UsedMs   int    // time used so far in the current turn
 	TimedOut int    // -1, or the side whose match clock ran out (that side lost)

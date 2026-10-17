@@ -9,7 +9,7 @@ import * as playback from './playback.js';
 import { cover } from './sysmenu.js';
 import { setSeat, onlineSeat } from './side.js';
 import { chooseTeam, charged } from './versus.js';
-import { playOut } from './battle.js';
+import { playOut, refresh } from './battle.js';
 
 const $ = (id) => document.getElementById(id);
 const NAMES = ['Blue', 'Red'], COL = ['#4fa8ff', '#ff5d5d'];
@@ -18,9 +18,20 @@ const NAMES = ['Blue', 'Red'], COL = ['#4fa8ff', '#ff5d5d'];
 const SERVER = new URLSearchParams(location.search).get('server') ||
   (location.hostname.endsWith('github.io') ? 'https://crusader-tactics.onrender.com' : '');
 let screen = null, me = null, room = null, es = null, inMatch = false, queue = [], busy = false, mine = null, fails = 0;
+let seen = 0, inflight = false, clock = null, pendingClock = null;
 
 export const wire = (s) => { screen = s; };
 export const on = () => inMatch && onlineSeat() !== null;
+// think is how much of the bank the server would charge right now.
+export function think() {
+  if (!clock) return 0;
+  return Math.max(0, clock.thinkMs + (performance.now() - clock.at));
+}
+function noteClock(m) {
+  if (m.thinkMs == null) return;
+  if (m.seq != null && m.seq < seen) return;
+  clock = { thinkMs: m.thinkMs, at: performance.now(), seq: m.seq || 0 };
+}
 const store = (k, v) => { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) { /* private mode */ } };
 const read = (k) => { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } };
 
@@ -57,24 +68,28 @@ export function lobby() {
     $('olGo').disabled = false;
     if (r.error) return ($('olMsg').textContent = r.error);
     me = r.token;
+    store('ctn-token', me);
     w.hidden = true;
     listen();
   };
 }
 
 function listen() {
-  if (es) es.close();
+  if (es) { es.onerror = null; es.close(); }
   es = new EventSource(SERVER + '/api/stream?token=' + me);
   es.onmessage = (e) => {
     fails = 0;
     let m;
     try { m = JSON.parse(e.data); } catch (err) { return; }
+    if (m.type === 'clock') { if (!busy && !playback.playing()) noteClock(m); return; }
     if (m.type === 'result') queue.push(m);
-    else room = m;
+    else { room = m; if (!busy && !playback.playing()) noteClock(m); }
     pump();
   };
   es.onerror = () => {
-    if (++fails >= 4 && es.readyState === EventSource.CLOSED) lost();
+    if (es && es.readyState !== EventSource.CLOSED) return;
+    if (++fails < 4) { setTimeout(listen, 1000); return; }
+    lost();
   };
 }
 
@@ -82,11 +97,27 @@ function lost() {
   if (es) es.close();
   const w = cover('olRoomWin');
   w.className = 'cover olw';
-  w.innerHTML = `<div class="panel box"><div class="ttl">Connection lost</div><p>The room could not be reached.</p>
-    <div class="btns"><button class="b" id="olRe">Join again</button><button class="b" id="olT">Title screen</button></div></div>`;
+  w.innerHTML = `<div class="panel box"><div class="ttl">Connection lost</div><p>The room could not be reached. Your seat is still yours if you get back in.</p>
+    <div class="btns"><button class="b" id="olRe">Try again</button><button class="b" id="olT">Title screen</button></div></div>`;
   w.hidden = false;
-  $('olRe').onclick = () => location.reload();
-  $('olT').onclick = () => location.reload();
+  $('olRe').onclick = () => { w.hidden = true; fails = 0; resume(); };
+  $('olT').onclick = () => { store('ctn-token', null); location.reload(); };
+}
+
+// resume is the same person coming back after a refresh. A dead token is forgotten.
+export function resume() {
+  const token = read('ctn-token'), pw = read('ctn-room');
+  if (!token || !pw) return;
+  post('/api/join', { room: pw, name: read('ctn-name'), token }).then((r) => {
+    if (r.error || !r.token) {
+      if (r.error && /not in this room|full/i.test(r.error)) store('ctn-token', null);
+      return;
+    }
+    me = r.token;
+    store('ctn-token', me);
+    fails = 0;
+    listen();
+  });
 }
 
 // ---------- what comes from the room, in order ----------
@@ -100,10 +131,22 @@ function pump() {
 }
 
 function result(r) {
-  if (!inMatch || !r.match) { pump(); return; }
+  if (!inMatch || !r.match || (r.seq && r.seq <= seen)) { inflight = false; pump(); return; }
+  const missed = r.seq > seen + 1;
+  seen = r.seq || seen;
+  inflight = false;
   sync(r.match.save);
+  if (missed) {
+    mine = null;
+    noteClock(r);
+    refresh(r.match.view);
+    charged();
+    pump();
+    return;
+  }
   const yours = mine && r.sideBefore === onlineSeat() ? mine : null;
   mine = null;
+  pendingClock = { thinkMs: r.thinkMs || 0, seq: r.seq || seen };
   busy = true;
   charged();
   playOut({ events: r.events, view: r.match.view }, yours ? yours.message : '', yours ? yours.then : null, r.sideBefore);
@@ -112,6 +155,7 @@ function result(r) {
 // played is called by the battle once an answer has finished playing.
 export function played(r) {
   busy = false;
+  if (pendingClock) { noteClock(pendingClock); pendingClock = null; }
   charged();
   const v = r.view;
   if (v.outcome) {
@@ -136,11 +180,21 @@ function draw() {
     if (!inMatch || room.matches !== draw.n) {
       draw.n = room.matches;
       inMatch = true;
+      seen = room.seq || 0;
       setSeat(room.yourSide);
       sync(room.match.save);
       screen.start(room.match.view);
       charged();
       screen.log(room.yourSide >= 0 ? `You are ${NAMES[room.yourSide]}. ${room.match.view.side === room.yourSide ? 'Your turn!' : 'Waiting for ' + NAMES[1 - room.yourSide] + '.'}` : 'You are watching. Your turn comes when you reach the front of the line.');
+      return;
+    }
+    if ((room.seq || 0) > seen && !busy && !playback.playing()) {
+      seen = room.seq;
+      inflight = false;
+      mine = null;
+      sync(room.match.save);
+      refresh(room.match.view);
+      charged();
     }
     return;
   }
@@ -180,7 +234,7 @@ function roomPanel() {
     w.hidden = true;
     chooseTeam(side, room.yourTeam || [], () => { w.hidden = false; }, (team) => { w.hidden = false; call('/api/team', { team }); }, 'Ready');
   };
-  $('olLeave').onclick = async () => { await post('/api/leave', { token: me }); location.reload(); };
+  $('olLeave').onclick = async () => { store('ctn-token', null); if (es) es.close(); await post('/api/leave', { token: me }); location.reload(); };
 }
 
 async function call(path, body) {
@@ -197,9 +251,11 @@ const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 export function act(action, message, then) {
   const v = screen.st.view;
   if (!v || v.side !== onlineSeat() || v.outcome) { screen.log('It is not your turn.'); return false; }
+  if (inflight) return false;
   mine = { message, then };
+  inflight = true;
   post('/api/act', { token: me, action }).then((r) => {
-    if (r.error) { mine = null; screen.log(r.error); }
+    if (r.error) { inflight = false; mine = null; screen.log(r.error); }
   });
   return true;
 }

@@ -64,6 +64,13 @@ function send(action, message, then) {
   return true;
 }
 
+// refresh shows a View with no animation. Online uses it to catch up.
+export function refresh(view) {
+  clear();
+  screen.show(view);
+  after();
+}
+
 // playOut plays an answer's events, then shows its View.
 export function playOut(r, message, then, sideBefore) {
   clear();

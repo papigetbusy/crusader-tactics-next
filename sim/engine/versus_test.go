@@ -162,15 +162,15 @@ func TestVersus(t *testing.T) {
 		}
 	})
 
-	t.Run("Running out of turn time ends the turn, and the match clock stops at the turn limit", func(t *testing.T) {
+	t.Run("There is no per-turn limit: a long think does not end the turn", func(t *testing.T) {
 		g := versus(t)
 		v := g.B.Versus
-		ev, err := g.Apply(action.Action{Kind: action.Clock, Ms: v.TurnMs + 9000})
-		if err != nil || g.B.Side != state.Enemies || !has(ev, action.TurnTimeUp) {
-			t.Fatalf("side %d events %v: %v", g.B.Side, ev, err)
+		ev, err := g.Apply(action.Action{Kind: action.Clock, Ms: 60000})
+		if err != nil || g.B.Side != state.Heroes || has(ev, action.TurnTimeUp) || g.B.Outcome != state.Ongoing {
+			t.Fatalf("side %d outcome %q events %v: %v", g.B.Side, g.B.Outcome, ev, err)
 		}
-		if v.BankMs[0] != g.C.Versus.BankSeconds*1000-v.TurnMs || v.UsedMs != 0 {
-			t.Fatalf("bank %d used %d", v.BankMs[0], v.UsedMs)
+		if v.BankMs[0] != g.C.Versus.BankSeconds*1000-60000 || v.UsedMs != 60000 || v.TurnMs != 0 {
+			t.Fatalf("bank %d used %d turn %d", v.BankMs[0], v.UsedMs, v.TurnMs)
 		}
 	})
 
@@ -222,7 +222,7 @@ func TestVersusRules(t *testing.T) {
 	c := content.MustDefault()
 	t.Run("The versus picker is told the team size, level, clocks and every class's three ascensions in words", func(t *testing.T) {
 		r := VersusRules(c)
-		if r.Team != 8 || r.Level != 30 || r.TurnSeconds != 30 || r.BankSeconds != 150 || len(r.Classes) != 10 {
+		if r.Team != 8 || r.Level != 30 || r.TurnSeconds != 0 || r.BankSeconds != 300 || r.GraceSeconds != 2 || len(r.Classes) != 10 {
 			t.Fatalf("%+v", r)
 		}
 		for _, cl := range r.Classes {

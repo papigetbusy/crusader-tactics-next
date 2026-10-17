@@ -112,4 +112,21 @@ func TestOverTheInternet(t *testing.T) {
 			t.Fatal("a fifth person got in")
 		}
 	})
+	t.Run("Joining again with the same token is the same person, not a second one", func(t *testing.T) {
+		s := newServer(content.MustDefault())
+		srv := httptest.NewServer(s.routes())
+		defer srv.Close()
+		tok := call(t, srv.URL, "/api/join", map[string]any{"room": "again", "name": "Ann"})["token"].(string)
+		back := call(t, srv.URL, "/api/join", map[string]any{"room": "again", "name": "Ann", "token": tok})["token"].(string)
+		if back != tok {
+			t.Fatalf("came back as %s", back)
+		}
+		ctx, stop := context.WithCancel(context.Background())
+		defer stop()
+		ch := listen(t, ctx, srv.URL, tok)
+		m := wait(t, ch, func(m map[string]any) bool { return m["type"] == "room" })
+		if len(m["people"].([]any)) != 1 {
+			t.Fatalf("people %v", m["people"])
+		}
+	})
 }

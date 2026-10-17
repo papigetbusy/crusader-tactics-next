@@ -141,14 +141,16 @@ The owner's order: first iron out every flaw and match the original game as clos
 Versus rules (owner, 2026-10-11):
 - Each player picks 8 heroes. All are set to Lv 30, and the player picks each hero's ascension.
 - Everyone wears a full purple gear set, so every match is even.
-- Chess.com-style clocks: a time limit per turn, plus an overall time for each player.
+- Chess.com-style clocks were the first idea. Superseded 2026-10-16: 5 minutes total, no per-turn limit.
 - A match lasts about 5 minutes at most.
 
 Rules for the online work (owner, 2026-10-11). Do not build these now:
 - A whole climb must replay from its seed plus the list of actions and come out identical.
 - The turn clock and the match clock live in the referee and are shown in the View. The screen only displays them. Running out of time is the referee's decision.
 - Settled by the owner (2026-10-16):
-  - Clocks: 30 seconds per turn, and 2½ minutes in total for each player.
+  - Clocks: each player has 5 minutes for the whole match and may use it all on one turn. There is no per-turn limit (owner, 2026-10-16; was 30 seconds a turn and 2½ minutes).
+  - Online, the server keeps the clock. The first 2 seconds after each move are not charged, so watching a hit does not eat the 5 minutes.
+  - A refresh keeps the same seat. A phone that missed a move jumps to the server's board.
   - Map: random but mirrored, 12×12, so neither side gets better ground.
   - Gear: one fixed best purple set per class, chosen by Claude, so every match is even.
   - Time out: running out of turn time ends the turn. Running out of your total time loses the match.
@@ -192,7 +194,9 @@ Estimate: about 3 sessions once the game matches the original.
   - The phone loads the server's match into its own copy of the referee only to answer "where can I walk" and the attack window.
   - Only the side to move can act, and a watcher can't act at all. Gear and skill changes also go through the server.
 - **Hosting:** `Dockerfile`, `render.yaml` and `adapters/server/build-site.sh`. The owner's steps are in `online-setup.md`.
-- **Tested here:** three phone-sized browsers in one room against the real server. Sides, teams, a move shown on all three, the turn passing, the watcher only watching, and the server ending a turn when the 30 seconds ran out.
+- **Tested here:** three phone-sized browsers in one room against the real server. Sides, teams, a move shown on all three, the turn passing, and the watcher only watching. The owner still has to put the server on Render (`online-setup.md`) before friends can join from their phones.
+
+**Tightened (owner, 2026-10-16), in the same rooms:** 5 minutes each and no per-turn limit. The server's clock is the one on screen, with 2 free seconds after every move. Refreshing the page keeps your seat. Missing a move snaps the board to the server instead of staying on the old one. A second tap is ignored while a move is in flight.
 
 **Fog of war and the biggest map (2026-10-16, owner):**
 - **The map:** versus maps are 32×32, the climb's biggest.

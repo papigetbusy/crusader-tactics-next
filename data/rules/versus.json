@@ -1,10 +1,11 @@
 {
-  "_about": "Online 1v1 versus (owner, 2026-10-11 and 2026-10-16). Each player brings team heroes at level, with their chosen ascensions and one fixed purple set per class. The map is size x size, random but mirrored so neither side gets better ground. Each turn may last turnSeconds; each player has bankSeconds for the whole match. Running out of turn time ends the turn; running out of your total time loses the match. The map is the climb's biggest size (owner, 2026-10-16). Fog of war (owner, 2026-10-16): each side sees only the enemy units within vision tiles (steps, not counting diagonals) of one of its own units; the ground is always seen.",
+  "_about": "Online 1v1 versus (owner, 2026-10-11 and 2026-10-16). Each player brings team heroes at level, with their chosen ascensions and one fixed purple set per class. The map is size x size, random but mirrored so neither side gets better ground. turnSeconds 0 means there is no per-turn limit. Each player has bankSeconds for the whole match and may spend it all on one turn. Running out of that time loses the match. Online, the server does not charge the first graceSeconds after each move. The map is the climb's biggest size. Fog of war: each side sees only the enemy units within vision tiles (steps, not counting diagonals) of one of its own units; the ground is always seen.",
   "team": 8,
   "level": 30,
   "size": 32,
-  "turnSeconds": 30,
-  "bankSeconds": 150,
+  "turnSeconds": 0,
+  "bankSeconds": 300,
+  "graceSeconds": 2,
   "fog": true,
   "vision": 6
 }

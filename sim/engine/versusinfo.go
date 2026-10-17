@@ -9,11 +9,12 @@ import (
 // VersusInfo is what the screen needs to let players pick a versus team: the
 // rules' numbers and each class's ascensions in words.
 type VersusInfo struct {
-	Team        int               `json:"team"`
-	Level       int               `json:"level"`
-	TurnSeconds int               `json:"turnSeconds"`
-	BankSeconds int               `json:"bankSeconds"`
-	Classes     []VersusClassInfo `json:"classes"`
+	Team         int               `json:"team"`
+	Level        int               `json:"level"`
+	TurnSeconds  int               `json:"turnSeconds"`
+	BankSeconds  int               `json:"bankSeconds"`
+	GraceSeconds int               `json:"graceSeconds"`
+	Classes      []VersusClassInfo `json:"classes"`
 }
 
 // VersusClassInfo is one hero class and the ascensions it can take.
@@ -34,7 +35,7 @@ type VersusAscension struct {
 // VersusRules describes versus for the team picker, classes in name order.
 func VersusRules(c *content.Content) VersusInfo {
 	k := c.Versus
-	out := VersusInfo{Team: k.Team, Level: k.Level, TurnSeconds: k.TurnSeconds, BankSeconds: k.BankSeconds}
+	out := VersusInfo{Team: k.Team, Level: k.Level, TurnSeconds: k.TurnSeconds, BankSeconds: k.BankSeconds, GraceSeconds: k.GraceSeconds}
 	var names []string
 	for cl := range c.AscensionChoices {
 		names = append(names, cl)
