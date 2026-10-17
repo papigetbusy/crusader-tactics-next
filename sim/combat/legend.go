@@ -107,9 +107,10 @@ func critRefund(u *state.Unit) {
 	}
 }
 
-// lifeline is the Healer's Lifeline: once per battle, an ally (or the
-// Healer) who would fall stays at 1 HP.
-func lifeline(b *state.Battle, v *state.Unit, emit action.Emit) {
+// Lifeline is the Healer's Lifeline: once per battle, an ally (or the
+// Healer) who would fall stays at 1 HP, whatever brought them down: a hit,
+// or poison, burn or bleed at the start of their turn.
+func Lifeline(b *state.Battle, v *state.Unit, emit action.Emit) {
 	if v.HP > 0 {
 		return
 	}
@@ -180,7 +181,7 @@ func afterLegendHit(c *content.Content, b *state.Battle, dice rng.Dice, a Attack
 			ex := max(1, int(Round(float64(dm)*pct(n))))
 			z.HP -= ex
 			emit(action.Event{Kind: action.Hit, Unit: u.ID, Target: z.ID, Amount: ex, Skill: "Ricochet"})
-			lifeline(b, z, emit)
+			Lifeline(b, z, emit)
 			if z.HP <= 0 {
 				died(c, b, dice, u, z, emit)
 			}
@@ -249,7 +250,7 @@ func statusPowers(c *content.Content, b *state.Battle, a Attack, v *state.Unit, 
 		slices.Sort(keys)
 		got := map[string]int{}
 		for _, q := range keys {
-			if shrugs(z, q) || (z.Ascension == "Juggernaut" && slices.Contains(juggernautImmune, q)) || (z.Ascension == "Frost Wyrm" && q == "snare") {
+			if resists(z, q) {
 				continue
 			}
 			if z.Status == nil {

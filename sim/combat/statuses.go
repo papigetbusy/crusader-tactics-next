@@ -23,6 +23,13 @@ var hexed = []string{"poison", "weak", "brk", "snare"}
 // juggernautImmune are the statuses that never stick to a Juggernaut.
 var juggernautImmune = []string{"stun", "snare", "brk", "shock", "lock", "ivy"}
 
+// resists reports a status that never sticks to v: a Juggernaut shrugs off
+// control, a Frost Wyrm roots, and Wyrm's Hide burns and freezes. Every way
+// of putting a status on a unit asks this one question.
+func resists(v *state.Unit, q string) bool {
+	return (v.Ascension == "Juggernaut" && slices.Contains(juggernautImmune, q)) || (v.Ascension == "Frost Wyrm" && q == "snare") || shrugs(v, q)
+}
+
 // applyStatuses puts the hit's statuses on a target that survived (old
 // hurt, lines 1702-1703): the skill's own, lightning's shock, Beast Mode's
 // burn chance, Inner Element, Poison Ivy, and the ascension passives. A
@@ -111,10 +118,7 @@ func applyStatuses(c *content.Content, b *state.Battle, dice rng.Dice, a Attack,
 		if h := u.Af("hexMastery"); h > 0 && u.Team != v.Team {
 			n += h // Hex Mastery (approved 2026-10-17)
 		}
-		if shrugs(v, q) {
-			continue
-		}
-		if (v.Ascension == "Juggernaut" && slices.Contains(juggernautImmune, q)) || (v.Ascension == "Frost Wyrm" && q == "snare") {
+		if resists(v, q) {
 			continue
 		}
 		v.Status[q] = max(v.Status[q], n)

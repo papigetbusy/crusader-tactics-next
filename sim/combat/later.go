@@ -21,7 +21,7 @@ var curses = append(slices.Clone(cleansable), "hmark", "silence", "slow", "withe
 // putStatus puts a status on v unless v cannot have it (a Juggernaut cannot
 // be stunned, snared or broken; a Frost Wyrm cannot be snared).
 func putStatus(v *state.Unit, q string, n int, emit action.Emit) {
-	if (v.Ascension == "Juggernaut" && slices.Contains(juggernautImmune, q)) || (v.Ascension == "Frost Wyrm" && q == "snare") {
+	if resists(v, q) {
 		return
 	}
 	v.Status[q] = max(v.Status[q], n)
@@ -106,6 +106,7 @@ func openVeins(c *content.Content, b *state.Battle, dice rng.Dice, u, v *state.U
 		v.HP -= n
 		v.Status[q] *= 2
 		emit(action.Event{Kind: action.Ticked, Unit: v.ID, Amount: n, Statuses: map[string]int{q: v.Status[q]}})
+		Lifeline(b, v, emit)
 		if v.HP <= 0 {
 			died(c, b, dice, u, v, emit)
 			return

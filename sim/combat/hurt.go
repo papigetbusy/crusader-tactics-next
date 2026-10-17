@@ -125,7 +125,7 @@ func Hurt(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit act
 		emit(action.Event{Kind: action.Hit, Unit: u.ID, Target: v.ID, Amount: ex, Skill: "fire"})
 	}
 	afterHit(c, b, a, v, dm, emit)
-	lifeline(b, v, emit)
+	Lifeline(b, v, emit)
 
 	if v.HP > 0 {
 		res.Statuses = applyStatuses(c, b, dice, a, v)

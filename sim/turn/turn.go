@@ -99,6 +99,11 @@ func Start(c *content.Content, b *state.Battle, dice rng.Dice, side int, emit ac
 			u.HP = min(u.MaxHP, u.HP+int(combat.Round(float64(u.MaxHP)*0.1)))
 		}
 	}
+	for _, u := range members(b, side) {
+		if u.HP <= 0 && !u.Undead && !u.Decoy {
+			combat.Lifeline(b, u, emit) // poison, burn, bleed or an aftershock
+		}
+	}
 	for _, u := range slices.Clone(b.Units) {
 		if u.HP <= 0 && (u.Undead || u.Decoy) {
 			combat.Burst(c, b, dice, u, emit)

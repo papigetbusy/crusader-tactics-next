@@ -77,7 +77,7 @@ func UseAbility(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Uni
 		target.Done, target.Moved, target.Acted, target.Undo = false, false, false, nil
 		target.Status["haste"] = max(target.Status["haste"], 2)
 	case "freeze":
-		if !shrugs(target, "frozen") { // Wyrm's Hide (approved 2026-10-17)
+		if !resists(target, "frozen") { // Wyrm's Hide (approved 2026-10-17)
 			target.Status["frozen"] = 2
 		}
 	case "deathMark":

@@ -123,3 +123,19 @@ func TestClassLegendarySetsOfFour(t *testing.T) {
 		}
 	})
 }
+
+func TestStatusImmunityEverywhere(t *testing.T) {
+	t.Run("Contagion can't burn a Dragon Knight with Wyrm's Hide, but still burns the others", func(t *testing.T) {
+		_, b := open7()
+		w := add(b, 1, state.Heroes, "Witch", 0, 0)
+		v := add(b, 2, state.Enemies, "Orc Brute", 3, 3)
+		dk := add(b, 3, state.Enemies, "Dragon Knight", 3, 4)
+		other := add(b, 4, state.Enemies, "Orc Brute", 2, 3)
+		power(dk, "wyrmhide", 1)
+		v.Status["burn"] = 3
+		contagion(b, w, v, nop)
+		if dk.Status["burn"] != 0 || other.Status["burn"] != 3 {
+			t.Fatalf("Dragon Knight %v, other %v", dk.Status, other.Status)
+		}
+	})
+}
