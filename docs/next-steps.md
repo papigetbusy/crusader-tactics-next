@@ -209,7 +209,7 @@ Estimate: about 3 sessions once the game matches the original.
   - On one phone, each player gets their own view at the hand-over.
   - Online, each player's phone is sent only what they can see, so their copy of the match can't be used to peek. Watchers see everything.
   - Tiles out of sight are darkened on screen.
-- **Camera:** each player's camera now starts at their own edge of the map.
+- **Camera:** each player is drawn with their own heroes at the bottom of the screen. The map is not a second board: the picture turns 180° for the side that starts at the top (pass the phone does this when the phone is handed over; online does it for that seat the whole match). Taps still use the real tiles. The hero picker keeps its place when you tap a hero, instead of jumping to the top.
 - **Tests:** 10 fog tests, plus the online test checks Bo can't see Ann's move while Cy the watcher can.
 
 **Next:** the owner sets up Render (`online-setup.md`) and plays with friends. Then chat and emojis, and after that the ideas list (chess feel first).

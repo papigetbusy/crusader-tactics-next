@@ -93,8 +93,8 @@ export function fill() {
 }
 
 // toEdge puts the camera at the top or bottom edge of the map, leaving room
-// for the top bar (and the back row's heads) or End Turn: where each versus
-// player's heroes start.
+// for the top bar (and the back row's heads) or End Turn. Versus always
+// uses the bottom: that player's heroes are drawn there.
 export function toEdge(atTop) {
   const k = cam.k0 * cam.zt, vh = cam.h / k;
   if (vh >= map.wh) return;

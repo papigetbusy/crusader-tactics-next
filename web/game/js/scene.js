@@ -65,7 +65,7 @@ export function draw(canvas, st) {
 let plate = null;
 function paintGround(g, st, now, calm) {
   const v = st.view;
-  const key = [map.n, map.flat ? 1 : 0, map.ang, map.biome, v.floor, calm ? 1 : 0, v.throne ? 1 : 0].join('|');
+  const key = [map.n, map.flat ? 1 : 0, map.ang, map.flip ? 1 : 0, map.biome, v.floor, calm ? 1 : 0, v.throne ? 1 : 0].join('|');
   if (!plate) plate = { c: document.createElement('canvas'), key: '', at: 0 };
   const refresh = plate.key !== key;
   if (refresh) {

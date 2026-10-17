@@ -48,6 +48,7 @@ export function chooseTeam(side, start, back, done, goText) {
   const w = cover('vsPick'), team = (start || []).map((p) => Object.assign({}, p));
   const draw = () => {
     const n = team.length, need = rules.team;
+    const keep = (w.querySelector('.vsGrid') || {}).scrollTop || 0;
     w.innerHTML = `<div class="panel picker vsp"><div class="vsP" style="color:${COL[side]}">${NAME[side].toUpperCase()}</div>
       <h3>Choose ${need} heroes</h3><div class="vsCount">${n} / ${need} chosen · tap a hero, then its ascension</div>
       <div class="vsGrid">${rules.classes.map((c) => {
@@ -57,6 +58,8 @@ export function chooseTeam(side, start, back, done, goText) {
       }).join('')}</div>
       <div class="btns"><button class="b" id="vsPBack">Back</button><button class="b" id="vsPGo" ${n === need ? '' : 'disabled'}>${goText}</button></div></div>`;
     w.hidden = false;
+    const grid = w.querySelector('.vsGrid');
+    if (grid && keep) { grid.scrollTop = keep; requestAnimationFrame(() => { grid.scrollTop = keep; }); }
     w.querySelectorAll('[data-c]').forEach((b) => (b.onclick = () => {
       const cl = b.dataset.c, i = team.findIndex((x) => x.class === cl);
       if (i >= 0) team.splice(i, 1);
@@ -115,7 +118,7 @@ export function after(events, sideBefore) {
   const timeOut = events.some((e) => e.kind === 'turn-time');
   const said = (timeOut ? `${SHORT[foe][0] + SHORT[foe].slice(1).toLowerCase()}'s turn time ran out. ` : '') +
     (dmg ? `Last turn your heroes took ${dmg} damage.` : 'Last turn nobody hit your heroes.') + (lost.length ? ` You lost ${lost.length} hero${lost.length > 1 ? 'es' : ''}.` : '');
-  handOver(me, `Hand the phone to ${NAME[me].split(' · ')[0]}. ${said}`, `I'm ${NAME[me].split(' · ')[0]} · Start`);
+  handOver(me, `Hand the phone to ${NAME[me].split(' · ')[0]}. ${said} Your heroes are at the bottom.`, `I'm ${NAME[me].split(' · ')[0]} · Start`);
 }
 
 function ended(events) {

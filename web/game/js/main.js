@@ -3,7 +3,7 @@
 // no game state of its own: everything comes from the referee's View.
 import * as referee from './referee.js';
 import * as assets from './assets.js';
-import { map, setSize } from './board.js';
+import { map, setSize, setFlip } from './board.js';
 import { cam, controls, frame, resize, onMove, moving, closeUp, overview, toEdge } from './camera.js';
 import * as scene from './scene.js';
 import * as minimap from './minimap.js';
@@ -14,7 +14,7 @@ import * as sysmenu from './sysmenu.js';
 import * as tips from './tips.js';
 import * as title from './title.js';
 import * as gear from './gear.js';
-import { mine, isVersus } from './side.js';
+import { mine, isVersus, mySide } from './side.js';
 import * as versus from './versus.js';
 import * as online from './online.js';
 import * as skills from './skills.js';
@@ -87,15 +87,12 @@ export function show(view, again) {
   map.ground = view.ground || [];
   map.heights = view.heights || [];
   map.biome = view.biome || 'Grasslands';
+  setFlip(isVersus(view) && mySide(view) === 1); // the other side sees the same map turned around
   if (fresh) {
     map.flat = st.opt.flat;
     setSize(view.n);
     frame(st.units.filter((u) => mine(u, view) && !u.companion)); // versus: this player's own heroes
-    if (isVersus(view)) { // start at this player's own edge of the map
-      const mineNow = st.units.filter((u) => mine(u, view));
-      const y = mineNow.length ? mineNow.reduce((a, u) => a + u.y, 0) / mineNow.length : view.n;
-      toEdge(y < view.n / 2);
-    }
+    if (isVersus(view)) toEdge(false); // their heroes are drawn at the bottom
   }
   chip();
   kick();

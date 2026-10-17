@@ -10,6 +10,7 @@ export const map = {
   ox: 480, ww: 960, wh: 620,
   ang: 0, target: 0, from: 0, t0: 0, ca: 1, sa: 0,
   ground: [], heights: [], biome: 'Grasslands',
+  flip: false, // versus: turn the picture 180° so this player's heroes sit at the bottom
 };
 
 export function setSize(n) {
@@ -49,8 +50,25 @@ export function turnStep() {
   m.sa = Math.round(Math.sin(m.ang) * 1e6) / 1e6;
 }
 
+// setFlip turns the picture around for the player who starts at the top of
+// the map, so their own heroes are at the bottom of the screen. The tiles
+// the referee uses do not change. Only the drawing does.
+export function setFlip(on) {
+  on = !!on;
+  if (map.flip === on) return;
+  map.flip = on;
+  tileCache = null;
+}
+
+// spun is a tile (and an offset inside it) after that half turn.
+function spun(x, y, ox, oy) {
+  if (!map.flip) return [x, y, ox, oy];
+  return [map.n - 1 - x, map.n - 1 - y, -ox, -oy];
+}
+
 // pj is where tile (x, y) (plus an offset in tiles) is on the map picture.
 export function pj(x, y, ox = 0, oy = 0) {
+  [x, y, ox, oy] = spun(x, y, ox, oy);
   const m = map, u = x - m.rc + ox, v = y - m.rc + oy;
   const rx = u * m.ca - v * m.sa, ry = u * m.sa + v * m.ca;
   if (m.flat) return { x: m.ox + rx * TS, y: OY + (m.rc + ry) * TS + TS / 2, d: ry * 100 + rx };
@@ -69,7 +87,9 @@ export function unproject(X, Y) {
     rx = (a + b) / 2;
     ry = (b - a) / 2;
   }
-  return [rx * m.ca + ry * m.sa + m.rc, -rx * m.sa + ry * m.ca + m.rc];
+  let tx = rx * m.ca + ry * m.sa + m.rc, ty = -rx * m.sa + ry * m.ca + m.rc;
+  if (m.flip) { tx = m.n - 1 - tx; ty = m.n - 1 - ty; }
+  return [tx, ty];
 }
 
 // feet is where a unit standing on (x, y) touches the ground.
@@ -87,11 +107,11 @@ export const height = (x, y) => (map.heights[y] ? map.heights[y][x] || 0 : 0);
 // change when the map size, the view or the rotation changes, so they are kept.
 let tileCache = null;
 export function tiles() {
-  if (tileCache && tileCache.n === map.n && tileCache.flat === map.flat && tileCache.ang === map.ang) return tileCache.list;
+  if (tileCache && tileCache.n === map.n && tileCache.flat === map.flat && tileCache.ang === map.ang && tileCache.flip === map.flip) return tileCache.list;
   const out = [];
   for (let y = 0; y < map.n; y++) for (let x = 0; x < map.n; x++) out.push([x, y, pj(x, y)]);
   out.sort((a, b) => a[2].d - b[2].d);
-  if (!turning()) tileCache = { n: map.n, flat: map.flat, ang: map.ang, list: out };
+  if (!turning()) tileCache = { n: map.n, flat: map.flat, ang: map.ang, flip: map.flip, list: out };
   return out;
 }
 
@@ -105,7 +125,8 @@ export const hash = (x, y) => ((x * 73856093) ^ (y * 19349663)) >>> 0;
 
 // Screen directions of map right and map down, after rotation.
 function dirs() {
-  const c = Math.round(map.ca), s = Math.round(map.sa);
+  let c = Math.round(map.ca), s = Math.round(map.sa);
+  if (map.flip) { c = -c; s = -s; } // the flat pictures stay upright, so their edges follow the turned map
   return { R: [c, -s], D: [s, c] };
 }
 
