@@ -194,6 +194,20 @@ Estimate: about 3 sessions once the game matches the original.
 - **Hosting:** `Dockerfile`, `render.yaml` and `adapters/server/build-site.sh`. The owner's steps are in `online-setup.md`.
 - **Tested here:** three phone-sized browsers in one room against the real server. Sides, teams, a move shown on all three, the turn passing, the watcher only watching, and the server ending a turn when the 30 seconds ran out.
 
+**Fog of war and the biggest map (2026-10-16, owner):**
+- **The map:** versus maps are 32×32, the climb's biggest.
+- **The fog:**
+  - Each side sees enemy units only within 6 steps of one of its own units. The number is `vision` in `data/rules/versus.json`.
+  - The ground is always seen.
+  - You can't target what you can't see. The referee refuses it, and the target lists leave hidden units out.
+  - The fog lifts when the match ends.
+- **How it reaches each player:** the referee gives each side its own View (unseen enemies taken out, plus `seen` rows for shading), events and save (`engine.ViewFor`, `EventsFor`, `SaveFor` in `sim/engine/fog.go`).
+  - On one phone, each player gets their own view at the hand-over.
+  - Online, each player's phone is sent only what they can see, so their copy of the match can't be used to peek. Watchers see everything.
+  - Tiles out of sight are darkened on screen.
+- **Camera:** each player's camera now starts at their own edge of the map.
+- **Tests:** 10 fog tests, plus the online test checks Bo can't see Ann's move while Cy the watcher can.
+
 **Next:** the owner sets up Render (`online-setup.md`) and plays with friends. Then chat and emojis, and after that the ideas list (chess feel first).
 
 ### 7. After the full build (owner's reminders)

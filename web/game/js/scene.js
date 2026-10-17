@@ -100,6 +100,8 @@ function paintGround(g, st, now, calm) {
 // [old draw L1858-1866].
 function marks(g, x, y, p, st, now, here, traps, kegs) {
   const key = x + ',' + y, t = top(x, y), v = st.view;
+  // versus fog of war: tiles out of sight are darkened (owner, 2026-10-16)
+  if (v.seen && v.seen[y] && v.seen[y][x] === '0') poly(g, t, 'rgba(4,2,10,.58)');
   if ((st.look && st.look.team && st.look.x === x && st.look.y === y) || (st.aim && st.aim.x === x && st.aim.y === y)) {
     g.save();
     g.strokeStyle = '#f2c14e';

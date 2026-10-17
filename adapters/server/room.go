@@ -45,7 +45,8 @@ type Room struct {
 	Matches  int
 	Log      []action.Action // the current match's actions, with the times charged
 	Seed     engine.VersusSetup
-	Dice     uint64 // the match's battle seed: Seed, Dice and Log replay it exactly
+	Dice     uint64          // the match's battle seed: Seed, Dice and Log replay it exactly
+	Before   [2]map[int]bool // fog: what each side saw just before the last action
 	c        *content.Content
 }
 
@@ -227,11 +228,12 @@ func (r *Room) Act(id string, a action.Action, now time.Time) ([]action.Event, e
 }
 
 func (r *Room) apply(a action.Action, now time.Time) ([]action.Event, error) {
+	before := [2]map[int]bool{r.Game.Visible(0), r.Game.Visible(1)}
 	ev, err := r.Game.Apply(a)
 	if err != nil {
 		return nil, err
 	}
-	r.Last = now
+	r.Last, r.Before = now, before
 	r.Log = append(r.Log, a)
 	if !r.playing() {
 		r.over()
@@ -331,17 +333,28 @@ func (r *Room) viewFor(id string) RoomView {
 		rv.YourTeam = m.Team
 	}
 	if r.Game != nil {
-		rv.Match = r.match()
+		rv.Match = r.matchFor(rv.YourSide)
 	}
 	return rv
 }
 
-func (r *Room) match() *MatchView {
-	save, err := r.Game.Save()
+// matchFor is the match as one side sees it through the fog; watchers (-1)
+// see everything.
+func (r *Room) matchFor(side int) *MatchView {
+	save, err := r.Game.SaveFor(side)
 	if err != nil {
 		return nil
 	}
-	return &MatchView{View: r.Game.View(), Save: save}
+	return &MatchView{View: r.Game.ViewFor(side), Save: save}
+}
+
+// resultFor is one action's outcome as one person sees it.
+func (r *Room) resultFor(id string, ev []action.Event, sideBefore int) ResultView {
+	side := r.seatOf(id)
+	if side >= 0 && r.Before[side] != nil {
+		ev = r.Game.EventsFor(side, ev, r.Before[side])
+	}
+	return ResultView{Type: "result", Events: ev, SideBefore: sideBefore, Match: r.matchFor(side)}
 }
 
 // ResultView is one action's outcome, sent to everyone in the room.

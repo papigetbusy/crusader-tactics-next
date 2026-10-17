@@ -202,6 +202,9 @@ func (g *Game) check(a action.Action) error {
 	if !g.mine(u) || u.Companion || u.Decoy {
 		return no("no-such-hero", "That is not one of your heroes.")
 	}
+	if err := g.unseen(u, a); err != nil {
+		return err
+	}
 	if a.Kind == action.Ability {
 		return g.checkAbility(u, a)
 	}

@@ -27,6 +27,7 @@ type View struct {
 	TrapTiles []state.Tile  `json:"trapTiles,omitempty"` // where the heroes' snares are (the player set them)
 	Fallen    []string      `json:"fallen,omitempty"`    // classes of fallen heroes, last to fall at the end
 	Bag       []ItemView    `json:"bag,omitempty"`       // items carried but not worn
+	Seen      []string      `json:"seen,omitempty"`      // versus fog: tiles this side sees ('1'), row by row
 	Gold      int           `json:"gold"`
 	Chests    []state.Chest `json:"chests,omitempty"`
 	Floor     int           `json:"floor,omitempty"`
@@ -240,7 +241,9 @@ func (g *Game) TargetsWith(unit, slot, withSet int) []int {
 	var out []int
 	g.inSet(u, set, func() {
 		for _, t := range combat.Targets(g.C, g.B, u, u.Skills[slot]) {
-			out = append(out, t.ID)
+			if g.Sees(u.Team, t) {
+				out = append(out, t.ID)
+			}
 		}
 	})
 	return out

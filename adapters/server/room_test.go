@@ -168,6 +168,30 @@ func TestRooms(t *testing.T) {
 			t.Fatalf("outcome %v, winner %d", r.Game.B.Outcome, r.Winner)
 		}
 	})
+	t.Run("Through the fog each player is sent only the heroes they can see, and a watcher is sent everything", func(t *testing.T) {
+		r, a, b := ready(t)
+		cy, _ := r.Join("Cy")
+		count := func(id string) (mine, theirs int) {
+			v := r.viewFor(id).Match.View.(engine.View)
+			for _, u := range v.Units {
+				if u.Team == r.seatOf(id) || r.seatOf(id) < 0 && u.Team == 0 {
+					mine++
+				} else {
+					theirs++
+				}
+			}
+			return
+		}
+		if m, th := count(a.ID); m < 8 || th != 0 {
+			t.Fatalf("Ann sees %d of hers and %d of Red's", m, th)
+		}
+		if m, th := count(b.ID); m < 8 || th != 0 {
+			t.Fatalf("Bo sees %d of his and %d of Blue's", m, th)
+		}
+		if m, th := count(cy.ID); m < 8 || th < 8 {
+			t.Fatalf("Cy sees %d and %d", m, th)
+		}
+	})
 	t.Run("A whole match replays from its seeds and its actions, so the server's record is exact", func(t *testing.T) {
 		r, a, b := ready(t)
 		now := t0

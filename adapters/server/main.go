@@ -281,9 +281,8 @@ func (s *Server) roomChanged(r *Room) {
 }
 
 func (s *Server) result(r *Room, ev []action.Event, sideBefore int) {
-	res := ResultView{Type: "result", Events: ev, SideBefore: sideBefore, Match: r.match()}
 	for _, m := range r.Members {
-		send(m, res)
+		send(m, r.resultFor(m.ID, ev, sideBefore))
 	}
 	s.roomChanged(r)
 }

@@ -86,9 +86,19 @@ export const gesturing = () => performance.now() - cam.touch < 220;
 // its edge (after placing heroes, whose view leaves room for the buttons).
 export function fill() {
   const k = cam.k0 * cam.zt, vw = cam.w / k, vh = cam.h / k;
-  const top = (safeTop() + 70) / k, bottom = 110 / k; // room for the top bar and End Turn
+  const top = (safeTop() + 70) / k + TS * 2.2, bottom = 110 / k; // room for the top bar (and the back row's heads) and End Turn
   if (vh < map.wh) cam.ty = Math.max(vh / 2 - top, Math.min(map.wh - vh / 2 + bottom, cam.ty));
   if (vw < map.ww) cam.tx = Math.max(vw / 2, Math.min(map.ww - vw / 2, cam.tx));
+  kick();
+}
+
+// toEdge puts the camera at the top or bottom edge of the map, leaving room
+// for the top bar (and the back row's heads) or End Turn: where each versus
+// player's heroes start.
+export function toEdge(atTop) {
+  const k = cam.k0 * cam.zt, vh = cam.h / k;
+  if (vh >= map.wh) return;
+  cam.y = cam.ty = atTop ? vh / 2 - ((safeTop() + 70) / k + TS * 2.2) : map.wh - vh / 2 + 110 / k;
   kick();
 }
 

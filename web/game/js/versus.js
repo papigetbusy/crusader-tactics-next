@@ -103,6 +103,7 @@ export function after(events, sideBefore) {
   if (v.outcome) return ended(events);
   if (v.side === sideBefore) return;
   const me = v.side, foe = 1 - me;
+  screen.show(v, true); // the camera turns to this player's own heroes
   let dmg = 0;
   const lost = [];
   const byId = new Map(v.units.map((u) => [u.id, u]));

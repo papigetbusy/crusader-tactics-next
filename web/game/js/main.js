@@ -4,7 +4,7 @@
 import * as referee from './referee.js';
 import * as assets from './assets.js';
 import { map, setSize } from './board.js';
-import { cam, controls, frame, resize, onMove, moving, closeUp, overview } from './camera.js';
+import { cam, controls, frame, resize, onMove, moving, closeUp, overview, toEdge } from './camera.js';
 import * as scene from './scene.js';
 import * as minimap from './minimap.js';
 import { options } from './options.js';
@@ -90,7 +90,12 @@ export function show(view, again) {
   if (fresh) {
     map.flat = st.opt.flat;
     setSize(view.n);
-    frame(st.units.filter((u) => u.team === 0 && !u.companion));
+    frame(st.units.filter((u) => mine(u, view) && !u.companion)); // versus: this player's own heroes
+    if (isVersus(view)) { // start at this player's own edge of the map
+      const mineNow = st.units.filter((u) => mine(u, view));
+      const y = mineNow.length ? mineNow.reduce((a, u) => a + u.y, 0) / mineNow.length : view.n;
+      toEdge(y < view.n / 2);
+    }
   }
   chip();
   kick();
@@ -102,7 +107,7 @@ export function setView(flat) {
   map.flat = flat;
   if (st.view) {
     setSize(st.view.n);
-    frame(st.units.filter((u) => u.team === 0 && !u.companion), st.sel);
+    frame(st.units.filter((u) => mine(u, st.view) && !u.companion), st.sel);
   }
   kick();
 }

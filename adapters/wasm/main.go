@@ -91,7 +91,7 @@ func main() {
 			return text(map[string]string{"error": err.Error()})
 		}
 		game = v
-		return text(game.View())
+		return text(game.ViewFor(game.B.Side)) // fog: the first player's view
 	}))
 	// ctFloor(floor, runSeed, seedHigh, seedLow) -> view: a built floor of a run
 	g.Set("ctFloor", fn(func(a []js.Value) any {
@@ -130,12 +130,16 @@ func main() {
 		if err := json.Unmarshal([]byte(a[0].String()), &act); err != nil {
 			return text(map[string]any{"refused": engine.Refused{Code: "bad-action", Reason: err.Error()}})
 		}
+		side := game.B.Side
+		before := game.Visible(side)
 		events, err := game.Apply(act)
 		var r *engine.Refused
 		if errors.As(err, &r) {
 			return text(map[string]any{"refused": r})
 		}
-		out := map[string]any{"events": events, "view": game.View()}
+		// Versus fog on one phone: the events as the player who acted saw
+		// them, then the board as the player to move now sees it.
+		out := map[string]any{"events": game.EventsFor(side, events, before), "view": game.ViewFor(game.B.Side)}
 		if err != nil {
 			out["problem"] = err.Error()
 		}

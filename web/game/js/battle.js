@@ -658,7 +658,7 @@ function attack() {
 export function endTurn() {
   const left = st().units.filter(ready).length;
   if (left && !confirm(`End turn? ${left} hero${left > 1 ? "es haven't" : " hasn't"} acted yet.`)) return;
-  send({ kind: 'endturn' }, 'Your turn.', autosave);
+  send({ kind: 'endturn' }, isVersus(view()) ? '' : 'Your turn.', autosave);
 }
 
 // ---------- choices and the floor summary ----------
