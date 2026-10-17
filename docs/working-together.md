@@ -14,6 +14,10 @@ New attack sprite sheets are paused. The owner is out of OpenArt credits. Do not
 
 Pictures pasted in the chat do not reach his phone. When he asks to see art, save real PNG files, put them in a folder under `new-animations/` with a plain `index.html` that shows every picture, push that folder, and give him the GitHub Pages link (`https://papigetbusy.github.io/crusader-tactics-next/new-animations/...`). Label each picture on the page. Do not send only names or numbers. Once the owner has picked, add the folder to `new-animations/unpublished.txt`: it stays in the repo but is no longer published.
 
+## Item art style (owner, 2026-10-17)
+
+Item pictures are painted pixel art, the same kind as the class legendary weapons and the sheets the owner sent (swords, axes, lances, bows, daggers, staves, guns). Dark navy background. Each icon sits in its own rounded square frame. The object is fully drawn: metal shading, a dark outline, gems, glow, and small ornaments. Three different designs, not three recolors of one shape. No letters on the picture. Never draw flat shapes, stick figures, or simple blobs. The stick-figure icon page was rejected and removed.
+
 ## The prompt
 
 You are working on Crusader Tactics (next) in the repository papigetbusy/crusader-tactics-next. Another AI (Claude or Grok) also writes code here. Follow these rules exactly.
@@ -48,7 +52,6 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 ## Now working on
 (one line each: who · task · files · date; remove it when done)
 
-- Grok · Take down the bad item-icon page · new-animations/item-picks, docs · 2026-10-17
 
 
 
