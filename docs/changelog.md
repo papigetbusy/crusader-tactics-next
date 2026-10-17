@@ -4,7 +4,7 @@ Every finished piece of work, newest first: date · who · what changed, in plai
 
 - 2026-10-17 · Claude · Tapping an enemy only attacks from where the hero stands: no more walking into range on its own (out of reach shows the enemy's info and "Out of reach"). Heroes can be dragged onto blue tiles while placing them, and dropping one on another swaps them.
 - 2026-10-17 · Grok · A new item-icon page in the painted pixel style. The weapon sheets are the ones the owner sent. Armor, the wand, and the charms are drawn to match them. The stick-figure page stays deleted.
-- 2026-10-17 · Grok · The item-icon page is now a rarity ladder. Left is common silver, middle is uncommon green, right is rare blue, and the rarer picture is the more unique design. Heart of the Stair and Phoenix Feather are one gold picture each.
+- 2026-10-17 · Grok · New generic weapon icons. The sheets the owner sent stay the class legendaries and are not reused. Common is still silver, uncommon green, rare blue.
 - 2026-10-17 · Grok · The item-icon pick page was taken down. The pictures were flat stick figures, not the painted pixel style, and the owner rejected them. The style is now written in working-together so it is not repeated.
 - 2026-10-17 · Grok · A page of item-icon pictures to pick from: three versions of each icon that still comes from the paid pack. Nothing in the game changed. The free tiles and attack flashes stay.
 - 2026-10-17 · Grok · The floor bar, the ☰ menu, gear, skills and settings now use the corner-vine frame the owner picked: a thin gold line, gold vines only in the corners, and a dark painted field inside. The hero move menu and the attack window are unchanged.
