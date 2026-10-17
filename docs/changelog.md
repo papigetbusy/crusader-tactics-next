@@ -2,6 +2,7 @@
 
 Every finished piece of work, newest first: date · who · what changed, in plain words. Claude and Grok add one line here for each piece of work (moved out of the README on 2026-10-17, owner).
 
+- 2026-10-17 · Grok · A new item-icon page in the painted pixel style. The weapon sheets are the ones the owner sent. Armor, the wand, and the charms are drawn to match them. The stick-figure page stays deleted.
 - 2026-10-17 · Grok · The item-icon pick page was taken down. The pictures were flat stick figures, not the painted pixel style, and the owner rejected them. The style is now written in working-together so it is not repeated.
 - 2026-10-17 · Grok · A page of item-icon pictures to pick from: three versions of each icon that still comes from the paid pack. Nothing in the game changed. The free tiles and attack flashes stay.
 - 2026-10-17 · Grok · The floor bar, the ☰ menu, gear, skills and settings now use the corner-vine frame the owner picked: a thin gold line, gold vines only in the corners, and a dark painted field inside. The hero move menu and the attack window are unchanged.

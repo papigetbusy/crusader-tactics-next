@@ -1,0 +1,196 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Item icons</title>
+<link href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@700;800&family=EB+Garamond:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #070506; color: #f3ead7; font: 500 17px/1.35 "EB Garamond", Georgia, serif; padding: 16px 12px 40px; }
+  header, main { max-width: 440px; margin: 0 auto; }
+  h1 { margin: 0; font: 800 36px/1 "Grenze Gotisch", Georgia, serif; color: #e6c778; }
+  .kicker { margin: 0 0 4px; letter-spacing: .2em; text-transform: uppercase; font-size: 12px; color: #b3a48c; }
+  p { margin: 8px 0 0; }
+  nav { display: flex; gap: 6px; position: sticky; top: 0; background: rgba(7,5,6,.94); padding: 8px 0; }
+  nav a { color: #e6c778; text-decoration: none; border: 1px solid #6a5428; padding: 8px 10px; letter-spacing: .06em; text-transform: uppercase; font-size: 14px; }
+  h2 { margin: 22px 0 8px; font: 800 28px "Grenze Gotisch", Georgia, serif; color: #f0d48a; }
+  h3 { margin: 14px 0 6px; font: 700 22px "Grenze Gotisch", Georgia, serif; color: #f6e7b8; }
+  h3 span { display: block; font: 500 15px "EB Garamond", Georgia, serif; color: #cbbfa8; }
+  img { width: 100%; height: auto; display: block; background: #0e1a33; image-rendering: auto; }
+  .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 6px; }
+  button { min-height: 40px; border: 1px solid #3a2c14; background: #120e0c; color: #e6d8c4; font: 600 15px "EB Garamond", Georgia, serif; }
+  button.on { border-color: #e6c778; color: #f6e7b8; }
+</style>
+<header>
+  <p class="kicker">Crusader Tactics</p>
+  <h1>Item icons</h1>
+  <p>Painted pixel art, the same kind as the sheets you sent. Left is A, middle is B, right is C. Tap the one you want. The stick-figure page is gone.</p>
+  <p id="count"></p>
+</header>
+<nav>
+  <a href="#weapons">Weapons</a>
+  <a href="#armor">Armor</a>
+  <a href="#charms">Charms</a>
+</nav>
+<main>
+<section id="weapons"><h2>Weapons</h2><article>
+<h3>Sword<span>The sheet you sent.</span></h3>
+<img src="sword.jpg" alt="Sword. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="sword" data-s="a">A · Left</button>
+<button type="button" data-id="sword" data-s="b">B · Middle</button>
+<button type="button" data-id="sword" data-s="c">C · Right</button>
+</div></article><article>
+<h3>Axe<span>The sheet you sent.</span></h3>
+<img src="axe.jpg" alt="Axe. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="axe" data-s="a">A · Left</button>
+<button type="button" data-id="axe" data-s="b">B · Middle</button>
+<button type="button" data-id="axe" data-s="c">C · Right</button>
+</div></article><article>
+<h3>Lance<span>The sheet you sent.</span></h3>
+<img src="lance.jpg" alt="Lance. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="lance" data-s="a">A · Left</button>
+<button type="button" data-id="lance" data-s="b">B · Middle</button>
+<button type="button" data-id="lance" data-s="c">C · Right</button>
+</div></article><article>
+<h3>Bow<span>The sheet you sent.</span></h3>
+<img src="bow.jpg" alt="Bow. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="bow" data-s="a">A · Left</button>
+<button type="button" data-id="bow" data-s="b">B · Middle</button>
+<button type="button" data-id="bow" data-s="c">C · Right</button>
+</div></article><article>
+<h3>Dagger<span>The sheet you sent.</span></h3>
+<img src="dagger.jpg" alt="Dagger. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="dagger" data-s="a">A · Left</button>
+<button type="button" data-id="dagger" data-s="b">B · Middle</button>
+<button type="button" data-id="dagger" data-s="c">C · Right</button>
+</div></article><article>
+<h3>Staff<span>The sheet you sent.</span></h3>
+<img src="staff.jpg" alt="Staff. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="staff" data-s="a">A · Left</button>
+<button type="button" data-id="staff" data-s="b">B · Middle</button>
+<button type="button" data-id="staff" data-s="c">C · Right</button>
+</div></article><article>
+<h3>Gun<span>The sheet you sent.</span></h3>
+<img src="gun.jpg" alt="Gun. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="gun" data-s="a">A · Left</button>
+<button type="button" data-id="gun" data-s="b">B · Middle</button>
+<button type="button" data-id="gun" data-s="c">C · Right</button>
+</div></article><article>
+<h3>Wand<span>Drawn in that same style.</span></h3>
+<img src="wand.jpg" alt="Wand. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="wand" data-s="a">A · Left</button>
+<button type="button" data-id="wand" data-s="b">B · Middle</button>
+<button type="button" data-id="wand" data-s="c">C · Right</button>
+</div></article></section>
+<section id="armor"><h2>Armor</h2><article>
+<h3>Light helm<span>Three designs.</span></h3>
+<img src="light-helm.jpg" alt="Light helm. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="light-helm" data-s="a">A · Left</button>
+<button type="button" data-id="light-helm" data-s="b">B · Middle</button>
+<button type="button" data-id="light-helm" data-s="c">C · Right</button>
+</div></article><article>
+<h3>Light armor<span>Three designs.</span></h3>
+<img src="light-armor.jpg" alt="Light armor. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="light-armor" data-s="a">A · Left</button>
+<button type="button" data-id="light-armor" data-s="b">B · Middle</button>
+<button type="button" data-id="light-armor" data-s="c">C · Right</button>
+</div></article><article>
+<h3>Light boots<span>Three designs.</span></h3>
+<img src="light-boots.jpg" alt="Light boots. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="light-boots" data-s="a">A · Left</button>
+<button type="button" data-id="light-boots" data-s="b">B · Middle</button>
+<button type="button" data-id="light-boots" data-s="c">C · Right</button>
+</div></article><article>
+<h3>Medium helm<span>Three designs.</span></h3>
+<img src="medium-helm.jpg" alt="Medium helm. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="medium-helm" data-s="a">A · Left</button>
+<button type="button" data-id="medium-helm" data-s="b">B · Middle</button>
+<button type="button" data-id="medium-helm" data-s="c">C · Right</button>
+</div></article><article>
+<h3>Medium armor<span>Three designs.</span></h3>
+<img src="medium-armor.jpg" alt="Medium armor. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="medium-armor" data-s="a">A · Left</button>
+<button type="button" data-id="medium-armor" data-s="b">B · Middle</button>
+<button type="button" data-id="medium-armor" data-s="c">C · Right</button>
+</div></article><article>
+<h3>Medium boots<span>Three designs.</span></h3>
+<img src="medium-boots.jpg" alt="Medium boots. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="medium-boots" data-s="a">A · Left</button>
+<button type="button" data-id="medium-boots" data-s="b">B · Middle</button>
+<button type="button" data-id="medium-boots" data-s="c">C · Right</button>
+</div></article><article>
+<h3>Heavy helm<span>Three designs.</span></h3>
+<img src="heavy-helm.jpg" alt="Heavy helm. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="heavy-helm" data-s="a">A · Left</button>
+<button type="button" data-id="heavy-helm" data-s="b">B · Middle</button>
+<button type="button" data-id="heavy-helm" data-s="c">C · Right</button>
+</div></article><article>
+<h3>Heavy armor<span>Three designs.</span></h3>
+<img src="heavy-armor.jpg" alt="Heavy armor. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="heavy-armor" data-s="a">A · Left</button>
+<button type="button" data-id="heavy-armor" data-s="b">B · Middle</button>
+<button type="button" data-id="heavy-armor" data-s="c">C · Right</button>
+</div></article><article>
+<h3>Heavy boots<span>Three designs.</span></h3>
+<img src="heavy-boots.jpg" alt="Heavy boots. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="heavy-boots" data-s="a">A · Left</button>
+<button type="button" data-id="heavy-boots" data-s="b">B · Middle</button>
+<button type="button" data-id="heavy-boots" data-s="c">C · Right</button>
+</div></article></section>
+<section id="charms"><h2>Charms</h2><article>
+<h3>Charm<span>Three designs.</span></h3>
+<img src="charm.jpg" alt="Charm. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="charm" data-s="a">A · Left</button>
+<button type="button" data-id="charm" data-s="b">B · Middle</button>
+<button type="button" data-id="charm" data-s="c">C · Right</button>
+</div></article><article>
+<h3>Heart of the Stair<span>Three designs.</span></h3>
+<img src="heart.jpg" alt="Heart of the Stair. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="heart" data-s="a">A · Left</button>
+<button type="button" data-id="heart" data-s="b">B · Middle</button>
+<button type="button" data-id="heart" data-s="c">C · Right</button>
+</div></article><article>
+<h3>Phoenix Feather<span>Three designs.</span></h3>
+<img src="feather.jpg" alt="Phoenix Feather. Left A, middle B, right C.">
+<div class="row">
+<button type="button" data-id="feather" data-s="a">A · Left</button>
+<button type="button" data-id="feather" data-s="b">B · Middle</button>
+<button type="button" data-id="feather" data-s="c">C · Right</button>
+</div></article></section>
+</main>
+<script>
+const KEY = "ct-item-style";
+let picks = {};
+try { picks = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+function paint() {
+  document.querySelectorAll("button").forEach(b => b.classList.toggle("on", picks[b.dataset.id] === b.dataset.s));
+  const n = Object.keys(picks).length;
+  document.getElementById("count").textContent = n + " of 20 picked";
+}
+document.body.addEventListener("click", e => {
+  const b = e.target.closest("button");
+  if (!b) return;
+  picks[b.dataset.id] = b.dataset.s;
+  localStorage.setItem(KEY, JSON.stringify(picks));
+  paint();
+});
+paint();
+</script>
