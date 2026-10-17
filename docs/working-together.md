@@ -54,6 +54,9 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 ## Now working on
 (one line each: who · task · files · date; remove it when done)
 
+- Grok · Epic weapon and armor icons · new-animations/item-style · 2026-10-17
+
+
 
 
 
