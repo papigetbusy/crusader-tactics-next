@@ -39,7 +39,7 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 
 **After you push**
 14. Wait for the green tick on GitHub. If it is red, fixing it comes before anything else, whoever broke it.
-15. Remove your line from "Now working on". Add a short entry to `docs/next-steps.md` (or the README status) saying what changed, in plain words.
+15. Remove your line from "Now working on". Add a short line at the top of `docs/changelog.md` saying what changed, in plain words, and update `docs/next-steps.md` if the work was on it.
 16. Tell the owner in plain language what changed and give the test link.
 
 **If you're unsure**
@@ -52,4 +52,3 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 
 
 
-- Claude · cleanup the owner signed off: status-immunity check, Lifeline, monster tests, publish only open picks, docs tidy · sim/combat, sim/turn, .github/workflows/pages.yml, docs, README.md, CLAUDE.md, saves/ · 2026-10-17

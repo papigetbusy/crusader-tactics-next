@@ -6,7 +6,7 @@ The clean rebuild of Crusader Tactics. The rules live in Go (the **referee**), t
 - Practice fights: https://papigetbusy.github.io/crusader-tactics-next/
 - Rule Book: https://papigetbusy.github.io/crusader-tactics-next/rules.html
 - Old-Game Match: https://papigetbusy.github.io/crusader-tactics-next/match.html
-- What's left, in order: `docs/next-steps.md`. Latest update for Grok: `docs/update-for-grok.md`.
+- What's left, in order: `docs/next-steps.md`. What changed, newest first: `docs/changelog.md`.
 - The old game stays playable at https://papigetbusy.github.io/crusader-tactics/ until this one matches it.
 
 ## Two AIs code here: read this first (Claude and Grok)
@@ -20,82 +20,10 @@ Claude and Grok both write code in this repository for the owner. To stay consis
    - Every rule has a plain-sentence test.
    - The old game's code is never used, only its art.
    - Nothing changes how the game plays without the owner's approval, and approved changes are listed in `docs/changes-from-old-game.md`.
-3. **Log every change in this README.** Add a short plain-words line under "Change log" below for each piece of work you finish: date, who, what changed. This README is the shared log of everything, so the other AI and the owner can see what happened.
-4. **What to work on:** `docs/next-steps.md` (the next-session list at the top, then "Left to do, in order").
+3. **Log every change in `docs/changelog.md`.** Add a short plain-words line at the top for each piece of work you finish: date, who, what changed. It is the shared log of everything, so the other AI and the owner can see what happened.
+4. **What to work on:** `docs/next-steps.md` (open work at the top, finished work in a short list at the bottom).
 5. **When Claude comes back,** it audits everything that changed since its last commit (diff, tests, project rules) before doing anything else.
 6. **Who does what (owner, 2026-10-12).** Claude does the heavy coding and new systems. Grok does not start those. Grok works on look and feel, art direction, lag, and fine-tuning mechanics, and checks that the architecture stays clean (rules in the referee, the screen only draws). New attack sheets are paused until the owner has OpenArt credits again. The prompt rule is already locked in `new-animations/PROMPT.md`. Signed off, still not in the game: Blood Moon, Soul Nova, Grand Hex, Blood Frenzy.
-
-### Change log
-(newest first; one line per finished piece of work: date · who · what changed)
-- 2026-10-17 · Claude · The site no longer publishes finished pick pages (listed in `new-animations/unpublished.txt`, now the weapon picks). They stay in the repo. Open pages like the menu picks are still published.
-- 2026-10-17 · Claude · Tests for Grok's new monsters: the 4 new bosses guard boss floors 70-100 in order, every new elite turns up on elite floors, and each of the 10 walks up to a hero and attacks.
-- 2026-10-17 · Claude · Fix: Wyrm's Hide now also stops burns from the Witch's Contagion (every way of putting on a status uses one shared check). Lifeline also saves an ally from dying of poison, burn or bleed at the start of their turn, still once per battle.
-- 2026-10-17 · Grok · Monster pictures recut from the sheets you already approved. The last cut chopped every sprite to 100 pixels and deleted the dark parts, so bodies, wings and weapons were missing. They are whole again. Same art, not new drawings.
-- 2026-10-17 · Claude · Legendary rework: one legendary weapon per class (Grok's pictures, the owner's picks) with 2 unique class powers and a 4-piece class bonus each, 5 bonuses on every legendary, exact bonus counts by rarity (1/2/3, epic 3 + its epic bonus), and set bonuses for epic armor by weight (legendary sets about double). Tests for every power; Codex updated.
-- 2026-10-17 · Grok · Three gothic gold looks for the floor bar, the main menu, gear, skills and settings. Not in the game yet. The move and attack menus were not touched. Page: new-animations/menu-picks.
-- 2026-10-17 · Grok · New pictures replace the old monsters. Four bosses and six elites are in the game: Bone Hydra, Fallen Seraph, Brood Matron, Ash Colossus, Crowned Slime, Goblin Captain, Grave Knight, Dire Wolf, Iron Minotaur, Blight Reaper. The huge demon is not in the game yet. Codex rebuilt from the data.
-- 2026-10-17 · Claude · Fix: online, the hero picker no longer "closes" when a friend joins, sits down or gets ready. The room screen was being redrawn over it; now it waits until the picker closes, then shows the latest.
-- 2026-10-17 · Claude · Versus leftovers fixed. An enemy coming out of the fog shows only the seen part of its walk. Watchers see the whole board one round behind (live again when the match ends). Grave Bloom raises only the other player's dead. Raised monsters are the same for both sides (test). The room's view code moved to `adapters/server/roomview.go`.
-- 2026-10-16 · Claude · Versus exploit fixes. Move-and-undo can't stop the clock any more (the free seconds only follow real turn actions), a move that uncovers an enemy can't be undone, the other player's traps stay hidden (their fire and kegs only in sight), and each player has their own bag. A test for each.
-- 2026-10-16 · Grok · Continue and loading a save leave an online room first, so the match cannot freeze the climb. Versus matches cannot overwrite a climb save. A phone gone for 20 seconds loses the match; a refresh inside that keeps the seat. A dead room says the match is over instead of joining you as someone new.
-- 2026-10-16 · Grok · Title screen is in the ☰ menu in every mode. Online Give up ends the match now (the other player wins) so you can start again. Opening single player or pass-the-phone while an online match is going ends that match for both, instead of freezing on "It is not your turn."
-- 2026-10-16 · Grok · Versus clocks are 5 minutes each with no per-turn limit. Online: the server's clock is the one on screen (2 free seconds after a move), a refresh keeps your seat, and a missed move snaps to the server's board.
-- 2026-10-16 · Claude · Versus and online: fog of war (see enemies within 6 steps of your units, can't target what you can't see, darkened tiles, each player's phone only gets what they can see, watchers see all, fog lifts at the end) and 32×32 maps, the climb's biggest. Each player's camera starts at their own edge of the map.
-- 2026-10-16 · Claude · Online step 3: online rooms. Versus → Online, a room password for up to 4 friends, Blue and Red play while the others watch and wait in line, and the winner stays on. A small Go server (`adapters/server`) runs the same referee and keeps the clocks. It's ready for Render (`render.yaml`, `Dockerfile`), with the owner's setup steps in `docs/online-setup.md`.
-- 2026-10-16 · Claude · Online step 2, pass the phone: Versus on the title screen (Pass the phone / Online soon), pick 8 heroes and ascensions per player, hand-over screens between turns, both clocks on screen (turn and match time, enforced by the referee), and a winner screen with Rematch. Also a restart note for Claude (CLAUDE.md, .claude-wip.md).
-- 2026-10-16 · Claude · Online step 1: versus rules in the referee. Two players, 8 heroes each at Lv 30 with ascensions and a fixed purple set per class, a mirrored 12×12 map, turn and match clocks, win by wipe-out or time. Player 2's heroes keep every hero power (about 100 team checks now ask "is this a player's unit?"). Single player is unchanged. New tests include whole bot matches, an exact replay, and every skill used by both sides. Nothing on screen yet: that is step 2.
-- 2026-10-16 · Claude · Plan: the playtest bugs and polish are done. The owner moved the ideas (chess feel first) to after online 1v1, so online is next.
-- 2026-10-16 · Claude · The red attack window says what the chosen attack does besides its numbers (its words, plus element, area, cooldown, free action). It now never covers the target or any enemy it could hit: it tries beside the hero, then the screen's corners and edges, and may cover heroes.
-- 2026-10-16 · Claude · New Skills window (☰ → Skills, and Skills ▸ in Gear): each hero's class ability, brought skills, ultimate and learned skills, with range, power, area, element, cooldown, the level learned and turns until ready. Changing skills (once per floor) moved here from Gear: tap cards to pick up to 4 and an ultimate. The referee now sends cooldowns and levels.
-- 2026-10-16 · Claude · Owner's pick B: on a phone the map starts 30% closer, so heroes, monsters and squares are bigger to tap. When the battle starts the camera slides so the map fills the screen (no empty band under the heroes). Pinch and zoom work as before.
-- 2026-10-16 · Claude · Owner's picks: a cloaked hero gets a soft white glow that pulses (still see-through), and loot shows a small card (item picture, + and name in its rarity color) floating up where the monster fell.
-- 2026-10-16 · Claude · Ground bonuses are shown: tapping a unit shows a green badge for what its tile does (forest, hill, fort, high ground; numbers from the referee), and bonus tiles show 🛡 and ✚ numbers on the map. A shield button in the eye strip turns the tile numbers on and off (saved per save).
-- 2026-10-16 · Claude · Fix: the Settings, Gear, Floor travel and Save windows have a round ✕ pinned in the top corner, so they close without scrolling to the bottom. The Close button at the bottom stays.
-- 2026-10-16 · Claude · Fix: monsters raised for the heroes (Grave Bloom and the raise skill) now keep their monster name, so they show as a Skeleton with a monster's moves instead of a hero picture. Test added.
-- 2026-10-16 · Claude · Wrote the owner's playtest list into docs/next-steps.md as the fixing stage (bugs, polish, ideas). It all gets done before online.
-- 2026-10-16 · Claude · Online-ready check done (docs/online-ready.md). New tests: a climb replays exactly from its seeds and actions, and the screen may only reach the referee through referee.js. The lag tool now goes through that doorway too.
-- 2026-10-16 · Claude · A Duelist no longer does the new counterattack; his Riposte replaces it (owner's choice). The forecast says "ripostes instead".
-- 2026-10-16 · Claude · Audited Grok's 39 commits: tests, format and checks all pass; rules stay in the referee. Wrote down the play-without-internet task for Grok in docs/next-steps.md.
-- 2026-10-12 · Grok · The lag watch can play a move, an attack, or the enemy turn, so those can be timed the same way as opening a floor. A normal game does not run it.
-- 2026-10-12 · Grok · Lag watch. Open the game with ?lag=1 and it records slow frames and which part of the picture was slow. A normal game does not run it. The probe is tools/lag/probe.mjs.
-- 2026-10-12 · Grok · Job split: Claude builds systems. Grok handles feel, lag, art direction, and keeping the rules in the referee. New attack sheets wait until OpenArt credits are back.
-- 2026-10-12 · Grok · Blood Frenzy signed off. The prompt rule is locked to that sheet. Not in the game.
-- 2026-10-12 · Grok · Idle sprites are also in new-animations/Idle, one file per hero, so they can be opened from the repo. Not in the game.
-- 2026-10-12 · Grok · Blood Frenzy review GIF. The ring stays on the Berserker. Not signed off. Not in the game.
-- 2026-10-12 · Grok · Named idle sprites for the art AI are in new-animations/idle-sprites.zip. First prompt batch is prompts/01-warrior-ascension.md. Not in the game.
-- 2026-10-12 · Grok · Idle cards for all 60 hero forms are in new-animations/idle-cards. Skill names to copy are in new-animations/HERO-NAMES.md. Not in the game.
-- 2026-10-12 · Grok · Tested the animation bot on six warrior sheets. Review GIFs only. Not signed off. Not in the game.
-- 2026-10-12 · Grok · The animation bot makes a first review GIF for every sheet dropped in new-animations/inbox, then stops. It does not write code and it does not sign off.
-- 2026-10-12 · Grok · Grand Hex is signed off. Code is in new-animations/code/grand-hex.js. It is not in the game. Queen's Garden is next.
-- 2026-10-12 · Grok · Grand Hex aura is black in the middle, fading to green, and the green changes from frame to frame. Not signed off.
-- 2026-10-12 · Grok · Grand Hex aura is now the game's warp ring, recolored green, around her. Not signed off.
-- 2026-10-12 · Grok · Grand Hex review now gives her a green glow and the game's absorb ring, recolored green, around her while she powers up. Not signed off.
-- 2026-10-12 · Grok · Grand Hex review uses the v3 Hex Queen sheet. The seal grows onto the enemy and she returns to idle. Not signed off.
-- 2026-10-12 · Grok · Sprite prompts now call the saved hero with @. Grand Hex uses @hex queen.
-- 2026-10-12 · Grok · Sprite prompts now use one locked template in new-animations/PROMPT.md. Grand Hex is being sent again. The last sheet mixed in the other witches.
-- 2026-10-12 · Grok · Queen's Garden has a review GIF. Ivy lands on the enemy, the ring is centered, and she returns to idle. Not signed off. Not in the game.
-- 2026-10-12 · Grok · Grand Hex has a review GIF. The seal hits the enemy, the circle is centered on it, and she returns to idle. Not signed off. Not in the game.
-- 2026-10-12 · Grok · Soul Nova is signed off. Code is in new-animations/code/soul-nova.js. It is not in the game. Grand Hex is next.
-- 2026-10-12 · Grok · Soul Nova's opening circle is centered on the black ball and drawn behind it. Not signed off. Not in the game.
-- 2026-10-12 · Grok · Soul Nova's hit now uses the black ball from the first GIF, on the glow version. She still returns to idle. Not signed off. Not in the game.
-- 2026-10-12 · Grok · Animation rule: small body motion, recolored effects the game already has, the hero glow, and the last frames back on idle. Soul Nova's glow GIF now ends on idle. Not in the game.
-- 2026-10-12 · Grok · Soul Nova glow test. She keeps the stiff cast. A purple power-up uses effects already in the game, recolored. Not signed off. Not in the game.
-- 2026-10-12 · Grok · Soul Nova has an in-game review GIF. It is not signed off and it is not in the game. Blood Moon is still the only approved attack.
-- 2026-10-12 · Grok · Blood Moon is approved. Its code stays in new-animations/code for later. It is checked off the animation list. It is not in the game.
-- 2026-10-12 · Grok · Blood Moon's in-game GIF now also plays the effect the codex already uses: a red beam on the enemy, the red burst inside it, and a ring that grows under his feet and fades. The signed swing and the red moon stay.
-- 2026-10-12 · Grok · Blood Moon's in-game GIF keeps the red moon circle from the signed test. It hangs in the air, then the pillar and the blast hit the enemy. An effect is only removed if the owner says so.
-- 2026-10-12 · Grok · Blood Moon is the first signed attack. Its code is in new-animations/code and is not loaded by the game. The in-game GIF shows it hitting an enemy, with the blast kept off her sprite.
-- 2026-10-12 · Grok · Blood Moon v2 is a test GIF only, at assets/preview. It is not in the game and not in new-animations yet.
-- 2026-10-12 · Grok · New attack tests live in `new-animations/` (not in the game). `gifs/` holds every try. `code/` gets one file per attack only after that GIF is signed off. They go into the game together, once the checklist is done. The witch v1 GIFs are the first three, still not signed off.
-- 2026-10-12 · Grok · A separate attack preview (not in the game) is at assets/preview, so the witch GIFs can be opened and saved.
-- 2026-10-12 · Grok · On the place-your-heroes screen, 1 2 3 save a starting formation. An empty number saves where they stand and turns gold. Tap a gold number to put them back. Hold a gold number to overwrite it; Cancel does nothing, Yes replaces it. Formations are kept in that save.
-- 2026-10-12 · Grok · Each save file remembers its own settings (isometric or flat, danger zone, minimap and the rest). Loading a save puts that look back. An older save with no settings keeps whatever is on screen.
-- 2026-10-12 · Grok · Floor 41 was redrawing the whole map every moment, and pinch-zoom on a phone snapped instead of zooming. The ground is now painted once and moved, pinch zooms smoothly from the whole map to up close, and the picture is drawn a bit softer on a sharp phone so it keeps up.
-- 2026-10-12 · Grok · The map-icon strip stays hidden. A clear eye in the top left opens it, and tapping the map closes it again.
-- 2026-10-12 · Grok · Finished heroes turn gray, health bars drain as the hit lands (and fill on a heal), a skill says WEAK before you pick it when it does bonus damage and the target is marked WEAK or RESIST once the attack window is open, and map controls are a narrow icon strip on the left edge instead of a labeled panel in the menu.
-- 2026-10-12 · Claude · The attack window is menu-sized in a crimson wooden frame, floating beside the hero, with a skill-name box and arrows to cycle attacks (owner's design B). Added `docs/working-together.md` for Claude and Grok.
-- 2026-10-12 · Grok · A floor 40 purple-team save ships with the test build and loads into an empty slot; the shield icon became the site icon.
-- 2026-10-11 · Claude · Phase 9: smarter enemies from floor 20, full-power counterattacks, height. Phase 8 polish: zoom buttons, title effects, Settings tabs, damage-numbers switch, tips, level-cap notice. The new Codex. Ported attack effects. Save-file import.
 
 ## Where things are
 
