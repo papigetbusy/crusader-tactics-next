@@ -339,3 +339,59 @@ func TestClockExploits(t *testing.T) {
 		}
 	})
 }
+
+func TestWatchers(t *testing.T) {
+	t.Run("Watchers see the whole board, but one round behind, so they can't tip off a player", func(t *testing.T) {
+		r, a, b := ready(t)
+		cy, _ := r.Join("Cy")
+		units := func(id string) []engine.UnitView { return r.viewFor(id, t0).Match.View.(engine.View).Units }
+		if len(units(cy.ID)) < 16 {
+			t.Fatalf("Cy sees %d units", len(units(cy.ID)))
+		}
+		me := r.Game.B.Units[0]
+		start := [2]int{me.X, me.Y}
+		reach := r.Game.Reach(me.ID)
+		to := reach[len(reach)-1]
+		if _, err := r.Act(a.ID, action.Action{Kind: action.Move, Unit: me.ID, X: to.X, Y: to.Y}, t0); err != nil {
+			t.Fatal(err)
+		}
+		where := func(id string) [2]int {
+			for _, u := range units(id) {
+				if u.ID == me.ID {
+					return [2]int{u.X, u.Y}
+				}
+			}
+			return [2]int{-1, -1}
+		}
+		if res := r.resultFor(cy.ID, []action.Event{{Kind: action.Moved, Unit: me.ID}}, 0, t0); len(res.Events) != 0 {
+			t.Fatal("Cy was shown Ann's move live")
+		}
+		ends := func(id string) {
+			if _, err := r.Act(id, action.Action{Kind: action.EndTurn}, t0); err != nil {
+				t.Fatal(err)
+			}
+		}
+		ends(a.ID) // Red's turn: Cy still sees Ann's hero where it started
+		if where(cy.ID) != start {
+			t.Fatalf("one turn later Cy sees it at %v, not %v", where(cy.ID), start)
+		}
+		ends(b.ID) // Blue's turn again: still the start of the round before
+		if where(cy.ID) != start {
+			t.Fatalf("two turns later Cy sees it at %v", where(cy.ID))
+		}
+		ends(a.ID) // a full round on: now Cy sees the move
+		if where(cy.ID) != [2]int{to.X, to.Y} {
+			t.Fatalf("a round later Cy sees it at %v, not %v", where(cy.ID), to)
+		}
+	})
+	t.Run("When the match ends, watchers see the final board right away", func(t *testing.T) {
+		r, a, _ := ready(t)
+		cy, _ := r.Join("Cy")
+		if _, err := r.Forfeit(a.ID, t0); err != nil {
+			t.Fatal(err)
+		}
+		if v := r.viewFor(cy.ID, t0).Match.View.(engine.View); v.Outcome == state.Ongoing {
+			t.Fatal("Cy still sees an old board after the match")
+		}
+	})
+}

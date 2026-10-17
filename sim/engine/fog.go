@@ -105,15 +105,30 @@ func (g *Game) EventsFor(side int, events []action.Event, before map[int]bool) [
 	if side < 0 || !g.Fogged() {
 		return events
 	}
-	after := g.Visible(side)
+	after, sight := g.Visible(side), g.Sight(side)
 	ok := func(id int) bool { return id == 0 || before[id] || after[id] }
 	var out []action.Event
 	for _, e := range events {
-		if ok(e.Unit) && ok(e.Target) {
-			out = append(out, e)
+		if !ok(e.Unit) || !ok(e.Target) {
+			continue
 		}
+		if u := g.B.Unit(e.Unit); u != nil && u.Team != side && len(e.Path) > 0 {
+			e.Path = seenPart(e.Path, sight) // an enemy's walk starts where it came into sight
+		}
+		out = append(out, e)
 	}
 	return out
+}
+
+// seenPart is a walk from its first tile in sight to its end (the last tile
+// when none of it was in sight).
+func seenPart(path [][2]int, sight map[[2]int]bool) [][2]int {
+	for i, t := range path {
+		if sight[t] {
+			return append([][2]int(nil), path[i:]...)
+		}
+	}
+	return append([][2]int(nil), path[len(path)-1:]...)
 }
 
 // SaveFor is a save of the match without the enemies a side can't see, for

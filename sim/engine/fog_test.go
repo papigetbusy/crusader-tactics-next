@@ -169,6 +169,20 @@ func TestFogOfWar(t *testing.T) {
 			t.Fatalf("Blue's save: traps %v fields %v kegs %v", l.B.Traps, l.B.Fields, l.B.Kegs)
 		}
 	})
+	t.Run("An enemy walking out of the fog is only shown from where it came into sight", func(t *testing.T) {
+		g := versus(t)
+		me, foe := side(g, 0)[0], side(g, 1)[0]
+		before := g.Visible(0)
+		near(g, foe, me, 2)
+		path := [][2]int{{me.X, me.Y - 12}, {me.X, me.Y - 9}, {me.X, me.Y - 6}, {me.X, me.Y - 2}}
+		got := g.EventsFor(0, []action.Event{{Kind: action.Moved, Unit: foe.ID, Path: path}}, before)
+		if len(got) != 1 || len(got[0].Path) != 2 || got[0].Path[0] != path[2] {
+			t.Fatalf("Blue was shown the walk %v", got)
+		}
+		if mine := g.EventsFor(1, []action.Event{{Kind: action.Moved, Unit: foe.ID, Path: path}}, g.Visible(1)); len(mine[0].Path) != 4 {
+			t.Fatal("Red was not shown its own whole walk")
+		}
+	})
 	t.Run("Watchers see everything", func(t *testing.T) {
 		g := versus(t)
 		if len(g.ViewFor(-1).Units) != len(g.B.Units) || g.ViewFor(-1).Seen != nil {

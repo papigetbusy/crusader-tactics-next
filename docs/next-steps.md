@@ -219,11 +219,11 @@ Estimate: about 3 sessions once the game matches the original.
 - **Undo:** you can't undo a move that uncovered an enemy (`engine.revealed`). It was free scouting.
 - **Hidden things:** the other player's traps are never shown. Their fields and kegs are shown only in sight (`hiddenOut`, in views and saves).
 - **Bags:** Red has its own bag (`state.Battle.RedBag`, `engine.bag`).
-- **Still open (small, owner not asked yet):**
-  - an enemy walking out of the fog shows its whole path
-  - watchers see everything
-  - Grave Bloom uses everyone's dead
-  - Red's raised monsters get a weapon type and Blue's don't
+- **The small leftovers, also fixed (owner, 2026-10-16):**
+  - An enemy's walk is shown from where it came into sight (`seenPart`).
+  - Watchers see the board one round behind (`Room.Snaps`, `matchFor`). The owner chose this over "only what both see" and "follow one side".
+  - Grave Bloom in versus raises only the other side's dead (`state.Battle.SideKills`).
+  - Raised monsters are the same on both sides (already true; a test now proves it).
 
 **Next:** the owner sets up Render (`online-setup.md`) and plays with friends. Then chat and emojis, and after that the ideas list (chess feel first).
 

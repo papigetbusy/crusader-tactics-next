@@ -95,7 +95,15 @@ func onDeath(c *content.Content, b *state.Battle, dice rng.Dice, u, v *state.Uni
 		explode(c, b, dice, v, emit)
 	}
 	if v.Monster() || v.PvP {
-		if nb := gravebloomer(b); nb != nil && v.Monster() {
+		if b.Versus != nil { // versus: only a real hero's death counts, for the other side's Necromancer
+			if !v.Companion && !v.Summoned && !v.Decoy && !v.Undead {
+				if nb := gravebloomerAgainst(b, v.Team); nb != nil {
+					b.Raises = append(b.Raises, state.Raise{By: nb.ID, X: v.X, Y: v.Y})
+				} else {
+					b.SideKills[v.Team] = append(b.SideKills[v.Team], state.Tile{X: v.X, Y: v.Y})
+				}
+			}
+		} else if nb := gravebloomer(b); nb != nil && v.Monster() {
 			b.Raises = append(b.Raises, state.Raise{By: nb.ID, X: v.X, Y: v.Y})
 		} else {
 			b.FloorKills = append(b.FloorKills, state.Tile{X: v.X, Y: v.Y})
@@ -131,6 +139,17 @@ func onDeath(c *content.Content, b *state.Battle, dice rng.Dice, u, v *state.Uni
 			}
 		}
 	}
+}
+
+// gravebloomerAgainst is, in versus, a Necromancer of the other side whose
+// Grave Bloom is raising every kill: one player's dead rise for the other.
+func gravebloomerAgainst(b *state.Battle, deadTeam int) *state.Unit {
+	for _, z := range b.Units {
+		if z.Player() && z.Team != deadTeam && z.Ascension == "Necromancer" && z.Status["gbloom"] > 0 {
+			return z
+		}
+	}
+	return nil
 }
 
 // gravebloomer is a Necromancer whose Grave Bloom is raising every kill.

@@ -177,6 +177,7 @@ type Battle struct {
 	Fields     []Field        // burning ground and war banners
 	Traps      []Trap         // hidden snares
 	FloorKills []Tile         // where monsters died this floor (Grave Bloom raises them)
+	SideKills  [2][]Tile      // versus: where each side's heroes died (the other side's Grave Bloom raises them)
 	Raises     []Raise        // skeletons waiting to rise once the current action is over
 	Decisions  []Decision     // choices waiting for the player, answered first to last (old EVQ)
 	Fallen     []*Unit        // heroes who died in combat this floor, last one first to be revived

@@ -43,6 +43,10 @@ Every place where the new game intentionally behaves differently from the old on
   - A move that uncovers an enemy in the fog can't be undone.
   - Players never see the other player's traps, and see their fire, banners and kegs only in sight.
   - Each player has their own bag.
+  - An enemy walking out of the fog is shown only from where it came into sight.
+  - Watchers in an online room see the whole board, but one round behind (the board as it was when the turn before last began), so they can't tip off a player. Once the match ends they see it as it is.
+  - Grave Bloom in versus raises only the other player's fallen heroes, and an enemy hero who falls while it lasts rises for the Necromancer's side.
+  - Raised monsters are built the same for both players.
 Online rooms (owner, 2026-10-16): a room password shared by up to 4 people; two play, everyone watches, the others wait in line; the winner stays on and the loser goes to the back of the line.
 
 ## Kept on purpose

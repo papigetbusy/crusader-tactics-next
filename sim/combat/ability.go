@@ -107,6 +107,14 @@ func UseAbility(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Uni
 	case "crashDown":
 		crashDown(c, b, dice, u, ab, tiles[0], emit)
 	case "graveBloom":
+		if b.Versus != nil { // versus: the other player's fallen heroes rise, never your own
+			foe := 1 - u.Team
+			for _, k := range b.SideKills[foe] {
+				RaiseSkeleton(c, b, u, k.X, k.Y, true, emit)
+			}
+			b.SideKills[foe] = nil
+			break
+		}
 		for _, k := range b.FloorKills {
 			RaiseSkeleton(c, b, u, k.X, k.Y, true, emit)
 		}
