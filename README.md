@@ -27,6 +27,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-17 · Claude · The site no longer publishes finished pick pages (listed in `new-animations/unpublished.txt`, now the weapon picks). They stay in the repo. Open pages like the menu picks are still published.
 - 2026-10-17 · Claude · Tests for Grok's new monsters: the 4 new bosses guard boss floors 70-100 in order, every new elite turns up on elite floors, and each of the 10 walks up to a hero and attacks.
 - 2026-10-17 · Claude · Fix: Wyrm's Hide now also stops burns from the Witch's Contagion (every way of putting on a status uses one shared check). Lifeline also saves an ally from dying of poison, burn or bleed at the start of their turn, still once per battle.
 - 2026-10-17 · Grok · Monster pictures recut from the sheets you already approved. The last cut chopped every sprite to 100 pixels and deleted the dark parts, so bodies, wings and weapons were missing. They are whole again. Same art, not new drawings.

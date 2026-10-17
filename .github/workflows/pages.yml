@@ -54,6 +54,7 @@ jobs:
           for f in web/game/js/*.js; do sed "s/\.js';/.js?v=$LABEL';/g" "$f" > "site/game/js/$(basename "$f")"; done
           cp -r web/assets site/assets
           cp -r new-animations site/new-animations
+          grep -v '^#' new-animations/unpublished.txt | while read -r d; do [ -n "$d" ] && rm -rf "site/new-animations/$d"; done
           sed "s/__BUILD__/$LABEL/g" web/codex/codex.html > site/codex.html && cp web/codex/codex.json site/codex.json
           ls -l site
       - uses: actions/configure-pages@v5

@@ -1,0 +1,4 @@
+# Finished pick pages: they stay in the repo, but the site build does not
+# publish them (owner, 2026-10-17). One folder per line. When the owner has
+# picked from a page, add its folder here.
+weapon-picks

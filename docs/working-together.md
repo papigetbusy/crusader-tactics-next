@@ -12,7 +12,7 @@ New attack sprite sheets are paused. The owner is out of OpenArt credits. Do not
 
 ## Showing the owner a picture (owner, 2026-10-17)
 
-Pictures pasted in the chat do not reach his phone. When he asks to see art, save real PNG files, put them in a folder under `new-animations/` with a plain `index.html` that shows every picture, push that folder, and give him the GitHub Pages link (`https://papigetbusy.github.io/crusader-tactics-next/new-animations/...`). Label each picture on the page. Do not send only names or numbers.
+Pictures pasted in the chat do not reach his phone. When he asks to see art, save real PNG files, put them in a folder under `new-animations/` with a plain `index.html` that shows every picture, push that folder, and give him the GitHub Pages link (`https://papigetbusy.github.io/crusader-tactics-next/new-animations/...`). Label each picture on the page. Do not send only names or numbers. Once the owner has picked, add the folder to `new-animations/unpublished.txt`: it stays in the repo but is no longer published.
 
 ## The prompt
 
