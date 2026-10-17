@@ -225,7 +225,7 @@ Estimate: about 3 sessions once the game matches the original.
   - Grave Bloom in versus raises only the other side's dead (`state.Battle.SideKills`).
   - Raised monsters are the same on both sides (already true; a test now proves it).
 
-**Close button (owner, 2026-10-17):** on a phone the ✕ sat in the clock and battery bar, and the floor chip covered Take off. Gear, Skills, Settings, the shop, saves and the floor list now open below that bar and above the floor chip. The ✕ stays on the sheet, big enough to tap.
+**Close button (owner, 2026-10-17):** the ✕ stays at the top right of Gear, Skills and the other sheets. The floor bar hides while one of those is open, and comes back in the same place when it closes. The sheet itself sits below the phone's clock and battery.
 
 **Next:** the owner sets up Render (`online-setup.md`) and plays with friends. Then chat and emojis, and after that the ideas list (chess feel first).
 

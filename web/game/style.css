@@ -110,13 +110,18 @@ button { touch-action: manipulation; font-family: inherit; cursor: pointer; }
 #prepare .b { min-height: 52px; padding: 0 22px; font-size: 18px; }
 #formAsk { position: fixed; left: 50%; top: 42%; transform: translate(-50%, -50%); z-index: 14; }
 .cover { position: fixed; inset: 0; z-index: 12; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; }
-/* Gear, Skills and the other sheets sit above the floor chip and below the
-   phone's clock and battery, so the ✕ and Take off can be tapped
-   (owner, 2026-10-17). */
+/* Hero sheets open below the clock and battery. The floor bar hides while one
+   is open, and comes back when it closes (owner, 2026-10-17). */
 #gearWin, #shopWin, #skillsWin, #settingsWin, #slotsWin, #floorsWin {
   z-index: 60; box-sizing: border-box; align-items: flex-start;
   padding: calc(var(--safe-t) + 10px) 8px calc(var(--safe-b) + 10px);
 }
+body:has(#gearWin:not([hidden])) #chip,
+body:has(#shopWin:not([hidden])) #chip,
+body:has(#skillsWin:not([hidden])) #chip,
+body:has(#settingsWin:not([hidden])) #chip,
+body:has(#slotsWin:not([hidden])) #chip,
+body:has(#floorsWin:not([hidden])) #chip { display: none !important; }
 #gearWin .box, #shopWin .box, #skillsWin .box, #settingsWin .box, #slotsWin .box, #floorsWin .box { max-height: 100%; }
 .xclose {
   position: sticky; top: 0; float: right; z-index: 3; margin: 0 0 6px 8px;
