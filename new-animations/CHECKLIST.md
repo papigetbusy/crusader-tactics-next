@@ -8,6 +8,8 @@ Not in the game yet. The code is waiting in `code/`.
 - [x] Blood Moon (Blood Witch) — `code/blood-moon.js`
 - [x] Grand Hex (Hex Queen) — `code/grand-hex.js`
 - [x] Blood Frenzy (Berserker) — `code/blood-frenzy.js`
+- [x] Soul Nova (Necromancer) — `code/soul-nova.js`
+- [x] Thunder Lance (Storm Dragoon) — `code/thunder-lance.js`
 
 ## How this works
 
@@ -125,7 +127,7 @@ Ascension skills (one body only):
 
 - [ ] Glacial Breath (Frost Wyrm only) — gif: none — code: waiting
 - [ ] Hellfire Dive (Inferno Rider only) — gif: none — code: waiting
-- [ ] Thunder Lance (Storm Dragoon only) — gif: v2 made (owner's mockup poses + effects made in code, `gifs/dragon-knight/thunder-lance/`), not signed off — code: waiting
+- [x] Thunder Lance (Storm Dragoon only) — approved (v2: the owner's mockup poses + effects made in code). Code is in `code/thunder-lance.js`. Not in the game.
 
 ### Assassin
 
