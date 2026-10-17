@@ -10,6 +10,10 @@ Grok does not start a new system. Grok works on how the game looks and feels, th
 
 New attack sprite sheets are paused. The owner is out of OpenArt credits. Do not ask for new sheets and do not invent new attack art until he says credits are back. The prompt rule is locked in `new-animations/PROMPT.md`. Already signed off, and still not in the game: Blood Moon, Soul Nova, Grand Hex, Blood Frenzy.
 
+## Showing the owner a picture (owner, 2026-10-17)
+
+Pictures pasted in the chat do not reach his phone. When he asks to see art, save real PNG files, put them in a folder under `new-animations/` with a plain `index.html` that shows every picture, push that folder, and give him the GitHub Pages link (`https://papigetbusy.github.io/crusader-tactics-next/new-animations/...`). Label each picture on the page. Do not send only names or numbers.
+
 ## The prompt
 
 You are working on Crusader Tactics (next) in the repository papigetbusy/crusader-tactics-next. Another AI (Claude or Grok) also writes code here. Follow these rules exactly.
