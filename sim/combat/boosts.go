@@ -19,7 +19,7 @@ func newAttack(b *state.Battle, a Attack) float64 {
 	if s.Trick == "highNoon" {
 		n := 0
 		for _, z := range b.Units {
-			if d := Distance(u, z); z.Team != u.Team && d >= s.MinRange && d <= s.MaxRange+u.RangeBonus {
+			if d := Distance(u, z); z.Team != u.Team && d >= s.MinRange && d <= s.MaxRange+u.Reach(s.MaxRange) {
 				n++
 			}
 		}

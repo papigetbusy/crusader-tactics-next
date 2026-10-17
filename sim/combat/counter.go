@@ -54,7 +54,7 @@ func CounterRange(c *content.Content, v *state.Unit) (lo, hi int) {
 	if stats.ClassCategory(c, v.Class) != "m" {
 		lo, hi = 2, 6
 	}
-	return lo, hi + v.RangeBonus
+	return lo, hi + v.Reach(hi)
 }
 
 // CanCounter reports whether v would strike back at u standing at (x, y)

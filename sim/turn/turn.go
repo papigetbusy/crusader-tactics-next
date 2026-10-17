@@ -62,6 +62,7 @@ func Start(c *content.Content, b *state.Battle, dice rng.Dice, side int, emit ac
 			u.AbilityCooldown--
 		}
 		u.QuickShots, u.QuickUsed = 0, nil
+		combat.StartTurnPowers(u)
 		dot(u, "burn")
 		u.Defending, u.Done, u.Moved, u.Acted, u.Danced, u.TilesMoved, u.Undo = false, false, false, false, false, 0, nil
 		if bd := dot(u, "bleed"); bd > 0 && u.HeavyBleed {

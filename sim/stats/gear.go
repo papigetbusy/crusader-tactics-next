@@ -78,6 +78,9 @@ func CanUse(c *content.Content, class string, level int, it content.Item) (bool,
 		return true, ""
 	}
 	g := c.Gear
+	if it.Class != "" && it.Class != class {
+		return false, fmt.Sprintf("Only a %s can use %s.", it.Class, it.Name)
+	}
 	switch it.Slot {
 	case content.SlotWeapon:
 		rk := RankFor(c, class, level, it.WeaponType)
@@ -151,14 +154,59 @@ func sortedKeys(m map[string]int) []string {
 
 // SetAffixes is AffixSum plus the bonuses of the weapons in set i (old
 // afOfSet, line 1056).
+// Since 2026-10-17 a class legendary's power does not add up with the same
+// power (two Nightfangs give Ambush once), and a class legendary in hand
+// with all 3 pieces of one legendary armor set gives its 4-piece bonus.
 func SetAffixes(c *content.Content, class string, gear map[string]content.Item, i int) map[string]int {
 	out := AffixSum(c, gear)
+	got := map[string]bool{}
 	for _, it := range SetItems(c, class, gear, i) {
-		for _, a := range it.Affixes {
+		for _, a := range append(slices.Clone(it.Affixes), fullBonus(c, gear, it)...) {
+			if power(c, a.Key) {
+				if got[a.Key] {
+					continue
+				}
+				got[a.Key] = true
+			}
 			out[a.Key] += a.Value
 		}
 	}
 	return out
+}
+
+// fullBonus is a class legendary's 4-piece bonus when all 3 pieces of one
+// legendary armor set are worn, else nothing.
+func fullBonus(c *content.Content, gear map[string]content.Item, it content.Item) []content.Affix {
+	if len(it.Full) == 0 {
+		return nil
+	}
+	n := map[string]int{}
+	for _, sl := range []string{"h", "a", "b"} {
+		if a, ok := gear[sl]; ok && a.Set != "" && a.Rarity == c.Gear.Legendary() {
+			n[a.Set]++
+		}
+	}
+	for _, k := range n {
+		if k >= 3 {
+			return it.Full
+		}
+	}
+	return nil
+}
+
+// FullSet reports whether a class legendary's 4-piece bonus is on.
+func FullSet(c *content.Content, gear map[string]content.Item, it content.Item) bool {
+	return len(fullBonus(c, gear, it)) > 0
+}
+
+// power reports a class legendary power (they never add up).
+func power(c *content.Content, key string) bool {
+	for _, a := range c.Gear.Affixes {
+		if a.Key == key {
+			return a.Power
+		}
+	}
+	return false
 }
 
 // SetAtk is the attack of the weapons in set i (both, for dual wielders).

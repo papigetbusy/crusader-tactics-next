@@ -319,5 +319,17 @@
   "spec": "ui/spec.png",
   "square": "ui/square.png",
   "wood": "ui/wood.png"
+ },
+ "legendary": {
+  "Bloodcrescent": "legendary/bloodcrescent.png",
+  "Voidreaver": "legendary/voidreaver.png",
+  "Frostspire": "legendary/frostspire.png",
+  "Dragonbone Lance": "legendary/dragonbone-lance.png",
+  "Silverwing": "legendary/silverwing.png",
+  "Cinderhowl": "legendary/cinderhowl.png",
+  "Nightfang": "legendary/nightfang.png",
+  "Umbral Scepter": "legendary/umbral-scepter.png",
+  "Staff of Eternity": "legendary/staff-of-eternity.png",
+  "Hexflame Crook": "legendary/hexflame-crook.png"
  }
 }

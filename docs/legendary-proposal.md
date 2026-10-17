@@ -1,5 +1,11 @@
 # Legendary rework: proposal for the owner (2026-10-17)
 
+**Approved and built (2026-10-17).** The owner's answers: pictures from Grok's sheets (Warrior Sword 3, Tank Axe 1, Knight Lance 3, Dragon Knight Lance 2, Ranger Bow 1, Gunslinger Gun 2, Assassin Dagger 1, Mage Wand 3, Healer Staff 1, Witch Staff 3); class powers OK; epic sets OK; no new ordinary weapons. The weapon names follow the pictures: Bloodcrescent, Voidreaver, Frostspire, Dragonbone Lance, Silverwing, Cinderhowl, Nightfang, Umbral Scepter, Staff of Eternity, Hexflame Crook. Built as written, with these small changes:
+- The charms already had 3 bonuses, so they (and the legendary armor) went up to 5, like every legendary.
+- Arcane Echo: 20% chance a spell hits each target a second time (the same as casting it twice, without a second cooldown).
+- Shadowstep's cloak lasts until your next turn.
+- The class bonus counts the 3 armor pieces of one legendary set plus the weapon in hand.
+
 The owner asked for:
 - one legendary weapon for every class (today the Witch only gets the Healer's healing staff)
 - legendaries that are better than epics

@@ -124,7 +124,7 @@ func SkillRange(c *content.Content, u *state.Unit, s content.Skill) (lo, hi int)
 		lo, hi = strikeRange(c, u)
 	}
 	if !s.Heal {
-		hi += u.RangeBonus
+		hi += u.Reach(hi)
 		if u.Status["heye"] > 0 && s.Kind != "u" {
 			hi += int(u.P("heR", 3))
 		}

@@ -113,6 +113,7 @@ func gearStatuses(c *content.Content, dice rng.Dice, u *state.Unit, fx map[strin
 			fx[st.Key] = max(fx[st.Key], st.Value)
 		}
 	}
+	legendStatuses(c, dice, u, fx)
 }
 
 // doubleStrike is gear's chance to hit the main target once more at 60%

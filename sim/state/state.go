@@ -2,7 +2,11 @@
 // Rules receive a *Battle instead of reading hidden globals.
 package state
 
-import "github.com/papigetbusy/crusader-tactics-next/sim/content"
+import (
+	"slices"
+
+	"github.com/papigetbusy/crusader-tactics-next/sim/content"
+)
 
 // Team numbers, as in the old game.
 const (
@@ -100,7 +104,29 @@ type Unit struct {
 
 	Potions int   // potions left this floor (heroes)
 	Undo    *Tile // where the unit stood before its move this turn, while Undo is still allowed
+
+	// Class legendary powers (approved 2026-10-17).
+	Rhythm     int      // Battle Rhythm: hits landed since the start of this unit's turn
+	QuickHands bool     // Quick Hands already kept the turn going this turn
+	Shadowstep bool     // the cloak came from Shadowstep, not from the Cloak skill
+	Spent      []string // once-per-battle powers already used (Lifeline, the first hit, the opener)
 }
+
+// Reach is the extra range a unit's skill or Strike gets: range bonuses
+// (ascensions) and, for anything that already reaches past 1 tile, Eagle Eye.
+func (u *Unit) Reach(maxRange int) int {
+	r := u.RangeBonus
+	if maxRange > 1 {
+		r += u.Af("eagle")
+	}
+	return r
+}
+
+// Used reports whether a once-per-battle power was spent; Use spends it.
+func (u *Unit) Used(power string) bool { return slices.Contains(u.Spent, power) }
+
+// Use spends a once-per-battle power.
+func (u *Unit) Use(power string) { u.Spent = append(u.Spent, power) }
 
 // P is one of the numbers the unit's active ability set, or def when it is
 // missing or zero (the old code wrote u.dblN||2).

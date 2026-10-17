@@ -17,6 +17,9 @@ Written 2026-10-11 for the owner and Grok. The full plan is in `roadmap.md`, and
   - shop, floor list, saves with autosave, settings
   - flat and isometric views with rotate
 
+## Legendary rework: done 2026-10-17
+One legendary weapon per class with 2 unique powers and a 4-piece class bonus, 5 bonuses on every legendary, exact bonus counts by rarity, and epic set bonuses. Spec and the owner's answers: `legendary-proposal.md`. Left for later: the balance autoplayer should check the new powers' numbers (all in `sim/content/rework_legendary.go`).
+
 ## The new attack window: done 2026-10-12
 The owner signed off design B with a skill-name box (no count) and ◀ ▶ to cycle attacks; built in `battle.js` (forecast, placeForecast) and `style.css`.
 

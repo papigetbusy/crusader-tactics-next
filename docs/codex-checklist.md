@@ -424,19 +424,19 @@ Monsters now learn on the same schedule as heroes (see each monster in the new C
 - ✅ Frostbite Axe
 - ✅ Emberwood Staff
 - ✅ Silver Lance
-- ✅ Dawnbreaker
+- ❌ Dawnbreaker: replaced by one legendary weapon per class (owner, 2026-10-17)
 - ✅ Voidreaver
-- ✅ Heavensfall
-- ✅ Gale Piercer
+- ❌ Heavensfall: replaced by one legendary weapon per class (owner, 2026-10-17)
+- ❌ Gale Piercer: replaced by one legendary weapon per class (owner, 2026-10-17)
 - ✅ Staff of Eternity
 - ✅ Flintlock
 - ✅ Revolver
 - ✅ Silver Six
-- ✅ Thunderhowl
+- ❌ Thunderhowl: replaced by one legendary weapon per class (owner, 2026-10-17)
 - ✅ Twig Wand
 - ✅ Crystal Wand
 - ✅ Runic Wand
-- ✅ Emberheart Scepter
+- ❌ Emberheart Scepter: replaced by one legendary weapon per class (owner, 2026-10-17)
 - ✅ Rusty Knife
 - ✅ Steel Dagger
 - ✅ Shadow Kris
@@ -460,13 +460,13 @@ Monsters now learn on the same schedule as heroes (see each monster in the new C
 - ✅ Chain Coif
 - ✅ Scale Helm
 - ✅ Aegis of Dawn
-- ✅ Dawnbreaker
+- ❌ Dawnbreaker: replaced by one legendary weapon per class (owner, 2026-10-17)
 - ✅ Dawnguard Helm
 - ✅ Dawnstride Greaves
-- ✅ Emberheart Scepter
-- ✅ Gale Piercer
+- ❌ Emberheart Scepter: replaced by one legendary weapon per class (owner, 2026-10-17)
+- ❌ Gale Piercer: replaced by one legendary weapon per class (owner, 2026-10-17)
 - ✅ Heart of the Stair
-- ✅ Heavensfall
+- ❌ Heavensfall: replaced by one legendary weapon per class (owner, 2026-10-17)
 - ✅ Nightbloom Hood
 - ✅ Nightbloom Robe
 - ✅ Nightbloom Slippers
@@ -476,7 +476,7 @@ Monsters now learn on the same schedule as heroes (see each monster in the new C
 - ✅ Stormweave Coif
 - ✅ Stormweave Mail
 - ✅ Stormweave Treads
-- ✅ Thunderhowl
+- ❌ Thunderhowl: replaced by one legendary weapon per class (owner, 2026-10-17)
 - ✅ Voidreaver
 - ✅ Bone Charm
 - ✅ Lucky Coin

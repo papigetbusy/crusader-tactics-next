@@ -59,6 +59,9 @@ func (g *Game) itemText(it content.Item) string {
 	for _, a := range it.Affixes {
 		parts = append(parts, g.affixText(a.Key, a.Value))
 	}
+	for _, a := range it.Full {
+		parts = append(parts, g.affixText(a.Key, a.Value)+" (with all 3 pieces of one legendary armor set)")
+	}
 	if it.Set != "" {
 		parts = append(parts, "part of "+g.C.Gear.Sets[it.Set].Name)
 	}
@@ -69,6 +72,12 @@ func (g *Game) affixText(key string, v int) string {
 	for _, k := range g.C.Gear.Affixes {
 		if k.Key == key {
 			t := strings.TrimSuffix(strings.TrimSuffix(k.Text, " (legendary)"), " (epic)")
+			if k.Power { // a class legendary's power names itself: "Eagle Eye: +1 range"
+				if strings.Contains(t, "%d") {
+					return fmt.Sprintf(t, v)
+				}
+				return t
+			}
 			if strings.HasPrefix(t, "%") {
 				return fmt.Sprintf("%d%s", v, t)
 			}
@@ -87,6 +96,9 @@ func (g *Game) itemView(slot string, it content.Item) ItemView {
 	switch it.Slot {
 	case content.SlotWeapon:
 		iv.Kind = fmt.Sprintf("%s · needs rank %s", gr.WeaponNames[it.WeaponType], gr.Ranks[gr.RarityRank[it.Rarity]])
+		if it.Class != "" {
+			iv.Kind += " · " + it.Class + " only"
+		}
 	case content.SlotCharm:
 		iv.Kind = "Charm"
 	default:

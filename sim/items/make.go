@@ -49,22 +49,10 @@ func Make(c *content.Content, floor int, dice rng.Dice, k int, sl, wt, at, class
 		return it
 	}
 	if k >= legendary {
-		var pool []content.Unique
-		for _, u := range g.Uniques {
-			if u.Slot == sl && (wt == "" || u.WeaponType == wt) && (at == "" || u.Weight == at) {
-				pool = append(pool, u)
-			}
-		}
-		if len(pool) == 0 {
-			for _, u := range g.Uniques {
-				if u.Slot == sl {
-					pool = append(pool, u)
-				}
-			}
-		}
+		pool := uniquePool(g, sl, wt, at, class)
 		u := pool[rng.IntN(dice, RollItem, len(pool))]
 		it := content.Item{Name: u.Name, Slot: sl, Rarity: legendary, Unique: true, Set: u.Set, WeaponType: u.WeaponType,
-			Weight: u.Weight, Affixes: slices.Clone(u.Affixes)}
+			Weight: u.Weight, Affixes: slices.Clone(u.Affixes), Class: u.Class, Full: slices.Clone(u.Full)}
 		switch sl {
 		case "w":
 			it.Atk = pw
@@ -116,7 +104,39 @@ func Make(c *content.Content, floor int, dice rng.Dice, k int, sl, wt, at, class
 	if sl == "b" && k >= 2 {
 		it.Mov = 1
 	}
+	if _, ok := g.Sets["e"+at]; ok && k == g.Epic() {
+		it.Set = "e" + at // epic armor sets by weight (approved 2026-10-17)
+	}
 	return finish(it, "")
+}
+
+// uniquePool are the legendaries that can drop for a slot, weapon type,
+// armor weight and class. Class legendaries (approved 2026-10-17) only drop
+// for their own class: when the class has none of that weapon type, its own
+// legendary weapon drops instead.
+func uniquePool(g content.Gear, sl, wt, at, class string) []content.Unique {
+	fits := func(u content.Unique) bool { return u.Class == "" || class == "" || u.Class == class }
+	var pool []content.Unique
+	for _, u := range g.Uniques {
+		if u.Slot == sl && (wt == "" || u.WeaponType == wt) && (at == "" || u.Weight == at) && fits(u) {
+			pool = append(pool, u)
+		}
+	}
+	if len(pool) == 0 {
+		for _, u := range g.Uniques {
+			if u.Slot == sl && fits(u) {
+				pool = append(pool, u)
+			}
+		}
+	}
+	if len(pool) == 0 {
+		for _, u := range g.Uniques {
+			if u.Slot == sl {
+				pool = append(pool, u)
+			}
+		}
+	}
+	return pool
 }
 
 // prefix rolls an epic item's own bonus (approved 2026-10-11): one of the
@@ -148,14 +168,20 @@ var weaponTypeOrder = []string{"sword", "axe", "lance", "bow", "gun", "staff", "
 func round(x float64) int { return int(stats.Round(x)) }
 
 // bonuses rolls a new item's bonuses (old rollAffixes, line 1203): 0-1 for
-// common, 1-2 uncommon, 2-3 rare or epic; only kinds that fit the slot, the
+// common, 1-2 uncommon, 2-3 rare or epic (since 2026-10-17 the exact counts
+// in Gear.BonusCounts); only kinds that fit the slot, the
 // class and the weapon, and not one the epic bonus already gives (skip);
 // each rolled within its rarity's range.
 func bonuses(c *content.Content, dice rng.Dice, k int, sl, class, wt string, skip []string) []content.Affix {
-	counts := []int{rng.IntN(dice, RollBonus, 2), 1 + rng.IntN(dice, RollBonus, 2), 2 + rng.IntN(dice, RollBonus, 2), 3}
-	n := counts[min(k, 3)]
-	if k == c.Gear.Epic() {
-		n = counts[2]
+	var n int
+	if bc := c.Gear.BonusCounts; k < len(bc) {
+		n = bc[k] // exact counts by rarity (approved 2026-10-17)
+	} else {
+		counts := []int{rng.IntN(dice, RollBonus, 2), 1 + rng.IntN(dice, RollBonus, 2), 2 + rng.IntN(dice, RollBonus, 2), 3}
+		n = counts[min(k, 3)]
+		if k == c.Gear.Epic() {
+			n = counts[2]
+		}
 	}
 	allowedKeys := c.Gear.Loot.ClassAffixes[class]
 	var cand []content.AffixKind

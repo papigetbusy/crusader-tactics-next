@@ -7381,31 +7381,6 @@
     "rarity": 2
    },
    {
-    "name": "Dawnbreaker",
-    "type": "sword",
-    "rarity": 4
-   },
-   {
-    "name": "Voidreaver",
-    "type": "axe",
-    "rarity": 4
-   },
-   {
-    "name": "Heavensfall",
-    "type": "lance",
-    "rarity": 4
-   },
-   {
-    "name": "Gale Piercer",
-    "type": "bow",
-    "rarity": 4
-   },
-   {
-    "name": "Staff of Eternity",
-    "type": "staff",
-    "rarity": 4
-   },
-   {
     "name": "Flintlock",
     "type": "gun",
     "rarity": 0
@@ -7419,11 +7394,6 @@
     "name": "Silver Six",
     "type": "gun",
     "rarity": 2
-   },
-   {
-    "name": "Thunderhowl",
-    "type": "gun",
-    "rarity": 4
    },
    {
     "name": "Twig Wand",
@@ -7441,11 +7411,6 @@
     "rarity": 2
    },
    {
-    "name": "Emberheart Scepter",
-    "type": "wand",
-    "rarity": 4
-   },
-   {
     "name": "Rusty Knife",
     "type": "dagger",
     "rarity": 0
@@ -7459,11 +7424,6 @@
     "name": "Shadow Kris",
     "type": "dagger",
     "rarity": 2
-   },
-   {
-    "name": "Nightfang",
-    "type": "dagger",
-    "rarity": 4
    },
    {
     "name": "Gravewarden Blade",
@@ -7504,6 +7464,56 @@
     "name": "Widow's Kiss",
     "type": "dagger",
     "rarity": 3
+   },
+   {
+    "name": "Bloodcrescent",
+    "type": "sword",
+    "rarity": 4
+   },
+   {
+    "name": "Voidreaver",
+    "type": "axe",
+    "rarity": 4
+   },
+   {
+    "name": "Frostspire",
+    "type": "lance",
+    "rarity": 4
+   },
+   {
+    "name": "Dragonbone Lance",
+    "type": "lance",
+    "rarity": 4
+   },
+   {
+    "name": "Silverwing",
+    "type": "bow",
+    "rarity": 4
+   },
+   {
+    "name": "Cinderhowl",
+    "type": "gun",
+    "rarity": 4
+   },
+   {
+    "name": "Nightfang",
+    "type": "dagger",
+    "rarity": 4
+   },
+   {
+    "name": "Umbral Scepter",
+    "type": "wand",
+    "rarity": 4
+   },
+   {
+    "name": "Staff of Eternity",
+    "type": "staff",
+    "rarity": 4
+   },
+   {
+    "name": "Hexflame Crook",
+    "type": "staff",
+    "rarity": 4
    }
   ],
   "armorNames": {
@@ -8358,32 +8368,913 @@
     ],
     "slots": "ahbc",
     "legendaryOnly": true
+   },
+   {
+    "key": "rhythm",
+    "text": "Battle Rhythm: each hit you land gives +%d%% damage until your next turn (up to 3 times)",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "unbowed",
+    "text": "Unbowed: below 30%% HP you take %d%% less damage",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "aura",
+    "text": "Bulwark Aura: allies next to you take %d%% less damage",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "retaliate",
+    "text": "Retaliate: when hit, %d%% chance to stun the attacker for 1 turn",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "charge",
+    "text": "Charge: +%d%% damage for every tile you moved this turn (up to +30%%)",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "valor",
+    "text": "Valor: +%d move",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "dragonblood",
+    "text": "Dragonblood: %d%% of your damage is added as fire, and your hits burn for 2 turns",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "wyrmhide",
+    "text": "Wyrm's Hide: you can't be burned or frozen",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "eagle",
+    "text": "Eagle Eye: +%d range",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "pin",
+    "text": "Pinning Shot: %d%% chance a hit roots the target for 1 turn",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "quick",
+    "text": "Quick Hands: once per turn, your first attack doesn't end your turn",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "ricochet",
+    "text": "Ricochet: %d%% of your damage bounces to another enemy within 2 tiles",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "ambush",
+    "text": "Ambush: +%d%% damage to an enemy at full HP",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "shadowstep",
+    "text": "Shadowstep: after a kill you are cloaked until your next turn",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "echo",
+    "text": "Arcane Echo: %d%% chance a spell hits each target a second time",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "overflow",
+    "text": "Overflow: -%d turn on every skill cooldown",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "sanctuary",
+    "text": "Sanctuary: your heals also shield the ally for %d%% of their max HP",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "lifeline",
+    "text": "Lifeline: once per battle, an ally who would fall stays at 1 HP",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "hexMastery",
+    "text": "Hex Mastery: the statuses you cause last %d turn longer",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "siphon",
+    "text": "Soul Siphon: each status you cause heals you %d%% of your max HP",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "killReset",
+    "text": "Set of 4: kills reset your class ability's cooldown",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "counterBoost",
+    "text": "Set of 4: your counterattacks deal +%d%% damage",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "firstWard",
+    "text": "Set of 4: the first hit you take each battle does nothing",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "breathWide",
+    "text": "Set of 4: your breath and dive skills hit %d tile wider",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "farShot",
+    "text": "Set of 4: +%d%% damage to targets 4 or more tiles away",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "critRefund",
+    "text": "Set of 4: your crits take %d turn off every cooldown",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "opener",
+    "text": "Set of 4: your first attack each battle always crits",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "wideSpells",
+    "text": "Set of 4: your area spells are %d tile wider",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "cleanseHeal",
+    "text": "Set of 4: your heals also remove one bad status",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
+   },
+   {
+    "key": "hexSpread",
+    "text": "Set of 4: your curses and poisons also spread to one enemy next to the target",
+    "ranges": [
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ],
+     [
+      0,
+      0
+     ]
+    ],
+    "slots": "w",
+    "legendaryOnly": true,
+    "power": true
    }
   ],
   "uniques": [
    {
-    "name": "Dawnbreaker",
+    "name": "Bloodcrescent",
     "slot": "w",
     "weaponType": "sword",
     "affixes": [
      {
-      "key": "light",
+      "key": "rhythm",
+      "value": 8
+     },
+     {
+      "key": "unbowed",
+      "value": 25
+     },
+     {
+      "key": "phys",
       "value": 30
      },
      {
-      "key": "addFire",
-      "value": 15
-     },
-     {
       "key": "crit",
-      "value": 10
+      "value": 12
      },
      {
-      "key": "stunCh",
+      "key": "leech",
       "value": 10
      }
     ],
-    "lore": "Forged at the first sunrise; it burns what it cuts."
+    "lore": "A dragon's claw, ground into a blade. It grows hungrier with every swing.",
+    "class": "Warrior",
+    "full": [
+     {
+      "key": "killReset",
+      "value": 1
+     }
+    ]
    },
    {
     "name": "Voidreaver",
@@ -8391,29 +9282,48 @@
     "weaponType": "axe",
     "affixes": [
      {
+      "key": "aura",
+      "value": 15
+     },
+     {
+      "key": "retaliate",
+      "value": 30
+     },
+     {
       "key": "dark",
       "value": 30
      },
      {
-      "key": "leech",
-      "value": 12
+      "key": "hpPct",
+      "value": 20
      },
      {
-      "key": "double",
-      "value": 15
-     },
-     {
-      "key": "bossDmg",
-      "value": 30
+      "key": "thorns",
+      "value": 20
      }
     ],
-    "lore": "Each swing drinks from the dark between stars."
+    "lore": "Each swing drinks from the dark between stars.",
+    "class": "Tank",
+    "full": [
+     {
+      "key": "counterBoost",
+      "value": 50
+     }
+    ]
    },
    {
-    "name": "Heavensfall",
+    "name": "Frostspire",
     "slot": "w",
     "weaponType": "lance",
     "affixes": [
+     {
+      "key": "charge",
+      "value": 5
+     },
+     {
+      "key": "valor",
+      "value": 1
+     },
      {
       "key": "dmg",
       "value": 25
@@ -8423,45 +9333,207 @@
       "value": 15
      },
      {
-      "key": "stunCh",
-      "value": 12
+      "key": "defPct",
+      "value": 20
+     }
+    ],
+    "lore": "Its tip was cut from a glacier that never melts.",
+    "class": "Knight",
+    "full": [
+     {
+      "key": "firstWard",
+      "value": 1
+     }
+    ]
+   },
+   {
+    "name": "Dragonbone Lance",
+    "slot": "w",
+    "weaponType": "lance",
+    "affixes": [
+     {
+      "key": "dragonblood",
+      "value": 15
      },
      {
-      "key": "defPct",
+      "key": "wyrmhide",
+      "value": 1
+     },
+     {
+      "key": "phys",
+      "value": 25
+     },
+     {
+      "key": "crit",
+      "value": 10
+     },
+     {
+      "key": "hpPct",
       "value": 15
      }
     ],
-    "lore": "Said to have pinned a falling star."
+    "lore": "Carved from the spine of the first dragon. The ruby still beats.",
+    "class": "Dragon Knight",
+    "full": [
+     {
+      "key": "breathWide",
+      "value": 1
+     }
+    ]
    },
    {
-    "name": "Gale Piercer",
+    "name": "Silverwing",
     "slot": "w",
     "weaponType": "bow",
     "affixes": [
      {
-      "key": "elec",
-      "value": 30
+      "key": "eagle",
+      "value": 1
      },
      {
-      "key": "addElec",
-      "value": 20
+      "key": "pin",
+      "value": 25
      },
      {
       "key": "crit",
       "value": 15
      },
      {
-      "key": "movA",
-      "value": 1
+      "key": "critDmg",
+      "value": 50
+     },
+     {
+      "key": "bossDmg",
+      "value": 30
      }
     ],
-    "lore": "Its string hums with the storm."
+    "lore": "Strung with an angel's hair; its arrows never tire.",
+    "class": "Ranger",
+    "full": [
+     {
+      "key": "farShot",
+      "value": 20
+     }
+    ]
+   },
+   {
+    "name": "Cinderhowl",
+    "slot": "w",
+    "weaponType": "gun",
+    "affixes": [
+     {
+      "key": "quick",
+      "value": 1
+     },
+     {
+      "key": "ricochet",
+      "value": 20
+     },
+     {
+      "key": "fire",
+      "value": 30
+     },
+     {
+      "key": "crit",
+      "value": 12
+     },
+     {
+      "key": "critDmg",
+      "value": 40
+     }
+    ],
+    "lore": "Molten iron runs in its cracks. It is never cool enough to holster.",
+    "class": "Gunslinger",
+    "full": [
+     {
+      "key": "critRefund",
+      "value": 1
+     }
+    ]
+   },
+   {
+    "name": "Nightfang",
+    "slot": "w",
+    "weaponType": "dagger",
+    "affixes": [
+     {
+      "key": "ambush",
+      "value": 30
+     },
+     {
+      "key": "shadowstep",
+      "value": 1
+     },
+     {
+      "key": "poisonCh",
+      "value": 30
+     },
+     {
+      "key": "crit",
+      "value": 20
+     },
+     {
+      "key": "bleedCh",
+      "value": 25
+     }
+    ],
+    "lore": "It bites twice, and the second bite is poison.",
+    "class": "Assassin",
+    "full": [
+     {
+      "key": "opener",
+      "value": 1
+     }
+    ]
+   },
+   {
+    "name": "Umbral Scepter",
+    "slot": "w",
+    "weaponType": "wand",
+    "affixes": [
+     {
+      "key": "echo",
+      "value": 20
+     },
+     {
+      "key": "overflow",
+      "value": 1
+     },
+     {
+      "key": "dmg",
+      "value": 25
+     },
+     {
+      "key": "crit",
+      "value": 12
+     },
+     {
+      "key": "critDmg",
+      "value": 50
+     }
+    ],
+    "lore": "Two shadows hold its orb, and every spell is cast twice in their whispers.",
+    "class": "Mage",
+    "full": [
+     {
+      "key": "wideSpells",
+      "value": 1
+     }
+    ]
    },
    {
     "name": "Staff of Eternity",
     "slot": "w",
     "weaponType": "staff",
     "affixes": [
+     {
+      "key": "sanctuary",
+      "value": 20
+     },
+     {
+      "key": "lifeline",
+      "value": 1
+     },
      {
       "key": "healPct",
       "value": 40
@@ -8471,87 +9543,53 @@
       "value": 6
      },
      {
-      "key": "cdr",
-      "value": 1
-     },
-     {
       "key": "light",
       "value": 20
      }
     ],
-    "lore": "Time bends gently around its bearer."
+    "lore": "Time bends gently around its bearer.",
+    "class": "Healer",
+    "full": [
+     {
+      "key": "cleanseHeal",
+      "value": 1
+     }
+    ]
    },
    {
-    "name": "Thunderhowl",
+    "name": "Hexflame Crook",
     "slot": "w",
-    "weaponType": "gun",
+    "weaponType": "staff",
     "affixes": [
      {
-      "key": "addElec",
+      "key": "hexMastery",
+      "value": 1
+     },
+     {
+      "key": "siphon",
+      "value": 5
+     },
+     {
+      "key": "dark",
+      "value": 30
+     },
+     {
+      "key": "poisonCh",
       "value": 25
      },
      {
-      "key": "double",
-      "value": 20
-     },
-     {
-      "key": "crit",
-      "value": 12
-     },
-     {
-      "key": "elec",
-      "value": 20
-     }
-    ],
-    "lore": "Every shot arrives with its own thunderclap."
-   },
-   {
-    "name": "Emberheart Scepter",
-    "slot": "w",
-    "weaponType": "wand",
-    "affixes": [
-     {
-      "key": "fire",
-      "value": 40
-     },
-     {
-      "key": "addFire",
-      "value": 20
-     },
-     {
-      "key": "critDmg",
-      "value": 50
-     },
-     {
-      "key": "cdr",
-      "value": 1
-     }
-    ],
-    "lore": "A dragon's heart still beats in the gem."
-   },
-   {
-    "name": "Nightfang",
-    "slot": "w",
-    "weaponType": "dagger",
-    "affixes": [
-     {
-      "key": "poisonCh",
-      "value": 30
-     },
-     {
-      "key": "bleedCh",
-      "value": 30
-     },
-     {
-      "key": "crit",
-      "value": 20
-     },
-     {
-      "key": "double",
+      "key": "dmg",
       "value": 15
      }
     ],
-    "lore": "It bites twice, and the second bite is poison."
+    "lore": "A green fire that burns curses into whatever it touches.",
+    "class": "Witch",
+    "full": [
+     {
+      "key": "hexSpread",
+      "value": 1
+     }
+    ]
    },
    {
     "name": "Dawnguard Helm",
@@ -8566,6 +9604,18 @@
      {
       "key": "defPct",
       "value": 20
+     },
+     {
+      "key": "dr",
+      "value": 6
+     },
+     {
+      "key": "thorns",
+      "value": 15
+     },
+     {
+      "key": "regen",
+      "value": 3
      }
     ]
    },
@@ -8582,6 +9632,18 @@
      {
       "key": "dr",
       "value": 10
+     },
+     {
+      "key": "hpPct",
+      "value": 15
+     },
+     {
+      "key": "thorns",
+      "value": 20
+     },
+     {
+      "key": "regen",
+      "value": 3
      }
     ]
    },
@@ -8598,6 +9660,18 @@
      {
       "key": "thorns",
       "value": 20
+     },
+     {
+      "key": "hpPct",
+      "value": 10
+     },
+     {
+      "key": "dr",
+      "value": 6
+     },
+     {
+      "key": "regen",
+      "value": 3
      }
     ]
    },
@@ -8614,6 +9688,18 @@
      {
       "key": "elec",
       "value": 15
+     },
+     {
+      "key": "hpPct",
+      "value": 10
+     },
+     {
+      "key": "dmg",
+      "value": 10
+     },
+     {
+      "key": "hit",
+      "value": 10
      }
     ]
    },
@@ -8634,6 +9720,14 @@
      {
       "key": "elec",
       "value": 15
+     },
+     {
+      "key": "crit",
+      "value": 6
+     },
+     {
+      "key": "dmg",
+      "value": 10
      }
     ]
    },
@@ -8650,6 +9744,18 @@
      {
       "key": "movA",
       "value": 1
+     },
+     {
+      "key": "crit",
+      "value": 6
+     },
+     {
+      "key": "hpPct",
+      "value": 10
+     },
+     {
+      "key": "dmg",
+      "value": 8
      }
     ]
    },
@@ -8666,6 +9772,18 @@
      {
       "key": "dark",
       "value": 15
+     },
+     {
+      "key": "crit",
+      "value": 8
+     },
+     {
+      "key": "dmg",
+      "value": 10
+     },
+     {
+      "key": "hpPct",
+      "value": 10
      }
     ]
    },
@@ -8686,6 +9804,14 @@
      {
       "key": "evade",
       "value": 6
+     },
+     {
+      "key": "dmg",
+      "value": 10
+     },
+     {
+      "key": "leech",
+      "value": 6
      }
     ]
    },
@@ -8702,6 +9828,18 @@
      {
       "key": "movA",
       "value": 1
+     },
+     {
+      "key": "crit",
+      "value": 6
+     },
+     {
+      "key": "dmg",
+      "value": 8
+     },
+     {
+      "key": "hpPct",
+      "value": 10
      }
     ]
    },
@@ -8720,6 +9858,14 @@
      {
       "key": "dmg",
       "value": 10
+     },
+     {
+      "key": "dr",
+      "value": 6
+     },
+     {
+      "key": "crit",
+      "value": 8
      }
     ],
     "lore": "Pulses once for every floor you climb."
@@ -8739,6 +9885,14 @@
      {
       "key": "regen",
       "value": 4
+     },
+     {
+      "key": "hpPct",
+      "value": 15
+     },
+     {
+      "key": "ward",
+      "value": 20
      }
     ],
     "lore": "Warm to the touch, even in the crypts."
@@ -8750,17 +9904,17 @@
     "two": [
      {
       "key": "dr",
-      "value": 8
+      "value": 10
      }
     ],
     "three": [
      {
-      "key": "thorns",
-      "value": 25
+      "key": "hpPct",
+      "value": 20
      },
      {
-      "key": "hpPct",
-      "value": 15
+      "key": "thorns",
+      "value": 20
      }
     ]
    },
@@ -8768,22 +9922,18 @@
     "name": "Nightbloom (light set)",
     "two": [
      {
-      "key": "poisonCh",
-      "value": 15
+      "key": "evade",
+      "value": 10
      }
     ],
     "three": [
      {
-      "key": "evade",
-      "value": 8
+      "key": "dmg",
+      "value": 16
      },
      {
       "key": "regen",
-      "value": 3
-     },
-     {
-      "key": "dark",
-      "value": 20
+      "value": 4
      }
     ]
    },
@@ -8791,18 +9941,75 @@
     "name": "Stormweave (medium set)",
     "two": [
      {
-      "key": "addElec",
+      "key": "crit",
       "value": 10
      }
     ],
     "three": [
      {
-      "key": "crit",
+      "key": "dmg",
+      "value": 16
+     },
+     {
+      "key": "movA",
+      "value": 1
+     }
+    ]
+   },
+   "eH": {
+    "name": "Vigil (heavy epic set)",
+    "two": [
+     {
+      "key": "dr",
+      "value": 5
+     }
+    ],
+    "three": [
+     {
+      "key": "hpPct",
       "value": 10
      },
      {
-      "key": "double",
+      "key": "thorns",
       "value": 10
+     }
+    ]
+   },
+   "eL": {
+    "name": "Shadowweave (light epic set)",
+    "two": [
+     {
+      "key": "evade",
+      "value": 5
+     }
+    ],
+    "three": [
+     {
+      "key": "dmg",
+      "value": 8
+     },
+     {
+      "key": "regen",
+      "value": 2
+     }
+    ]
+   },
+   "eM": {
+    "name": "Wolfsteel (medium epic set)",
+    "two": [
+     {
+      "key": "crit",
+      "value": 5
+     }
+    ],
+    "three": [
+     {
+      "key": "dmg",
+      "value": 8
+     },
+     {
+      "key": "movA",
+      "value": 1
      }
     ]
    }
@@ -9294,7 +10501,24 @@
      }
     ]
    }
-  ]
+  ],
+  "bonusCounts": [
+   1,
+   2,
+   3,
+   3,
+   5
+  ],
+  "powerNumbers": {
+   "chargeCap": 30,
+   "dragonBurn": 2,
+   "farTiles": 4,
+   "pinTurns": 1,
+   "retaliateStun": 1,
+   "rhythmStacks": 3,
+   "ricochetRange": 2,
+   "unbowedBelow": 30
+  }
  },
  "Terrain": [
   {
@@ -9742,7 +10966,8 @@
    "Versus, online 1v1 (new; the old game had none; owner, 2026-10-11 and 2026-10-16). Two players each bring 8 different heroes at Lv 30 with their chosen ascensions. Every class wears one fixed purple set: a purple weapon for each weapon set, purple armor of its first armor weight and a purple charm, with bonuses rolled once from the class's name, so a class always wears the same set. The map is random but mirrored, at the climb's biggest size, 32×32 (12×12 at first; owner, 2026-10-16). Versus has fog of war (owner, 2026-10-16): each side sees only the enemy units within 6 steps of one of its own units and can't target what it can't see; the ground is always seen; the fog lifts when the match ends; watchers in an online room see everything; single player has no fog. The first player moves first. Each player has 5 minutes for the whole match and may spend it all on one turn; there is no per-turn limit. Running out of that time loses the match. Online, the server keeps the clock and the first 2 seconds after each move are not charged. A refresh keeps the same seat. A phone that missed a move jumps to the server's board. There's no experience, gold, loot or chests, and a player loses when no real hero is left. Both sides' heroes keep every hero power: abilities, ascension powers, Guardian cover, revives of their own fallen. The numbers are in `data/rules/versus.json`. Exploit fixes (owner, 2026-10-16):"
   ],
   "Kept on purpose": [
-   "A defeat re-runs the same floor with no penalty. The game is built around reaching a floor you can't beat yet, then going back to earlier floors to farm XP and gear, so losing is not punished (owner, 2026-10-11). The balance autoplayer will report how often runs get stuck, without making the game harder."
+   "A defeat re-runs the same floor with no penalty. The game is built around reaching a floor you can't beat yet, then going back to earlier floors to farm XP and gear, so losing is not punished (owner, 2026-10-11). The balance autoplayer will report how often runs get stuck, without making the game harder.",
+   "Legendary rework (owner, 2026-10-17; details in `legendary-proposal.md`). Every class has its own legendary weapon that only it can use: Warrior Bloodcrescent, Tank Voidreaver, Knight Frostspire, Dragon Knight Dragonbone Lance, Ranger Silverwing, Gunslinger Cinderhowl, Assassin Nightfang, Mage Umbral Scepter, Healer Staff of Eternity, Witch Hexflame Crook. The pictures are the owner's picks from Grok's sheets. Each has 2 unique class powers (for example Battle Rhythm and Unbowed for the Warrior), 3 ordinary bonuses, and a class bonus when it is in hand with all 3 pieces of one legendary armor set. Every legendary has 5 bonuses; legendary armor and charms got 2-3 more each. New items roll exactly 1 (common), 2 (uncommon) or 3 (rare) bonuses, and an epic 3 plus its epic bonus. Epic armor gets 2- and 3-piece set bonuses by weight (Vigil, Wolfsteel, Shadowweave), and the legendary armor set bonuses are about double those. A legendary weapon drops only for its own class; the same power twice (two Nightfangs) counts once; epic armor from older saves joins its set when loaded. In the old game the 8 legendary weapons went by weapon type (the Healer and Witch shared one staff), items rolled 0-1, 1-2 or 2-3 bonuses, legendary armor had 2-3, and epics had no sets. The retired legendaries Dawnbreaker, Heavensfall, Gale Piercer, Thunderhowl and Emberheart Scepter no longer drop; ones already owned keep working."
   ]
  },
  "Abilities": {

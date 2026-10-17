@@ -92,7 +92,9 @@ func FieldTick(b *state.Battle, side int) {
 				putStatus(z, "snare", 1, func(action.Event) {})
 				z.Status["poison"] = max(z.Status["poison"], 2)
 			default:
-				z.Status["burn"] = max(z.Status["burn"], 2)
+				if !shrugs(z, "burn") { // Wyrm's Hide (approved 2026-10-17)
+					z.Status["burn"] = max(z.Status["burn"], 2)
+				}
 			}
 		}
 		f.Turns--

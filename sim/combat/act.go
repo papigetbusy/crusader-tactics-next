@@ -17,7 +17,7 @@ const RollShuffle = "shuffle"
 // revives, buffs, heals and attacks (old act, index.html lines 1711-1734).
 // It assumes the caller already checked the use is allowed.
 func UseSkill(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Unit, slot int, v *state.Unit, emit action.Emit) error {
-	s := u.Skills[slot]
+	s := Widen(u, u.Skills[slot])
 	if err := useSkill(c, b, dice, u, slot, v, emit); err != nil {
 		return err
 	}
@@ -27,7 +27,7 @@ func UseSkill(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Unit,
 
 // useSkill is UseSkill before any counterattack.
 func useSkill(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Unit, slot int, v *state.Unit, emit action.Emit) error {
-	s := u.Skills[slot]
+	s := Widen(u, u.Skills[slot])
 	if IsNew(s) {
 		return useNew(c, b, dice, u, slot, s, Pick{Target: v}, emit)
 	}
@@ -87,7 +87,10 @@ func attack(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit a
 	u, s, v := a.By, a.Skill, a.Target
 	if u.Status["cloak"] > 0 { // attacking breaks the cloak
 		u.Status["cloak"] = 0
-		CloakCooldown(u)
+		if !u.Shadowstep { // a Shadowstep cloak leaves the Cloak skill alone
+			CloakCooldown(u)
+		}
+		u.Shadowstep = false
 	}
 	if u.Ascension == "Blood Witch" || s.HPCost > 0 {
 		cost := s.HPCost
@@ -101,7 +104,7 @@ func attack(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit a
 		targets = append(targets, extraTargets(b, dice, u, s, v)...)
 	}
 	if u.Status["heye"] > 0 && s.Kind != "u" && s.Area == 0 && s.Line == 0 && len(targets) < int(u.P("heN", 3)) {
-		reach := s.MaxRange + u.RangeBonus + int(u.P("heR", 3))
+		reach := s.MaxRange + u.Reach(s.MaxRange) + int(u.P("heR", 3))
 		for _, z := range b.Units {
 			if len(targets) >= int(u.P("heN", 3)) {
 				break
@@ -208,7 +211,7 @@ func attack(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit a
 func extraTargets(b *state.Battle, dice rng.Dice, u *state.Unit, s content.Skill, v *state.Unit) []*state.Unit {
 	var pool []*state.Unit
 	for _, z := range b.Units {
-		if z.Team != u.Team && z != v && Distance(u, z) <= s.MaxRange+u.RangeBonus {
+		if z.Team != u.Team && z != v && Distance(u, z) <= s.MaxRange+u.Reach(s.MaxRange) {
 			pool = append(pool, z)
 		}
 	}
@@ -315,7 +318,7 @@ func finishSkill(c *content.Content, b *state.Battle, u *state.Unit, slot int, s
 		u.Status["lock"] = 3
 	}
 	if s.Cooldown > 0 && !(u.Ascension == "Storm Dragoon" && s.Name == "Sky Dive") {
-		u.Cooldowns[slot] = max(1, s.Cooldown-u.Af("cdr"))
+		u.Cooldowns[slot] = max(1, s.Cooldown-u.Af("cdr")-u.Af("overflow"))
 	}
 	if u.Player() && u.Ascension == "Tempest Archer" && !u.Moved && offensive {
 		u.Acted, u.Done = true, false
@@ -335,6 +338,9 @@ func finishSkill(c *content.Content, b *state.Battle, u *state.Unit, slot int, s
 		} else {
 			u.Status["qd"], u.QuickShots, u.QuickUsed = 0, 0, nil
 		}
+	}
+	if u.Player() && offensive {
+		quickHands(u, emit)
 	}
 	if u.ExtraTurn {
 		u.ExtraTurn = false

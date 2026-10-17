@@ -37,6 +37,11 @@ type Item struct {
 	Affixes    []Affix `json:"affixes,omitempty"`
 	Set        string  `json:"set,omitempty"` // armor set key (pieces of one set give set bonuses)
 	Unique     bool    `json:"unique,omitempty"`
+	// Class legendaries (approved 2026-10-17): only Class can use the item,
+	// and Full is its 4-piece class bonus (the weapon in hand plus all 3
+	// pieces of one legendary armor set).
+	Class string  `json:"class,omitempty"`
+	Full  []Affix `json:"full,omitempty"`
 }
 
 // WeaponSkill is one weapon type a class can use and how well: P (primary),
@@ -75,6 +80,9 @@ type AffixKind struct {
 	Ranges        [][2]int `json:"ranges"` // per rarity: lowest and highest roll (0-0: never)
 	Slots         string   `json:"slots"`  // the slots it can roll on (w h a b c)
 	LegendaryOnly bool     `json:"legendaryOnly,omitempty"`
+	// Power: a class legendary's unique power (approved 2026-10-17). Its
+	// Text has a %d for the number; two of the same power never add up.
+	Power bool `json:"power,omitempty"`
 }
 
 // Unique is a named legendary item with fixed bonuses (old UNQ).
@@ -86,6 +94,8 @@ type Unique struct {
 	Set        string  `json:"set,omitempty"`
 	Affixes    []Affix `json:"affixes"`
 	Lore       string  `json:"lore,omitempty"`
+	Class      string  `json:"class,omitempty"` // a class legendary: only this class drops and uses it
+	Full       []Affix `json:"full,omitempty"`  // its 4-piece class bonus
 }
 
 // WeaponBase is a weapon name for a type and rarity (old WPN).
@@ -132,7 +142,16 @@ type Gear struct {
 	ArmorWeights map[string]ArmorWeight         `json:"armorWeights"`
 	Loot         Loot                           `json:"loot"`
 	Prefixes     []Prefix                       `json:"prefixes,omitempty"` // epic bonuses (approved 2026-10-11)
+	// BonusCounts is how many ordinary bonuses a new item rolls, per rarity
+	// (approved 2026-10-17). Empty: the old game's 0-1, 1-2, 2-3 rolls.
+	BonusCounts []int `json:"bonusCounts,omitempty"`
+	// PowerNumbers are the fixed numbers the class legendaries' powers use
+	// (caps, thresholds, ranges, turns).
+	PowerNumbers map[string]float64 `json:"powerNumbers,omitempty"`
 }
+
+// PowerNumber is one of the class legendaries' fixed numbers.
+func (g Gear) PowerNumber(key string) float64 { return g.PowerNumbers[key] }
 
 // Prefix is an epic item's own bonus: only epic items roll it, and its name
 // starts the item's name ("Vampiric Gravewarden Blade").

@@ -12,7 +12,13 @@ import (
 // removed lists every old Codex entry that is no longer in the game, with
 // the reason. An old entry missing from the new game and not listed here
 // fails the test, so nothing disappears silently.
-var removed = map[string]string{}
+var removed = map[string]string{
+	"Dawnbreaker":        "replaced by one legendary weapon per class (owner, 2026-10-17)",
+	"Heavensfall":        "replaced by one legendary weapon per class (owner, 2026-10-17)",
+	"Gale Piercer":       "replaced by one legendary weapon per class (owner, 2026-10-17)",
+	"Thunderhowl":        "replaced by one legendary weapon per class (owner, 2026-10-17)",
+	"Emberheart Scepter": "replaced by one legendary weapon per class (owner, 2026-10-17)",
+}
 
 // oldRules are the old Codex's floor and rule lines, each with what the new
 // game does (checked by hand against docs/changes-from-old-game.md).

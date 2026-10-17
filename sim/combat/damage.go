@@ -34,6 +34,9 @@ type Attack struct {
 	CritBonus  int     // extra crit chance in % (Flurry of Blades)
 	Counter    bool    // a counterattack: never countered, never shared by a Sacred Vow
 	NoRedirect bool    // a Guardian cannot take this hit
+	Echo       bool    // an Arcane Echo's second hit (it never echoes again)
+	Bounce     bool    // a Ricochet's bounce (it never bounces again)
+	Spread     bool    // statuses spread by Hex Spread (they never spread again)
 }
 
 // Round is JavaScript's Math.round: halves round up (toward +infinity).
@@ -187,6 +190,7 @@ func Damage(c *content.Content, b *state.Battle, a Attack, roll float64) (int, f
 		atk *= k.Ambush
 	}
 	atk *= newAttack(b, a)
+	atk *= legendAttack(c, a)
 	if HeightEdge(c, b, u, v) > 0 {
 		atk *= k.HeightDamage
 	}
@@ -230,6 +234,7 @@ func Damage(c *content.Content, b *state.Battle, a Attack, roll float64) (int, f
 		r *= k.GuardDamage
 	}
 	r *= newTaken(a)
+	r *= legendTaken(c, b, a)
 	if v.Status["taunt"] > 0 {
 		r *= 0.7
 	}

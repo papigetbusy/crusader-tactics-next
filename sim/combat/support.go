@@ -140,6 +140,7 @@ func healSkill(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Unit
 		n := heal(z, amt)
 		healed += n
 		emit(action.Event{Kind: action.Healed, Unit: u.ID, Target: z.ID, Amount: n})
+		healPowers(u, z)
 		if u.Ascension == "Saint" && amt > float64(room) {
 			cap, mul := c.Ascensions["Saint"].N("shieldCap"), 1.0
 			if u.Status["choir"] > 0 {

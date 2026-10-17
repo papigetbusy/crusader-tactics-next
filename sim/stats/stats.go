@@ -111,7 +111,7 @@ func Geared(c *content.Content, class string, level int, ascension string, gear 
 	if v := af["defPct"]; v != 0 {
 		n.Def = int(Round(float64(n.Def) * (1 + float64(v)/100)))
 	}
-	n.Mov += af["movA"]
+	n.Mov += af["movA"] + af["valor"]
 	base := n.Atk
 	n.Atk += SetAtk(c, class, gear, 0)
 	return n, base

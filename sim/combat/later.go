@@ -30,8 +30,10 @@ func putStatus(v *state.Unit, q string, n int, emit action.Emit) {
 
 // curse is a skill that only puts statuses on (it never misses).
 func curse(c *content.Content, b *state.Battle, dice rng.Dice, u *state.Unit, s content.Skill, v *state.Unit, emit action.Emit) {
-	if put := applyStatuses(c, b, dice, Attack{By: u, Skill: s, Target: v, Fixed: 1}, v); len(put) > 0 {
+	a := Attack{By: u, Skill: s, Target: v, Fixed: 1}
+	if put := applyStatuses(c, b, dice, a, v); len(put) > 0 {
 		emit(action.Event{Kind: action.StatusOn, Target: v.ID, Statuses: put})
+		statusPowers(c, b, a, v, put, emit)
 	}
 }
 

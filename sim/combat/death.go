@@ -35,6 +35,9 @@ func died(c *content.Content, b *state.Battle, dice rng.Dice, u, v *state.Unit, 
 	if u.Player() {
 		u.KilledThisAction = true
 	}
+	if u.Team != v.Team {
+		onKillPowers(b, u)
+	}
 	if v.Monster() && v.Ally && partyHero(u) {
 		bond(b, u, v)
 	}

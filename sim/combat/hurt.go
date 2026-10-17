@@ -72,7 +72,14 @@ func Hurt(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit act
 			return res
 		}
 	}
+	if firstWard(a, emit) {
+		res.Immune, res.Damage, res.HPAfter = true, 0, v.HP
+		return res
+	}
 	cc := critChance(u, a)
+	if opener(a) {
+		cc = 100
+	}
 	if u.Status["coin"] > 0 && !fixed && !a.Counter {
 		cc = 100 // Lucky Coin
 		u.Status["coin"]--
@@ -80,6 +87,7 @@ func Hurt(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit act
 	if cc > 0 && dice.Roll(RollCrit)*100 < float64(cc) {
 		res.Damage = int(Round(float64(res.Damage) * critDamage(c, u)))
 		res.Crit = true
+		critRefund(u)
 	}
 	dm := res.Damage
 	hp := dm
@@ -110,18 +118,21 @@ func Hurt(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit act
 	}
 	emit(action.Event{Kind: action.Hit, Unit: u.ID, Target: v.ID, Amount: dm, Mult: res.Mult, Crit: res.Crit})
 	addedElements(c, a, v, dm, emit)
+	dragonblood(c, a, v, dm, emit)
 	if u.Status["beast"] > 0 && !fixed {
 		ex := max(1, int(Round(float64(float64(dm)*u.P("bmF", 0.25))*Multiplier(c, unarmed(u), v, "fire"))))
 		v.HP -= ex
 		emit(action.Event{Kind: action.Hit, Unit: u.ID, Target: v.ID, Amount: ex, Skill: "fire"})
 	}
 	afterHit(c, b, a, v, dm, emit)
+	lifeline(b, v, emit)
 
 	if v.HP > 0 {
 		res.Statuses = applyStatuses(c, b, dice, a, v)
 		if len(res.Statuses) > 0 {
 			emit(action.Event{Kind: action.StatusOn, Target: v.ID, Statuses: res.Statuses})
 		}
+		statusPowers(c, b, a, v, res.Statuses, emit)
 	} else {
 		res.Killed = true
 		died(c, b, dice, u, v, emit)
@@ -129,6 +140,7 @@ func Hurt(c *content.Content, b *state.Battle, dice rng.Dice, a Attack, emit act
 	if !res.Killed && u.Player() && !u.PvP {
 		stats.Gain(c, b, u, stats.HitXP(c, dm, len(s.Effects) > 0), emit)
 	}
+	afterLegendHit(c, b, dice, a, v, dm, emit)
 	res.HPAfter = v.HP
 	strikeBack(c, b, dice, a, v, dm, emit)
 	if v.HP > 0 && v.Ascension == "Duelist" && !a.Counter && Distance(u, v) == 1 && b.Unit(u.ID) != nil {

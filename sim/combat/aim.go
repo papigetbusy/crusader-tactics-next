@@ -54,7 +54,7 @@ func newTargets(c *content.Content, b *state.Battle, u *state.Unit, s content.Sk
 		// first pick is the tile (RollTargets lists the rest).
 		return []*state.Unit{u}
 	}
-	hi := s.MaxRange + u.RangeBonus
+	hi := s.MaxRange + u.Reach(s.MaxRange)
 	if u.Status["aim"] > 0 {
 		hi += 2
 	}

@@ -108,6 +108,12 @@ func applyStatuses(c *content.Content, b *state.Battle, dice rng.Dice, a Attack,
 		if u.Ascension == "Hex Queen" && slices.Contains(hexed, q) {
 			n++
 		}
+		if h := u.Af("hexMastery"); h > 0 && u.Team != v.Team {
+			n += h // Hex Mastery (approved 2026-10-17)
+		}
+		if shrugs(v, q) {
+			continue
+		}
 		if (v.Ascension == "Juggernaut" && slices.Contains(juggernautImmune, q)) || (v.Ascension == "Frost Wyrm" && q == "snare") {
 			continue
 		}

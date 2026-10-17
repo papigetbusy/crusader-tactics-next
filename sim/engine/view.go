@@ -208,7 +208,7 @@ func (g *Game) View() View {
 		}
 		for i, s := range u.Skills {
 			uv.Skills = append(uv.Skills, SkillView{Name: s.Name, Text: s.Text, MinRange: s.MinRange, MaxRange: s.MaxRange,
-				Power: s.Power, Element: s.Element, Area: s.Area, Heal: s.Heal, Revive: s.Revive, Support: s.Support, Aim: s.Aim, Free: s.Free, Wait: u.Cooldowns[i], Ultimate: s.Kind == "u", Cooldown: s.Cooldown, Level: s.Level})
+				Power: s.Power, Element: s.Element, Area: combat.Widen(u, s).Area, Heal: s.Heal, Revive: s.Revive, Support: s.Support, Aim: s.Aim, Free: s.Free, Wait: u.Cooldowns[i], Ultimate: s.Kind == "u", Cooldown: s.Cooldown, Level: s.Level})
 		}
 		v.Units = append(v.Units, uv)
 	}

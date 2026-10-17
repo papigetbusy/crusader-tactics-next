@@ -48,6 +48,7 @@ func Load(c *content.Content, data []byte, battleSeed uint64) (*Game, error) {
 	if s.Battle == nil {
 		return nil, fmt.Errorf("this save has no battle in it")
 	}
+	upgradeItems(c, &s)
 	g := &Game{C: c, B: s.Battle, Dice: rng.New(battleSeed, streamCombat)}
 	if kind == "climb" {
 		if s.Run == nil {

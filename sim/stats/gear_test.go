@@ -74,11 +74,11 @@ func TestGear(t *testing.T) {
 
 	t.Run("Two pieces of an armor set give its two-piece bonus, three pieces the full bonus", func(t *testing.T) {
 		two := map[string]content.Item{"h": armor("h", "H", "H", 3, 0), "a": armor("a", "H", "H", 5, 0)}
-		if af := AffixSum(c, two); af["dr"] != 8 || af["thorns"] != 0 {
+		if af := AffixSum(c, two); af["dr"] != 10 || af["thorns"] != 0 { // legendary rework, 2026-10-17
 			t.Fatalf("two pieces: %v", af)
 		}
 		two["b"] = armor("b", "H", "H", 2, 0)
-		if af := AffixSum(c, two); af["dr"] != 8 || af["thorns"] != 25 || af["hpPct"] != 15 {
+		if af := AffixSum(c, two); af["dr"] != 10 || af["thorns"] != 20 || af["hpPct"] != 20 {
 			t.Fatalf("three pieces: %v", af)
 		}
 	})
