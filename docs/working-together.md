@@ -48,6 +48,9 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 ## Now working on
 (one line each: who · task · files · date; remove it when done)
 
+- Grok · Take down the bad item-icon page · new-animations/item-picks, docs · 2026-10-17
+
+
 
 
 
