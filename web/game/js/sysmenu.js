@@ -65,7 +65,7 @@ export function open() {
   const turn = !screen.myTurn || screen.myTurn();
   w.innerHTML = `<div class="sysh"><img src="${url('ui', 'coin')}" alt=""> ${c ? c.gold : v.gold} gold</div>
     ${battle && turn ? '<button class="row" id="sEnd">End Turn</button>' : ''}
-    ${handing ? '' : '<button class="row" id="sGear">Gear</button><button class="row" id="sSkills">Skills</button><button class="row" id="sSave">Save</button><button class="row" id="sSet">Settings</button>'}
+    ${handing ? '' : '<button class="row" id="sGear">Gear</button><button class="row" id="sSkills">Skills</button>'}${!handing && !v.versus ? '<button class="row" id="sSave">Save</button><button class="row" id="sSet">Settings</button>' : handing ? '' : '<button class="row" id="sSet">Settings</button>'}
     ${!handing && screen.seated && screen.seated() ? '<button class="row" id="sGive">Give up</button>' : ''}
     <button class="row" id="sTitle">Title screen</button><button class="row" id="sClose">✕ Close</button>
     ${!handing && c ? `<div class="lbl">Floors</div><button class="b wide" id="sFloors">${ic('floors', 18)} Floor list</button>` : ''}`;
@@ -209,7 +209,9 @@ function pack(text) {
   }
 }
 function put(k) {
-  const v = screen.st.view, c = v.climb;
+  const v = screen.st.view;
+  if (!v || v.versus) { screen.log('A versus match is not saved. Your climb saves are left as they are.'); return false; }
+  const c = v.climb;
   const text = pack(referee.save());
   if (!text || text.startsWith('{"error"')) return false;
   try {
@@ -227,8 +229,18 @@ export function autosave() {
   if (screen && screen.st.view && screen.st.view.climb) put('auto');
 }
 
-function load(text, from) {
+function load(text, from, after) {
   if (!text) return false;
+  const go = () => {
+    const ok = loadNow(text, from);
+    if (ok && after) after();
+    return ok;
+  };
+  if (screen.beforeLocal) { screen.beforeLocal(go); return true; }
+  return go();
+}
+
+function loadNow(text, from) {
   const r = referee.load(text);
   if (!r || r.error) { alert('Could not load: ' + (r ? r.error : 'no answer')); return false; }
   try {
@@ -275,7 +287,7 @@ export function importer(mode) {
       if (!t) return msg('Choose a file or paste a save code first.', true);
       const i = info(slot);
       if (get(slot) && !confirm(`Replace slot ${slot}?\nSlot ${slot} already has a game${i ? ` (floor ${i.floor}, ${i.when})` : ''}. Importing replaces it.`)) return;
-      if (load(t, name ? 'the save file' : 'the pasted save') && put(slot)) screen.log(`Imported save loaded into slot ${slot}.`);
+      load(t, name ? 'the save file' : 'the pasted save', () => { if (put(slot)) screen.log(`Imported save loaded into slot ${slot}.`); });
     };
   };
   draw();
@@ -309,6 +321,8 @@ export function slots(mode) {
 
 // exportSave copies the game's save text and downloads it as a file.
 export function exportSave() {
+  const v = screen.st.view;
+  if (v && v.versus) { screen.log('A versus match is not saved.'); return; }
   const t = pack(referee.save());
   try { navigator.clipboard && navigator.clipboard.writeText(t); } catch (e) { /* not allowed: the download still works */ }
   const a = document.createElement('a');

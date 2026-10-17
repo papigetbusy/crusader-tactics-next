@@ -137,6 +137,7 @@ func (s *Server) join(q req) (any, error) {
 			s.roomChanged(r)
 			return map[string]string{"token": q.Token, "room": pw}, nil
 		}
+		return nil, errNoOne
 	}
 	r := s.rooms[pw]
 	if r == nil {
@@ -270,6 +271,11 @@ func (s *Server) tick() {
 	now := s.now()
 	for _, r := range s.rooms {
 		if r.playing() {
+			if id, ev, ok := r.Away(now); ok {
+				s.result(r, ev, r.seatOf(id))
+				s.drop(r, id)
+				continue
+			}
 			side := r.Game.B.Side
 			if ev := r.Tick(now); ev != nil {
 				s.result(r, ev, side)

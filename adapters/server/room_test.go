@@ -197,6 +197,32 @@ func TestRooms(t *testing.T) {
 			t.Fatalf("a watcher ended the match: %v playing %v", err, r3.playing())
 		}
 	})
+	t.Run("A phone gone for 20 seconds loses, and a watcher does not end the match", func(t *testing.T) {
+		r, a, _ := ready(t)
+		w, err := r.Join("Cy")
+		if err != nil {
+			t.Fatal(err)
+		}
+		w.Gone = t0
+		if _, _, ok := r.Away(t0.Add(time.Minute)); ok {
+			t.Fatal("a watcher ended the match")
+		}
+		a.Gone = t0
+		if _, _, ok := r.Away(t0.Add(19 * time.Second)); ok {
+			t.Fatal("gave up before 20 seconds")
+		}
+		id, ev, ok := r.Away(t0.Add(21 * time.Second))
+		if !ok || id != a.ID || r.playing() || r.Winner != 1 || len(ev) == 0 || ev[0].Kind != action.GaveUp {
+			t.Fatalf("ok %v id %s winner %d playing %v events %v", ok, id, r.Winner, r.playing(), ev)
+		}
+		r.Leave(a.ID)
+		if r.member(a.ID) != nil || r.seatOf(a.ID) >= 0 {
+			t.Fatal("the player who left is still in the room")
+		}
+		if r.Seats[1] == "" || r.member(r.Seats[1]) == nil {
+			t.Fatal("the winner was removed")
+		}
+	})
 	t.Run("Through the fog each player is sent only the heroes they can see, and a watcher is sent everything", func(t *testing.T) {
 		r, a, b := ready(t)
 		cy, _ := r.Join("Cy")

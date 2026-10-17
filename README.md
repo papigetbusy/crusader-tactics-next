@@ -27,6 +27,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-16 · Grok · Continue and loading a save leave an online room first, so the match cannot freeze the climb. Versus matches cannot overwrite a climb save. A phone gone for 20 seconds loses the match; a refresh inside that keeps the seat. A dead room says the match is over instead of joining you as someone new.
 - 2026-10-16 · Grok · Title screen is in the ☰ menu in every mode. Online Give up ends the match now (the other player wins) so you can start again. Opening single player or pass-the-phone while an online match is going ends that match for both, instead of freezing on "It is not your turn."
 - 2026-10-16 · Grok · Versus clocks are 5 minutes each with no per-turn limit. Online: the server's clock is the one on screen (2 free seconds after a move), a refresh keeps your seat, and a missed move snaps to the server's board.
 - 2026-10-16 · Claude · Versus and online: fog of war (see enemies within 6 steps of your units, can't target what you can't see, darkened tiles, each player's phone only gets what they can see, watchers see all, fog lifts at the end) and 32×32 maps, the climb's biggest. Each player's camera starts at their own edge of the map.

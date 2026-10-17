@@ -19,4 +19,4 @@ Nothing. Each push to GitHub rebuilds the server by itself (`autoDeploy`).
 - **A room:** up to 4 people.
   - Two tap **Take Blue** and **Take Red**, choose their heroes, and the match starts for everyone.
   - The others watch and wait in line. The winner stays on; the loser goes to the back of the line.
-- **Leaving:** a player who closes the game in the middle of a match keeps their seat, so their clock runs out and they lose. Someone who leaves is let go after a minute.
+- **Leaving:** Give up ends the match now and the other player wins. Closing the phone keeps your seat for 20 seconds, so a refresh is safe. Longer than that, the other player wins and you are out of the room. A watcher can leave without ending the match. The free server forgets rooms when it sleeps or restarts; the next open says the match is over.

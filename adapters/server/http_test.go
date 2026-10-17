@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -127,6 +128,21 @@ func TestOverTheInternet(t *testing.T) {
 		m := wait(t, ch, func(m map[string]any) bool { return m["type"] == "room" })
 		if len(m["people"].([]any)) != 1 {
 			t.Fatalf("people %v", m["people"])
+		}
+	})
+	t.Run("A token from a match the server forgot does not join as a new person", func(t *testing.T) {
+		s := newServer(content.MustDefault())
+		srv := httptest.NewServer(s.routes())
+		defer srv.Close()
+		res, err := http.Post(srv.URL+"/api/join", "application/json", strings.NewReader(`{"room":"again","name":"Ann","token":"dead-token"}`))
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer res.Body.Close()
+		var out map[string]any
+		_ = json.NewDecoder(res.Body).Decode(&out)
+		if out["token"] != nil || !strings.Contains(fmt.Sprint(out["error"]), "not in this room") {
+			t.Fatalf("body %v", out)
 		}
 	})
 }

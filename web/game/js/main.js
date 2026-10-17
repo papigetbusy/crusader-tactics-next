@@ -169,7 +169,7 @@ export async function boot(build) {
   gear.wire({ st, show, kick, log, after: battle.after, skills: (c) => skills.open(c) });
   skills.wire({ st, show, kick, log, after: battle.after });
   shop.wire({ st, show, kick, log, after: battle.after });
-  sysmenu.wire({ st, show, kick, log, setView, after: battle.after, gear: () => gear.open(), skills: () => skills.open(), endTurn: battle.endTurn, nextHero, title: titleScreen, giveUp: () => online.giveUp(), seated: () => online.seated(), myTurn: () => myTurn(st.view) });
+  sysmenu.wire({ st, show, kick, log, setView, after: battle.after, gear: () => gear.open(), skills: () => skills.open(), endTurn: battle.endTurn, nextHero, title: titleScreen, giveUp: () => online.giveUp(), seated: () => online.seated(), myTurn: () => myTurn(st.view), beforeLocal: openLocal });
   tips.watch(st);
   if (lag.on) {
     window.crusaderLag = {

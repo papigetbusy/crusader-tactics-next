@@ -78,6 +78,10 @@ function news(B) {
 }
 
 function sav(B) {
+  if (screen.st.view && screen.st.view.versus) {
+    B.innerHTML = '<p>This match is not saved. Your climb slots are left as they are. Use Give up or Title screen in the menu to leave the match.</p>';
+    return;
+  }
   B.innerHTML = `<h4>Export</h4><p>Copy and download your current game so you can back it up or move it to another device.</p>
   <div class="btns"><button class="b" id="svE">Copy &amp; download</button></div>
   <h4>Import</h4><p>Choose a save file or paste a save code, pick a slot, then tap Import. Importing replaces that slot (it asks first).</p>

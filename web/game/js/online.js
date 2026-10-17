@@ -18,7 +18,7 @@ const NAMES = ['Blue', 'Red'], COL = ['#4fa8ff', '#ff5d5d'];
 const SERVER = new URLSearchParams(location.search).get('server') ||
   (location.hostname.endsWith('github.io') ? 'https://crusader-tactics.onrender.com' : '');
 let screen = null, me = null, room = null, es = null, inMatch = false, queue = [], busy = false, mine = null, fails = 0;
-let seen = 0, inflight = false, clock = null, pendingClock = null, gone = false, endNote = '';
+let seen = 0, inflight = false, clock = null, pendingClock = null, gone = false, endNote = '', pulse = 0;
 
 export const wire = (s) => { screen = s; };
 export const on = () => !gone && inMatch && onlineSeat() !== null;
@@ -80,6 +80,8 @@ export function lobby() {
 
 function listen() {
   if (es) { es.onerror = null; es.close(); }
+  clearInterval(pulse);
+  pulse = setInterval(() => { if (!gone && me) fetch(SERVER + '/api/ping').catch(() => {}); }, 4 * 60 * 1000);
   es = new EventSource(SERVER + '/api/stream?token=' + me);
   es.onmessage = (e) => {
     if (gone) return;
@@ -102,11 +104,21 @@ function lost() {
   if (es) es.close();
   const w = cover('olRoomWin');
   w.className = 'cover olw';
-  w.innerHTML = `<div class="panel box"><div class="ttl">Connection lost</div><p>The room could not be reached. Your seat is still yours if you get back in.</p>
+  w.innerHTML = `<div class="panel box"><div class="ttl">Connection lost</div><p>If you get back within a few seconds, your seat is still yours. Stay away and the other player wins.</p>
     <div class="btns"><button class="b" id="olRe">Try again</button><button class="b" id="olT">Title screen</button></div></div>`;
   w.hidden = false;
   $('olRe').onclick = () => { w.hidden = true; fails = 0; resume(); };
   $('olT').onclick = () => { leaveForLocal().then(() => location.reload()); };
+}
+
+function matchGone() {
+  const w = cover('olJoin');
+  w.className = 'cover olw';
+  w.innerHTML = `<div class="panel box"><div class="ttl">That match is over</div>
+    <p>You were away, or the server restarted. If you were away, the other player won. If the server restarted, nobody did. Join again from Versus to play.</p>
+    <div class="btns"><button class="b" id="olGone">OK</button></div></div>`;
+  w.hidden = false;
+  $('olGone').onclick = () => { w.hidden = true; };
 }
 
 // resume is the same person coming back after a refresh. A dead token is forgotten.
@@ -121,6 +133,7 @@ export function resume() {
     }
     if (r.error || !r.token) {
       if (r.error && /not in this room|full/i.test(r.error)) store('ctn-token', null);
+      if (r.error && /not in this room/i.test(r.error)) matchGone();
       return;
     }
     me = r.token;
@@ -235,6 +248,7 @@ function roomPanel() {
   w.innerHTML = `<div class="panel box wide"><div class="ttl">Room “${esc(room.room)}”</div>
     <p><small>${room.people.length} of ${room.max} people · send this password to friends so they can join</small></p>
     ${room.matches && room.winner >= 0 ? `<p class="olWin" style="color:${COL[room.winner]}">${NAMES[room.winner]} won the last match.${endNote === 'gave-up' ? ' The other player gave up.' : ''}</p>` : ''}
+    ${room.matches && room.winner >= 0 && [0, 1].some((s) => !room.people.some((p) => p.side === s)) ? '<p><small>They left. Send the password again to play another match.</small></p>' : ''}
     <div class="olSeats">${seat(0)}${seat(1)}</div>${todo}
     <h4>Waiting in line</h4>${line.map((p) => `<p>${p.line}. ${esc(p.name)}${p.you ? ' (you)' : ''}${p.online ? '' : ' · away'}</p>`).join('') || '<p><small>Nobody.</small></p>'}
     <button class="b" id="olLeave">Leave the room</button></div>`;
@@ -260,6 +274,7 @@ export function giveUp() {
 // ends first, so the other player wins instead of waiting on a frozen game.
 export async function leaveForLocal() {
   if (gone && !me && !read('ctn-token')) return;
+  clearInterval(pulse);
   gone = true;
   const token = me || read('ctn-token');
   store('ctn-token', null);
