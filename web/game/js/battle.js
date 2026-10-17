@@ -450,13 +450,21 @@ function menu() {
   screen.kick();
 }
 
+// chromeTop is the first pixel below the ☰ button, so a hero menu or the
+// attack window never opens underneath it (owner, 2026-10-17).
+function chromeTop() {
+  const c = $('chip');
+  if (!c || c.hidden) return safeTop() + 8;
+  return Math.ceil(c.getBoundingClientRect().bottom) + 8;
+}
+
 // place2 puts the menu beside the hero, and the skills on the other side
 // [old dApos L1528-1530].
 function place2() {
   const s = st(), m = $('menu'), sub = $('sub');
   if (!s.sel || m.hidden) return;
   const b = feet(s.sel.x, s.sel.y), x = cam.offX + b.x * cam.k, y = cam.offY + b.y * cam.k;
-  const W = innerWidth, H = innerHeight, w = m.offsetWidth || 150, h = m.offsetHeight || 200, off = TS * cam.k * 0.62, top0 = safeTop() + 52;
+  const W = innerWidth, H = innerHeight, w = m.offsetWidth || 150, h = m.offsetHeight || 200, off = TS * cam.k * 0.62, top0 = chromeTop();
   let left = x + off, side = 1, top;
   if (left + w > W - 6) { left = x - off - w; side = -1; }
   if (left < 6) {
@@ -641,7 +649,7 @@ function forecast() {
 function placeForecast() {
   const s = st(), F = $('forecast');
   if (F.hidden || !s.sel || !s.aim || !F.classList.contains('atk')) return;
-  const W = innerWidth, H = innerHeight, w = F.offsetWidth || 196, h = F.offsetHeight || 260, t = TS * cam.k, top0 = safeTop() + 52;
+  const W = innerWidth, H = innerHeight, w = F.offsetWidth || 196, h = F.offsetHeight || 260, t = TS * cam.k, top0 = chromeTop();
   const at = (x, y) => { const p = feet(x, y); return [cam.offX + p.x * cam.k, cam.offY + p.y * cam.k]; };
   const [hx, hy] = at(s.sel.x, s.sel.y);
   // Beside the hero first, then the screen's corners and edges.

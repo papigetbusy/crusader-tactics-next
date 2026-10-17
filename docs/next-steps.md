@@ -225,6 +225,8 @@ Estimate: about 3 sessions once the game matches the original.
   - Grave Bloom in versus raises only the other side's dead (`state.Battle.SideKills`).
   - Raised monsters are the same on both sides (already true; a test now proves it).
 
+**Close button (owner, 2026-10-17):** the ☰ sat on the ✕ that closes Gear, Skills and the other hero sheets. That ✕ is now on the left. The hero menu and the attack window open below the ☰, not under it.
+
 **Next:** the owner sets up Render (`online-setup.md`) and plays with friends. Then chat and emojis, and after that the ideas list (chess feel first).
 
 ### 7. After the full build (owner's reminders)
