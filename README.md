@@ -27,6 +27,7 @@ Claude and Grok both write code in this repository for the owner. To stay consis
 
 ### Change log
 (newest first; one line per finished piece of work: date · who · what changed)
+- 2026-10-17 · Grok · Monster pictures recut from the sheets you already approved. The last cut chopped every sprite to 100 pixels and deleted the dark parts, so bodies, wings and weapons were missing. They are whole again. Same art, not new drawings.
 - 2026-10-17 · Claude · Legendary rework: one legendary weapon per class (Grok's pictures, the owner's picks) with 2 unique class powers and a 4-piece class bonus each, 5 bonuses on every legendary, exact bonus counts by rarity (1/2/3, epic 3 + its epic bonus), and set bonuses for epic armor by weight (legendary sets about double). Tests for every power; Codex updated.
 - 2026-10-17 · Grok · Three gothic gold looks for the floor bar, the main menu, gear, skills and settings. Not in the game yet. The move and attack menus were not touched. Page: new-animations/menu-picks.
 - 2026-10-17 · Grok · New pictures replace the old monsters. Four bosses and six elites are in the game: Bone Hydra, Fallen Seraph, Brood Matron, Ash Colossus, Crowned Slime, Goblin Captain, Grave Knight, Dire Wolf, Iron Minotaur, Blight Reaper. The huge demon is not in the game yet. Codex rebuilt from the data.

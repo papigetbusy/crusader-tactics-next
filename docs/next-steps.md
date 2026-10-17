@@ -3,6 +3,7 @@
 Written 2026-10-11 for the owner and Grok. The full plan is in `roadmap.md`, and every old-game feature is listed in `feature-checklist.md`.
 
 ## Where we are
+- **2026-10-17.** Monster pictures were recut from the approved sheets. The first cut had chopped them, so bodies were missing in game. The sheets did not change.
 - **Phases 0–7 are done.** The Go referee plays the whole game: combat, skills, gear, the purple tier, loot, floors, the climb, team select, shops, saves. Every old-game match check is green.
 - **Phase 8 (the game screen) is done (2026-10-11).** The Play page is a new screen written from scratch. It uses only the old game's pictures, never its code. It only draws the referee's answers and sends actions, so online play stays possible. Done:
   - title screen
