@@ -51,6 +51,7 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 
 ## Now working on
 (one line each: who · task · files · date; remove it when done)
+- Claude · screen: no auto-walk when tapping an enemy; drag heroes while placing · web/game/js/battle.js, docs · 2026-10-17
 
 
 
