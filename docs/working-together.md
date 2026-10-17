@@ -52,4 +52,3 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 
 
 
-- Claude · legendary rework: one legendary per class with unique powers, set bonuses for epics and legendaries, bonus counts by rarity, new legendary pictures · sim/content, sim/items, sim/stats, sim/combat, sim/turn, sim/engine, data/gear.json, web/assets/legendary, web/game/js/icons.js · 2026-10-17
