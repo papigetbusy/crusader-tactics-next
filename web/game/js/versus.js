@@ -91,6 +91,7 @@ function begin() {
 function handOver(side, text, button, then) {
   const w = cover('vsHand'), v = view(), bank = v && v.versus ? v.versus.bankMs[side] : (rules ? rules.bankSeconds * 1000 : 0);
   held = true;
+  if ($('sys')) $('sys').hidden = true;
   w.className = 'cover vsHand';
   w.innerHTML = `<div class="vsWho" style="color:${COL[side]}">${NAME[side].toUpperCase()}</div><div class="vsBig">Your turn</div>
     <div class="vsTxt">${text}</div>${bank ? `<div class="vsBank">⏱ ${mmss(bank)} left</div><div class="vsSmall">Your clock starts when you tap.</div>` : ''}

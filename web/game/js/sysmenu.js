@@ -60,15 +60,15 @@ export const seg = (id, opts, val) => `<div class="seg" id="${id}">${opts.map(([
 
 export function open() {
   const v = screen.st.view, c = v.climb, w = $('sys');
-  const battle = !c || c.phase === 'battle';
+  const handing = $('vsHand') && !$('vsHand').hidden;
+  const battle = !handing && (!c || c.phase === 'battle');
   const turn = !screen.myTurn || screen.myTurn();
   w.innerHTML = `<div class="sysh"><img src="${url('ui', 'coin')}" alt=""> ${c ? c.gold : v.gold} gold</div>
     ${battle && turn ? '<button class="row" id="sEnd">End Turn</button>' : ''}
-    <button class="row" id="sGear">Gear</button><button class="row" id="sSkills">Skills</button><button class="row" id="sSave">Save</button>
-    <button class="row" id="sSet">Settings</button>
-    ${screen.seated && screen.seated() ? '<button class="row" id="sGive">Give up</button>' : ''}
+    ${handing ? '' : '<button class="row" id="sGear">Gear</button><button class="row" id="sSkills">Skills</button><button class="row" id="sSave">Save</button><button class="row" id="sSet">Settings</button>'}
+    ${!handing && screen.seated && screen.seated() ? '<button class="row" id="sGive">Give up</button>' : ''}
     <button class="row" id="sTitle">Title screen</button><button class="row" id="sClose">✕ Close</button>
-    ${c ? `<div class="lbl">Floors</div><button class="b wide" id="sFloors">${ic('floors', 18)} Floor list</button>` : ''}`;
+    ${!handing && c ? `<div class="lbl">Floors</div><button class="b wide" id="sFloors">${ic('floors', 18)} Floor list</button>` : ''}`;
   w.hidden = false;
   const on = (id, f) => { if ($(id)) $(id).onclick = f; };
   on('sEnd', () => { close(); screen.endTurn(); });

@@ -253,7 +253,7 @@ function roomPanel() {
 // they can pick heroes and play again. The other player is told.
 export function giveUp() {
   if (!me || !seated()) return;
-  post('/api/forfeit', { token: me });
+  post('/api/forfeit', { token: me }).then((r) => { if (r && r.error) screen.log(r.error); });
 }
 
 // leaveForLocal drops this phone out of the room. A match that is still going

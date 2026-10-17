@@ -51,6 +51,8 @@ const key = (x, y) => x + ',' + y;
 // answer comes back on the room's stream (online.js calls playOut).
 function send(action, message, then) {
   if (playback.playing()) return false;
+  const hand = $('vsHand');
+  if (hand && !hand.hidden && !online.on()) return false; // the phone is being handed over
   if (online.on()) return online.act(action, message, then);
   const sideBefore = view() ? view().side : 0;
   const r = referee.act(vs.stamp(action));
