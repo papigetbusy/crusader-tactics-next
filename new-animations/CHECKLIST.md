@@ -125,7 +125,7 @@ Ascension skills (one body only):
 
 - [ ] Glacial Breath (Frost Wyrm only) — gif: none — code: waiting
 - [ ] Hellfire Dive (Inferno Rider only) — gif: none — code: waiting
-- [ ] Thunder Lance (Storm Dragoon only) — gif: none — code: waiting
+- [ ] Thunder Lance (Storm Dragoon only) — gif: code-made v1 (no new art, `gifs/dragon-knight/thunder-lance/`), not signed off — code: waiting
 
 ### Assassin
 

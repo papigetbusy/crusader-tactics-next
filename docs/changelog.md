@@ -2,6 +2,7 @@
 
 Every finished piece of work, newest first: date · who · what changed, in plain words. Claude and Grok add one line here for each piece of work (moved out of the README on 2026-10-17, owner).
 
+- 2026-10-17 · Claude · A test of animating a move in code with no new art: Thunder Lance (Storm Dragoon) from the game's own sprite and lightning effects. Page: new-animations/gifs/dragon-knight/thunder-lance. Not in the game; waiting for the owner's look.
 - 2026-10-17 · Grok · Medium armor was redrawn. Common, uncommon, rare, and epic are four different designs. Everything else on the icon page stays.
 - 2026-10-17 · Claude · Tapping an enemy only attacks from where the hero stands: no more walking into range on its own (out of reach shows the enemy's info and "Out of reach"). Heroes can be dragged onto blue tiles while placing them, and dropping one on another swaps them.
 - 2026-10-17 · Grok · A new item-icon page in the painted pixel style. The weapon sheets are the ones the owner sent. Armor, the wand, and the charms are drawn to match them. The stick-figure page stays deleted.
