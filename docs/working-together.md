@@ -52,3 +52,4 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 
 
 
+- Claude · cleanup the owner signed off: status-immunity check, Lifeline, monster tests, publish only open picks, docs tidy · sim/combat, sim/turn, .github/workflows/pages.yml, docs, README.md, CLAUDE.md, saves/ · 2026-10-17
