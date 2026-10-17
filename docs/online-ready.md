@@ -20,4 +20,4 @@ The question: can the same game screen later play against a server instead of th
 - **An account on Render**, following `docs/online-setup.md`. A free plan that sleeps when nobody plays is fine for testing with friends. The first person to join after a sleep waits up to a minute.
 - Rooms live in the server's memory. A restart wipes a match in progress. That is accepted for these first games.
 
-Settled by the owner (2026-10-16): 5 minutes each, no per-turn limit, a mirrored 12×12 map, one fixed purple set per class, and running out of the 5 minutes loses.
+Settled by the owner (2026-10-16): 5 minutes each, no per-turn limit, a mirrored 32×32 map with fog of war, one fixed purple set per class, and running out of the 5 minutes loses.

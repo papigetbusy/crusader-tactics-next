@@ -151,7 +151,7 @@ Rules for the online work (owner, 2026-10-11). Do not build these now:
   - Clocks: each player has 5 minutes for the whole match and may use it all on one turn. There is no per-turn limit (owner, 2026-10-16; was 30 seconds a turn and 2½ minutes).
   - Online, the server keeps the clock. The first 2 seconds after each move are not charged, so watching a hit does not eat the 5 minutes.
   - A refresh keeps the same seat. A phone that missed a move jumps to the server's board.
-  - Map: random but mirrored, 12×12, so neither side gets better ground.
+  - Map: random but mirrored, so neither side gets better ground. 32×32, the climb's biggest, with fog of war (owner, 2026-10-16; it was 12×12 at first).
   - Gear: one fixed best purple set per class, chosen by Claude, so every match is even.
   - Time out: running out of turn time ends the turn. Running out of your total time loses the match.
 
