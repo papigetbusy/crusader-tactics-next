@@ -227,7 +227,12 @@ function draw() {
   roomPanel();
 }
 
+// picking is true while this phone's hero picker is open: room news waits
+// until it closes, so the room screen never jumps over it (owner's bug, 2026-10-17).
+let picking = false;
+
 function roomPanel() {
+  if (picking) return;
   const w = cover('olRoomWin'), you = room.people.find((p) => p.you) || {}, side = room.yourSide;
   w.className = 'cover olw';
   const seat = (s) => {
@@ -258,7 +263,9 @@ function roomPanel() {
   if ($('olAgain')) $('olAgain').onclick = () => call('/api/again', {});
   if ($('olPick')) $('olPick').onclick = () => {
     w.hidden = true;
-    chooseTeam(side, room.yourTeam || [], () => { w.hidden = false; }, (team) => { w.hidden = false; call('/api/team', { team }); }, 'Ready');
+    picking = true;
+    const closed = () => { picking = false; roomPanel(); };
+    chooseTeam(side, room.yourTeam || [], closed, (team) => { closed(); call('/api/team', { team }); }, 'Ready');
   };
   $('olLeave').onclick = async () => { await leaveForLocal(); location.reload(); };
 }
