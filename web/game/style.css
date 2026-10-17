@@ -397,3 +397,33 @@ body:has(#floorsWin:not([hidden])) #chip { display: none !important; }
 .olSeat .b { min-width: 0; width: 100%; }
 .olWin { font-weight: 700; }
 .b.ghost { opacity: .75; }
+
+/* Corner vines. The owner picked this frame (B) on 2026-10-17 for the floor bar,
+   the three-line menu, gear, skills and settings. Thin gold line, vines only
+   in the corners, a dark painted field inside. The hero move menu and the
+   attack window are not restyled. */
+#chip, #sys,
+#gearWin .box, #skillsWin .box, #settingsWin .box, #floorsWin .box, #slotsWin .box {
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgba(12, 6, 8, .62), rgba(6, 3, 5, .78)),
+    url(../assets/ui/vine-field.jpg) center / cover;
+  border: 1px solid #e0c17a;
+  box-shadow: 0 0 0 1px #2a1210, 0 8px 18px rgba(0, 0, 0, .5);
+}
+#chip::before, #sys::before,
+#gearWin .box::before, #skillsWin .box::before, #settingsWin .box::before, #floorsWin .box::before, #slotsWin .box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    url(../assets/ui/vine-tl.png) left top / 56px 56px no-repeat,
+    url(../assets/ui/vine-tr.png) right top / 56px 56px no-repeat,
+    url(../assets/ui/vine-bl.png) left bottom / 56px 56px no-repeat,
+    url(../assets/ui/vine-br.png) right bottom / 56px 56px no-repeat;
+}
+#chip::before { background-size: 18px 18px; }
+#sys::before { background-size: 44px 44px; }
+

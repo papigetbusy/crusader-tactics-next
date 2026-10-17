@@ -8,7 +8,6 @@ For the owner, Claude and Grok. Open work is at the top, finished work is a shor
 - Latest: the legendary rework (one legendary per class, `legendary-proposal.md`) and Grok's monster redraw (4 new bosses, 6 new elites).
 
 ## Open: waiting on the owner
-- **Menu looks:** three gothic gold frames to choose from, not in the game yet. Page: `new-animations/menu-picks`. Floor bar, the ☰ menu, gear, skills and settings only; the hero move menu and the attack menu stay as they are. The owner picks a number for each.
 - **The pit-lord demon:** only a picture (`new-animations/monster-picks/pit-lord.png`), not a unit. It has to be fitted as something bigger than one tile.
 
 ## Open: to do
@@ -52,6 +51,7 @@ Suggested order: the chess-feel proposal, then gear, bags, shops and gold togeth
   - new boss animations (Grok, art)
 
 ## Done
+- 2026-10-17 · Menu frame (Grok): the owner picked corner vines. It is on the floor bar, the ☰ menu, gear, skills and settings. Move and attack menus unchanged.
 - 2026-10-17 · Cleanup the owner signed off: one shared status-immunity check, Lifeline covers every death, tests for the new monsters, finished pick pages not published (`new-animations/unpublished.txt`), docs trimmed, change log moved to `changelog.md`.
 - 2026-10-17 · Legendary rework: one legendary weapon per class with 2 unique powers and a 4-piece class bonus, 5 bonuses on every legendary, exact bonus counts by rarity, epic set bonuses (`legendary-proposal.md`).
 - 2026-10-17 · Monster redraw (Grok): new pictures, 4 new bosses after the old six, 6 new elites; pictures recut so bodies are whole.

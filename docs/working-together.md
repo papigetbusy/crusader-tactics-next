@@ -48,7 +48,6 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 ## Now working on
 (one line each: who · task · files · date; remove it when done)
 
-- Grok · Corner vine frame on the floor bar, the ☰ menu, gear, skills and settings · web/game/style.css, web/assets/ui/vine-*.png, web/assets/ui/vine-field.jpg · 2026-10-17
 
 
 

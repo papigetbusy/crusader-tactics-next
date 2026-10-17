@@ -2,6 +2,7 @@
 
 Every finished piece of work, newest first: date · who · what changed, in plain words. Claude and Grok add one line here for each piece of work (moved out of the README on 2026-10-17, owner).
 
+- 2026-10-17 · Grok · The floor bar, the ☰ menu, gear, skills and settings now use the corner-vine frame the owner picked: a thin gold line, gold vines only in the corners, and a dark painted field inside. The hero move menu and the attack window are unchanged.
 - 2026-10-17 · Claude · Docs tidied (owner's sign-off): the change log moved here from the README, next-steps now has open work at the top and a short done list at the bottom (Grok's four signed-off attacks are on the to-do list), the old update-for-grok.md and the second copy of the purple-team save were deleted.
 - 2026-10-17 · Claude · The site no longer publishes finished pick pages (listed in `new-animations/unpublished.txt`, now the weapon picks). They stay in the repo. Open pages like the menu picks are still published.
 - 2026-10-17 · Claude · Tests for Grok's new monsters: the 4 new bosses guard boss floors 70-100 in order, every new elite turns up on elite floors, and each of the 10 walks up to a hero and attacks.
