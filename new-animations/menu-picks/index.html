@@ -1,0 +1,351 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Menu looks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@600;800&family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+  :root { --page: #070506; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: #f3e6c8; font: 500 17px/1.35 'EB Garamond', Georgia, serif; }
+  header { padding: 18px 16px 8px; max-width: 440px; margin: 0 auto; }
+  h1 { margin: 0 0 6px; font: 800 28px 'Grenze Gotisch', Georgia, serif; letter-spacing: .04em; color: #e8c56a; }
+  header p { margin: 0 0 8px; color: #c9b89a; font-size: 16px; }
+  h2 { margin: 22px 16px 4px; max-width: 408px; margin-left: auto; margin-right: auto; font: 800 22px 'Grenze Gotisch', Georgia, serif; letter-spacing: .06em; text-transform: uppercase; color: #f2e2b8; }
+  .lead { max-width: 408px; margin: 0 auto 8px; padding: 0 16px; color: #b7a48a; font-size: 15px; }
+  .pick { max-width: 420px; margin: 0 auto 18px; padding: 0 12px; }
+  .tag { display: flex; align-items: baseline; gap: 8px; margin: 14px 4px 6px; }
+  .tag b { font: 800 26px 'Grenze Gotisch', Georgia, serif; color: #e8c56a; }
+  .tag span { color: #d8c8aa; letter-spacing: .12em; text-transform: uppercase; font-size: 13px; }
+  .tag small { color: #9a8870; font-size: 14px; letter-spacing: 0; text-transform: none; }
+  .stage {
+    position: relative; height: 92px; border-radius: 4px; overflow: hidden;
+    background:
+      radial-gradient(circle at 20% 40%, rgba(40,70,30,.35), transparent 40%),
+      radial-gradient(circle at 70% 70%, rgba(60,30,20,.4), transparent 45%),
+      linear-gradient(#1a2414, #10160c);
+  }
+  .stage.tall { height: auto; min-height: 470px; padding-bottom: 12px; }
+  .chip, .menu, .sheet {
+    color: var(--ink); font-family: 'EB Garamond', Georgia, serif;
+  }
+  .chip {
+    position: absolute; right: 8px; top: 18px; display: flex; align-items: center; gap: 6px;
+    padding: 5px 6px 5px 12px; letter-spacing: .12em; text-transform: uppercase; font-size: 13px; font-weight: 600;
+  }
+  .ib {
+    width: 36px; height: 34px; padding: 0; font: 700 18px 'Grenze Gotisch', Georgia, serif; line-height: 1;
+    color: var(--gold); background: transparent;
+  }
+  .menu {
+    position: absolute; right: 8px; top: 62px; width: min(230px, 78%);
+    padding: 8px 0 10px;
+  }
+  .menu .goldline { display: flex; align-items: center; gap: 6px; padding: 2px 14px 8px; font-size: 14px; color: var(--muted); border-bottom: 1px solid var(--rule); }
+  .menu .goldline img { width: 16px; height: 16px; }
+  .menu button {
+    display: block; width: 100%; border: 0; background: none; text-align: left;
+    padding: 9px 16px 9px 22px; font: 600 15px 'EB Garamond', Georgia, serif;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--ink);
+  }
+  .menu button.end { color: #ffb0a4; }
+  .menu .lbl { padding: 10px 14px 2px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+  .widebtn {
+    display: block; margin: 4px 12px; padding: 8px 10px; text-align: center;
+    letter-spacing: .14em; text-transform: uppercase; font: 700 13px 'EB Garamond', Georgia, serif; color: var(--gold);
+  }
+  .sheet { margin: 0 4px; padding: 12px 12px 16px; position: relative; }
+  .x {
+    float: right; width: 40px; height: 40px; margin: 0 0 4px 8px; font: 700 20px 'Grenze Gotisch', Georgia, serif;
+    color: var(--gold); background: rgba(0,0,0,.35);
+  }
+  .ttl { font: 800 22px 'Grenze Gotisch', Georgia, serif; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); margin: 0 0 6px; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 4px; clear: both; margin: 8px 0; }
+  .tabs i, .seg i {
+    font-style: normal; padding: 5px 9px; font: 600 13px 'EB Garamond', Georgia, serif; color: var(--ink);
+  }
+  .tabs i.on, .seg i.on { color: var(--on); }
+  .who { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .who img { height: 64px; image-rendering: pixelated; }
+  .who small { display: block; color: var(--muted); font-size: 14px; }
+  h4 { margin: 12px 0 4px; font: 700 12px 'EB Garamond', Georgia, serif; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid var(--rule); font-size: 15px; }
+  .row b { color: var(--gold); }
+  .row em { font-style: italic; color: #9fd8ff; font-size: 13px; }
+  .mini {
+    border: 0; padding: 6px 8px; font: 700 12px 'EB Garamond', Georgia, serif; letter-spacing: .06em; text-transform: uppercase; color: var(--ink);
+  }
+  .sk { padding: 8px 0; border-bottom: 1px solid var(--rule); }
+  .sk b { letter-spacing: .04em; }
+  .sk span { float: right; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #8ff0b0; }
+  .sk p { margin: 3px 0 0; color: var(--muted); font-size: 14px; }
+  .mrow { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+  .mrow span { flex: 1; }
+  .mrow small { display: block; color: var(--muted); font-size: 13px; }
+  .sw { width: 46px; height: 26px; border-radius: 14px; position: relative; flex: none; }
+  .sw u { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #c8b89a; }
+  .sw.on u { left: 23px; background: #ffe9b0; }
+  .seg { display: flex; flex: none; }
+  .orn { height: 10px; margin: 4px 0 8px; background:
+    linear-gradient(var(--gold), var(--gold)) center / 8px 8px no-repeat,
+    linear-gradient(var(--gold-dim), var(--gold-dim)) left center / 38% 1px no-repeat,
+    linear-gradient(var(--gold-dim), var(--gold-dim)) right center / 38% 1px no-repeat;
+    transform: rotate(45deg); background-position: center, left center, right center; height: 14px;
+  }
+  .orn { transform: none; background:
+    linear-gradient(var(--gold), var(--gold)) center / 7px 7px no-repeat,
+    linear-gradient(90deg, transparent, var(--gold-dim) 20%, var(--gold-dim) 80%, transparent) center / 100% 1px no-repeat;
+  }
+
+  /* 1 Crypt — black stone, thin double gold */
+  .t1 {
+    --bg: linear-gradient(180deg, #141016 0%, #070608 100%);
+    --ink: #f4ecdf; --gold: #e6c56e; --gold-dim: #8d6d34; --muted: #b5a48c; --rule: rgba(230,197,110,.28);
+    --on: #ffe7b0;
+    background: var(--bg); color: var(--ink);
+    border: 1px solid #e6c56e;
+    box-shadow: 0 0 0 3px #070608, 0 0 0 4px #6e5428, inset 0 0 0 1px rgba(230,197,110,.45);
+  }
+  .t1 .ib, .t1 .x, .t1 .widebtn, .t1 .mini, .t1 .tabs i, .t1 .seg i {
+    background: #0c0a0e; border: 1px solid #8d6d34; color: #e6c56e;
+  }
+  .t1 .tabs i.on, .t1 .seg i.on { background: #2a2416; border-color: #e6c56e; color: #ffe7b0; }
+  .t1 .x { border-radius: 0; }
+  .t1 .sw { background: #1a1218; border: 1px solid #8d6d34; }
+  .t1 .sw.on { background: #3a3018; border-color: #e6c56e; }
+
+  /* 2 Chapel — oxblood, thick carved gold */
+  .t2 {
+    --bg: linear-gradient(180deg, #3a121c 0%, #14060c 100%);
+    --ink: #f8e8dc; --gold: #f0d48a; --gold-dim: #a6843c; --muted: #d2b0a4; --rule: rgba(240,212,138,.3);
+    --on: #fff1c8;
+    background: var(--bg); color: var(--ink);
+    border: 2px solid #f0d48a;
+    box-shadow: inset 0 0 0 3px #14060c, inset 0 0 0 4px #7a5a28, 0 8px 18px rgba(0,0,0,.45);
+  }
+  .t2 .ib, .t2 .x, .t2 .widebtn, .t2 .mini, .t2 .tabs i, .t2 .seg i {
+    background: linear-gradient(#4a1822, #240810); border: 1px solid #f0d48a; color: #f0d48a;
+  }
+  .t2 .tabs i.on, .t2 .seg i.on, .t2 .menu button.end { background: linear-gradient(#8a2030, #4a1018); color: #fff3d4; }
+  .t2 .x { border-radius: 50%; box-shadow: 0 0 0 2px #14060c, 0 0 0 3px #f0d48a; }
+  .t2 .sw { background: #3a1018; border: 1px solid #a6843c; }
+  .t2 .sw.on { background: linear-gradient(#a4202c, #5a0c14); border-color: #f0d48a; }
+  .t2 .menu button:nth-child(3) { background: linear-gradient(90deg, rgba(240,212,138,.22), transparent); }
+
+  /* 3 Reliquary — candle brown, antique gold, soft inner glow */
+  .t3 {
+    --bg: radial-gradient(120% 80% at 50% 0%, #2a2418 0%, #12100c 55%, #0c0a08 100%);
+    --ink: #f6edd8; --gold: #c9a15a; --gold-dim: #7a6234; --muted: #cbb896; --rule: rgba(201,161,90,.28);
+    --on: #ffe6b0;
+    background: var(--bg); color: var(--ink);
+    border: 1px solid #c9a15a;
+    box-shadow: inset 0 0 24px rgba(90, 50, 10, .35), 0 0 0 1px #3a2e18;
+    outline: 1px dashed rgba(201,161,90,.55); outline-offset: -6px;
+  }
+  .t3 .ib, .t3 .x, .t3 .widebtn, .t3 .mini, .t3 .tabs i, .t3 .seg i {
+    background: rgba(20,16,10,.8); border: 1px solid #7a6234; color: #e6c98a;
+  }
+  .t3 .tabs i.on, .t3 .seg i.on { background: #3a3018; border-color: #e6c98a; color: #fff0c8; }
+  .t3 .x { transform: rotate(45deg); border-radius: 2px; }
+  .t3 .x b { display: block; transform: rotate(-45deg); font-weight: 700; }
+  .t3 .sw { background: #2a2218; border: 1px solid #7a6234; }
+  .t3 .sw.on { background: #5a4020; border-color: #e6c98a; }
+  .foot { max-width: 420px; margin: 8px auto 28px; padding: 0 16px; color: #b7a48a; }
+</style>
+
+<header>
+  <h1>Menu looks</h1>
+  <p>Three gothic gold looks. Same menus, different stone. The move menu and the attack menu are not here.</p>
+  <p>Reply with a number for each: floor bar, main menu, gear, skills, settings. You can mix them.</p>
+</header>
+
+<h2>Floor bar</h2>
+<p class="lead">The border is the part that changes most. It sits on the map, top right, like it does now.</p>
+
+<div class="pick">
+  <div class="tag"><b>1</b> <span>Crypt</span> <small>black stone, thin double gold</small></div>
+  <div class="stage"><div class="chip t1">Floor 12 · Turn 3 <button class="ib">⇥</button><button class="ib">☰</button></div></div>
+  <div class="tag"><b>2</b> <span>Chapel</span> <small>oxblood, thick carved gold</small></div>
+  <div class="stage"><div class="chip t2">Floor 12 · Turn 3 <button class="ib">⇥</button><button class="ib">☰</button></div></div>
+  <div class="tag"><b>3</b> <span>Reliquary</span> <small>candle brown, antique gold</small></div>
+  <div class="stage"><div class="chip t3">Floor 12 · Turn 3 <button class="ib">⇥</button><button class="ib">☰</button></div></div>
+</div>
+
+<h2>Main menu</h2>
+<p class="lead">What the three lines open. Gold, gear, skills, settings. Not the hero’s attack list.</p>
+
+<div class="pick">
+  <div class="tag"><b>1</b> <span>Crypt</span></div>
+  <div class="stage tall">
+    <div class="chip t1">Floor 12 · Turn 3 <button class="ib">⇥</button><button class="ib">☰</button></div>
+    <div class="menu t1">
+      <div class="goldline"><img src="../../assets/ui/coin.png" alt=""> 248 gold</div>
+      <button class="end">End Turn</button>
+      <button>Gear</button>
+      <button>Skills</button>
+      <button>Save</button>
+      <button>Settings</button>
+      <button>Title screen</button>
+      <button>✕ Close</button>
+      <div class="lbl">Floors</div>
+      <div class="widebtn t1">Floor list</div>
+    </div>
+  </div>
+  <div class="tag"><b>2</b> <span>Chapel</span></div>
+  <div class="stage tall">
+    <div class="chip t2">Floor 12 · Turn 3 <button class="ib">⇥</button><button class="ib">☰</button></div>
+    <div class="menu t2">
+      <div class="goldline"><img src="../../assets/ui/coin.png" alt=""> 248 gold</div>
+      <button class="end">End Turn</button>
+      <button>Gear</button>
+      <button>Skills</button>
+      <button>Save</button>
+      <button>Settings</button>
+      <button>Title screen</button>
+      <button>✕ Close</button>
+      <div class="lbl">Floors</div>
+      <div class="widebtn t2">Floor list</div>
+    </div>
+  </div>
+  <div class="tag"><b>3</b> <span>Reliquary</span></div>
+  <div class="stage tall">
+    <div class="chip t3">Floor 12 · Turn 3 <button class="ib">⇥</button><button class="ib">☰</button></div>
+    <div class="menu t3">
+      <div class="goldline"><img src="../../assets/ui/coin.png" alt=""> 248 gold</div>
+      <button class="end">End Turn</button>
+      <button>Gear</button>
+      <button>Skills</button>
+      <button>Save</button>
+      <button>Settings</button>
+      <button>Title screen</button>
+      <button>✕ Close</button>
+      <div class="lbl">Floors</div>
+      <div class="widebtn t3">Floor list</div>
+    </div>
+  </div>
+</div>
+
+<h2>Gear</h2>
+<p class="lead">The hero sheet. Sample only, so you can judge the frame and the color.</p>
+
+<div class="pick">
+  <div class="tag"><b>1</b> <span>Crypt</span></div>
+  <div class="sheet t1">
+    <button class="x">✕</button>
+    <div class="tabs"><i>Tank</i><i class="on">Warrior</i><i>Mage</i></div>
+    <div class="who"><img src="../../assets/heroes-first/warrior.png" alt=""><div><div class="ttl">Warrior</div><small>Vanguard · Lv 18</small><small>HP 42/42 · ATK 16 · DEF 8 · MOV 4</small><small style="color:var(--gold)">Sword</small></div></div>
+    <div class="orn"></div>
+    <h4>Worn</h4>
+    <div class="row"><span><b>Gravewarden Blade</b><br><em>+12% crit</em></span><button class="mini">Take off</button></div>
+    <h4>Bag</h4>
+    <div class="row"><span><b>Dusk Mail</b><br><em>DEF +4</em></span><button class="mini">Equip</button></div>
+  </div>
+  <div class="tag"><b>2</b> <span>Chapel</span></div>
+  <div class="sheet t2">
+    <button class="x">✕</button>
+    <div class="tabs"><i>Tank</i><i class="on">Warrior</i><i>Mage</i></div>
+    <div class="who"><img src="../../assets/heroes-first/warrior.png" alt=""><div><div class="ttl">Warrior</div><small>Vanguard · Lv 18</small><small>HP 42/42 · ATK 16 · DEF 8 · MOV 4</small><small style="color:var(--gold)">Sword</small></div></div>
+    <div class="orn"></div>
+    <h4>Worn</h4>
+    <div class="row"><span><b>Gravewarden Blade</b><br><em>+12% crit</em></span><button class="mini">Take off</button></div>
+    <h4>Bag</h4>
+    <div class="row"><span><b>Dusk Mail</b><br><em>DEF +4</em></span><button class="mini">Equip</button></div>
+  </div>
+  <div class="tag"><b>3</b> <span>Reliquary</span></div>
+  <div class="sheet t3">
+    <button class="x"><b>✕</b></button>
+    <div class="tabs"><i>Tank</i><i class="on">Warrior</i><i>Mage</i></div>
+    <div class="who"><img src="../../assets/heroes-first/warrior.png" alt=""><div><div class="ttl">Warrior</div><small>Vanguard · Lv 18</small><small>HP 42/42 · ATK 16 · DEF 8 · MOV 4</small><small style="color:var(--gold)">Sword</small></div></div>
+    <div class="orn"></div>
+    <h4>Worn</h4>
+    <div class="row"><span><b>Gravewarden Blade</b><br><em>+12% crit</em></span><button class="mini">Take off</button></div>
+    <h4>Bag</h4>
+    <div class="row"><span><b>Dusk Mail</b><br><em>DEF +4</em></span><button class="mini">Equip</button></div>
+  </div>
+</div>
+
+<h2>Skills</h2>
+<p class="lead">The skills sheet. Same three frames.</p>
+
+<div class="pick">
+  <div class="tag"><b>1</b> <span>Crypt</span></div>
+  <div class="sheet t1">
+    <button class="x">✕</button>
+    <div class="ttl">Skills</div>
+    <div class="tabs"><i class="on">Warrior</i><i>Mage</i><i>Healer</i></div>
+    <h4>Class ability</h4>
+    <div class="sk"><b>✦ Second Wind</b> <span>Ready</span><p>Once a battle, heal 30% when you would fall.</p></div>
+    <h4>Brought</h4>
+    <div class="sk"><b>Power Strike</b> <span>Ready</span><p>Range 1 · Power ×1.4</p></div>
+    <div class="sk"><b>★ Dragon Slash</b> <span>2 turns</span><p>Range 1 · Power ×1.8</p></div>
+  </div>
+  <div class="tag"><b>2</b> <span>Chapel</span></div>
+  <div class="sheet t2">
+    <button class="x">✕</button>
+    <div class="ttl">Skills</div>
+    <div class="tabs"><i class="on">Warrior</i><i>Mage</i><i>Healer</i></div>
+    <h4>Class ability</h4>
+    <div class="sk"><b>✦ Second Wind</b> <span>Ready</span><p>Once a battle, heal 30% when you would fall.</p></div>
+    <h4>Brought</h4>
+    <div class="sk"><b>Power Strike</b> <span>Ready</span><p>Range 1 · Power ×1.4</p></div>
+    <div class="sk"><b>★ Dragon Slash</b> <span>2 turns</span><p>Range 1 · Power ×1.8</p></div>
+  </div>
+  <div class="tag"><b>3</b> <span>Reliquary</span></div>
+  <div class="sheet t3">
+    <button class="x"><b>✕</b></button>
+    <div class="ttl">Skills</div>
+    <div class="tabs"><i class="on">Warrior</i><i>Mage</i><i>Healer</i></div>
+    <h4>Class ability</h4>
+    <div class="sk"><b>✦ Second Wind</b> <span>Ready</span><p>Once a battle, heal 30% when you would fall.</p></div>
+    <h4>Brought</h4>
+    <div class="sk"><b>Power Strike</b> <span>Ready</span><p>Range 1 · Power ×1.4</p></div>
+    <div class="sk"><b>★ Dragon Slash</b> <span>2 turns</span><p>Range 1 · Power ×1.8</p></div>
+  </div>
+</div>
+
+<h2>Settings</h2>
+<p class="lead">Options, the way they sit now. Only the frame and the colors change.</p>
+
+<div class="pick">
+  <div class="tag"><b>1</b> <span>Crypt</span></div>
+  <div class="sheet t1">
+    <button class="x">✕</button>
+    <div class="ttl">Settings</div>
+    <div class="tabs"><i class="on">Options</i><i>How to Play</i><i>Saves</i></div>
+    <h4>Battle</h4>
+    <div class="mrow"><span>Battle speed</span><div class="seg"><i class="on">1×</i><i>2×</i><i>Instant</i></div></div>
+    <div class="mrow"><span>Auto end turn<small>Ends your turn once every hero has acted</small></span><div class="sw on"><u></u></div></div>
+    <h4>Map</h4>
+    <div class="mrow"><span>Map view</span><div class="seg"><i>Flat</i><i class="on">Isometric</i></div></div>
+    <div class="mrow"><span>Danger zone</span><div class="sw on"><u></u></div></div>
+    <div class="mrow"><span>Minimap</span><div class="sw"><u></u></div></div>
+  </div>
+  <div class="tag"><b>2</b> <span>Chapel</span></div>
+  <div class="sheet t2">
+    <button class="x">✕</button>
+    <div class="ttl">Settings</div>
+    <div class="tabs"><i class="on">Options</i><i>How to Play</i><i>Saves</i></div>
+    <h4>Battle</h4>
+    <div class="mrow"><span>Battle speed</span><div class="seg"><i class="on">1×</i><i>2×</i><i>Instant</i></div></div>
+    <div class="mrow"><span>Auto end turn<small>Ends your turn once every hero has acted</small></span><div class="sw on"><u></u></div></div>
+    <h4>Map</h4>
+    <div class="mrow"><span>Map view</span><div class="seg"><i>Flat</i><i class="on">Isometric</i></div></div>
+    <div class="mrow"><span>Danger zone</span><div class="sw on"><u></u></div></div>
+    <div class="mrow"><span>Minimap</span><div class="sw"><u></u></div></div>
+  </div>
+  <div class="tag"><b>3</b> <span>Reliquary</span></div>
+  <div class="sheet t3">
+    <button class="x"><b>✕</b></button>
+    <div class="ttl">Settings</div>
+    <div class="tabs"><i class="on">Options</i><i>How to Play</i><i>Saves</i></div>
+    <h4>Battle</h4>
+    <div class="mrow"><span>Battle speed</span><div class="seg"><i class="on">1×</i><i>2×</i><i>Instant</i></div></div>
+    <div class="mrow"><span>Auto end turn<small>Ends your turn once every hero has acted</small></span><div class="sw on"><u></u></div></div>
+    <h4>Map</h4>
+    <div class="mrow"><span>Map view</span><div class="seg"><i>Flat</i><i class="on">Isometric</i></div></div>
+    <div class="mrow"><span>Danger zone</span><div class="sw on"><u></u></div></div>
+    <div class="mrow"><span>Minimap</span><div class="sw"><u></u></div></div>
+  </div>
+</div>
+
+<p class="foot">Nothing in the game changed yet. Tell me the numbers, for example: floor bar 2, menu 1, gear 2, skills 3, settings 2.</p>
