@@ -2,6 +2,7 @@
 
 Every finished piece of work, newest first: date · who · what changed, in plain words. Claude and Grok add one line here for each piece of work (moved out of the README on 2026-10-17, owner).
 
+- 2026-10-17 · Claude · Attack animations for every move are priority 1 in next-steps (owner): 221 rows, 4 signed off, 7 in review, 210 not started; blocked until OpenArt credits are back.
 - 2026-10-17 · Claude · Tapping an enemy only attacks from where the hero stands: no more walking into range on its own (out of reach shows the enemy's info and "Out of reach"). Heroes can be dragged onto blue tiles while placing them, and dropping one on another swaps them.
 - 2026-10-17 · Grok · A new item-icon page in the painted pixel style. The weapon sheets are the ones the owner sent. Armor, the wand, and the charms are drawn to match them. The stick-figure page stays deleted.
 - 2026-10-17 · Grok · Epic weapons and armor now have their own purple picture, richer than the rare. The class legendaries are unchanged.

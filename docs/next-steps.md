@@ -7,6 +7,15 @@ For the owner, Claude and Grok. Open work is at the top, finished work is a shor
 - Single player, pass-the-phone versus and online rooms (on Render, tested by the owner with a friend) all work.
 - Latest: the legendary rework (one legendary per class, `legendary-proposal.md`) and Grok's monster redraw (4 new bosses, 6 new elites).
 
+## Priority 1 (owner, 2026-10-17): attack animations for every move
+Every move already plays the old game's effect; this is the new animated look for all of them. The list is `new-animations/CHECKLIST.md`.
+- **Where it stands (2026-10-17):** 221 rows. 4 signed off with code waiting (Blood Moon, Soul Nova, Grand Hex, Blood Frenzy), 7 with a first review GIF not signed off (six Warrior moves and Queen's Garden), 210 not started. Shared skills also need the same move on every body of that class (base forms and ascensions), so there are more sprite sheets to make than rows.
+- **Blocker:** new sheets come from OpenArt, and the owner is out of credits. Nothing new can be made until credits are back (or another art source is chosen).
+- **Suggested order (owner to confirm):** first the moves seen in every fight, for all 10 classes: Strike, Defend and the class ability (30 rows). Then each class's shared skills, one class at a time. Ascension-only skills last.
+- **How:** sheets go in `new-animations/inbox/`; the bot (`python3 new-animations/bot/make.py`) makes the first review GIF and stops (it never writes `code/`, never signs a row off, never loads anything into the play page). The owner signs off each GIF; then one code file is written per move, plus an in-game GIF of it hitting an enemy.
+- **The look, from 2026-10-12:** the signed Grand Hex: small body motion, a game effect recolored to the skill, a black center fading out to that color, and the last frames back on the idle sprite with the glow gone. The effect must not cover the attacker.
+- **Going into the game:** all together, once every row is signed off, not before.
+
 ## Open: waiting on the owner
 - **The pit-lord demon:** only a picture (`new-animations/monster-picks/pit-lord.png`), not a unit. It has to be fitted as something bigger than one tile.
 
@@ -17,9 +26,6 @@ For the owner, Claude and Grok. Open work is at the top, finished work is a shor
   - Name its cache with the build number, so a new push replaces the old copy (the pages workflow already stamps `__BUILD__`).
   - Saves already live on the phone. Test: open the link once, airplane mode, close and reopen, play a battle; also from the iPhone home screen.
   - Screen-only change: the referee does not change.
-- **Parked attack animations (signed off, not in the game).** Blood Moon, Soul Nova, Grand Hex and Blood Frenzy have their code in `new-animations/code/`. They go into the game together, once every row of `new-animations/CHECKLIST.md` is signed off, not before. New sheets wait until the owner has OpenArt credits again.
-  - A bot (`python3 new-animations/bot/make.py`) makes the first review GIF for sheets dropped in `new-animations/inbox/`, then stops. It never writes `code/`, never signs a row off and never loads anything into the play page.
-  - The look, from 2026-10-12, is the signed Grand Hex: small body motion, a game effect recolored to the skill, a black center fading out to that color, and the last frames back on the idle sprite with the glow gone. The effect must not cover the attacker.
 - **The owner's new art:** his sprites and attack animations replace files in `web/assets/`; plain swaps need no code. Claude wires in the hue and animation effects.
 - **Balance autoplayer:** rebuild the old game's skilled autoplayer in Go. Tune the new skills, the purple tier, the legendary powers (`sim/content/rework_legendary.go`) and the new monsters. Report where runs get stuck.
 
