@@ -65,6 +65,9 @@ func (g *Game) Visible(side int) map[int]bool {
 // marks the tiles in sight ('1') row by row, for the screen to shade the rest.
 func (g *Game) ViewFor(side int) View {
 	v := g.View()
+	if side >= 0 && g.B.Versus != nil {
+		v.Bag = g.bagView(side) // each player sees only their own bag
+	}
 	if side < 0 || !g.Fogged() {
 		return v
 	}
@@ -76,6 +79,11 @@ func (g *Game) ViewFor(side int) View {
 		}
 	}
 	v.Units = units
+	h := g.hiddenOut(side, sight)
+	v.Traps, v.TrapTiles, v.Fields, v.Kegs = len(h.Traps), nil, h.Fields, h.Kegs
+	for _, t := range h.Traps {
+		v.TrapTiles = append(v.TrapTiles, state.Tile{X: t.X, Y: t.Y})
+	}
 	v.Seen = make([]string, g.B.N)
 	for y := range v.Seen {
 		row := make([]byte, g.B.N)
@@ -131,6 +139,13 @@ func (g *Game) SaveFor(side int) ([]byte, error) {
 		}
 	}
 	b.Units = units
+	h := g.hiddenOut(side, g.Sight(side))
+	b.Traps, b.Fields, b.Kegs = h.Traps, h.Fields, h.Kegs
+	if side == state.Heroes { // the other player's bag stays private
+		b.RedBag = nil
+	} else {
+		b.Bag = nil
+	}
 	return (&Game{C: g.C, B: &b}).Save()
 }
 
@@ -145,4 +160,52 @@ func (g *Game) unseen(u *state.Unit, a action.Action) error {
 		}
 	}
 	return nil
+}
+
+// revealed reports whether the fog uncovered an enemy that the side did not
+// see before (saw is Visible from before the move). Such a move can't be
+// undone, or a player could scout for free.
+func (g *Game) revealed(side int, saw map[int]bool) bool {
+	if !g.Fogged() {
+		return false
+	}
+	for id := range g.Visible(side) {
+		if !saw[id] {
+			if u := g.B.Unit(id); u != nil && u.Team != side {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// shown is the traps, fields and kegs a side may know about.
+type shown struct {
+	Traps  []state.Trap
+	Fields []state.Field
+	Kegs   []state.Keg
+}
+
+// hiddenOut leaves out what the fog hides from a side (owner, 2026-10-16):
+// the other player's traps always (snares are secret), and their fields and
+// kegs when they are out of sight.
+func (g *Game) hiddenOut(side int, sight map[[2]int]bool) shown {
+	b := g.B
+	var out shown
+	for _, t := range b.Traps {
+		if t.Team == side {
+			out.Traps = append(out.Traps, t)
+		}
+	}
+	for _, f := range b.Fields {
+		if f.Team == side || sight[[2]int{f.X, f.Y}] {
+			out.Fields = append(out.Fields, f)
+		}
+	}
+	for _, k := range b.Kegs {
+		if k.Team == side || sight[[2]int{k.X, k.Y}] {
+			out.Kegs = append(out.Kegs, k)
+		}
+	}
+	return out
 }

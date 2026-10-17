@@ -69,8 +69,12 @@ func (g *Game) Apply(a action.Action) ([]action.Event, error) {
 	case action.Move:
 		u := b.Unit(a.Unit)
 		from := state.Tile{X: u.X, Y: u.Y}
+		saw := g.Visible(u.Team)
 		board.MoveUnit(g.C, b, u, a.X, a.Y, emit)
 		u.Moved, u.Undo, u.MoveLeft = true, &from, 0
+		if g.revealed(u.Team, saw) { // fog: what a move uncovers can't be taken back (owner, 2026-10-16)
+			u.Undo = nil
+		}
 		if u.Acted { // a hero that already acted (Hit and Run) is finished after moving
 			u.Done, u.Undo = true, nil
 		}
@@ -132,8 +136,9 @@ func (g *Game) Apply(a action.Action) ([]action.Event, error) {
 		stats.UseSet(g.C, b.Unit(a.Unit), a.Set-1)
 		emit(action.Event{Kind: action.SetSwitched, Unit: a.Unit, Amount: a.Set})
 	case action.Drop:
-		emit(action.Event{Kind: action.GearDropped, Skill: b.Bag[a.Item].Name})
-		b.Bag = append(b.Bag[:a.Item:a.Item], b.Bag[a.Item+1:]...)
+		bag := g.bag(b.Side)
+		emit(action.Event{Kind: action.GearDropped, Skill: (*bag)[a.Item].Name})
+		*bag = append((*bag)[:a.Item:a.Item], (*bag)[a.Item+1:]...)
 	case action.Decide:
 		if err := stats.Decide(g.C, b, a.Choice, a.Skill, emit); err != nil {
 			return events, no("bad-choice", "%v", err)

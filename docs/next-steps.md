@@ -214,6 +214,17 @@ Estimate: about 3 sessions once the game matches the original.
 - **Camera:** each player is drawn with their own heroes at the bottom of the screen. The map is not a second board: the picture turns 180° for the side that starts at the top (pass the phone does this when the phone is handed over; online does it for that seat the whole match). Taps still use the real tiles. The hero picker keeps its place when you tap a hero, instead of jumping to the top.
 - **Tests:** 10 fog tests, plus the online test checks Bo can't see Ann's move while Cy the watcher can.
 
+**Exploit fixes (2026-10-16, owner approved after Claude's exploit hunt):**
+- **The clock:** the free seconds only follow real turn actions. Move-and-undo could stop the clock forever. Fixed in `adapters/server/clock.go`, with a test.
+- **Undo:** you can't undo a move that uncovered an enemy (`engine.revealed`). It was free scouting.
+- **Hidden things:** the other player's traps are never shown. Their fields and kegs are shown only in sight (`hiddenOut`, in views and saves).
+- **Bags:** Red has its own bag (`state.Battle.RedBag`, `engine.bag`).
+- **Still open (small, owner not asked yet):**
+  - an enemy walking out of the fog shows its whole path
+  - watchers see everything
+  - Grave Bloom uses everyone's dead
+  - Red's raised monsters get a weapon type and Blue's don't
+
 **Next:** the owner sets up Render (`online-setup.md`) and plays with friends. Then chat and emojis, and after that the ideas list (chess feel first).
 
 ### 7. After the full build (owner's reminders)

@@ -248,3 +248,42 @@ func TestVersusRules(t *testing.T) {
 		}
 	})
 }
+
+func TestVersusBags(t *testing.T) {
+	t.Run("In versus each player has their own bag: Red can't wear or throw away what Blue took off", func(t *testing.T) {
+		g := versus(t)
+		me := side(g, 0)[0]
+		if _, err := g.Apply(action.Action{Kind: action.Unequip, Unit: me.ID, Slot: "h"}); err != nil {
+			t.Fatal(err)
+		}
+		if len(g.B.Bag) != 1 || len(g.B.RedBag) != 0 || len(g.ViewFor(0).Bag) != 1 || len(g.ViewFor(1).Bag) != 0 {
+			t.Fatalf("Blue's bag %d, Red's bag %d", len(g.B.Bag), len(g.B.RedBag))
+		}
+		if _, err := g.Apply(action.Action{Kind: action.EndTurn}); err != nil {
+			t.Fatal(err)
+		}
+		red := side(g, 1)[0]
+		if _, err := g.Apply(action.Action{Kind: action.Equip, Unit: red.ID, Item: 0}); code(err) != "no-such-item" {
+			t.Fatalf("Red wearing Blue's helm: %v", err)
+		}
+		if _, err := g.Apply(action.Action{Kind: action.Drop, Item: 0}); code(err) != "no-such-item" {
+			t.Fatalf("Red throwing away Blue's helm: %v", err)
+		}
+	})
+	t.Run("A player's own bag still works: Red takes off a helm and puts it back on", func(t *testing.T) {
+		g := versus(t)
+		_, _ = g.Apply(action.Action{Kind: action.EndTurn})
+		red := side(g, 1)[0]
+		if _, err := g.Apply(action.Action{Kind: action.Unequip, Unit: red.ID, Slot: "h"}); err != nil {
+			t.Fatal(err)
+		}
+		if len(g.B.RedBag) != 1 || len(g.B.Bag) != 0 {
+			t.Fatalf("Red's bag %d, Blue's bag %d", len(g.B.RedBag), len(g.B.Bag))
+		}
+		_, _ = g.Apply(action.Action{Kind: action.EndTurn})
+		_, _ = g.Apply(action.Action{Kind: action.EndTurn})
+		if _, err := g.Apply(action.Action{Kind: action.Equip, Unit: red.ID, Item: 0}); err != nil {
+			t.Fatalf("Red putting its own helm back on: %v", err)
+		}
+	})
+}

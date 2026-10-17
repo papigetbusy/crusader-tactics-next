@@ -160,7 +160,7 @@ func (g *Game) View() View {
 		v.TrapTiles = append(v.TrapTiles, state.Tile{X: t.X, Y: t.Y})
 	}
 	v.Decision = g.decisionView()
-	v.Bag, v.Gold, v.Chests = g.bagView(), b.Gold, b.Chests
+	v.Bag, v.Gold, v.Chests = g.bagView(b.Side), b.Gold, b.Chests
 	v.Floor, v.Biome, v.Reinforce, v.Starts = b.Floor, b.Biome, b.Reinforce, b.Starts
 	if g.climb != nil {
 		v.Climb = g.climbView()

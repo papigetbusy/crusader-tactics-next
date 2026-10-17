@@ -43,7 +43,6 @@ You are working on Crusader Tactics (next) in the repository papigetbusy/crusade
 
 ## Now working on
 (one line each: who · task · files · date; remove it when done)
-- Claude · Versus exploit fixes (clock, undo, fog of traps, own bags) · adapters/server, sim/engine, sim/state, docs · 2026-10-16
 
 
 

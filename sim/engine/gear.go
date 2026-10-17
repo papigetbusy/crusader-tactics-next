@@ -55,7 +55,8 @@ func (g *Game) inSet(u *state.Unit, i int, fn func()) {
 // dropped?" (old equip and the drop button, index.html lines 1786 and 1657).
 func (g *Game) checkGear(a action.Action) error {
 	b := g.B
-	if a.Kind != action.Unequip && (a.Item < 0 || a.Item >= len(b.Bag)) {
+	bag := *g.bag(b.Side)
+	if a.Kind != action.Unequip && (a.Item < 0 || a.Item >= len(bag)) {
 		return no("no-such-item", "There is no such item in the bag.")
 	}
 	if a.Kind == action.Drop {
@@ -77,7 +78,7 @@ func (g *Game) checkGear(a action.Action) error {
 	if u.Done && g.C.Combat.EquipEndsTurn {
 		return no("finished", "%s has finished for this turn.", u.Class)
 	}
-	it := b.Bag[a.Item]
+	it := bag[a.Item]
 	if ok, why := stats.CanUse(g.C, u.Class, u.Level, it); !ok {
 		return no("cannot-use", "%s", why)
 	}
@@ -107,7 +108,8 @@ func freeWeaponSlot(u *state.Unit, slots []string) string {
 func (g *Game) equip(a action.Action, emit action.Emit) {
 	b := g.B
 	u := b.Unit(a.Unit)
-	it := b.Bag[a.Item]
+	bag := g.bag(u.Team)
+	it := (*bag)[a.Item]
 	sl := it.Slot
 	if it.Slot == content.SlotWeapon {
 		sl = a.Slot
@@ -115,12 +117,12 @@ func (g *Game) equip(a action.Action, emit action.Emit) {
 			sl = freeWeaponSlot(u, stats.WeaponSlotsOf(g.C, u.Class))
 		}
 	}
-	b.Bag = append(b.Bag[:a.Item:a.Item], b.Bag[a.Item+1:]...)
+	*bag = append((*bag)[:a.Item:a.Item], (*bag)[a.Item+1:]...)
 	if u.Gear == nil {
 		u.Gear = map[string]content.Item{}
 	}
 	if old, ok := u.Gear[sl]; ok {
-		b.Bag = append(b.Bag, old)
+		*bag = append(*bag, old)
 	}
 	u.Gear[sl] = it
 	stats.Refresh(g.C, b, u)
@@ -157,7 +159,7 @@ func (g *Game) unequip(a action.Action, emit action.Emit) {
 	u := b.Unit(a.Unit)
 	it := u.Gear[a.Slot]
 	delete(u.Gear, a.Slot)
-	b.Bag = append(b.Bag, it)
+	*g.bag(u.Team) = append(*g.bag(u.Team), it)
 	stats.Refresh(g.C, b, u)
 	emit(action.Event{Kind: action.GearOff, Unit: u.ID, Skill: it.Name})
 	if g.C.Combat.EquipEndsTurn && g.fighting() {
@@ -170,3 +172,13 @@ func (g *Game) unequip(a action.Action, emit action.Emit) {
 // fighting is true once the battle has started (a practice fight always is):
 // gear changed while looking at the map before a climb battle is free.
 func (g *Game) fighting() bool { return g.climb == nil || g.climb.phase == PhaseBattle }
+
+// bag is a side's bag. In single player there is one; in versus each player
+// has their own (owner, 2026-10-16), so neither can use or throw away the
+// other's gear.
+func (g *Game) bag(side int) *[]content.Item {
+	if g.B.Versus != nil && side == state.Enemies {
+		return &g.B.RedBag
+	}
+	return &g.B.Bag
+}

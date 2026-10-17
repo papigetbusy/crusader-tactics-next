@@ -145,10 +145,10 @@ func (g *Game) gearView(u *state.Unit) *GearView {
 	return gv
 }
 
-// bagView is the bag as the screen shows it.
-func (g *Game) bagView() []ItemView {
+// bagView is a side's bag as the screen shows it.
+func (g *Game) bagView(side int) []ItemView {
 	var out []ItemView
-	for _, it := range g.B.Bag {
+	for _, it := range *g.bag(side) {
 		out = append(out, g.itemView(it.Slot, it))
 	}
 	return out

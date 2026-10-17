@@ -183,7 +183,8 @@ type Battle struct {
 	Lost       []*Unit        // party heroes who died where no revive reaches them (they still share the loot)
 	FallenFoes []*Unit        // monsters who died, for monster healers' Resurrection (only with MonstersRevive)
 	Kegs       []Keg          // Powder Kegs waiting to blow up
-	Bag        []content.Item // items carried but not worn (the run will own this from Phase 7)
+	Bag        []content.Item // items carried but not worn (the run will own this from Phase 7); versus: Blue's
+	RedBag     []content.Item // versus: Red's own bag (owner, 2026-10-16: the players don't share one)
 
 	// Loot and the run's numbers this fight needs (the run sets them from Phase 7).
 	Floor         int     // which floor: loot gets stronger deeper down

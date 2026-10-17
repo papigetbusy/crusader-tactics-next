@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/papigetbusy/crusader-tactics-next/sim/action"
+	"github.com/papigetbusy/crusader-tactics-next/sim/board"
 	"github.com/papigetbusy/crusader-tactics-next/sim/state"
 )
 
@@ -109,6 +110,63 @@ func TestFogOfWar(t *testing.T) {
 		g.B.Outcome = state.Won
 		if len(g.ViewFor(0).Units) != len(g.B.Units) {
 			t.Fatal("still fogged after the match")
+		}
+	})
+	t.Run("A move that uncovers an enemy in the fog can't be undone", func(t *testing.T) {
+		g := versus(t)
+		me, foe := side(g, 0)[0], side(g, 1)[0]
+		near(g, foe, me, 9)
+		var to *board.Tile
+		for _, t2 := range g.Reach(me.ID) {
+			if t2.X == me.X && t2.Y < me.Y && (to == nil || t2.Y < to.Y) {
+				tt := t2
+				to = &tt
+			}
+		}
+		if to == nil || me.Y-to.Y < 3 {
+			t.Fatal("no tile far enough forward")
+		}
+		if g.Sees(0, foe) {
+			t.Fatal("seen before the move")
+		}
+		if _, err := g.Apply(action.Action{Kind: action.Move, Unit: me.ID, X: to.X, Y: to.Y}); err != nil {
+			t.Fatal(err)
+		}
+		if !g.Sees(0, foe) {
+			t.Fatal("the move did not uncover the enemy")
+		}
+		if _, err := g.Apply(action.Action{Kind: action.Undo, Unit: me.ID}); code(err) != "nothing-to-undo" {
+			t.Fatalf("undo after scouting: %v", err)
+		}
+	})
+	t.Run("A move that uncovers nothing can still be undone", func(t *testing.T) {
+		g := versus(t)
+		me := side(g, 0)[0]
+		r := g.Reach(me.ID)
+		if _, err := g.Apply(action.Action{Kind: action.Move, Unit: me.ID, X: r[0].X, Y: r[0].Y}); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := g.Apply(action.Action{Kind: action.Undo, Unit: me.ID}); err != nil {
+			t.Fatalf("undo: %v", err)
+		}
+	})
+	t.Run("A player never sees the other player's traps, and sees their fire and banners only in sight", func(t *testing.T) {
+		g := versus(t)
+		me := side(g, 0)[0]
+		g.B.Traps = []state.Trap{{X: me.X, Y: me.Y - 1, Team: 1}, {X: 3, Y: 3, Team: 1}, {X: me.X + 1, Y: me.Y, Team: 0}}
+		g.B.Fields = []state.Field{{X: 6, Y: 2, Kind: "fire", Turns: 2, Team: 1}, {X: me.X, Y: me.Y - 2, Kind: "fire", Turns: 2, Team: 1}}
+		g.B.Kegs = []state.Keg{{X: 7, Y: 1, Team: 1}}
+		v := g.ViewFor(0)
+		if v.Traps != 1 || len(v.TrapTiles) != 1 || v.TrapTiles[0].X != me.X+1 {
+			t.Fatalf("Blue sees traps %v", v.TrapTiles)
+		}
+		if len(v.Fields) != 1 || v.Fields[0].Y != me.Y-2 || len(v.Kegs) != 0 {
+			t.Fatalf("Blue sees fields %v, kegs %v", v.Fields, v.Kegs)
+		}
+		b, _ := g.SaveFor(0)
+		l, _ := Load(g.C, b, 1)
+		if len(l.B.Traps) != 1 || len(l.B.Fields) != 1 || len(l.B.Kegs) != 0 {
+			t.Fatalf("Blue's save: traps %v fields %v kegs %v", l.B.Traps, l.B.Fields, l.B.Kegs)
 		}
 	})
 	t.Run("Watchers see everything", func(t *testing.T) {

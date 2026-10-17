@@ -284,3 +284,58 @@ func TestPasswords(t *testing.T) {
 		}
 	})
 }
+
+func TestClockExploits(t *testing.T) {
+	t.Run("Moving and undoing over and over can't stop a player's clock", func(t *testing.T) {
+		r, a, _ := ready(t)
+		me := r.Game.B.Units[0]
+		reach := r.Game.Reach(me.ID)
+		if len(reach) == 0 {
+			t.Fatal("no tile to move to")
+		}
+		now := t0
+		for i := 0; i < 400 && r.playing(); i++ {
+			now = now.Add(1900 * time.Millisecond)
+			r.Tick(now)
+			k := action.Action{Kind: action.Move, Unit: me.ID, X: reach[0].X, Y: reach[0].Y}
+			if i%2 == 1 {
+				k = action.Action{Kind: action.Undo, Unit: me.ID}
+			}
+			_, _ = r.Act(a.ID, k, now)
+		}
+		if r.playing() || r.Winner != 1 {
+			t.Fatalf("after %v Blue still has %d ms", now.Sub(t0), r.Game.B.Versus.BankMs[0])
+		}
+	})
+	t.Run("The free seconds still follow a real turn action, like waiting", func(t *testing.T) {
+		r, a, _ := ready(t)
+		me := r.Game.B.Units[0]
+		bank := r.Game.B.Versus.BankMs[0]
+		now := t0.Add(1500 * time.Millisecond) // the turn has just begun: free
+		if _, err := r.Act(a.ID, action.Action{Kind: action.Wait, Unit: me.ID}, now); err != nil {
+			t.Fatal(err)
+		}
+		now = now.Add(1500 * time.Millisecond) // just after a wait: free
+		if _, err := r.Act(a.ID, action.Action{Kind: action.EndTurn}, now); err != nil {
+			t.Fatal(err)
+		}
+		if r.Game.B.Versus.BankMs[0] != bank {
+			t.Fatalf("Blue was charged %d ms", bank-r.Game.B.Versus.BankMs[0])
+		}
+	})
+	t.Run("After a move, every second counts", func(t *testing.T) {
+		r, a, _ := ready(t)
+		me := r.Game.B.Units[0]
+		reach := r.Game.Reach(me.ID)
+		bank := r.Game.B.Versus.BankMs[0]
+		now := t0.Add(time.Second)
+		_, _ = r.Act(a.ID, action.Action{Kind: action.Move, Unit: me.ID, X: reach[0].X, Y: reach[0].Y}, now)
+		now = now.Add(1500 * time.Millisecond)
+		if _, err := r.Act(a.ID, action.Action{Kind: action.Undo, Unit: me.ID}, now); err != nil {
+			t.Fatal(err)
+		}
+		if got := bank - r.Game.B.Versus.BankMs[0]; got != 1500 {
+			t.Fatalf("charged %d ms, want 1500", got)
+		}
+	})
+}

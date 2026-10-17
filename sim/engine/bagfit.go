@@ -19,7 +19,7 @@ type BagFit struct {
 // bagFits is BagFit for every bag item, for one hero.
 func (g *Game) bagFits(u *state.Unit) []BagFit {
 	var out []BagFit
-	for _, it := range g.B.Bag {
+	for _, it := range *g.bag(u.Team) {
 		f := BagFit{}
 		f.OK, f.Why = stats.CanUse(g.C, u.Class, u.Level, it)
 		var worn content.Item

@@ -41,6 +41,7 @@ type Room struct {
 	Line     []string  // member IDs waiting, first in line first
 	Game     *engine.Game
 	Last     time.Time // when the player to move last had an accepted action (or the turn began)
+	Free     bool      // the time since Last starts with the free seconds (see charge)
 	Winner   int       // -1, or the side that won the last match
 	Matches  int
 	Log      []action.Action // the current match's actions, with the times charged
@@ -204,7 +205,7 @@ func (r *Room) maybeStart(now time.Time) {
 	if err != nil {
 		return
 	}
-	r.Game, r.Seed, r.Dice, r.Last, r.Winner, r.Log, r.Seq = g, setup, dice, now, -1, nil, 0
+	r.Game, r.Seed, r.Dice, r.Last, r.Winner, r.Log, r.Seq, r.Free = g, setup, dice, now, -1, nil, 0, true
 	r.Matches++
 	for _, id := range r.Seats {
 		r.member(id).Ready = false
@@ -229,7 +230,7 @@ func (r *Room) Act(id string, a action.Action, now time.Time) ([]action.Event, e
 	if r.seatOf(id) != r.Game.B.Side {
 		return nil, errNotTurn
 	}
-	a.Ms = chargeMs(r.Last, now, r.grace)
+	a.Ms = r.charge(now)
 	return r.apply(a, now)
 }
 
@@ -239,7 +240,7 @@ func (r *Room) apply(a action.Action, now time.Time) ([]action.Event, error) {
 	if err != nil {
 		return nil, err
 	}
-	r.Last, r.Before = now, before
+	r.Last, r.Before, r.Free = now, before, earnsFree(a.Kind)
 	r.Seq++
 	r.Log = append(r.Log, a)
 	if !r.playing() {
@@ -255,7 +256,7 @@ func (r *Room) Tick(now time.Time) []action.Event {
 		return nil
 	}
 	v, side := r.Game.B.Versus, r.Game.B.Side
-	used := chargeMs(r.Last, now, r.grace)
+	used := r.charge(now)
 	turnLeft := v.TurnMs == 0 || v.UsedMs+used < v.TurnMs
 	if turnLeft && v.BankMs[side]-used > 0 {
 		return nil
